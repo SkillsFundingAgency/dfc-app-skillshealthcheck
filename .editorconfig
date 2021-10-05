@@ -1,0 +1,74 @@
+# NOTE: Requires **VS2019 16.3** or later
+
+# DFC.Digital.CodeAnalysis
+# Description: DFC.Digital.CodeAnalysis.ruleset
+
+# Code files
+[*.{cs,vb}]
+
+
+dotnet_diagnostic.CA1001.severity = none
+
+dotnet_diagnostic.CA1006.severity = none
+
+dotnet_diagnostic.CA1014.severity = none
+
+dotnet_diagnostic.CA1024.severity = none
+
+dotnet_diagnostic.CA1026.severity = none
+
+dotnet_diagnostic.CA1054.severity = none
+
+dotnet_diagnostic.CA1303.severity = none
+
+dotnet_diagnostic.CA1704.severity = none
+
+dotnet_diagnostic.CA1707.severity = none
+
+dotnet_diagnostic.CA1709.severity = none
+
+dotnet_diagnostic.CA1717.severity = none
+
+dotnet_diagnostic.CA2007.severity = none
+
+dotnet_diagnostic.CA2210.severity = none
+
+dotnet_diagnostic.CA2227.severity = none
+
+dotnet_diagnostic.S1210.severity = none
+
+dotnet_diagnostic.SA1005.severity = none
+
+dotnet_diagnostic.SA1101.severity = none
+
+dotnet_diagnostic.SA1124.severity = none
+
+dotnet_diagnostic.SA1128.severity = none
+
+dotnet_diagnostic.SA1133.severity = none
+
+dotnet_diagnostic.SA1200.severity = none
+
+dotnet_diagnostic.SA1210.severity = none
+
+dotnet_diagnostic.SA1600.severity = none
+
+dotnet_diagnostic.SA1602.severity = none
+
+dotnet_diagnostic.SA1633.severity = none
+
+dotnet_diagnostic.SA1634.severity = none
+
+dotnet_diagnostic.SA1635.severity = none
+
+dotnet_diagnostic.SA1636.severity = none
+
+dotnet_diagnostic.SA1637.severity = none
+
+dotnet_diagnostic.SA1638.severity = none
+
+dotnet_diagnostic.SA1640.severity = none
+
+dotnet_diagnostic.SA1641.severity = none
+
+dotnet_diagnostic.SA1652.severity = none
