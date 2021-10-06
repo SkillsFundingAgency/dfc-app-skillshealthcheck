@@ -37,7 +37,7 @@ steps:
     ResourceGroupName: '${{ parameters.ResourceGroup }}'
     SlotName: staging
 
-- task: AzurePowerShell@5
+- task: AzurePowerShell@4
   displayName: 'Perform smoke test'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
@@ -71,7 +71,7 @@ steps:
     SourcePath: '${{ parameters.SpecificationPath }}'
     TargetFileNames: 'WebhookReceiver.txt'
 
-- task: AzurePowerShell@5
+- task: AzurePowerShell@4
   displayName: 'Import OpenAPI specification'	
   inputs:	
     azureSubscription: '${{ parameters.AzureSubscription }}'	
