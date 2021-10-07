@@ -37,7 +37,7 @@ steps:
       ResourceGroupName: "${{ parameters.ResourceGroup }}"
       SlotName: staging
 
-  - task: AzurePowerShell@3
+  - task: AzurePowerShell@4
     displayName: "Perform smoke test"
     inputs:
       azureSubscription: "${{ parameters.AzureSubscription }}"
