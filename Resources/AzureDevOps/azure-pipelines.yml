@@ -269,7 +269,7 @@ stages:
       - group: dfc-stax-shared-prd
       - group: dfc-compositeui-all
       - group: dfc-app-shared-registration
-      - template: VariableTemplates\PrdEnvironmentVariables.yml
+      - template: VariableTemplates\PRDEnvironmentVariables.yml
 
     jobs:
       - template: JobTemplates/deploy-environment.yml
