@@ -15,7 +15,7 @@
             "value": "cosmosDBCollectionName"
         },
         "cosmosDbKey": {
-            "value": "not-a-real-key"
+            "value": "cosmosDbKey"
         },
         "aspSize": {
             "value": "2"
@@ -30,7 +30,7 @@
             "value": false
         },
         "Environment": {
-            "value": "FOO"
+            "value": "Environment"
         },
         "CosmosDbResourceGroup": {
             "value": "dfc-dev-app-sharedresources-rg"
@@ -45,31 +45,31 @@
             "value": false
         },
         "SubscriptionSettingsEndpoint": {
-            "value": "http://www.food.co.uk"
+            "value": "SubscriptionSettingsEndpoint"
         },
         "apimCompositeApiKey": {
-            "value": "fake-key-mate"
+            "value": "apimCompositeApiKey"
         },
         "SubscriptionSettingsFilterIncludeEventTypes3": {
-            "value": "value"
+            "value": "SubscriptionSettingsFilterIncludeEventTypes3"
         },
         "SubscriptionSettingsFilterIncludeEventTypes4": {
-            "value": "anothervalue"
+            "value": "SubscriptionSettingsFilterIncludeEventTypes4"
         },
         "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
-            "value": "anothervalue"
+            "value": "SubscriptionSettingsFilterPropertyContainsFilters0Values0"
         },
         "SubscriptionSettingsFilterPropertyContainsFilters0Values1": {
-            "value": "anothervalue"
+            "value": "SubscriptionSettingsFilterPropertyContainsFilters0Values1"
         },
         "ApplicationName": {
-            "value": "anothervalue"
+            "value": "ApplicationName"
         },
         "contentUrl": {
-            "value": "anothervalue"
+            "value": "contentUrl"
         },
         "subscriptionUrl": {
-            "value": "anothervalue"
+            "value": "subscriptionUrl"
         },
         "ApimResourceGroup": {
             "value": "dfc-dev-shared-rg"
