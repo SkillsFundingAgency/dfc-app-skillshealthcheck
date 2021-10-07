@@ -1,59 +1,59 @@
 variables:
-- name: ReleaseEnvironmentName
-  value: sit
-- name: AppServiceName
-  value: $(WebAppPrefix)-as
-- name: cosmosDBCollectionName
-  value: skillshealthcheck
-- name: ResourceGroup
-  value: $(WebAppPrefix)-rg
-- name: WebAppProjectName
-  value: DFC.App.SkillsHealthCheck
-- name: PageRegistrationFile
-  value: registration.json
-- name: ApplicationName
-  value: dfc-app-skillshealthcheck
-- name: contentUrl
-  value: $(ContentApiAddress)/api/execute
-- name: subscriptionUrl
-  value: https://dfc-sit-api-eventgridsubscriptions-fa.$(appServiceDomain)
-- name: SubscriptionSettingsEndpoint
-  value: $(ApimProxyAddress)/composite-ui/skillshealthcheck
-- name: apiName
-  value: skillshealthcheck
-- name: apiId
-  value: composite-ui-skillshealthcheck
-- name: applicationUrl
-  value: https://$(AppServiceName).$(appServiceDomain)
-- name: WebAppPrefix
-  value: dfc-sit-app-skillshealthcheck
-- name: SubscriptionSettingsFilterIncludeEventTypes3
-  value:
-- name: SubscriptionSettingsFilterIncludeEventTypes4
-  value:
-- name: SubscriptionSettingsFilterPropertyContainsFilters0Values0
-  value: /content/banner/
-- name: SubscriptionSettingsFilterPropertyContainsFilters0Values1
-  value: /content/pagebanner/
-- name: EnableAzureMonitorAlerting
-  value: true
-- name: aspTier
-  value: Standard
-- name: aspInstances
-  value: 2
-- name: aspSize
-  value: 2
-- name: clientAffinity
-  value: false
-- name: appDatabaseThroughput
-  value: 400
-- name: ExceptionCountThreshold
-  value: 10
-- name: MemoryPercentageThreshold
-  value: 75
-- name: CPUPercentageThreshold
-  value: 75
-- name: SubscriptionPosturi
-  value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
-- name: LoggingLogLevelDefault
-  value: Trace  
+  - name: ReleaseEnvironmentName
+    value: sit
+  - name: AppServiceName
+    value: $(WebAppPrefix)-as
+  - name: cosmosDBCollectionName
+    value: skillshealthcheck
+  - name: ResourceGroup
+    value: $(WebAppPrefix)-rg
+  - name: WebAppProjectName
+    value: DFC.App.SkillsHealthCheck
+  - name: PageRegistrationFile
+    value: registration.json
+  - name: ApplicationName
+    value: dfc-app-skillshealthcheck
+  - name: contentUrl
+    value: $(ContentApiAddress)/api/execute
+  - name: subscriptionUrl
+    value: https://dfc-sit-api-eventgridsubscriptions-fa.$(appServiceDomain)
+  - name: SubscriptionSettingsEndpoint
+    value: $(ApimProxyAddress)/composite-ui/skillshealthcheck
+  - name: apiName
+    value: skillshealthcheck
+  - name: apiId
+    value: composite-ui-skillshealthcheck
+  - name: applicationUrl
+    value: https://$(AppServiceName).$(appServiceDomain)
+  - name: WebAppPrefix
+    value: dfc-sit-app-skillshealthcheck
+  - name: SubscriptionSettingsFilterIncludeEventTypes3
+    value:
+  - name: SubscriptionSettingsFilterIncludeEventTypes4
+    value:
+  - name: SubscriptionSettingsFilterPropertyContainsFilters0Values0
+    value: /content/banner/
+  - name: SubscriptionSettingsFilterPropertyContainsFilters0Values1
+    value: /content/pagebanner/
+  - name: EnableAzureMonitorAlerting
+    value: true
+  - name: aspTier
+    value: Standard
+  - name: aspInstances
+    value: 2
+  - name: aspSize
+    value: 2
+  - name: clientAffinity
+    value: false
+  - name: appDatabaseThroughput
+    value: 400
+  - name: ExceptionCountThreshold
+    value: 10
+  - name: MemoryPercentageThreshold
+    value: 75
+  - name: CPUPercentageThreshold
+    value: 75
+  - name: SubscriptionPosturi
+    value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
+  - name: LoggingLogLevelDefault
+    value: Trace
