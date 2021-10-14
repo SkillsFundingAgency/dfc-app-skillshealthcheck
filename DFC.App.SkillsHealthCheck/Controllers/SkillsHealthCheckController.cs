@@ -1,10 +1,12 @@
-﻿using DFC.App.SkillsHealthCheck.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+using DFC.App.SkillsHealthCheck.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
 
+    [ExcludeFromCodeCoverage]
     public class SkillsHealthCheckController : Controller
     {
         public const string RegistrationPath = "skills-healthcheck";
