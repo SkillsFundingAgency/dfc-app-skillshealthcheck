@@ -27,7 +27,7 @@ namespace DFC.App.SkillsHealthCheck.AutoMapperProfiles
 
             CreateMap<SharedContentItemModel, IndexDocumentViewModel>();
 
-            CreateMap<SharedContentItemModel, DocumentViewModel>()
+            CreateMap<SharedContentItemModel, BaseDocumentViewModel>()
                 .ForMember(d => d.HtmlHead, s => s.MapFrom(a => a))
                 .ForMember(d => d.Breadcrumb, s => s.Ignore())
                 .ForMember(d => d.BodyViewModel, s => s.MapFrom(a => a));
@@ -37,7 +37,7 @@ namespace DFC.App.SkillsHealthCheck.AutoMapperProfiles
                 .ForMember(d => d.Description, s => s.Ignore())
                 .ForMember(d => d.Keywords, s => s.Ignore());
 
-            CreateMap<SharedContentItemModel, BodyViewModel>()
+            CreateMap<SharedContentItemModel, BaseBodyViewModel>()
                 .ForMember(d => d.Body, s => s.MapFrom(a => new HtmlString(a.Content)));
 
             CreateMap<SharedContentItemModel, BreadcrumbItemModel>()
