@@ -33,7 +33,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/home/document")]
         [Route("skills-health-check/document")]
-        [Route("skills-health-check/")]
+        [Route("skills-health-check/document")]
         public async Task<IActionResult> Document()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);

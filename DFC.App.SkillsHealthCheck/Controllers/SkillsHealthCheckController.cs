@@ -16,7 +16,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
         }
 
-
         [HttpGet]
         [Route("skills-health-check/save-my-progress/body")]
         public async Task<IActionResult> SaveMyProgressBody()
