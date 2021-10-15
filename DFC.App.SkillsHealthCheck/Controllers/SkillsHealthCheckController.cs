@@ -9,20 +9,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class SkillsHealthCheckController : Controller
     {
-        public const string RegistrationPath = "skills-healthcheck";
+        public const string RegistrationPath = "skills-health-check";
 
 
         public SkillsHealthCheckController()
         {
         }
 
-
-        [HttpGet]
-        [Route("skills-health-check/your-assessments/body")]
-        public async Task<IActionResult> YourAssessmentsBody()
-        {
-            return this.NegotiateContentResult(null);
-        }
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/body")]

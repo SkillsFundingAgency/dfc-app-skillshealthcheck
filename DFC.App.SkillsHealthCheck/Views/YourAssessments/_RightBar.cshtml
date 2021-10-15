@@ -1,0 +1,45 @@
+﻿@model RightBarViewModel
+<div class="app-sidebar app-resume-panel">
+    <h2 class="govuk-heading-m">Return to this later</h2>
+    <p><a href="/skills-health-check/save-my-progress?type=@Model">Save my progress</a></p>
+    <p>To make sure your skills health check assessments and results will not be lost at any time get a reference code.</p>
+
+    <div id="error-validation-summary" class="govuk-error-summary" style="display:none" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+            There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+                @if (ViewData?.ModelState?.Keys != null)
+                {
+                    foreach (var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        if (modelStateVal?.Errors.Count > 0)
+                        {
+                            <li>
+                                <a href="#">@Html.Raw(modelStateVal.Errors[0].ErrorMessage)</a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="govuk-heading-m">Return to a skills health check</h2>
+    <form action="/skills-health-check/your-assessments/returnToAssessmentFromList/" class="form" id="enterReferenceForm" method="post">
+        <div class="form-group govuk-!-margin-bottom-5 " id="EnterReference">
+            <label class="govuk-label" for="enterReferenceViewModel_Reference">Enter your reference</label>
+            <input class="govuk-input" id="event-name" name="enterReferenceViewModel.Reference" type="text" value="">
+        </div>
+        <button type="submit" class="govuk-button app-button"> Continue </button>
+    </form>
+</div>
+
+@if (Model.SpeakToAnAdviser != null)
+{
+    <div class="app-related-items">
+        @Html.Raw(Model.SpeakToAnAdviser.Content)
+    </div>
+}

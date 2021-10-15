@@ -1,0 +1,32 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
+<div class="govuk-width-container" id="details-body-block">
+    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">
+                    Skills Health Check
+                    <span class="govuk-caption-xl">Started @Model.DateAssessmentsCreated.ToString("dd MMMM yyyy HH:mm")</span>
+                </h1>
+                <p class="govuk-body">The skills health check is a set of activities to help you find out about yourself and what you're good at. You must do at least one assessment to get your report. Your report will become more detailed every time you finish another assessment.</p>
+
+                <div class="banner-information-without-action">
+                    <h2 class="govuk-!-margin-bottom-5">Save your progress:</h2>
+                    <p><a href="/skills-assessment/skills-health-check/save-my-progress?type=">Get a reference code</a> sent to you by email, by text or online so you can:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+                        <li> return and continue with your assessment</li>
+                        <li> view your report online at any time</li>
+                        <li> download your report at anytime if you have finished the assessment</li>
+                    </ul>
+                </div>
+                <partial name="_AssessmentSummary" />
+                <partial name="_AssessmentAcordion" />
+                <partial name="_AssessmentNextSteps" />
+                <partial name="_AssessmentDownload" />
+            </div>
+
+            <div class="govuk-grid-column-one-third">
+                <partial name="_RightBar" model="@Model.RightBarViewModel"/>
+            </div>
+        </div>
+    </main>
+</div>
