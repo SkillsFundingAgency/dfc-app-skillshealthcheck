@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class HomeController : BaseController
     {
         public const string PageTitle = "Home";
