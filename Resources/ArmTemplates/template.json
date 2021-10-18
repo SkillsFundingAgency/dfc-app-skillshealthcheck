@@ -291,6 +291,14 @@
                                 "value": "00:00:30"
                             },
                             {
+                                "name": "CmsApiClientOptions__StaticContentEndpoint",
+                                "value": "/sharedcontent/"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__ContentIds",
+                                "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                            },
+                            {
                                 "name": "Configuration__ApplicationName",
                                 "value": "[parameters('ApplicationName')]"
                             },
