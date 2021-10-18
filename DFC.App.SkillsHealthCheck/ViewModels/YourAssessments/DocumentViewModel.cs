@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace DFC.App.SkillsHealthCheck.ViewModels.Home
+namespace DFC.App.SkillsHealthCheck.ViewModels.YourAssessments
 {
     [ExcludeFromCodeCoverage]
     public class DocumentViewModel

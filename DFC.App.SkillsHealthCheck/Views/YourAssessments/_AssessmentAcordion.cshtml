@@ -1,0 +1,57 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
+<div class="govuk-!-margin-top-0">
+
+    <h3 class="govuk-heading-l govuk-!-margin-top-5" id="personal-skills">Personal skills</h3>
+    <p>The assessments in this section can help you understand what's important to you in a job. This information can help you decide if a job is a good fit for you.</p>
+    <!-- Personal Skills Accordion section -->
+    <div class="govuk-accordion" data-module="govuk-accordion" id="personal-skills-accordion">
+        @foreach (var assessment in Model.AssessmentsPersonal)
+        {
+        <div class="govuk-accordion__section ">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading" id="accordion-@assessment.AssessmentName.Replace(" ", string.Empty)">
+                    <span class="govuk-accordion__section-button" aria-controls="accordion-default-heading-interests" id="accordion-default-heading-@assessment.AssessmentName.Replace(" ", string.Empty)"> @assessment.AssessmentName</span>
+                </h2>
+            </div>
+
+            <div class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-interests">
+                @Html.Raw(assessment.Description)
+                @Html.Raw(assessment.AssessmentDuration)
+                @if (Model.AssessmentsCompleted.Any(a => a.AssessmentName == assessment.AssessmentName))
+                {
+                <a class="govuk-button" role="button" data-module="govuk-button" href="#get-your-report">@assessment.Action</a> }
+                else
+                {
+                <a class="govuk-button" role="button" data-module="govuk-button" href="/skills-assessment/skills-health-check/question?assessmentType=@assessment.AssessmentType">@assessment.Action</a>
+                }
+            </div>
+        </div>
+        }
+    </div>
+
+    <h3 class="govuk-heading-l govuk-!-margin-top-9" id="work-based-skills">Work-based skills </h3>
+    <p>The assessments in this section can help you understand your strengths at work. This information could help you write your CV or apply for jobs.</p>
+    <div class="govuk-inset-text"> The spatial and abstract assessments use images. They are not suitable for users with screen readers. We are not able to supply alternative text without influencing your results. </div>
+    <!-- Work based Skills Accordion section -->
+    <div class="govuk-accordion" data-module="govuk-accordion" id="work-based-skills-accordion">
+        @foreach (var assessment in Model.AssessmentsActivity)
+        {
+            <div class="govuk-accordion__section">
+                <div class="govuk-accordion__section-header">
+                    <h2 class="govuk-accordion__section-heading" id="accordion-@assessment.AssessmentName.Replace(" ", string.Empty)"> <span class="govuk-accordion__section-button" aria-controls="accordion-default-heading-interests" id="accordion-default-heading-@assessment.AssessmentName.Replace(" ", string.Empty)"> @assessment.AssessmentName</span> </h2>
+                </div>
+                <div class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-interests">
+                    @Html.Raw(assessment.Description)
+                    @Html.Raw(assessment.AssessmentDuration)
+                    @if (Model.AssessmentsCompleted.Any(a => a.AssessmentName == assessment.AssessmentName))
+                    {
+                        <a class="govuk-button" role="button" data-module="govuk-button" href="#get-your-report">@assessment.Action</a> }
+                    else
+                    {
+                        <a class="govuk-button" role="button" data-module="govuk-button" href="/skills-assessment/skills-health-check/question?assessmentType=@assessment.AssessmentType">@assessment.Action</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

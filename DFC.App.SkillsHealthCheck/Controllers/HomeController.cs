@@ -6,22 +6,21 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
-    public class HomeController : Controller
+    [ExcludeFromCodeCoverage]
+    public class HomeController : BaseController
     {
-        public const string RegistrationPath = "skills-health-check";
-        public const string BradcrumbTitle = "Skills Health Check";
-        public const string DefaultPageTitleSuffix = BradcrumbTitle + " | National Careers Service";
+        public const string PageTitle = "Home";
 
         private readonly ILogger<SkillsHealthCheckController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions _cmsApiClientOptions;
+        private readonly CmsApiClientOptions cmsApiClientOptions;
 
         public HomeController(
             ILogger<SkillsHealthCheckController> logger,
@@ -30,7 +29,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this._cmsApiClientOptions = cmsApiClientOptions;
+            this.cmsApiClientOptions = cmsApiClientOptions;
         }
 
         [HttpGet]
@@ -38,16 +37,28 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/document")]
         public async Task<IActionResult> Document()
         {
-            var bodyViewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
-            var htmlHeadViewModel = GetHtmlHeadViewModel();
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
+            var bodyViewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
                 HtmlHeadViewModel = htmlHeadViewModel,
-                HomeBodyViewModel = bodyViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = bodyViewModel,
             });
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/home/htmlhead")]
+        [Route("skills-health-check/htmlhead")]
+        public IActionResult HtmlHead()
+        {
+            var viewModel = GetHtmlHeadViewModel(PageTitle);
+
+            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+
+            return this.NegotiateContentResult(viewModel);
         }
 
         [Route("skills-health-check/home/breadcrumb")]
@@ -59,42 +70,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
 
             return this.NegotiateContentResult(viewModel);
-        }
-
-        protected static BreadcrumbViewModel BuildBreadcrumb()
-        {
-            return new BreadcrumbViewModel
-            {
-                Breadcrumbs = new List<BreadcrumbItemViewModel>()
-                {
-                    new BreadcrumbItemViewModel()
-                    {
-                        Route = "/",
-                        Title = "Home",
-                    },
-                },
-            };
-        }
-
-        [HttpGet]
-        [Route("skills-health-check/home/htmlhead")]
-        [Route("skills-health-check/htmlhead")]
-        public IActionResult HtmlHead()
-        {
-            var viewModel = GetHtmlHeadViewModel();
-
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
-
-            return this.NegotiateContentResult(viewModel);
-        }
-
-        private HtmlHeadViewModel GetHtmlHeadViewModel()
-        {
-            return new HtmlHeadViewModel
-            {
-                CanonicalUrl = new Uri($"{Request.GetBaseAddress()}/skills-health-check", UriKind.RelativeOrAbsolute),
-                Title = DefaultPageTitleSuffix,
-            };
         }
 
         [HttpGet]
@@ -109,10 +84,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<BodyViewModel> GetHomeBodyViewModel()
         {
             SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(_cmsApiClientOptions.ContentIds))
+            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {
                 speakToAnAdviser = await sharedContentItemDocumentService
-                      .GetByIdAsync(new Guid(_cmsApiClientOptions.ContentIds));
+                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
             }
 
             var rightBarViewModel = new RightBarViewModel();
@@ -121,9 +96,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
 
-            return new ViewModels.Home.BodyViewModel
+            return new BodyViewModel
             {
-                YourAssessmentsURL = $"/{RegistrationPath}/your-assessment",
+                YourAssessmentsURL = $"/{RegistrationPath}/your-assessments",
                 RightBarViewModel = rightBarViewModel,
             };
         }
