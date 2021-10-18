@@ -259,23 +259,23 @@
                                 "value": "1"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Content__AccessKey",
+                                "name": "Configuration__CosmosDbConnections__SharedContent__AccessKey",
                                 "value": "[parameters('cosmosDbKey')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Content__EndpointUrl",
+                                "name": "Configuration__CosmosDbConnections__SharedContent__EndpointUrl",
                                 "value": "[variables('cosmosDbEndpoint')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Content__DatabaseId",
+                                "name": "Configuration__CosmosDbConnections__SharedContent__DatabaseId",
                                 "value": "[variables('cosmosDbDatabaseName')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Content__CollectionId",
+                                "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
                                 "value": "[parameters('cosmosDbCollectionName')]"
                             },
                             {
-                                "name": "Configuration__CosmosDbConnections__Content__PartitionKey",
+                                "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
                             },
                             {
@@ -289,6 +289,14 @@
                             {
                                 "name": "CmsApiClientOptions__Timeout",
                                 "value": "00:00:30"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__StaticContentEndpoint",
+                                "value": "/sharedcontent/"
+                            },
+                            {
+                                "name": "CmsApiClientOptions__ContentIds",
+                                "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
                             },
                             {
                                 "name": "Configuration__ApplicationName",

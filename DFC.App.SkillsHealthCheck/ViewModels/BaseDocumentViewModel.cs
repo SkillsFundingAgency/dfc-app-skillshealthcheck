@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace DFC.App.SkillsHealthCheck.ViewModels
 {
     [ExcludeFromCodeCoverage]
-    public class DocumentViewModel
+    public class BaseDocumentViewModel
     {
         public HtmlHeadViewModel HtmlHead { get; set; } = new HtmlHeadViewModel();
 
@@ -33,6 +33,6 @@ namespace DFC.App.SkillsHealthCheck.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy HH:mm:ss}")]
         public DateTime LastCached { get; set; }
 
-        public BodyViewModel? BodyViewModel { get; set; }
+        public BaseBodyViewModel? BodyViewModel { get; set; }
     }
 }

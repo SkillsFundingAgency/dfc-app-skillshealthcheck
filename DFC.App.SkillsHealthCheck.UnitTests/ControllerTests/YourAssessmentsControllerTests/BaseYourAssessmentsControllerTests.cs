@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
-namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTests
+namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsControllerTests
 {
-    public abstract class BaseHomeControllerTests
+    public abstract class BaseYourAssessmentsControllerTests
     {
         protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; }
 
@@ -20,20 +20,20 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
-        protected BaseHomeControllerTests()
+        protected BaseYourAssessmentsControllerTests()
         {
             Logger = A.Fake<ILogger<SkillsHealthCheckController>>();
             FakeSharedContentItemDocumentService = A.Fake<IDocumentService<SharedContentItemModel>>();
             CmsApiClientOptions = new CmsApiClientOptions() { ContentIds = testContentId };
         }
 
-        protected HomeController BuildHomeController(string mediaTypeName)
+        protected YourAssessmentsController BuildHomeController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HomeController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions)
+            var controller = new YourAssessmentsController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions)
             {
                 ControllerContext = new ControllerContext()
                 {

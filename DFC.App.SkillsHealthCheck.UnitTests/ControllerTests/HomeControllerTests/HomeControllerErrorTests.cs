@@ -1,9 +1,6 @@
-﻿using System.Net.Mime;
-
-using DFC.App.SkillsHealthCheck.ViewModels;
-
+﻿using DFC.App.SkillsHealthCheck.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Net.Mime;
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTests
