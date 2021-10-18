@@ -1,0 +1,16 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://cds-dev-01-skillscentral.cloudapp.net/SkillsService.svc?wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2",
+      "System.Collections.Generic.List`1"
+    ],
+    "namespaceMappings": [
+      "*, SkillsDocumentsService"
+    ],
+    "targetFramework": "netcoreapp3.1",
+    "typeReuseMode": "None"
+  }
+}

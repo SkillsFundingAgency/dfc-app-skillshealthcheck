@@ -68,6 +68,7 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
+            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
 
