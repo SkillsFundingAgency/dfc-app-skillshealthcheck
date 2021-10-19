@@ -112,8 +112,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         // TODO: all this below should be moved to a separate service once the SHC service layer has been implemented
-
-        private List<AssessmentOverview> GetAssessmentList()
+        private static List<AssessmentOverview> GetAssessmentList()
         {
             return new List<AssessmentOverview>
                 {
