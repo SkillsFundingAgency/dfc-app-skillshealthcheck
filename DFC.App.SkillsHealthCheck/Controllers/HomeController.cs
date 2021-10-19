@@ -1,15 +1,17 @@
-﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
-using DFC.App.SkillsHealthCheck.Extensions;
-using DFC.App.SkillsHealthCheck.ViewModels;
-using DFC.Compui.Cosmos.Contracts;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+
+using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
+using DFC.Compui.Cosmos.Contracts;
+using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -39,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var bodyViewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
+            var bodyViewModel = await GetHomeBodyViewModel();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -77,7 +79,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/body")]
         public async Task<IActionResult> Body()
         {
-            var viewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
+            var viewModel = await GetHomeBodyViewModel();
             return this.NegotiateContentResult(viewModel);
         }
 

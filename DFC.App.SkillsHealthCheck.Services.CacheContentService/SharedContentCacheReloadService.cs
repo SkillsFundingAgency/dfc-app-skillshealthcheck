@@ -41,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
                     return;
                 }
 
-                await ReloadSharedContent(stoppingToken).ConfigureAwait(false);
+                await ReloadSharedContent(stoppingToken);
 
                 logger.LogInformation("Reload shared content cache completed");
             }
@@ -65,7 +65,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
                     return;
                 }
 
-                var apiDataModel = await cmsApiService.GetItemAsync<SharedContentItemApiDataModel>("sharedcontent", key).ConfigureAwait(false);
+                var apiDataModel = await cmsApiService.GetItemAsync<SharedContentItemApiDataModel>("sharedcontent", key);
 
                 if (apiDataModel == null)
                 {
@@ -75,7 +75,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
                 {
                     var mappedContentItem = mapper.Map<SharedContentItemModel>(apiDataModel);
 
-                    await sharedContentDocumentService.UpsertAsync(mappedContentItem).ConfigureAwait(false);
+                    await sharedContentDocumentService.UpsertAsync(mappedContentItem);
                 }
             }
         }

@@ -41,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
             switch (webhookCacheOperation)
             {
                 case WebhookCacheOperation.Delete:
-                    return await DeleteContentAsync(contentId).ConfigureAwait(false);
+                    return await DeleteContentAsync(contentId);
 
                 case WebhookCacheOperation.CreateOrUpdate:
                     if (!Uri.TryCreate(apiEndpoint, UriKind.Absolute, out Uri? url))
@@ -49,7 +49,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
                         throw new InvalidDataException($"Invalid Api url '{apiEndpoint}' received for Event Id: {eventId}");
                     }
 
-                    return await ProcessContentAsync(url).ConfigureAwait(false);
+                    return await ProcessContentAsync(url);
 
                 default:
                     logger.LogError($"Event Id: {eventId} got unknown cache operation - {webhookCacheOperation}");
@@ -59,7 +59,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
 
         public async Task<HttpStatusCode> ProcessContentAsync(Uri url)
         {
-            var apiDataModel = await cmsApiService.GetItemAsync<SharedContentItemApiDataModel>(url).ConfigureAwait(false);
+            var apiDataModel = await cmsApiService.GetItemAsync<SharedContentItemApiDataModel>(url);
             var sharedContentItemModel = mapper.Map<SharedContentItemModel>(apiDataModel);
 
             if (sharedContentItemModel == null)
@@ -72,14 +72,14 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
                 return HttpStatusCode.BadRequest;
             }
 
-            var contentResult = await sharedContentItemDocumentService.UpsertAsync(sharedContentItemModel).ConfigureAwait(false);
+            var contentResult = await sharedContentItemDocumentService.UpsertAsync(sharedContentItemModel);
 
             return contentResult;
         }
 
         public async Task<HttpStatusCode> DeleteContentAsync(Guid contentId)
         {
-            var result = await sharedContentItemDocumentService.DeleteAsync(contentId).ConfigureAwait(false);
+            var result = await sharedContentItemDocumentService.DeleteAsync(contentId);
 
             return result ? HttpStatusCode.OK : HttpStatusCode.NoContent;
         }

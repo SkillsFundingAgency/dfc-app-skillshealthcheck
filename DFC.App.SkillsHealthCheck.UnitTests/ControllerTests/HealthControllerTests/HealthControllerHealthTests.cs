@@ -29,7 +29,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
 
             // Act
-            var result = await controller.Health().ConfigureAwait(false);
+            var result = await controller.Health();
 
             // Assert
             A.CallTo(() => FakeContentPageService.PingAsync()).MustHaveHappenedOnceExactly();
@@ -52,7 +52,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
 
             // Act
-            var result = await controller.Health().ConfigureAwait(false);
+            var result = await controller.Health();
 
             // Assert
             A.CallTo(() => FakeContentPageService.PingAsync()).MustHaveHappenedOnceExactly();

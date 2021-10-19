@@ -30,7 +30,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("pages/health")]
         public async Task<IActionResult> HealthView()
         {
-            var result = await Health().ConfigureAwait(false);
+            var result = await Health();
 
             return result;
         }
@@ -41,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             logger.LogInformation("Generating Health report");
 
-            var isHealthy = await sharedContentItemDocumentService.PingAsync().ConfigureAwait(false);
+            var isHealthy = await sharedContentItemDocumentService.PingAsync();
 
             if (isHealthy)
             {
