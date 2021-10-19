@@ -1,5 +1,6 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using FakeItEasy;
@@ -18,13 +19,17 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected CmsApiClientOptions CmsApiClientOptions { get; set; }
 
+        protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get;  }
+
         protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected BaseHomeControllerTests()
         {
             Logger = A.Fake<ILogger<SkillsHealthCheckController>>();
             FakeSharedContentItemDocumentService = A.Fake<IDocumentService<SharedContentItemModel>>();
+            FakeSkillsHealthCheckService = A.Fake<ISkillsHealthCheckService>();
             CmsApiClientOptions = new CmsApiClientOptions() { ContentIds = testContentId };
+
         }
 
         protected HomeController BuildHomeController(string mediaTypeName)
@@ -33,7 +38,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HomeController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions)
+            var controller = new HomeController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeSkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {

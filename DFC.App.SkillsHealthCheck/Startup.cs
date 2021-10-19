@@ -6,6 +6,8 @@ using DFC.App.SkillsHealthCheck.Data.Contracts;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Services.CacheContentService;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
@@ -19,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck
 {
@@ -70,6 +73,8 @@ namespace DFC.App.SkillsHealthCheck
             services.AddHttpContextAccessor();
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
+            services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
+            services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
 
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
