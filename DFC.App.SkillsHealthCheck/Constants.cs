@@ -159,7 +159,7 @@
 
             public static class Abstract
             {
-                public const string Action = "Start spatial assessment";
+                public const string Action = "Start abstract assessment";
 
                 public const string Title = "Solving abstract problems";
 
