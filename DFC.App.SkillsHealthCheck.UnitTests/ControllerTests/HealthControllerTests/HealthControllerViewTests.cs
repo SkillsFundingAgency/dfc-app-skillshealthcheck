@@ -26,7 +26,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
 
             // Act
-            var result = await controller.HealthView().ConfigureAwait(false);
+            var result = await controller.HealthView();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -44,7 +44,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
 
             // Act
-            var result = await controller.HealthView().ConfigureAwait(false);
+            var result = await controller.HealthView();
 
             // Assert
             var jsonResult = Assert.IsType<OkObjectResult>(result);
@@ -62,7 +62,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
 
             // Act
-            var result = await controller.HealthView().ConfigureAwait(false);
+            var result = await controller.HealthView();
 
             // Assert
             var statusResult = Assert.IsType<StatusCodeResult>(result);

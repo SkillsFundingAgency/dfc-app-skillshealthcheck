@@ -1,9 +1,12 @@
-﻿using DFC.App.SkillsHealthCheck.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
-using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
+
+using DFC.App.SkillsHealthCheck.Controllers;
+using DFC.App.SkillsHealthCheck.ViewModels;
+using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
+
+using Microsoft.AspNetCore.Mvc;
+
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsControllerTests
@@ -20,7 +23,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
-            Assert.Equal($"{YourAssessmentsController.PageTitle} | {YourAssessmentsController.DefaultPageTitleSuffix}" , viewModel.Title);
+            Assert.Equal($"{YourAssessmentsController.PageTitle} | {YourAssessmentsController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 
         [Fact]
@@ -42,7 +45,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
         {
             using var controller = BuildHomeController(MediaTypeNames.Text.Html);
 
-            var result = await controller.Body().ConfigureAwait(false);
+            var result = await controller.Body();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<BodyViewModel>(viewResult.ViewData.Model);

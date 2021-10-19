@@ -46,7 +46,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var bodyViewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
+            var bodyViewModel = await GetHomeBodyViewModel();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -81,7 +81,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments/body")]
         public async Task<IActionResult> Body()
         {
-            var viewModel = await GetHomeBodyViewModel().ConfigureAwait(false);
+            var viewModel = await GetHomeBodyViewModel();
             return this.NegotiateContentResult(viewModel);
         }
 

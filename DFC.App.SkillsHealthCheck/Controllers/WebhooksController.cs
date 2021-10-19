@@ -44,7 +44,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> ReceiveEvents()
         {
             using var reader = new StreamReader(Request.Body, Encoding.UTF8);
-            string requestContent = await reader.ReadToEndAsync().ConfigureAwait(false);
+            string requestContent = await reader.ReadToEndAsync();
             logger.LogInformation($"Received events: {requestContent}");
 
             var eventGridSubscriber = new EventGridSubscriber();
@@ -86,7 +86,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
                     logger.LogInformation($"Got Event Id: {eventId}: {eventGridEvent.EventType}: Cache operation: {cacheOperation} {eventGridEventData.Api}");
 
-                    var result = await webhookService.ProcessMessageAsync(cacheOperation, eventId, contentId, eventGridEventData.Api!).ConfigureAwait(false);
+                    var result = await webhookService.ProcessMessageAsync(cacheOperation, eventId, contentId, eventGridEventData.Api!);
 
                     LogResult(eventId, contentId, result);
                 }

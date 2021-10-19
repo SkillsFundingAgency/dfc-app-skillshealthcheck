@@ -28,7 +28,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests
             var serviceToTest = new SharedContentCacheReloadBackgroundService(logger, new CmsApiClientOptions { BaseAddress = new Uri("http://somewhere.com") }, sharedContentCacheReloadService, wrapper);
 
             // Act
-            await serviceToTest.StartAsync(default).ConfigureAwait(false);
+            await serviceToTest.StartAsync(default);
 
             // Assert
             A.CallTo(() => wrapper.Execute(A<Func<Task>>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -44,7 +44,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests
 
             // Act
             // Assert
-            await Assert.ThrowsAsync<Exception>(async () => await serviceToTest.StartAsync(default).ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<Exception>(async () => await serviceToTest.StartAsync(default));
             serviceToTest.Dispose();
         }
     }
