@@ -9,16 +9,18 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using Level = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums.Level;
-using SkillsDocumentsService;
+using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 {
     public class SkillsHealthCheckService : ISkillsHealthCheckService
     {
         private IMapper _autoMapper;
+        private ISkillsCentralService _skillsCentralService;
 
-        public SkillsHealthCheckService(IMapper autoMapper)
+        public SkillsHealthCheckService(IMapper autoMapper, ISkillsCentralService skillsCentralService)
         {
+            _skillsCentralService = skillsCentralService;
             _autoMapper = autoMapper;
         }
         /// <summary>
@@ -40,9 +42,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             {
                 var request = createSkillsDocumentRequest.SkillsDocument.GetApiSkillsDocument();
 
-                var apiResult =
-                    ServiceHelper.Instance()
-                        .Use<ISkillsCentralService, long>(x => x.InsertDocumentAsync(request).Result);
+                var apiResult = _skillsCentralService.InsertDocument(request);
+                    //ServiceHelper.Instance()
+                    //    .Use<ISkillsCentralService, long>(x => x.InsertDocument(request));
 
                 response.DocumentId = apiResult;
                 response.Success = true;
@@ -82,13 +84,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 }
 
                 var assessmentType = getAssessmentQuestionRequest.AsessmentType.GetApiAssessmentType();
-                var level = _autoMapper.Map<SkillsDocumentsService.Level>(getAssessmentQuestionRequest.Level);// getAssessmentQuestionRequest.Level.GetApiEnum<SkillsServiceReference.Level>();
+                var level = _autoMapper.Map<SkillsDocumentService.Level>(getAssessmentQuestionRequest.Level);// getAssessmentQuestionRequest.Level.GetApiEnum<SkillsServiceReference.Level>();
                 var accessibility =
-                    _autoMapper.Map<SkillsDocumentsService.Accessibility>(getAssessmentQuestionRequest.Accessibility); // getAssessmentQuestionRequest.Accessibility.GetApiEnum<SkillsServiceReference.Accessibility>();
+                    _autoMapper.Map<SkillsDocumentService.Accessibility>(getAssessmentQuestionRequest.Accessibility); // getAssessmentQuestionRequest.Accessibility.GetApiEnum<SkillsServiceReference.Accessibility>();
 
-                var apiResult =
-                    ServiceHelper.Instance()
-                        .Use<ISkillsCentralService, Question>(x => x.GetSkillsHealthCheckQuestionsAsync(assessmentType, getAssessmentQuestionRequest.QuestionNumber, level, accessibility).Result);
+                var apiResult = _skillsCentralService.GetSkillsHealthCheckQuestions(assessmentType,
+                    getAssessmentQuestionRequest.QuestionNumber, level, accessibility);
+                    //ServiceHelper.Instance()
+                    //    .Use<ISkillsCentralService, Question>(x => x.GetSkillsHealthCheckQuestions(assessmentType, getAssessmentQuestionRequest.QuestionNumber, level, accessibility));
 
                 response.Question = apiResult.ConvertToModelQuestion();
                 response.Success = true;
@@ -121,10 +124,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             var response = new GetListTypeFieldsResponse();
             try
             {
-                var apiResult =
-                    ServiceHelper.Instance()
-                        .Use<ISkillsCentralService, List<string>>(
-                            x => x.ListTypeFieldsAsync(getListTypeFieldsRequest.DocumentType).Result);
+                var apiResult = _skillsCentralService.ListTypeFields(getListTypeFieldsRequest.DocumentType);
+                //    ServiceHelper.Instance()
+                //        .Use<ISkillsCentralService, List<string>>(
+                //            x => x.ListTypeFields(getListTypeFieldsRequest.DocumentType));
 
                 if (apiResult != null)
                 {
@@ -157,10 +160,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             var response = new GetSkillsDocumentIdResponse();
             try
             {
-                var apiResult =
-                ServiceHelper.Instance()
-                    .Use<ISkillsCentralService, SkillsDocument>(
-                        x => x.FindDocumentByKeyValueAsync(Identifier, false).Result);
+                var apiResult = _skillsCentralService.FindDocumentByKeyValue(Identifier, false);
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService, SkillsDocument>(
+                //        x => x.FindDocumentByKeyValue(Identifier, false));
 
                 if (apiResult != null)
                 {
@@ -198,10 +201,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
             try
             {
-                var apiResult =
-                    ServiceHelper.Instance()
-                        .Use<ISkillsCentralService, SkillsDocument>(
-                            x => x.ReadDocumentAsync(getSkillsDocumentRequest.DocumentId).Result);
+                var apiResult = _skillsCentralService.ReadDocument(getSkillsDocumentRequest.DocumentId);
+                    //ServiceHelper.Instance()
+                    //    .Use<ISkillsCentralService, SkillsDocument>(
+                    //        x => x.ReadDocument(getSkillsDocumentRequest.DocumentId));
 
                 if (apiResult != null)
                 {
@@ -241,10 +244,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             {
                 var apiDocument = saveQuestionAnswerRequest.SkillsDocument.GetApiSkillsDocument();
                 apiDocument.DocumentId = saveQuestionAnswerRequest.DocumentId;
-
-                ServiceHelper.Instance()
-                    .Use<ISkillsCentralService>(
-                        x => x.UpdateSkillsDocumentDataValuesAsync(saveQuestionAnswerRequest.DocumentId, apiDocument).RunSynchronously());
+                _skillsCentralService.UpdateSkillsDocumentDataValues(saveQuestionAnswerRequest.DocumentId, apiDocument);
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService>(
+                //        x => x.UpdateSkillsDocumentDataValues(saveQuestionAnswerRequest.DocumentId, apiDocument));
                 response.Success = true;
             }
             catch (Exception ex)
@@ -272,9 +275,12 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
             try
             {
-                response.DocumentBytes = ServiceHelper.Instance()
-                     .Use<ISkillsCentralService, byte[]>(
-                         x => x.FormatDocumentGetPayloadAsync(downloadDocumentRequest.DocumentId, downloadDocumentRequest.Formatter).Result);
+                response.DocumentBytes =
+                    _skillsCentralService.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId,
+                        downloadDocumentRequest.Formatter);
+                    //ServiceHelper.Instance()
+                    // .Use<ISkillsCentralService, byte[]>(
+                    //     x => x.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId, downloadDocumentRequest.Formatter));
                 response.Success = true;
             }
             catch (Exception ex)
@@ -310,10 +316,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             {
                 var apiDocument = updateSkillsDocumentRequest.SkillsDocument.GetApiSkillsDocument();
                 apiDocument.DocumentId = updateSkillsDocumentRequest.DocumentId;
-
-                ServiceHelper.Instance()
-                    .Use<ISkillsCentralService>(
-                        x => x.UpdateDocumentAsync(apiDocument).RunSynchronously());
+                _skillsCentralService.UpdateDocument(apiDocument);
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService>(
+                //        x => x.UpdateDocument(apiDocument));
                 response.Success = true;
             }
             catch (Exception ex)

@@ -8,8 +8,9 @@
       "System.Collections.Generic.List`1"
     ],
     "namespaceMappings": [
-      "*, SkillsDocumentsService"
+      "*, SkillsDocumentService"
     ],
+    "sync": true,
     "targetFramework": "netcoreapp3.1",
     "typeReuseMode": "None"
   }

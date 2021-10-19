@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.Home
 {
@@ -7,5 +8,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Home
     {
         public string YourAssessmentsURL { get; set; }
         public RightBarViewModel RightBarViewModel { get; set; }
+        public IEnumerable<string> ListTypeFields { get; set; }
+        public string ListTypeFieldsString { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Extensions;
 using SFA.Careers.Citizen.Data.CitizenModel;
 using SFA.Careers.Citizen.Data.IdentityModel;
 using SFA.Careers.Identity;

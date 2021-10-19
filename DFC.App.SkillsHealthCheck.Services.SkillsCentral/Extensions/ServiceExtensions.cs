@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using SkillsDocumentsService;
+using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Extensions
 {

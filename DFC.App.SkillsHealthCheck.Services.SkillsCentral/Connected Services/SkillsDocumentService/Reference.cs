@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SkillsDocumentsService
+namespace SkillsDocumentService
 {
     using System.Runtime.Serialization;
     
@@ -36,11 +36,11 @@ namespace SkillsDocumentsService
         
         private System.Nullable<System.TimeSpan> ExpiresTimespanField;
         
-        private SkillsDocumentsService.SkillsDocumentExpiryEnum ExpiresTypeField;
+        private SkillsDocumentService.SkillsDocumentExpiryEnum ExpiresTypeField;
         
-        private System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentDataValue> DataValuesField;
+        private System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentDataValue> DataValuesField;
         
-        private System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentIdentifier> IdentifiersField;
+        private System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentIdentifier> IdentifiersField;
         
         private string SkillsDocumentTitleField;
         
@@ -162,7 +162,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
-        public SkillsDocumentsService.SkillsDocumentExpiryEnum ExpiresType
+        public SkillsDocumentService.SkillsDocumentExpiryEnum ExpiresType
         {
             get
             {
@@ -175,7 +175,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
-        public System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentDataValue> DataValues
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentDataValue> DataValues
         {
             get
             {
@@ -188,7 +188,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
-        public System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentIdentifier> Identifiers
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentIdentifier> Identifiers
         {
             get
             {
@@ -313,7 +313,7 @@ namespace SkillsDocumentsService
         
         private string FormatterNameField;
         
-        private SkillsDocumentsService.FormatDocumentStatusEnum StatusField;
+        private SkillsDocumentService.FormatDocumentStatusEnum StatusField;
         
         private System.DateTime CreatedAtDateField;
         
@@ -352,7 +352,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public SkillsDocumentsService.FormatDocumentStatusEnum Status
+        public SkillsDocumentService.FormatDocumentStatusEnum Status
         {
             get
             {
@@ -458,7 +458,7 @@ namespace SkillsDocumentsService
         
         private string DocumentTypeTextField;
         
-        private System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentTypeDataKey> RequiredKeysField;
+        private System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentTypeDataKey> RequiredKeysField;
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public int SysId
@@ -487,7 +487,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-        public System.Collections.Generic.List<SkillsDocumentsService.SkillsDocumentTypeDataKey> RequiredKeys
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocumentTypeDataKey> RequiredKeys
         {
             get
             {
@@ -608,11 +608,11 @@ namespace SkillsDocumentsService
         
         private string AssessmentTitleField;
         
-        private SkillsDocumentsService.AssessmentType AssessmentTypeField;
+        private SkillsDocumentService.AssessmentType AssessmentTypeField;
         
-        private SkillsDocumentsService.Accessibility AccessibilityField;
+        private SkillsDocumentService.Accessibility AccessibilityField;
         
-        private SkillsDocumentsService.Level LevelField;
+        private SkillsDocumentService.Level LevelField;
         
         private string QuestionTitleField;
         
@@ -624,7 +624,7 @@ namespace SkillsDocumentsService
         
         private System.Collections.Generic.List<string> AnswerHeadingsField;
         
-        private System.Collections.Generic.List<SkillsDocumentsService.Answer> PossibleResponsesField;
+        private System.Collections.Generic.List<SkillsDocumentService.Answer> PossibleResponsesField;
         
         private int QuestionIdField;
         
@@ -656,7 +656,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public SkillsDocumentsService.AssessmentType AssessmentType
+        public SkillsDocumentService.AssessmentType AssessmentType
         {
             get
             {
@@ -669,7 +669,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-        public SkillsDocumentsService.Accessibility Accessibility
+        public SkillsDocumentService.Accessibility Accessibility
         {
             get
             {
@@ -682,7 +682,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-        public SkillsDocumentsService.Level Level
+        public SkillsDocumentService.Level Level
         {
             get
             {
@@ -760,7 +760,7 @@ namespace SkillsDocumentsService
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
-        public System.Collections.Generic.List<SkillsDocumentsService.Answer> PossibleResponses
+        public System.Collections.Generic.List<SkillsDocumentService.Answer> PossibleResponses
         {
             get
             {
@@ -930,7 +930,7 @@ namespace SkillsDocumentsService
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3-preview3.21351.2")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0", ConfigurationName="SkillsDocumentsService.ISkillsCentralService")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0", ConfigurationName="SkillsDocumentService.ISkillsCentralService")]
     public interface ISkillsCentralService
     {
         
@@ -939,6 +939,11 @@ namespace SkillsDocumentsService
             "alService/ListTypesResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ListTypesStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<string> ListTypes();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListTypes", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListTypesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListTypesAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -946,6 +951,11 @@ namespace SkillsDocumentsService
             "alService/ListTypeFieldsResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ListTypeFieldsStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<string> ListTypeFields(string type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListTypeFields", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListTypeFieldsResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListTypeFieldsAsync(string type);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -953,6 +963,11 @@ namespace SkillsDocumentsService
             "alService/ListFormattersResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ListFormattersStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<string> ListFormatters(string type);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListFormatters", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListFormattersResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListFormattersAsync(string type);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -960,6 +975,11 @@ namespace SkillsDocumentsService
             "alService/ListServiceIdentifiersResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ListServiceIdentifiersStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<string> ListServiceIdentifiers();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListServiceIdentifiers", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListServiceIdentifiersResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListServiceIdentifiersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -967,6 +987,11 @@ namespace SkillsDocumentsService
             "alService/ListSkillsDocumentTypesResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ListSkillsDocumentTypesStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<string> ListSkillsDocumentTypes();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListSkillsDocumentTypes", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ListSkillsDocumentTypesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListSkillsDocumentTypesAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -974,62 +999,107 @@ namespace SkillsDocumentsService
             "alService/ReadDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentAsync(long id);
+        SkillsDocumentService.SkillsDocument ReadDocument(long id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentAsync(long id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentWithAuditAsync(long id, string accessedBy);
+        SkillsDocumentService.SkillsDocument ReadDocumentWithAudit(long id, string accessedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentWithAuditResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentWithAuditAsync(long id, string accessedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValues", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValuesResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValuesStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentDataValuesAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect);
+        SkillsDocumentService.SkillsDocument ReadDocumentDataValues(long id, System.Collections.Generic.List<string> dataValuesToSelect);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentDataValues", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentDataValuesResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentDataValuesAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValuesWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValuesWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentDataValuesWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentDataValuesWithAuditAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy);
+        SkillsDocumentService.SkillsDocument ReadDocumentDataValuesWithAudit(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentDataValuesWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentDataValuesWithAuditResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentDataValuesWithAuditAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMeta", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMetaResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMetaStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentMetaAsync(long id);
+        SkillsDocumentService.SkillsDocument ReadDocumentMeta(long id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentMeta", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentMetaResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentMetaAsync(long id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMetaWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMetaWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentMetaWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentMetaWithAuditAsync(long id, string accessedBy);
+        SkillsDocumentService.SkillsDocument ReadDocumentMetaWithAudit(long id, string accessedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentMetaWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentMetaWithAuditResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentMetaWithAuditAsync(long id, string accessedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypeStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypeAsync(string documentType, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> ReadSkillsDocumentsByDocumentType(string documentType, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentTypeResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypeAsync(string documentType, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypePagerResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypePagerStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypePagerAsync(string documentType, int page, int pageSize, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> ReadSkillsDocumentsByDocumentTypePager(string documentType, int page, int pageSize, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentTypePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentTypePagerResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypePagerAsync(string documentType, int page, int pageSize, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypeCount", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypeCountResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadSkillsDocumentsByDocumentTypeCountStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        long ReadSkillsDocumentsByDocumentTypeCount(string documentType);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentTypeCount", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadSkillsDocumentsByDocumentTypeCountResponse")]
         System.Threading.Tasks.Task<long> ReadSkillsDocumentsByDocumentTypeCountAsync(string documentType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1037,6 +1107,11 @@ namespace SkillsDocumentsService
             "alService/ReadDocumentsByServiceNameKeyValueAndDocTypeCountResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/ReadDocumentsByServiceNameKeyValueAndDocTypeCountStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        long ReadDocumentsByServiceNameKeyValueAndDocTypeCount(string docType, string serviceName, string identifierValue);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentsByServiceNameKeyValueAndDocTypeCount", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/ReadDocumentsByServiceNameKeyValueAndDocTypeCountResponse")]
         System.Threading.Tasks.Task<long> ReadDocumentsByServiceNameKeyValueAndDocTypeCountAsync(string docType, string serviceName, string identifierValue);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1044,55 +1119,95 @@ namespace SkillsDocumentsService
             "alService/CreateDefaultDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/CreateDefaultDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> CreateDefaultDocumentAsync(string docType);
+        SkillsDocumentService.SkillsDocument CreateDefaultDocument(string docType);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/CreateDefaultDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/CreateDefaultDocumentResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> CreateDefaultDocumentAsync(string docType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<long> InsertDocumentAsync(SkillsDocumentsService.SkillsDocument doc);
+        long InsertDocument(SkillsDocumentService.SkillsDocument doc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocumentResponse")]
+        System.Threading.Tasks.Task<long> InsertDocumentAsync(SkillsDocumentService.SkillsDocument doc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<long> InsertDocumentWithAuditAsync(SkillsDocumentsService.SkillsDocument doc);
+        long InsertDocumentWithAudit(SkillsDocumentService.SkillsDocument doc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocumentWithAuditResponse")]
+        System.Threading.Tasks.Task<long> InsertDocumentWithAuditAsync(SkillsDocumentService.SkillsDocument doc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task UpdateDocumentAsync(SkillsDocumentsService.SkillsDocument doc);
+        void UpdateDocument(SkillsDocumentService.SkillsDocument doc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocumentResponse")]
+        System.Threading.Tasks.Task UpdateDocumentAsync(SkillsDocumentService.SkillsDocument doc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task UpdateDocumentWithAuditAsync(SkillsDocumentsService.SkillsDocument doc);
+        void UpdateDocumentWithAudit(SkillsDocumentService.SkillsDocument doc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocumentWithAuditResponse")]
+        System.Threading.Tasks.Task UpdateDocumentWithAuditAsync(SkillsDocumentService.SkillsDocument doc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValues", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValuesResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValuesStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesAsync(long docId, SkillsDocumentsService.SkillsDocument dataValuesDoc);
+        void UpdateSkillsDocumentDataValues(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentDataValues", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentDataValuesResponse")]
+        System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesAsync(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValuesWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValuesWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentDataValuesWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesWithAuditAsync(long docId, SkillsDocumentsService.SkillsDocument dataValuesDoc, string updatedBy);
+        void UpdateSkillsDocumentDataValuesWithAudit(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc, string updatedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentDataValuesWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentDataValuesWithAuditResponse")]
+        System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesWithAuditAsync(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc, string updatedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/LogicalDeleteDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/LogicalDeleteDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/LogicalDeleteDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void LogicalDeleteDocument(long id, string deletedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/LogicalDeleteDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/LogicalDeleteDocumentResponse")]
         System.Threading.Tasks.Task LogicalDeleteDocumentAsync(long id, string deletedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1100,6 +1215,11 @@ namespace SkillsDocumentsService
             "alService/LogicalDeleteDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/LogicalDeleteDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void LogicalDeleteDocumentWithAudit(long id, string deletedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/LogicalDeleteDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/LogicalDeleteDocumentWithAuditResponse")]
         System.Threading.Tasks.Task LogicalDeleteDocumentWithAuditAsync(long id, string deletedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1107,6 +1227,11 @@ namespace SkillsDocumentsService
             "alService/DeleteDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/DeleteDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void DeleteDocument(long id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocumentResponse")]
         System.Threading.Tasks.Task DeleteDocumentAsync(long id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1114,6 +1239,11 @@ namespace SkillsDocumentsService
             "alService/DeleteDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/DeleteDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void DeleteDocumentWithAudit(long id, string deletedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocumentWithAuditResponse")]
         System.Threading.Tasks.Task DeleteDocumentWithAuditAsync(long id, string deletedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1121,6 +1251,11 @@ namespace SkillsDocumentsService
             "alService/RestoreDocumentResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/RestoreDocumentStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void RestoreDocument(long id, string restoredBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/RestoreDocument", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/RestoreDocumentResponse")]
         System.Threading.Tasks.Task RestoreDocumentAsync(long id, string restoredBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1128,6 +1263,11 @@ namespace SkillsDocumentsService
             "alService/RestoreDocumentWithAuditResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/RestoreDocumentWithAuditStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void RestoreDocumentWithAudit(long id, string restoredBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/RestoreDocumentWithAudit", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/RestoreDocumentWithAuditResponse")]
         System.Threading.Tasks.Task RestoreDocumentWithAuditAsync(long id, string restoredBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1135,6 +1275,11 @@ namespace SkillsDocumentsService
             "alService/FindDocumentTypeIdsByServiceNameKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentTypeIdsByServiceNameKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<long> FindDocumentTypeIdsByServiceNameKeyValue(string serviceName, string id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentTypeIdsByServiceNameKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentTypeIdsByServiceNameKeyValueResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<long>> FindDocumentTypeIdsByServiceNameKeyValueAsync(string serviceName, string id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1142,6 +1287,11 @@ namespace SkillsDocumentsService
             "alService/FindDocumentIdsByServiceNameKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentIdsByServiceNameKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        System.Collections.Generic.List<long> FindDocumentIdsByServiceNameKeyValue(string serviceName, string id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentIdsByServiceNameKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentIdsByServiceNameKeyValueResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<long>> FindDocumentIdsByServiceNameKeyValueAsync(string serviceName, string id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1149,55 +1299,95 @@ namespace SkillsDocumentsService
             "alService/FindDocumentByKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentByKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> FindDocumentByKeyValueAsync(string keyValue, bool incData);
+        SkillsDocumentService.SkillsDocument FindDocumentByKeyValue(string keyValue, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentByKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentByKeyValueResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> FindDocumentByKeyValueAsync(string keyValue, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAsync(string serviceName, string id, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValue(string serviceName, string id, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValueResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAsync(string serviceName, string id, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocTypeStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypeAsync(string docType, string serviceName, string id, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValueAndDocType(string docType, string serviceName, string id, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValueAndDocType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValueAndDocTypeResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypeAsync(string docType, string serviceName, string id, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValuePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValuePagerResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValuePagerStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValuePagerAsync(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValuePager(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValuePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValuePagerResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValuePagerAsync(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocTypePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocTypePagerResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FindDocumentsByServiceNameKeyValueAndDocTypePagerStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypePagerAsync(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
+        System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValueAndDocTypePager(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValueAndDocTypePager", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FindDocumentsByServiceNameKeyValueAndDocTypePagerResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypePagerAsync(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentMakeRequest", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentMakeRequestResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentMakeRequestStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.FormatDocumentResponse> FormatDocumentMakeRequestAsync(long docId, string formatter, string requestedBy);
+        SkillsDocumentService.FormatDocumentResponse FormatDocumentMakeRequest(long docId, string formatter, string requestedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentMakeRequest", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentMakeRequestResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.FormatDocumentResponse> FormatDocumentMakeRequestAsync(long docId, string formatter, string requestedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentPollStatus", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentPollStatusResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentPollStatusStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.FormatDocumentResponse> FormatDocumentPollStatusAsync(long docId, string formatter);
+        SkillsDocumentService.FormatDocumentResponse FormatDocumentPollStatus(long docId, string formatter);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentPollStatus", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentPollStatusResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.FormatDocumentResponse> FormatDocumentPollStatusAsync(long docId, string formatter);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentGetPayload", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentGetPayloadResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/FormatDocumentGetPayloadStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        byte[] FormatDocumentGetPayload(long docId, string formatter);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentGetPayload", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/FormatDocumentGetPayloadResponse")]
         System.Threading.Tasks.Task<byte[]> FormatDocumentGetPayloadAsync(long docId, string formatter);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1205,6 +1395,11 @@ namespace SkillsDocumentsService
             "alService/GetSkillsDocumentKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetSkillsDocumentKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        string GetSkillsDocumentKeyValue(long docId, string keyName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetSkillsDocumentKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetSkillsDocumentKeyValueResponse")]
         System.Threading.Tasks.Task<string> GetSkillsDocumentKeyValueAsync(long docId, string keyName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1212,6 +1407,11 @@ namespace SkillsDocumentsService
             "alService/UpdateSkillsDocumentKeyValueResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateSkillsDocumentKeyValueStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void UpdateSkillsDocumentKeyValue(long docId, string keyName, string keyValue, string updatedBy);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentKeyValue", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateSkillsDocumentKeyValueResponse")]
         System.Threading.Tasks.Task UpdateSkillsDocumentKeyValueAsync(long docId, string keyName, string keyValue, string updatedBy);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1219,13 +1419,23 @@ namespace SkillsDocumentsService
             "alService/InsertDocumentTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/InsertDocumentTypeStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<string> InsertDocumentTypeAsync(SkillsDocumentsService.SkillsDocumentType docType);
+        string InsertDocumentType(SkillsDocumentService.SkillsDocumentType docType);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/InsertDocumentTypeResponse")]
+        System.Threading.Tasks.Task<string> InsertDocumentTypeAsync(SkillsDocumentService.SkillsDocumentType docType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/DeleteDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/DeleteDocumentTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/DeleteDocumentTypeStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
+        void DeleteDocumentType(string docTypeText);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/DeleteDocumentTypeResponse")]
         System.Threading.Tasks.Task DeleteDocumentTypeAsync(string docTypeText);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
@@ -1233,38 +1443,58 @@ namespace SkillsDocumentsService
             "alService/UpdateDocumentTypeResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/UpdateDocumentTypeStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<string> UpdateDocumentTypeAsync(SkillsDocumentsService.SkillsDocumentType docType);
+        string UpdateDocumentType(SkillsDocumentService.SkillsDocumentType docType);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocumentType", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/UpdateDocumentTypeResponse")]
+        System.Threading.Tasks.Task<string> UpdateDocumentTypeAsync(SkillsDocumentService.SkillsDocumentType docType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeByName", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeByNameResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeByNameStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocumentType> GetDocumentTypeByNameAsync(string docTypeName);
+        SkillsDocumentService.SkillsDocumentType GetDocumentTypeByName(string docTypeName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetDocumentTypeByName", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetDocumentTypeByNameResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocumentType> GetDocumentTypeByNameAsync(string docTypeName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeById", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeByIdResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetDocumentTypeByIdStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocumentType> GetDocumentTypeByIdAsync(int docTypeId);
+        SkillsDocumentService.SkillsDocumentType GetDocumentTypeById(int docTypeId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetDocumentTypeById", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetDocumentTypeByIdResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocumentType> GetDocumentTypeByIdAsync(int docTypeId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetSkillsHealthCheckQuestions", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetSkillsHealthCheckQuestionsResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
             "alService/GetSkillsHealthCheckQuestionsStringFault", Name="string", Namespace="http://schemas.microsoft.com/2003/10/Serialization/")]
-        System.Threading.Tasks.Task<SkillsDocumentsService.Question> GetSkillsHealthCheckQuestionsAsync(SkillsDocumentsService.AssessmentType assessmentType, int questionNumber, SkillsDocumentsService.Level level, SkillsDocumentsService.Accessibility accessibility);
+        SkillsDocumentService.Question GetSkillsHealthCheckQuestions(SkillsDocumentService.AssessmentType assessmentType, int questionNumber, SkillsDocumentService.Level level, SkillsDocumentService.Accessibility accessibility);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetSkillsHealthCheckQuestions", ReplyAction="http://schemas.skillsfundingagency.bis.gov.uk/alse/skillscentral/1.0/ISkillsCentr" +
+            "alService/GetSkillsHealthCheckQuestionsResponse")]
+        System.Threading.Tasks.Task<SkillsDocumentService.Question> GetSkillsHealthCheckQuestionsAsync(SkillsDocumentService.AssessmentType assessmentType, int questionNumber, SkillsDocumentService.Level level, SkillsDocumentService.Accessibility accessibility);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3-preview3.21351.2")]
-    public interface ISkillsCentralServiceChannel : SkillsDocumentsService.ISkillsCentralService, System.ServiceModel.IClientChannel
+    public interface ISkillsCentralServiceChannel : SkillsDocumentService.ISkillsCentralService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3-preview3.21351.2")]
-    public partial class SkillsCentralServiceClient : System.ServiceModel.ClientBase<SkillsDocumentsService.ISkillsCentralService>, SkillsDocumentsService.ISkillsCentralService
+    public partial class SkillsCentralServiceClient : System.ServiceModel.ClientBase<SkillsDocumentService.ISkillsCentralService>, SkillsDocumentService.ISkillsCentralService
     {
         
         /// <summary>
@@ -1307,9 +1537,19 @@ namespace SkillsDocumentsService
         {
         }
         
+        public System.Collections.Generic.List<string> ListTypes()
+        {
+            return base.Channel.ListTypes();
+        }
+        
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListTypesAsync()
         {
             return base.Channel.ListTypesAsync();
+        }
+        
+        public System.Collections.Generic.List<string> ListTypeFields(string type)
+        {
+            return base.Channel.ListTypeFields(type);
         }
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListTypeFieldsAsync(string type)
@@ -1317,9 +1557,19 @@ namespace SkillsDocumentsService
             return base.Channel.ListTypeFieldsAsync(type);
         }
         
+        public System.Collections.Generic.List<string> ListFormatters(string type)
+        {
+            return base.Channel.ListFormatters(type);
+        }
+        
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListFormattersAsync(string type)
         {
             return base.Channel.ListFormattersAsync(type);
+        }
+        
+        public System.Collections.Generic.List<string> ListServiceIdentifiers()
+        {
+            return base.Channel.ListServiceIdentifiers();
         }
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListServiceIdentifiersAsync()
@@ -1327,49 +1577,99 @@ namespace SkillsDocumentsService
             return base.Channel.ListServiceIdentifiersAsync();
         }
         
+        public System.Collections.Generic.List<string> ListSkillsDocumentTypes()
+        {
+            return base.Channel.ListSkillsDocumentTypes();
+        }
+        
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> ListSkillsDocumentTypesAsync()
         {
             return base.Channel.ListSkillsDocumentTypesAsync();
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentAsync(long id)
+        public SkillsDocumentService.SkillsDocument ReadDocument(long id)
+        {
+            return base.Channel.ReadDocument(id);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentAsync(long id)
         {
             return base.Channel.ReadDocumentAsync(id);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentWithAuditAsync(long id, string accessedBy)
+        public SkillsDocumentService.SkillsDocument ReadDocumentWithAudit(long id, string accessedBy)
+        {
+            return base.Channel.ReadDocumentWithAudit(id, accessedBy);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentWithAuditAsync(long id, string accessedBy)
         {
             return base.Channel.ReadDocumentWithAuditAsync(id, accessedBy);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentDataValuesAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect)
+        public SkillsDocumentService.SkillsDocument ReadDocumentDataValues(long id, System.Collections.Generic.List<string> dataValuesToSelect)
+        {
+            return base.Channel.ReadDocumentDataValues(id, dataValuesToSelect);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentDataValuesAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect)
         {
             return base.Channel.ReadDocumentDataValuesAsync(id, dataValuesToSelect);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentDataValuesWithAuditAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy)
+        public SkillsDocumentService.SkillsDocument ReadDocumentDataValuesWithAudit(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy)
+        {
+            return base.Channel.ReadDocumentDataValuesWithAudit(id, dataValuesToSelect, accessedBy);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentDataValuesWithAuditAsync(long id, System.Collections.Generic.List<string> dataValuesToSelect, string accessedBy)
         {
             return base.Channel.ReadDocumentDataValuesWithAuditAsync(id, dataValuesToSelect, accessedBy);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentMetaAsync(long id)
+        public SkillsDocumentService.SkillsDocument ReadDocumentMeta(long id)
+        {
+            return base.Channel.ReadDocumentMeta(id);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentMetaAsync(long id)
         {
             return base.Channel.ReadDocumentMetaAsync(id);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> ReadDocumentMetaWithAuditAsync(long id, string accessedBy)
+        public SkillsDocumentService.SkillsDocument ReadDocumentMetaWithAudit(long id, string accessedBy)
+        {
+            return base.Channel.ReadDocumentMetaWithAudit(id, accessedBy);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> ReadDocumentMetaWithAuditAsync(long id, string accessedBy)
         {
             return base.Channel.ReadDocumentMetaWithAuditAsync(id, accessedBy);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypeAsync(string documentType, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> ReadSkillsDocumentsByDocumentType(string documentType, bool incData)
+        {
+            return base.Channel.ReadSkillsDocumentsByDocumentType(documentType, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypeAsync(string documentType, bool incData)
         {
             return base.Channel.ReadSkillsDocumentsByDocumentTypeAsync(documentType, incData);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypePagerAsync(string documentType, int page, int pageSize, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> ReadSkillsDocumentsByDocumentTypePager(string documentType, int page, int pageSize, bool incData)
+        {
+            return base.Channel.ReadSkillsDocumentsByDocumentTypePager(documentType, page, pageSize, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> ReadSkillsDocumentsByDocumentTypePagerAsync(string documentType, int page, int pageSize, bool incData)
         {
             return base.Channel.ReadSkillsDocumentsByDocumentTypePagerAsync(documentType, page, pageSize, incData);
+        }
+        
+        public long ReadSkillsDocumentsByDocumentTypeCount(string documentType)
+        {
+            return base.Channel.ReadSkillsDocumentsByDocumentTypeCount(documentType);
         }
         
         public System.Threading.Tasks.Task<long> ReadSkillsDocumentsByDocumentTypeCountAsync(string documentType)
@@ -1377,44 +1677,89 @@ namespace SkillsDocumentsService
             return base.Channel.ReadSkillsDocumentsByDocumentTypeCountAsync(documentType);
         }
         
+        public long ReadDocumentsByServiceNameKeyValueAndDocTypeCount(string docType, string serviceName, string identifierValue)
+        {
+            return base.Channel.ReadDocumentsByServiceNameKeyValueAndDocTypeCount(docType, serviceName, identifierValue);
+        }
+        
         public System.Threading.Tasks.Task<long> ReadDocumentsByServiceNameKeyValueAndDocTypeCountAsync(string docType, string serviceName, string identifierValue)
         {
             return base.Channel.ReadDocumentsByServiceNameKeyValueAndDocTypeCountAsync(docType, serviceName, identifierValue);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> CreateDefaultDocumentAsync(string docType)
+        public SkillsDocumentService.SkillsDocument CreateDefaultDocument(string docType)
+        {
+            return base.Channel.CreateDefaultDocument(docType);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> CreateDefaultDocumentAsync(string docType)
         {
             return base.Channel.CreateDefaultDocumentAsync(docType);
         }
         
-        public System.Threading.Tasks.Task<long> InsertDocumentAsync(SkillsDocumentsService.SkillsDocument doc)
+        public long InsertDocument(SkillsDocumentService.SkillsDocument doc)
+        {
+            return base.Channel.InsertDocument(doc);
+        }
+        
+        public System.Threading.Tasks.Task<long> InsertDocumentAsync(SkillsDocumentService.SkillsDocument doc)
         {
             return base.Channel.InsertDocumentAsync(doc);
         }
         
-        public System.Threading.Tasks.Task<long> InsertDocumentWithAuditAsync(SkillsDocumentsService.SkillsDocument doc)
+        public long InsertDocumentWithAudit(SkillsDocumentService.SkillsDocument doc)
+        {
+            return base.Channel.InsertDocumentWithAudit(doc);
+        }
+        
+        public System.Threading.Tasks.Task<long> InsertDocumentWithAuditAsync(SkillsDocumentService.SkillsDocument doc)
         {
             return base.Channel.InsertDocumentWithAuditAsync(doc);
         }
         
-        public System.Threading.Tasks.Task UpdateDocumentAsync(SkillsDocumentsService.SkillsDocument doc)
+        public void UpdateDocument(SkillsDocumentService.SkillsDocument doc)
+        {
+            base.Channel.UpdateDocument(doc);
+        }
+        
+        public System.Threading.Tasks.Task UpdateDocumentAsync(SkillsDocumentService.SkillsDocument doc)
         {
             return base.Channel.UpdateDocumentAsync(doc);
         }
         
-        public System.Threading.Tasks.Task UpdateDocumentWithAuditAsync(SkillsDocumentsService.SkillsDocument doc)
+        public void UpdateDocumentWithAudit(SkillsDocumentService.SkillsDocument doc)
+        {
+            base.Channel.UpdateDocumentWithAudit(doc);
+        }
+        
+        public System.Threading.Tasks.Task UpdateDocumentWithAuditAsync(SkillsDocumentService.SkillsDocument doc)
         {
             return base.Channel.UpdateDocumentWithAuditAsync(doc);
         }
         
-        public System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesAsync(long docId, SkillsDocumentsService.SkillsDocument dataValuesDoc)
+        public void UpdateSkillsDocumentDataValues(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc)
+        {
+            base.Channel.UpdateSkillsDocumentDataValues(docId, dataValuesDoc);
+        }
+        
+        public System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesAsync(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc)
         {
             return base.Channel.UpdateSkillsDocumentDataValuesAsync(docId, dataValuesDoc);
         }
         
-        public System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesWithAuditAsync(long docId, SkillsDocumentsService.SkillsDocument dataValuesDoc, string updatedBy)
+        public void UpdateSkillsDocumentDataValuesWithAudit(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc, string updatedBy)
+        {
+            base.Channel.UpdateSkillsDocumentDataValuesWithAudit(docId, dataValuesDoc, updatedBy);
+        }
+        
+        public System.Threading.Tasks.Task UpdateSkillsDocumentDataValuesWithAuditAsync(long docId, SkillsDocumentService.SkillsDocument dataValuesDoc, string updatedBy)
         {
             return base.Channel.UpdateSkillsDocumentDataValuesWithAuditAsync(docId, dataValuesDoc, updatedBy);
+        }
+        
+        public void LogicalDeleteDocument(long id, string deletedBy)
+        {
+            base.Channel.LogicalDeleteDocument(id, deletedBy);
         }
         
         public System.Threading.Tasks.Task LogicalDeleteDocumentAsync(long id, string deletedBy)
@@ -1422,9 +1767,19 @@ namespace SkillsDocumentsService
             return base.Channel.LogicalDeleteDocumentAsync(id, deletedBy);
         }
         
+        public void LogicalDeleteDocumentWithAudit(long id, string deletedBy)
+        {
+            base.Channel.LogicalDeleteDocumentWithAudit(id, deletedBy);
+        }
+        
         public System.Threading.Tasks.Task LogicalDeleteDocumentWithAuditAsync(long id, string deletedBy)
         {
             return base.Channel.LogicalDeleteDocumentWithAuditAsync(id, deletedBy);
+        }
+        
+        public void DeleteDocument(long id)
+        {
+            base.Channel.DeleteDocument(id);
         }
         
         public System.Threading.Tasks.Task DeleteDocumentAsync(long id)
@@ -1432,9 +1787,19 @@ namespace SkillsDocumentsService
             return base.Channel.DeleteDocumentAsync(id);
         }
         
+        public void DeleteDocumentWithAudit(long id, string deletedBy)
+        {
+            base.Channel.DeleteDocumentWithAudit(id, deletedBy);
+        }
+        
         public System.Threading.Tasks.Task DeleteDocumentWithAuditAsync(long id, string deletedBy)
         {
             return base.Channel.DeleteDocumentWithAuditAsync(id, deletedBy);
+        }
+        
+        public void RestoreDocument(long id, string restoredBy)
+        {
+            base.Channel.RestoreDocument(id, restoredBy);
         }
         
         public System.Threading.Tasks.Task RestoreDocumentAsync(long id, string restoredBy)
@@ -1442,9 +1807,19 @@ namespace SkillsDocumentsService
             return base.Channel.RestoreDocumentAsync(id, restoredBy);
         }
         
+        public void RestoreDocumentWithAudit(long id, string restoredBy)
+        {
+            base.Channel.RestoreDocumentWithAudit(id, restoredBy);
+        }
+        
         public System.Threading.Tasks.Task RestoreDocumentWithAuditAsync(long id, string restoredBy)
         {
             return base.Channel.RestoreDocumentWithAuditAsync(id, restoredBy);
+        }
+        
+        public System.Collections.Generic.List<long> FindDocumentTypeIdsByServiceNameKeyValue(string serviceName, string id)
+        {
+            return base.Channel.FindDocumentTypeIdsByServiceNameKeyValue(serviceName, id);
         }
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<long>> FindDocumentTypeIdsByServiceNameKeyValueAsync(string serviceName, string id)
@@ -1452,44 +1827,89 @@ namespace SkillsDocumentsService
             return base.Channel.FindDocumentTypeIdsByServiceNameKeyValueAsync(serviceName, id);
         }
         
+        public System.Collections.Generic.List<long> FindDocumentIdsByServiceNameKeyValue(string serviceName, string id)
+        {
+            return base.Channel.FindDocumentIdsByServiceNameKeyValue(serviceName, id);
+        }
+        
         public System.Threading.Tasks.Task<System.Collections.Generic.List<long>> FindDocumentIdsByServiceNameKeyValueAsync(string serviceName, string id)
         {
             return base.Channel.FindDocumentIdsByServiceNameKeyValueAsync(serviceName, id);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocument> FindDocumentByKeyValueAsync(string keyValue, bool incData)
+        public SkillsDocumentService.SkillsDocument FindDocumentByKeyValue(string keyValue, bool incData)
+        {
+            return base.Channel.FindDocumentByKeyValue(keyValue, incData);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocument> FindDocumentByKeyValueAsync(string keyValue, bool incData)
         {
             return base.Channel.FindDocumentByKeyValueAsync(keyValue, incData);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAsync(string serviceName, string id, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValue(string serviceName, string id, bool incData)
+        {
+            return base.Channel.FindDocumentsByServiceNameKeyValue(serviceName, id, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAsync(string serviceName, string id, bool incData)
         {
             return base.Channel.FindDocumentsByServiceNameKeyValueAsync(serviceName, id, incData);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypeAsync(string docType, string serviceName, string id, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValueAndDocType(string docType, string serviceName, string id, bool incData)
+        {
+            return base.Channel.FindDocumentsByServiceNameKeyValueAndDocType(docType, serviceName, id, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypeAsync(string docType, string serviceName, string id, bool incData)
         {
             return base.Channel.FindDocumentsByServiceNameKeyValueAndDocTypeAsync(docType, serviceName, id, incData);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValuePagerAsync(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValuePager(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
+        {
+            return base.Channel.FindDocumentsByServiceNameKeyValuePager(serviceName, id, page, pageSize, sortBy, sortDirection, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValuePagerAsync(string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
         {
             return base.Channel.FindDocumentsByServiceNameKeyValuePagerAsync(serviceName, id, page, pageSize, sortBy, sortDirection, incData);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentsService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypePagerAsync(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
+        public System.Collections.Generic.List<SkillsDocumentService.SkillsDocument> FindDocumentsByServiceNameKeyValueAndDocTypePager(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
+        {
+            return base.Channel.FindDocumentsByServiceNameKeyValueAndDocTypePager(docType, serviceName, id, page, pageSize, sortBy, sortDirection, incData);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<SkillsDocumentService.SkillsDocument>> FindDocumentsByServiceNameKeyValueAndDocTypePagerAsync(string docType, string serviceName, string id, int page, int pageSize, string sortBy, string sortDirection, bool incData)
         {
             return base.Channel.FindDocumentsByServiceNameKeyValueAndDocTypePagerAsync(docType, serviceName, id, page, pageSize, sortBy, sortDirection, incData);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.FormatDocumentResponse> FormatDocumentMakeRequestAsync(long docId, string formatter, string requestedBy)
+        public SkillsDocumentService.FormatDocumentResponse FormatDocumentMakeRequest(long docId, string formatter, string requestedBy)
+        {
+            return base.Channel.FormatDocumentMakeRequest(docId, formatter, requestedBy);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.FormatDocumentResponse> FormatDocumentMakeRequestAsync(long docId, string formatter, string requestedBy)
         {
             return base.Channel.FormatDocumentMakeRequestAsync(docId, formatter, requestedBy);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.FormatDocumentResponse> FormatDocumentPollStatusAsync(long docId, string formatter)
+        public SkillsDocumentService.FormatDocumentResponse FormatDocumentPollStatus(long docId, string formatter)
+        {
+            return base.Channel.FormatDocumentPollStatus(docId, formatter);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.FormatDocumentResponse> FormatDocumentPollStatusAsync(long docId, string formatter)
         {
             return base.Channel.FormatDocumentPollStatusAsync(docId, formatter);
+        }
+        
+        public byte[] FormatDocumentGetPayload(long docId, string formatter)
+        {
+            return base.Channel.FormatDocumentGetPayload(docId, formatter);
         }
         
         public System.Threading.Tasks.Task<byte[]> FormatDocumentGetPayloadAsync(long docId, string formatter)
@@ -1497,9 +1917,19 @@ namespace SkillsDocumentsService
             return base.Channel.FormatDocumentGetPayloadAsync(docId, formatter);
         }
         
+        public string GetSkillsDocumentKeyValue(long docId, string keyName)
+        {
+            return base.Channel.GetSkillsDocumentKeyValue(docId, keyName);
+        }
+        
         public System.Threading.Tasks.Task<string> GetSkillsDocumentKeyValueAsync(long docId, string keyName)
         {
             return base.Channel.GetSkillsDocumentKeyValueAsync(docId, keyName);
+        }
+        
+        public void UpdateSkillsDocumentKeyValue(long docId, string keyName, string keyValue, string updatedBy)
+        {
+            base.Channel.UpdateSkillsDocumentKeyValue(docId, keyName, keyValue, updatedBy);
         }
         
         public System.Threading.Tasks.Task UpdateSkillsDocumentKeyValueAsync(long docId, string keyName, string keyValue, string updatedBy)
@@ -1507,9 +1937,19 @@ namespace SkillsDocumentsService
             return base.Channel.UpdateSkillsDocumentKeyValueAsync(docId, keyName, keyValue, updatedBy);
         }
         
-        public System.Threading.Tasks.Task<string> InsertDocumentTypeAsync(SkillsDocumentsService.SkillsDocumentType docType)
+        public string InsertDocumentType(SkillsDocumentService.SkillsDocumentType docType)
+        {
+            return base.Channel.InsertDocumentType(docType);
+        }
+        
+        public System.Threading.Tasks.Task<string> InsertDocumentTypeAsync(SkillsDocumentService.SkillsDocumentType docType)
         {
             return base.Channel.InsertDocumentTypeAsync(docType);
+        }
+        
+        public void DeleteDocumentType(string docTypeText)
+        {
+            base.Channel.DeleteDocumentType(docTypeText);
         }
         
         public System.Threading.Tasks.Task DeleteDocumentTypeAsync(string docTypeText)
@@ -1517,22 +1957,42 @@ namespace SkillsDocumentsService
             return base.Channel.DeleteDocumentTypeAsync(docTypeText);
         }
         
-        public System.Threading.Tasks.Task<string> UpdateDocumentTypeAsync(SkillsDocumentsService.SkillsDocumentType docType)
+        public string UpdateDocumentType(SkillsDocumentService.SkillsDocumentType docType)
+        {
+            return base.Channel.UpdateDocumentType(docType);
+        }
+        
+        public System.Threading.Tasks.Task<string> UpdateDocumentTypeAsync(SkillsDocumentService.SkillsDocumentType docType)
         {
             return base.Channel.UpdateDocumentTypeAsync(docType);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocumentType> GetDocumentTypeByNameAsync(string docTypeName)
+        public SkillsDocumentService.SkillsDocumentType GetDocumentTypeByName(string docTypeName)
+        {
+            return base.Channel.GetDocumentTypeByName(docTypeName);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocumentType> GetDocumentTypeByNameAsync(string docTypeName)
         {
             return base.Channel.GetDocumentTypeByNameAsync(docTypeName);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.SkillsDocumentType> GetDocumentTypeByIdAsync(int docTypeId)
+        public SkillsDocumentService.SkillsDocumentType GetDocumentTypeById(int docTypeId)
+        {
+            return base.Channel.GetDocumentTypeById(docTypeId);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.SkillsDocumentType> GetDocumentTypeByIdAsync(int docTypeId)
         {
             return base.Channel.GetDocumentTypeByIdAsync(docTypeId);
         }
         
-        public System.Threading.Tasks.Task<SkillsDocumentsService.Question> GetSkillsHealthCheckQuestionsAsync(SkillsDocumentsService.AssessmentType assessmentType, int questionNumber, SkillsDocumentsService.Level level, SkillsDocumentsService.Accessibility accessibility)
+        public SkillsDocumentService.Question GetSkillsHealthCheckQuestions(SkillsDocumentService.AssessmentType assessmentType, int questionNumber, SkillsDocumentService.Level level, SkillsDocumentService.Accessibility accessibility)
+        {
+            return base.Channel.GetSkillsHealthCheckQuestions(assessmentType, questionNumber, level, accessibility);
+        }
+        
+        public System.Threading.Tasks.Task<SkillsDocumentService.Question> GetSkillsHealthCheckQuestionsAsync(SkillsDocumentService.AssessmentType assessmentType, int questionNumber, SkillsDocumentService.Level level, SkillsDocumentService.Accessibility accessibility)
         {
             return base.Channel.GetSkillsHealthCheckQuestionsAsync(assessmentType, questionNumber, level, accessibility);
         }

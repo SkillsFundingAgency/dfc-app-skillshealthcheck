@@ -1,5 +1,5 @@
 ﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
-using SkillsDocumentsService;
+using SkillsDocumentService;
 using System.Collections.Generic;
 using Accessibility = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums.Accessibility;
 using Answer = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models.Answer;
@@ -86,7 +86,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
         /// </summary>
         /// <param name="question">The question.</param>
         /// <returns></returns>
-        internal static Question ConvertToModelQuestion(this SkillsDocumentsService.Question question)
+        internal static Question ConvertToModelQuestion(this SkillsDocumentService.Question question)
         {
             return new Question
             {
@@ -119,7 +119,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
         /// <param name="answers">The answers.</param>
         /// <param name="assessmentType"></param>
         /// <returns></returns>
-        private static List<Answer> GetModelAnswers(this IEnumerable<SkillsDocumentsService.Answer> answers, Enums.AssessmentType assessmentType)
+        private static List<Answer> GetModelAnswers(this IEnumerable<SkillsDocumentService.Answer> answers, Enums.AssessmentType assessmentType)
         {
             var result = new List<Answer>();
 

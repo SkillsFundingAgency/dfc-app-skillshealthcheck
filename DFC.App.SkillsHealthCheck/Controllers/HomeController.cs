@@ -9,6 +9,8 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -21,15 +23,18 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<SkillsHealthCheckController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public HomeController(
             ILogger<SkillsHealthCheckController> logger,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions)
+            CmsApiClientOptions cmsApiClientOptions,
+            ISkillsHealthCheckService skillsHealthCheckService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
+            this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
         [HttpGet]
@@ -83,6 +88,21 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetHomeBodyViewModel()
         {
+            var viewModel = new BodyViewModel
+            {
+                YourAssessmentsURL = $"/{RegistrationPath}/your-assessments",
+            };
+            var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
+            {
+                DocumentType = Constants.SkillsHealthCheck.DocumentType,
+
+            });
+            if (apiResult.Success)
+            {
+                viewModel.ListTypeFields = apiResult.TypeFields;
+                viewModel.ListTypeFieldsString = string.Join(",", apiResult.TypeFields);
+            }
+
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {
@@ -96,11 +116,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
 
-            return new BodyViewModel
-            {
-                YourAssessmentsURL = $"/{RegistrationPath}/your-assessments",
-                RightBarViewModel = rightBarViewModel,
-            };
+            viewModel.RightBarViewModel = rightBarViewModel;
+
+            return viewModel;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

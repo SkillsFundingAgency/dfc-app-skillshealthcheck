@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using SkillsDocumentsService;
+using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
 {
@@ -15,9 +15,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
 
         private void AssementQuestionMapping()
         {
-            CreateMap<Enums.AssessmentType, SkillsDocumentsService.AssessmentType>();
-            CreateMap<Enums.Level, SkillsDocumentsService.Level>();
-            CreateMap<Enums.Accessibility, SkillsDocumentsService.Accessibility>();
+            CreateMap<Enums.AssessmentType, SkillsDocumentService.AssessmentType>();
+            CreateMap<Enums.Level, SkillsDocumentService.Level>();
+            CreateMap<Enums.Accessibility, SkillsDocumentService.Accessibility>();
 
 
             CreateMap<Models.Question, Question>()
@@ -25,9 +25,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
                 .ForMember(dest => dest.Accessibility, opt => opt.MapFrom(src => src.Accessibility))
                 .ForMember(dest => dest.AssessmentType, opt => opt.MapFrom(src => src.AssessmentType));
 
-            CreateMap<SkillsDocumentsService.AssessmentType, Enums.AssessmentType>();
-            CreateMap<SkillsDocumentsService.Level, Enums.Level>();
-            CreateMap<SkillsDocumentsService.Accessibility, Enums.Accessibility>();
+            CreateMap<SkillsDocumentService.AssessmentType, Enums.AssessmentType>();
+            CreateMap<SkillsDocumentService.Level, Enums.Level>();
+            CreateMap<SkillsDocumentService.Accessibility, Enums.Accessibility>();
 
             CreateMap<Question, Models.Question>()
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level))

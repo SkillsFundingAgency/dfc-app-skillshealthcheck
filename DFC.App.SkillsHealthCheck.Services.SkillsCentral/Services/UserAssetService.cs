@@ -6,7 +6,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Xml.Serialization;
-using SkillsDocumentsService;
+using SkillsDocumentService;
 using SFA.Careers.Identity.Interfaces;
 using SFA.Careers.Identity;
 using SFA.Careers.Citizen.Data.CitizenModel;
@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Extensions;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
-using SkillsDocument = SkillsDocumentsService.SkillsDocument;
-using SkillsDocumentDataValue = SkillsDocumentsService.SkillsDocumentDataValue;
+using SkillsDocument = SkillsDocumentService.SkillsDocument;
+using SkillsDocumentDataValue = SkillsDocumentService.SkillsDocumentDataValue;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 {
