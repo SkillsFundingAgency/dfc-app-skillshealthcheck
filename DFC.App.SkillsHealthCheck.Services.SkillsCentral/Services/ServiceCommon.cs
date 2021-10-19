@@ -33,7 +33,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             public static class Other
             {
                 public const String Name = @"^[A-Za-z'-. `]*$";
-                public const String Password = @"^(?i:(?!.*pass.*word|.*\s))(?!^.*\n)(?=.*\W*)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$";
                 public const String Email = @"^[A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+([.][A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+)*@[A-Za-z0-9\[\]:]+([.-][A-Za-z0-9\[\]:]+)*\.[A-Za-z0-9\[\]:]+([-.][A-Za-z0-9\[\]:]+)*$";
                 public const String AddressString = @"^[A-Za-z0-9'-. `_,:&*#\""\(\)\/\\]*$";
                 public const String Day = @"^(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$";
