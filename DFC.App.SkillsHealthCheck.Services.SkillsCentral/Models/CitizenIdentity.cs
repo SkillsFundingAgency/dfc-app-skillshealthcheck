@@ -2,7 +2,7 @@
 {
     public class CitizenIdentity
     {
-        public PersonalDetails PersonalDetails { get; set; }
+        //public PersonalDetails PersonalDetails { get; set; }
 
         public ContactDetails ContactDetails { get; set; }
 
