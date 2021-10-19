@@ -1,9 +1,12 @@
-﻿using DFC.App.SkillsHealthCheck.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
-using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.ViewModels.Home;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
+
+using DFC.App.SkillsHealthCheck.Controllers;
+using DFC.App.SkillsHealthCheck.ViewModels;
+using DFC.App.SkillsHealthCheck.ViewModels.Home;
+
+using Microsoft.AspNetCore.Mvc;
+
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTests
@@ -43,7 +46,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
         {
             using var controller = BuildHomeController(MediaTypeNames.Text.Html);
 
-            var result = await controller.Body().ConfigureAwait(false);
+            var result = await controller.Body();
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<BodyViewModel>(viewResult.ViewData.Model);

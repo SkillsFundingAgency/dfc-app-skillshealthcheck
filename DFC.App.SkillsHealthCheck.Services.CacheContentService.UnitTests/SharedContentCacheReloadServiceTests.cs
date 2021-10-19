@@ -33,7 +33,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
-            await sharedContentCacheReloadService.Reload(cancellationToken).ConfigureAwait(false);
+            await sharedContentCacheReloadService.Reload(cancellationToken);
 
             //Assert
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).MustNotHaveHappened();
@@ -50,7 +50,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
-            await sharedContentCacheReloadService.Reload(CancellationToken.None).ConfigureAwait(false);
+            await sharedContentCacheReloadService.Reload(CancellationToken.None);
 
             //Assert
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).MustHaveHappened(SharedContentKeyHelper.GetSharedContentKeys().Count(), Times.Exactly);
@@ -67,7 +67,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
-            await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None).ConfigureAwait(false);
+            await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None);
 
             //Assert
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).MustHaveHappened(SharedContentKeyHelper.GetSharedContentKeys().Count(), Times.Exactly);
@@ -84,7 +84,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
-            await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None).ConfigureAwait(false);
+            await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None);
 
             //Assert
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).MustHaveHappened(SharedContentKeyHelper.GetSharedContentKeys().Count(), Times.Exactly);

@@ -30,7 +30,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeSharedContentItemDocumentService.UpsertAsync(A<SharedContentItemModel>.Ignored)).Returns(HttpStatusCode.Created);
 
             // Act
-            var result = await service.ProcessContentAsync(url).ConfigureAwait(false);
+            var result = await service.ProcessContentAsync(url);
 
             // Assert
             A.CallTo(() => FakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
@@ -57,7 +57,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeSharedContentItemDocumentService.UpsertAsync(A<SharedContentItemModel>.Ignored)).Returns(HttpStatusCode.OK);
 
             // Act
-            var result = await service.ProcessContentAsync(url).ConfigureAwait(false);
+            var result = await service.ProcessContentAsync(url);
 
             // Assert
             A.CallTo(() => FakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
@@ -82,7 +82,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeMapper.Map<SharedContentItemModel?>(A<SharedContentItemApiDataModel>.Ignored)).Returns(expectedValidContentItemModel);
 
             // Act
-            var result = await service.ProcessContentAsync(url).ConfigureAwait(false);
+            var result = await service.ProcessContentAsync(url);
 
             // Assert
             A.CallTo(() => FakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();
@@ -108,7 +108,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeMapper.Map<SharedContentItemModel>(A<SharedContentItemApiDataModel>.Ignored)).Returns(expectedValidContentItemModel);
 
             // Act
-            var result = await service.ProcessContentAsync(url).ConfigureAwait(false);
+            var result = await service.ProcessContentAsync(url);
 
             // Assert
             A.CallTo(() => FakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<Uri>.Ignored)).MustHaveHappenedOnceExactly();

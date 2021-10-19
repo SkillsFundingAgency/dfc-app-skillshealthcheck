@@ -53,7 +53,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).Returns(HttpStatusCode.Created);
 
             // Act
-            var result = await controller.ReceiveEvents().ConfigureAwait(false);
+            var result = await controller.ReceiveEvents();
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -75,7 +75,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).Returns(expectedResponse);
 
             // Act
-            var result = await controller.ReceiveEvents().ConfigureAwait(false);
+            var result = await controller.ReceiveEvents();
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -97,7 +97,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).Returns(expectedResponse);
 
             // Act
-            var result = await controller.ReceiveEvents().ConfigureAwait(false);
+            var result = await controller.ReceiveEvents();
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -119,7 +119,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).Returns(HttpStatusCode.AlreadyReported);
 
             // Act
-            var result = await controller.ReceiveEvents().ConfigureAwait(false);
+            var result = await controller.ReceiveEvents();
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -140,7 +140,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).Returns(HttpStatusCode.Conflict);
 
             // Act
-            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents());
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
@@ -157,7 +157,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
 
             // Act
-            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents());
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
@@ -173,7 +173,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
 
             // Act
-            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents());
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
@@ -188,7 +188,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
 
             // Act
-            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents());
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
@@ -203,7 +203,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
 
             // Act
-            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents().ConfigureAwait(false)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidDataException>(async () => await controller.ReceiveEvents());
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
@@ -220,7 +220,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.WebhookControllerT
             controller.HttpContext.Request.Body = BuildStreamFromModel(eventGridEvents);
 
             // Act
-            var result = await controller.ReceiveEvents().ConfigureAwait(false);
+            var result = await controller.ReceiveEvents();
 
             // Assert
             A.CallTo(() => FakeWebhooksService.ProcessMessageAsync(A<WebhookCacheOperation>.Ignored, A<Guid>.Ignored, A<Guid>.Ignored, A<string>.Ignored)).MustNotHaveHappened();

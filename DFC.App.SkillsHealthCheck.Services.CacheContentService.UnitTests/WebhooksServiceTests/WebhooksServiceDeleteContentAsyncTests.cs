@@ -22,7 +22,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeSharedContentItemDocumentService.DeleteAsync(A<Guid>.Ignored)).Returns(expectedResponse);
 
             // Act
-            var result = await service.DeleteContentAsync(ContentIdForDelete).ConfigureAwait(false);
+            var result = await service.DeleteContentAsync(ContentIdForDelete);
 
             // Assert
             A.CallTo(() => FakeSharedContentItemDocumentService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
@@ -41,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
             A.CallTo(() => FakeSharedContentItemDocumentService.DeleteAsync(A<Guid>.Ignored)).Returns(expectedResponse);
 
             // Act
-            var result = await service.DeleteContentAsync(ContentIdForDelete).ConfigureAwait(false);
+            var result = await service.DeleteContentAsync(ContentIdForDelete);
 
             // Assert
             A.CallTo(() => FakeSharedContentItemDocumentService.DeleteAsync(A<Guid>.Ignored)).MustHaveHappenedOnceExactly();
