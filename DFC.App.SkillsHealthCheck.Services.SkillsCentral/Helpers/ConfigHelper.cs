@@ -1,4 +1,7 @@
-﻿namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
+﻿using System.ComponentModel.Design;
+using AutoMapper.Configuration;
+
+namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
 {
     public static class ConfigHelper
     {
