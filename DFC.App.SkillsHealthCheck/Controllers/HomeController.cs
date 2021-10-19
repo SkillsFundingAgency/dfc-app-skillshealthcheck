@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
