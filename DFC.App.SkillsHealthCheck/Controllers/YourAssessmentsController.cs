@@ -11,6 +11,7 @@ using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Cosmos.Contracts;
+using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +22,20 @@ using static DFC.App.SkillsHealthCheck.Constants;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
-    public class YourAssessmentsController : BaseController
+    public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
-        public const string PageTitle = "Home";
+        public const string PageTitle = "Your assessments";
         public const string PagePart = "your-assessments";
-        private readonly ILogger<SkillsHealthCheckController> logger;
+        private readonly ILogger<YourAssessmentsController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
 
         public YourAssessmentsController(
-            ILogger<SkillsHealthCheckController> logger,
+            ILogger<YourAssessmentsController> logger,
+            ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions)
+        :base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
@@ -41,7 +44,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/your-assessments/document")]
-        [Route("skills-health-check/your-assessments/")]
+        [Route("skills-health-check/your-assessments")]
         public async Task<IActionResult> Document()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
@@ -87,6 +90,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetHomeBodyViewModel()
         {
+            if (!await CheckValidSession())
+            {
+                Response.Redirect(HomeURL);
+            }
+
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {

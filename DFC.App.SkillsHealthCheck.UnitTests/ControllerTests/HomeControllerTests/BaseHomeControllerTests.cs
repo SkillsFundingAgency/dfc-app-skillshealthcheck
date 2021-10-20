@@ -1,7 +1,9 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
+using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +17,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
     {
         protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; }
 
-        protected ILogger<SkillsHealthCheckController> Logger { get; }
+        protected ILogger<HomeController> Logger { get; }
+
+        protected ISessionStateService<SessionDataModel> SessionStateService { get; }
 
         protected CmsApiClientOptions CmsApiClientOptions { get; set; }
 
@@ -25,7 +29,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected BaseHomeControllerTests()
         {
-            Logger = A.Fake<ILogger<SkillsHealthCheckController>>();
+            Logger = A.Fake<ILogger<HomeController>>();
+            SessionStateService = A.Fake<ISessionStateService<SessionDataModel>>();
             FakeSharedContentItemDocumentService = A.Fake<IDocumentService<SharedContentItemModel>>();
             FakeSkillsHealthCheckService = A.Fake<ISkillsHealthCheckService>();
             CmsApiClientOptions = new CmsApiClientOptions() { ContentIds = testContentId };
@@ -38,7 +43,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HomeController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeSkillsHealthCheckService)
+            var controller = new HomeController(Logger, SessionStateService, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeSkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {

@@ -1,37 +1,43 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
 using DFC.Compui.Cosmos.Contracts;
+using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
-    public class HomeController : BaseController
+    public class HomeController : BaseController<HomeController>
     {
         public const string PageTitle = "Home";
 
-        private readonly ILogger<SkillsHealthCheckController> logger;
+        private readonly ILogger<HomeController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public HomeController(
-            ILogger<SkillsHealthCheckController> logger,
+            ILogger<HomeController> logger,
+            ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
             ISkillsHealthCheckService skillsHealthCheckService)
+        : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
@@ -42,6 +48,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/home/document")]
         [Route("skills-health-check/document")]
+        [Route("skills-health-check/home")]
+        [Route("skills-health-check")]
         public async Task<IActionResult> Document()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
@@ -54,6 +62,71 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/home")]
+        [Route("skills-health-check")]
+        public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
+        {
+            if (await CheckValidSession())
+            {
+                return Redirect(YourAssessmentsURL);
+            }
+
+            var apiRequest = new CreateSkillsDocumentRequest
+            {
+                SkillsDocument = new SkillsDocument
+                {
+                    SkillsDocumentTitle = Constants.SkillsHealthCheck.DefaultDocumentName,
+                    SkillsDocumentType = Constants.SkillsHealthCheck.DocumentType,
+                    CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
+                    SkillsDocumentExpiry = SkillsDocumentExpiry.Physical,
+                    ExpiresTimespan = new TimeSpan(0, Constants.SkillsHealthCheck.SkillsDocumentExpiryTime, 0, 0),
+                },
+            };
+
+            if (!string.IsNullOrWhiteSpace(viewModel.ListTypeFields))
+            {
+                var fieldList = viewModel.ListTypeFields.Split(',');
+                foreach (var field in fieldList.Where(f => !f.Equals(Constants.SkillsHealthCheck.FieldName, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    var value = string.Empty;
+
+                    if (field.Equals(Constants.SkillsHealthCheck.QualificationProperty, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        value = "1";
+                    }
+                    else if (field.Equals(Constants.SkillsHealthCheck.CandidateFullNameKeyName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        value = apiRequest.SkillsDocument.CreatedBy;
+                    }
+
+                    apiRequest.SkillsDocument.SkillsDocumentDataValues.Add(new SkillsDocumentDataValue
+                    {
+                        Title = field,
+                        Value = value,
+                    });
+                }
+            }
+
+            apiRequest.SkillsDocument.SkillsDocumentIdentifiers.Add(new SkillsDocumentIdentifier
+            {
+                ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
+                Value = Guid.NewGuid().ToString(),
+            });
+
+            var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
+            if (apiResult.Success)
+            {
+                //UpdateShcUsageDate(); TODO: this needs to be looked into and implemented
+                await SetSessionStateAsync(apiResult.DocumentId);
+                return Redirect(YourAssessmentsURL);
+            }
+
+            var bodyViewModel = await GetHomeBodyViewModel();
+
+            return this.NegotiateContentResult(bodyViewModel);
         }
 
         [HttpGet]
@@ -90,19 +163,24 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetHomeBodyViewModel()
         {
+            if (await CheckValidSession())
+            {
+                Response.Redirect(YourAssessmentsURL);
+            }
+
             var viewModel = new BodyViewModel
             {
-                YourAssessmentsURL = $"/{RegistrationPath}/your-assessments",
+                RightBarViewModel = new RightBarViewModel(),
             };
+
             var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
             {
                 DocumentType = Constants.SkillsHealthCheck.DocumentType,
-
             });
+
             if (apiResult.Success)
             {
-                viewModel.ListTypeFields = apiResult.TypeFields;
-                viewModel.ListTypeFieldsString = string.Join(",", apiResult.TypeFields);
+                viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
             }
 
             SharedContentItemModel? speakToAnAdviser = null;
@@ -112,13 +190,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                       .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
             }
 
-            var rightBarViewModel = new RightBarViewModel();
             if (speakToAnAdviser != null)
             {
-                rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
-
-            viewModel.RightBarViewModel = rightBarViewModel;
 
             return viewModel;
         }

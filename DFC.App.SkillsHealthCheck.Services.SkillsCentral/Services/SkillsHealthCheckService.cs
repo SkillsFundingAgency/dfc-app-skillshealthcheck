@@ -124,6 +124,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             var response = new GetListTypeFieldsResponse();
             try
             {
+                
                 var apiResult = _skillsCentralService.ListTypeFields(getListTypeFieldsRequest.DocumentType);
                 //    ServiceHelper.Instance()
                 //        .Use<ISkillsCentralService, List<string>>(
