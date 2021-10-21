@@ -1,0 +1,62 @@
+﻿@using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
+@using Microsoft.AspNetCore.Html
+@model DFC.App.SkillsHealthCheck.ViewModels.Question.EliminationAnswerQuestionViewModel
+
+@{
+    var assessmentType = Model.Question.AssessmentType == AssessmentType.Numeric ? "Numerical" : Model.Question.AssessmentType.ToString();
+    var imageSrc = string.Format("https://cdsprdwesfstorage.blob.core.windows.net/skills-health-check/QuestionSetImages/{0}", assessmentType);
+    var id = string.Empty;
+    var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
+}
+
+<h3 class="heading-medium">
+    Choose the statement that you feel
+    is most like you
+</h3>
+
+<form method="post" id="skillsForm" class="form" asp-action="AnswerEliminationQuestion">
+    <div class="form-group govuk-!-margin-bottom-5 @errorClass">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-visually-hidden">
+                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", imageSrc))))
+            </legend>
+            <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
+            @{ var i = 0;
+                foreach (var posibleResponse in Model.Question.PossibleResponses)
+                {
+                    if (i != Model.AlreadySelected)
+                    {
+                        id = string.Format("radio-{0}", posibleResponse.Value);
+
+                        <label class="block-label govuk-label" for="@id">
+                            @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
+                            @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
+                            {
+                                <img src="@imageSrc/@posibleResponse.ImageSource" />}
+                        </label> }
+                    i++;
+                } }
+        </fieldset>
+    </div>
+    <p>You must select an answer to continue.</p>
+    <div class="form-group">
+        @if (Model.QuestionNumber != Model.ActualTotalQuestions)
+        {
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+        else
+        {
+            <p>This is the final question.</p>
+            <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />}
+
+    </div>
+
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.QuestionNumber)
+    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
+    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.AlreadySelected)
+    @Html.HiddenFor(model => model.QuestionNumber)
+    @Html.HiddenFor(model => model.ActualTotalQuestions)
+</form>
+

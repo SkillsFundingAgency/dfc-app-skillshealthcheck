@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
@@ -52,10 +53,23 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
         }
+
         protected async Task<bool> CheckValidSession()
         {
             var sessionStateModel = await GetSessionStateAsync();
             return sessionStateModel?.State != null && sessionStateModel.State.DocumentId != 0;
+        }
+
+        protected async Task<long?> GetDocumentId()
+        {
+            var sessionStateModel = await GetSessionStateAsync();
+            return sessionStateModel?.State?.DocumentId;
+        }
+
+        protected async Task<SessionDataModel?> GetSessionDataModel()
+        {
+            var sessionStateModel = await GetSessionStateAsync();
+            return sessionStateModel?.State;
         }
 
 
@@ -74,7 +88,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return default;
         }
 
-        protected async Task<bool> SetSessionStateAsync(long documentId)
+        protected async Task<bool> SetSessionStateAsync(SessionDataModel sessionDataModel)
         {
             var compositeSessionId = Request.CompositeSessionId();
             if (compositeSessionId.HasValue)
@@ -83,7 +97,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
                 var sessionStateModel = await _sessionStateService.GetAsync(compositeSessionId.Value).ConfigureAwait(false);
                 sessionStateModel.Ttl = 43200;
-                sessionStateModel.State!.DocumentId = documentId;
+                sessionStateModel.State = sessionDataModel;
 
                 _logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");
 

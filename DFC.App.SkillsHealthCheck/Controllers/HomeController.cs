@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -120,7 +121,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (apiResult.Success)
             {
                 //UpdateShcUsageDate(); TODO: this needs to be looked into and implemented
-                await SetSessionStateAsync(apiResult.DocumentId);
+                var sessionStateDataModel = new SessionDataModel
+                {
+                    DocumentId = apiResult.DocumentId,
+                    AssessmentQuestionsOverViews = new Dictionary<string, AssessmentQuestionsOverView>(),
+                };
+                await SetSessionStateAsync(sessionStateDataModel);
                 return Redirect(YourAssessmentsURL);
             }
 

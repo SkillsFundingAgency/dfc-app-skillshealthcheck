@@ -1,0 +1,72 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.Question.TabularAnswerQuestionViewModel
+@{
+    var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
+    var imageNumber = 0;
+}
+
+
+@Html.Raw(Model.Question.QuestionText)
+
+<div class="form-group scroll-x">
+    @Html.Raw(Model.Question.QuestionData)
+</div>
+<form method="post" id="skillsCheckingForm" class="form" asp-action="AnswerCheckingQuestion">
+
+    <div class="form-group govuk-!-margin-bottom-5">
+        <h3>Mark the box where you think there are mistakes in the record sheet in row @Model.CurrentQuestion.</h3>
+        <p>You can choose more than one answer.</p>
+        <div class="form-group @errorClass">
+
+            @Html.ValidationMessageFor(model => model.AnswerSelection, null, new { id = "answerSelectionError", @class = "govuk-error-message" })
+            <fieldset class="govuk-fieldset">
+                <div class="form-group govuk-!-margin-bottom-5">
+                    <legend class="govuk-visually-hidden">
+                        Mark the box where
+                        you think there are mistakes in the record sheet in
+                        row @Model.CurrentQuestion.
+                    </legend> <label class="block-label govuk-label" for="column-a-row-1">
+                        <input id="column-a-row-1" name="AnswerSelection" type="checkbox" value="A"> Error
+                        in column A
+                    </label> <label class="block-label govuk-label" for="column-b-row-1">
+                        <input id="column-b-row-1" name="AnswerSelection" type="checkbox" value="B"> Error
+                        in column B
+                    </label> <label class="block-label govuk-label" for="column-c-row-1">
+                        <input id="column-c-row-1" name="AnswerSelection" type="checkbox" value="C"> Error
+                        in column C
+                    </label> <label class="block-label govuk-label" for="column-d-row-1">
+                        <input id="column-d-row-1" name="AnswerSelection" type="checkbox" value="D"> Error
+                        in column D
+                    </label>
+                    <p class="form-block">or</p><label class="block-label govuk-label" for="column-e-row-1">
+                        <input id="column-e-row-1" name="AnswerSelection" type="checkbox"
+                               value="E"> No error
+                    </label>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+    <div class="form-group">
+        @if (Model.QuestionNumber != Model.ActualTotalQuestions)
+        {
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+        else
+        {
+            <p>This is the final question.</p>
+            <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />}
+
+    </div>
+    @Html.HiddenFor(model => model.QuestionAnswer, new { Value = "checking" })
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.QuestionNumber)
+    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
+    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.SubQuestions)
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.Level)
+    @Html.HiddenFor(model => model.Question.Accessibility)
+    @Html.HiddenFor(model => model.CurrentQuestion)
+    @Html.HiddenFor(model => model.QuestionNumber)
+    @Html.HiddenFor(model => model.ActualTotalQuestions)
+</form>

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
-
+using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
@@ -34,6 +34,12 @@ namespace DFC.App.SkillsHealthCheck.Extensions
 
                     if (items.Contains(MediaTypeNames.Text.Html, StringComparer.OrdinalIgnoreCase) || items.Contains("*/*"))
                     {
+                        if (viewModel is AssessmentQuestionViewModel)
+                        {
+                            var viewName = ((AssessmentQuestionViewModel) viewModel).ViewName;
+                            return controller.View(viewName, viewModel);
+                        }
+
                         return controller.View(viewModel);
                     }
                 }

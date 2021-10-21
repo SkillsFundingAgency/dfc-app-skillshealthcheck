@@ -49,7 +49,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var bodyViewModel = await GetHomeBodyViewModel();
+            var bodyViewModel = await GetBodyViewModel();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -84,11 +84,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments/body")]
         public async Task<IActionResult> Body()
         {
-            var viewModel = await GetHomeBodyViewModel();
+            var viewModel = await GetBodyViewModel();
             return this.NegotiateContentResult(viewModel);
         }
 
-        private async Task<BodyViewModel> GetHomeBodyViewModel()
+        private async Task<BodyViewModel> GetBodyViewModel()
         {
             if (!await CheckValidSession())
             {
@@ -109,6 +109,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             var assessments = GetAssessmentList();
+
             return new BodyViewModel
             {
                 DateAssessmentsCreated = DateTime.Now,

@@ -1,0 +1,138 @@
+﻿@using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
+@using Microsoft.AspNetCore.Html
+@model DFC.App.SkillsHealthCheck.ViewModels.Question.AssessmentQuestionViewModel
+
+@{
+
+    var id = string.Empty;
+    var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
+    var imageNumber = 0;
+}
+
+
+@if (Model.Question.AssessmentType == AssessmentType.Spatial)
+{
+    <h3 class="heading-medium">
+        @(new HtmlString(Model.Question.QuestionText))
+    </h3> 
+    
+    if (!string.IsNullOrEmpty(Model.Question.ImageUrl))
+    {
+        <br />
+        <div class="mechanical-images">
+            <img src="@Model.Question.ImageUrl" title="@Model.Question.ImageTitle" alt="@Model.Question.ImageCaption" />
+        </div>
+    }
+
+    if (Model.QuestionImages.Any())
+    {
+        <div class="abstract-images">
+        @foreach (var image in Model.QuestionImages)
+        {
+            imageNumber++;
+            <div class="image_numbers">
+                <img src="@image.Src" alt="@image.Alttext" title="@image.Title" />
+                @if (imageNumber != Model.QuestionImages.Count())
+                {
+                    <span>@imageNumber</span>
+
+                }
+            </div>
+        }
+        </div>
+    }
+    else
+    {
+        @(new HtmlString(Model.Question.QuestionData))
+    }
+}
+else
+{
+    if (!string.IsNullOrEmpty(Model.Question.ImageUrl))
+    {
+        <br />
+        <div class="mechanical-images">
+            <img src="@Model.Question.ImageUrl" @{if (!string.IsNullOrEmpty(Model.Question.ImageTitle)) { <text> title="@Model.Question.ImageTitle" </text> }} alt="@Model.Question.ImageCaption" />
+        </div>
+    }
+    if (Model.QuestionImages.Any())
+    {
+        <div class="abstract-images">
+        @foreach (var image in Model.QuestionImages)
+        {
+            imageNumber++;
+            <div class="image_numbers">
+                <img src="@image.Src" alt="@image.Alttext" title="@image.Title" />
+                @if (imageNumber != Model.QuestionImages.Count())
+                {
+                    <span>@imageNumber</span>
+                }
+            </div>
+        }
+        </div>
+    }
+    else
+    {
+        @(new HtmlString(Model.Question.QuestionData))
+    }
+
+    <h2 class="govuk-heading-m">
+    @(new HtmlString(Model.Question.QuestionText))
+    </h2>
+}
+
+
+<form method="post" id="skillsForm" class="form" asp-action="AnswerQuestion">
+    <div class="form-group govuk-!-margin-bottom-5 @errorClass">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-visually-hidden">
+                @if (Model.QuestionImages.Any())
+                {
+                    <div class="abstract-images">
+                        @foreach (var image in Model.QuestionImages)
+                        {
+                            imageNumber++;
+                            <div class="image_numbers">
+                                <img src="@image.Src" alt="@image.Alttext" title="@image.Title" />
+                                @if (imageNumber != Model.QuestionImages.Count())
+                                {
+                                    <span>@imageNumber</span>}
+                            </div>}
+                    </div> }
+                else
+                { @(new HtmlString(Model.Question.QuestionData))}
+            </legend>
+            <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
+            @{ foreach (var posibleResponse in Model.Question.PossibleResponses)
+                {
+                    id = string.Format("radio-{0}", posibleResponse.Value);
+
+                    <label class="block-label govuk-label" for="@id">
+                        @Html.RadioButtonFor(model => model.QuestionAnswer, posibleResponse.Value, new { id })
+                        @if (Model.Question.AssessmentType != AssessmentType.Abstract)
+                        {
+                            @posibleResponse.Text}
+                        @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
+                        {
+                            <img src="@posibleResponse.ImageSource" />}
+                    </label> } }
+        </fieldset>
+    </div>
+    <p>You must select an answer to continue.</p>
+    <div class="form-group">
+        @if (Model.Question.QuestionNumber != Model.ActualTotalQuestions)
+        {
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+        else
+        {
+            <p>This is the final question.</p>
+            <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />}
+
+    </div>
+
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.QuestionNumber)
+    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
+    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+</form>

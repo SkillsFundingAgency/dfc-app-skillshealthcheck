@@ -50,7 +50,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<BodyViewModel>(viewResult.ViewData.Model);
-            Assert.Equal($"/{HomeController.RegistrationPath}/{YourAssessmentsController.PagePart}", viewModel.YourAssessmentsURL);
         }
     }
 }
