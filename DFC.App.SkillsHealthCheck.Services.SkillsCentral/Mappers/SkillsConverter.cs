@@ -155,7 +155,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
                     ? "Numerical"
                     : assessmentType.ToString();
 
-            return $"{ConfigHelper.ImageStorageUrl}{assessmentTypeString}/{imageUrl}";
+            return $"{assessmentTypeString}/{imageUrl}";
         }
     }
 }

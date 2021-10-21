@@ -7,6 +7,8 @@
     var id = string.Empty;
     var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
     var imageNumber = 0;
+    var imageSrc = "https://cdsprdwesfstorage.blob.core.windows.net/skills-health-check/QuestionSetImages/{0}";
+
 }
 
 
@@ -20,7 +22,7 @@
     {
         <br />
         <div class="mechanical-images">
-            <img src="@Model.Question.ImageUrl" title="@Model.Question.ImageTitle" alt="@Model.Question.ImageCaption" />
+            <img src="@string.Format(imageSrc, Model.Question.ImageUrl)" title="@Model.Question.ImageTitle" alt="@Model.Question.ImageCaption" />
         </div>
     }
 
@@ -52,7 +54,7 @@ else
     {
         <br />
         <div class="mechanical-images">
-            <img src="@Model.Question.ImageUrl" @{if (!string.IsNullOrEmpty(Model.Question.ImageTitle)) { <text> title="@Model.Question.ImageTitle" </text> }} alt="@Model.Question.ImageCaption" />
+            <img src="@string.Format(imageSrc, Model.Question.ImageUrl)" @{if (!string.IsNullOrEmpty(Model.Question.ImageTitle)) { <text> title="@Model.Question.ImageTitle" </text> }} alt="@Model.Question.ImageCaption" />
         </div>
     }
     if (Model.QuestionImages.Any())

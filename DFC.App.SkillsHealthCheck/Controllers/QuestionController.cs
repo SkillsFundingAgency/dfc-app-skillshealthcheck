@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Factories;
@@ -50,7 +51,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question")]
         public async Task<IActionResult> Document(string assessmentType)
         {
-            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
+                t.Key.Equals(assessmentType, StringComparison.InvariantCultureIgnoreCase)).Value;
+            var htmlHeadViewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetBodyViewModel(assessmentType);
 
@@ -64,9 +67,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/question/htmlhead")]
-        public IActionResult HtmlHead()
+        public IActionResult HtmlHead(string assessmentType)
         {
-            var viewModel = GetHtmlHeadViewModel(PageTitle);
+            var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
+                t.Key.Equals(assessmentType, StringComparison.InvariantCultureIgnoreCase)).Value;
+            var viewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
 
             logger.LogInformation($"{nameof(HtmlHead)} has returned content");
 
