@@ -1,11 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
-using DFC.Compui.Cosmos.Contracts;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,17 +15,31 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public const string PageTitle = "Save My Progress";
 
         private readonly ILogger<SaveMyProgressController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
 
-        public SaveMyProgressController(
-            ILogger<SaveMyProgressController> logger,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions)
+        public SaveMyProgressController(ILogger<SaveMyProgressController> logger)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this.cmsApiClientOptions = cmsApiClientOptions;
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/htmlhead")]
+        public IActionResult HtmlHead()
+        {
+            var viewModel = GetHtmlHeadViewModel(PageTitle);
+
+            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [Route("skills-health-check/save-my-progress/breadcrumb")]
+        public IActionResult Breadcrumb()
+        {
+            var viewModel = BuildBreadcrumb();
+
+            logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
+
+            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]
@@ -66,27 +77,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             return RedirectToAction("GetCode");
-        }
-
-        [HttpGet]
-        [Route("skills-health-check/save-my-progress/htmlhead")]
-        public IActionResult HtmlHead()
-        {
-            var viewModel = GetHtmlHeadViewModel(PageTitle);
-
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
-
-            return this.NegotiateContentResult(viewModel);
-        }
-
-        [Route("skills-health-check/save-my-progress/breadcrumb")]
-        public IActionResult Breadcrumb()
-        {
-            var viewModel = BuildBreadcrumb();
-
-            logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
-
-            return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]

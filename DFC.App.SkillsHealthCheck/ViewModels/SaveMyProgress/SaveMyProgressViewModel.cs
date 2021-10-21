@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 using DFC.App.SkillsHealthCheck.Enums;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
 {
+    [ExcludeFromCodeCoverage]
     public class SaveMyProgressViewModel
     {
         public const string SelectedOptionValidationError = "Choose how you would like to return to your skills health check";
