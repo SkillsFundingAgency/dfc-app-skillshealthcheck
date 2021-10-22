@@ -117,7 +117,7 @@ else
                             @posibleResponse.Text}
                         @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
                         {
-                            <img src="@posibleResponse.ImageSource" />}
+                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource}")" />}
                     </label> } }
         </fieldset>
     </div>
