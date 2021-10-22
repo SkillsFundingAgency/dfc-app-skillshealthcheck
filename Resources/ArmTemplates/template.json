@@ -108,6 +108,9 @@
             "metadata": {
                 "description": "Logging__LogLevel__Default"
             }
+        },
+        "SkillsServiceOptionsImageUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -321,7 +324,7 @@
                             },
                             {
                               "name": "SkillsServiceOptions__ImageUrl"  ,
-                              "value": "https://cdsprdwesfstorage.blob.core.windows.net/skills-health-check/QuestionSetImages"
+                              "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
