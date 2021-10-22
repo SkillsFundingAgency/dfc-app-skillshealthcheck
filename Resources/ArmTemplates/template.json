@@ -121,7 +121,8 @@
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillshealthcheck'))]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
-        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
+        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]",
+        "cosmosDBSessionStateCollectionName": "session-state"
     },
     "resources": [
         {
@@ -279,6 +280,26 @@
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
                             },
                             {
+                                "name": "Configuration__CosmosDbConnections__SessionState__AccessKey",
+                                "value": "[parameters('cosmosDbKey')]"
+                            },
+                            {
+                                "name": "Configuration__CosmosDbConnections__SessionState__EndpointUrl",
+                                "value": "[variables('cosmosDbEndpoint')]"
+                            },
+                            {
+                                "name": "Configuration__CosmosDbConnections__SessionState__DatabaseId",
+                                "value": "[variables('cosmosDbDatabaseName')]"
+                            },
+                            {
+                                "name": "Configuration__CosmosDbConnections__SessionState__CollectionId",
+                                "value": "[variables('cosmosDBSessionStateCollectionName')]"
+                            },
+                            {
+                                "name": "Configuration__CosmosDbConnections__SessionState__PartitionKey",
+                                "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                            },
+                            {
                                 "name": "CmsApiClientOptions__BaseAddress",
                                 "value": "[parameters('contentUrl')]"
                             },
@@ -297,6 +318,10 @@
                             {
                                 "name": "CmsApiClientOptions__ContentIds",
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                            },
+                            {
+                              "name": "SkillsServiceOptions__ImageUrl"  ,
+                              "value": "https://cdsprdwesfstorage.blob.core.windows.net/skills-health-check/QuestionSetImages"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
@@ -420,6 +445,39 @@
                     },
                     "collectionName": {
                         "value": "[parameters('cosmosDbCollectionName')]"
+                    },
+                    "provisionRequestUnits": {
+                        "value": false
+                    },
+                    "partitionKey": {
+                        "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[variables('cosmosDBSessionStateCollectionName')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('CosmosDbDatabaseName')]"
+            ],
+            "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "accountName": {
+                        "value": "[parameters('cosmosDbName')]"
+                    },
+                    "databaseName": {
+                        "value": "[variables('cosmosDbDatabaseName')]"
+                    },
+                    "collectionName": {
+                        "value": "[variables('cosmosDBSessionStateCollectionName')]"
                     },
                     "provisionRequestUnits": {
                         "value": false
