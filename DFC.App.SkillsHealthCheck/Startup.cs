@@ -83,6 +83,7 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
+            services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.AddHostedServiceTelemetryWrapper();
             services.AddHostedService<SharedContentCacheReloadBackgroundService>();
             services.AddSubscriptionBackgroundService(configuration);
