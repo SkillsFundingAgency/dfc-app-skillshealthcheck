@@ -1,10 +1,12 @@
 ﻿@using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
 @using Microsoft.AspNetCore.Html
+@using Microsoft.Extensions.Options
+@using DFC.App.SkillsHealthCheck.Models
+@inject IOptions<SkillsServiceOptions> _skillServiceOptions;
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.EliminationAnswerQuestionViewModel
 
 @{
     var assessmentType = Model.Question.AssessmentType == AssessmentType.Numeric ? "Numerical" : Model.Question.AssessmentType.ToString();
-    var imageSrc = string.Format("https://cdsprdwesfstorage.blob.core.windows.net/skills-health-check/QuestionSetImages/{0}", assessmentType);
     var id = string.Empty;
     var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
 }
@@ -18,7 +20,7 @@
     <div class="form-group govuk-!-margin-bottom-5 @errorClass">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-visually-hidden">
-                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", imageSrc))))
+                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
             @{ var i = 0;
@@ -32,7 +34,7 @@
                             @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
                             @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
                             {
-                                <img src="@imageSrc/@posibleResponse.ImageSource" />}
+                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource}")" />}
                         </label> }
                     i++;
                 } }

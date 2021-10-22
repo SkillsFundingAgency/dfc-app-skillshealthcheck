@@ -34,7 +34,7 @@
         {
             imageNumber++;
             <div class="image_numbers">
-                <img src="@image.Src" alt="@image.Alttext" title="@image.Title" />
+                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
                 @if (imageNumber != Model.QuestionImages.Count())
                 {
                     <span>@imageNumber</span>
@@ -96,7 +96,7 @@ else
                         {
                             imageNumber++;
                             <div class="image_numbers">
-                                <img src="@image.Src" alt="@image.Alttext" title="@image.Title" />
+                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
                                 @if (imageNumber != Model.QuestionImages.Count())
                                 {
                                     <span>@imageNumber</span>}
