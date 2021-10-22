@@ -34,7 +34,7 @@
                             @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
                             @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
                             {
-                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource}")" />}
+                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource}")" alt="Image for @posibleResponse.Text" />}
                         </label> }
                     i++;
                 } }
