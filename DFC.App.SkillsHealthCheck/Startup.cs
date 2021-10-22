@@ -6,7 +6,9 @@ using DFC.App.SkillsHealthCheck.Data.Contracts;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services;
 using DFC.App.SkillsHealthCheck.Services.CacheContentService;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
 using DFC.Compui.Cosmos;
@@ -80,6 +82,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<IWebhooksService, WebhooksService>();
             services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
+            services.AddTransient<IQuestionService, QuestionService>();
 
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());

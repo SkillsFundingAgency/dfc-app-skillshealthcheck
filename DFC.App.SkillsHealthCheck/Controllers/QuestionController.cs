@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
-using DFC.App.SkillsHealthCheck.Factories;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
@@ -17,6 +16,7 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.ViewModels;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -29,21 +29,22 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
-        private readonly SkillsHealthCheckViewModelFactory _skillsHealthCheckViewModelFactory;
+        private readonly IQuestionService _questionService;
 
         public QuestionController(
             ILogger<QuestionController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            ISkillsHealthCheckService skillsHealthCheckService)
+            ISkillsHealthCheckService skillsHealthCheckService, 
+            IQuestionService questionService)
             : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.skillsHealthCheckService = skillsHealthCheckService;
-            _skillsHealthCheckViewModelFactory = new SkillsHealthCheckViewModelFactory(skillsHealthCheckService);
+            _questionService = questionService;
         }
 
         [HttpGet]
@@ -153,7 +154,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var assessmentQuestionOverview = await GetAssessmentQuestionsOverView(sessionDataModel, qnAssessmentType, level, accessibility, documentResponse.SkillsDocument);
 
-            var answerVm = _skillsHealthCheckViewModelFactory.GetAssessmentQuestionViewModel(sessionDataModel.DocumentId, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+            var answerVm = _questionService.GetAssessmentQuestionViewModel(skillsHealthCheckService, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
 
             switch (answerVm)
             {
@@ -185,7 +186,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews.ContainsKey(overviewSessionId) ? sessionDataModel.AssessmentQuestionsOverViews[overviewSessionId] : new AssessmentQuestionsOverView();
             if (assessmentQuestionOverview.ActualQuestionsNumber == 0)
             {
-                assessmentQuestionOverview = _skillsHealthCheckViewModelFactory.GetAssessmentQuestionsOverview(level, accessibility, assessmentType, skillsDocument);
+                assessmentQuestionOverview = _questionService.GetAssessmentQuestionsOverview(skillsHealthCheckService, level, accessibility, assessmentType, skillsDocument);
                 if (sessionDataModel.AssessmentQuestionsOverViews.ContainsKey(overviewSessionId))
                 {
                     sessionDataModel.AssessmentQuestionsOverViews[overviewSessionId] = assessmentQuestionOverview;
