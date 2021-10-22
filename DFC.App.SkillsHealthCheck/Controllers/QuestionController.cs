@@ -36,7 +36,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            ISkillsHealthCheckService skillsHealthCheckService, 
+            ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService)
             : base(logger, sessionStateService)
         {
