@@ -80,7 +80,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 _logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
 
-                return await _sessionStateService.GetAsync(compositeSessionId.Value).ConfigureAwait(false);
+                return await _sessionStateService.GetAsync(compositeSessionId.Value);
             }
 
             _logger.LogError($"Error getting the session state - compositeSessionId = {compositeSessionId}");
@@ -95,13 +95,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 _logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
 
-                var sessionStateModel = await _sessionStateService.GetAsync(compositeSessionId.Value).ConfigureAwait(false);
+                var sessionStateModel = await _sessionStateService.GetAsync(compositeSessionId.Value);
                 sessionStateModel.Ttl = 1800;
                 sessionStateModel.State = sessionDataModel;
 
                 _logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");
 
-                var result = await _sessionStateService.SaveAsync(sessionStateModel).ConfigureAwait(false);
+                var result = await _sessionStateService.SaveAsync(sessionStateModel);
 
                 return result == HttpStatusCode.OK || result == HttpStatusCode.Created;
             }
@@ -118,7 +118,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 _logger.LogInformation($"Deleting the session state - compositeSessionId = {compositeSessionId}");
 
-                return await _sessionStateService.DeleteAsync(compositeSessionId.Value).ConfigureAwait(false);
+                return await _sessionStateService.DeleteAsync(compositeSessionId.Value);
             }
 
             _logger.LogError($"Error deleting the session state - compositeSessionId = {compositeSessionId}");

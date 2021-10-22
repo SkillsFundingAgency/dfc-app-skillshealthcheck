@@ -1,5 +1,8 @@
-﻿namespace DFC.App.SkillsHealthCheck.ViewModels.Question
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 {
+    [ExcludeFromCodeCoverage]
     public class EliminationAnswerQuestionViewModel : AssessmentQuestionViewModel
     {
         public EliminationAnswerQuestionViewModel()

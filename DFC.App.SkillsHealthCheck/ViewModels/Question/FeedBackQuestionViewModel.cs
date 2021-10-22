@@ -1,4 +1,5 @@
-﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+﻿using System.Diagnostics.CodeAnalysis;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 {
@@ -6,6 +7,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
     /// Feedback Question Model
     /// </summary>
     /// <seealso cref="AssessmentQuestionViewModel" />
+    [ExcludeFromCodeCoverage]
     public class FeedBackQuestionViewModel : AssessmentQuestionViewModel
     {
         /// <summary>

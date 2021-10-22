@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 {
+    [ExcludeFromCodeCoverage]
     public class AssessmentQuestionViewModel
     {
         [Required(ErrorMessage = "Choose an answer")]
