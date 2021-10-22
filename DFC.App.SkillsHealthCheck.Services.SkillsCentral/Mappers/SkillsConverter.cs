@@ -134,7 +134,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
                     ImageSource =
                         string.IsNullOrWhiteSpace(answer.ImageSource)
                             ? string.Empty
-                            : $"{ConfigHelper.ImageStorageUrl}{assessmentTypeString}/{answer.ImageSource}",
+                            : $"{assessmentTypeString}/{answer.ImageSource}",
                     Text = answer.Text,
                     Value = answer.Value
                 });
@@ -155,7 +155,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers
                     ? "Numerical"
                     : assessmentType.ToString();
 
-            return $"{ConfigHelper.ImageStorageUrl}{assessmentTypeString}/{imageUrl}";
+            return $"{assessmentTypeString}/{imageUrl}";
         }
     }
 }

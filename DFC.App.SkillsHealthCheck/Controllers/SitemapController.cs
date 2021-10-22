@@ -35,7 +35,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             logger.LogInformation("Generating Sitemap");
 
-            var sitemapUrlPrefix = $"{Request.GetBaseAddress()}{SkillsHealthCheckController.RegistrationPath}";
+            var sitemapUrlPrefix = $"{Request.GetBaseAddress()}{HomeController.RegistrationPath}";
             var sitemap = new Sitemap();
 
             // add the defaults

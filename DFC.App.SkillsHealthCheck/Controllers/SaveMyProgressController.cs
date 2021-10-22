@@ -2,21 +2,22 @@
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
-
+using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
-    public class SaveMyProgressController : BaseController
+    public class SaveMyProgressController : BaseController<SaveMyProgressController>
     {
         public const string PageTitle = "Save My Progress";
 
         private readonly ILogger<SaveMyProgressController> logger;
 
-        public SaveMyProgressController(ILogger<SaveMyProgressController> logger)
+        public SaveMyProgressController(ILogger<SaveMyProgressController> logger, ISessionStateService<SessionDataModel> sessionStateService) : base(logger, sessionStateService)
         {
             this.logger = logger;
         }

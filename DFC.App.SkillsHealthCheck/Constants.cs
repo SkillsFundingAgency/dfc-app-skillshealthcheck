@@ -1,4 +1,6 @@
-﻿namespace DFC.App.SkillsHealthCheck
+﻿using System.Collections.Generic;
+
+namespace DFC.App.SkillsHealthCheck
 {
     public static class Constants
     {
@@ -265,6 +267,29 @@
 
             public const string HowEnjoyableToCompleteAssessment =
                 "Overall, how much did you enjoy completing the activity?";
+        }
+
+        /// <summary>
+        /// Skills health check question
+        /// </summary>
+        public static class SkillsHealthCheckQuestion
+        {
+            /// <summary>
+            /// The assessment type title
+            /// </summary>
+            public static Dictionary<string, string> AssessmentTypeTitle = new Dictionary<string, string>()
+            {
+                {"Motivation", "What you want from work"},
+                {"SkillAreas", "Learn about your skills"},
+                {"Abstract", "Solving abstract problems"},
+                {"Checking", "Checking information activity"},
+                {"Spatial", "Working with shapes"},
+                {"Verbal", "Verbal reasoning"},
+                {"Numeric", "Working with numbers"},
+                {"Mechanical", "Solving mechanical problems"},
+                {"Interest", "Work you're interested in"},
+                {"Personal", "How you prefer to work"},
+            };
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Net.Mime;
 
 using DFC.App.SkillsHealthCheck.Controllers;
+using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
-
+using DFC.Compui.Sessionstate;
 using FakeItEasy;
 
 using FluentAssertions;
@@ -21,6 +22,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
     {
         protected ILogger<SaveMyProgressController> Logger { get; } = A.Fake<ILogger<SaveMyProgressController>>();
 
+        protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
+
         [Fact]
         public void HtmlHeadRequestReturnsSuccess()
         {
@@ -30,7 +33,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
 
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
             var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<HtmlHeadViewModel>().Which;
-            Assert.Equal($"{SaveMyProgressController.PageTitle} | {BaseController.DefaultPageTitleSuffix}", viewModel.Title);
+            Assert.Equal($"{SaveMyProgressController.PageTitle} | {SaveMyProgressController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 
         [Fact]
@@ -64,7 +67,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new SaveMyProgressController(Logger)
+            var controller = new SaveMyProgressController(Logger, SessionStateService)
             {
                 ControllerContext = new ControllerContext()
                 {

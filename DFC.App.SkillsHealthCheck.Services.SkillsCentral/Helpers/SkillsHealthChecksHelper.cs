@@ -706,7 +706,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                             {
                                 Alttext = node.Attributes.GetAttributeValue("alttext"),
                                 Src =
-                                    $"{ConfigHelper.ImageStorageUrl}{assessmentTypeString}/{node.Attributes.GetAttributeValue("src")}",
+                                    $"{assessmentTypeString}/{node.Attributes.GetAttributeValue("src")}",
                                 Title = node.Attributes.GetAttributeValue("src")
                             });
                     }

@@ -1,6 +1,8 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Models;
 using DFC.Compui.Cosmos.Contracts;
+using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +16,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
     {
         protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; }
 
-        protected ILogger<SkillsHealthCheckController> Logger { get; }
+        protected ILogger<YourAssessmentsController> Logger { get; }
+
+        protected ISessionStateService<SessionDataModel> SessionStateService { get; }
 
         protected CmsApiClientOptions CmsApiClientOptions { get; set; }
 
@@ -22,7 +26,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
         protected BaseYourAssessmentsControllerTests()
         {
-            Logger = A.Fake<ILogger<SkillsHealthCheckController>>();
+            Logger = A.Fake<ILogger<YourAssessmentsController>>();
+            SessionStateService = A.Fake<ISessionStateService<SessionDataModel>>();
             FakeSharedContentItemDocumentService = A.Fake<IDocumentService<SharedContentItemModel>>();
             CmsApiClientOptions = new CmsApiClientOptions() { ContentIds = testContentId };
         }
@@ -33,7 +38,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new YourAssessmentsController(Logger, FakeSharedContentItemDocumentService, CmsApiClientOptions)
+            var controller = new YourAssessmentsController(Logger, SessionStateService, FakeSharedContentItemDocumentService, CmsApiClientOptions)
             {
                 ControllerContext = new ControllerContext()
                 {
