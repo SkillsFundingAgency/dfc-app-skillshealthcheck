@@ -128,13 +128,18 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var sessionDataModel = await GetSessionDataModel();
+            long documentId = 0;
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
             {
                 Response.Redirect(HomeURL);
             }
+            else
+            {
+                documentId = sessionDataModel.DocumentId;
+            }
 
             var documentResponse =
-                skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = sessionDataModel.DocumentId, });
+                skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId, });
 
             if (!documentResponse.Success)
             {
