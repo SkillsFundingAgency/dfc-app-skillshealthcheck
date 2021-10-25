@@ -103,6 +103,9 @@
         },
         "LoggingLogLevelDefault": {
             "value": "__LoggingLogLevelDefault__"
+        },
+        "SkillsServiceOptionsImageUrl": {
+            "value": "__SkillsServiceOptionsImageUrl__"
         }
     }
 }
