@@ -24,7 +24,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
-            Assert.Equal($"{HomeController.PageTitle} | {YourAssessmentsController.DefaultPageTitleSuffix}", viewModel.Title);
+            Assert.Equal($"{YourAssessmentsController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 
         [Fact]

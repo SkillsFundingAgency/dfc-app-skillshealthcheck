@@ -25,7 +25,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
-        public const string PageTitle = "Home";
 
         private readonly ILogger<HomeController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
@@ -53,7 +52,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check")]
         public async Task<IActionResult> Document()
         {
-            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetHomeBodyViewModel();
 
@@ -140,7 +139,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/htmlhead")]
         public IActionResult HtmlHead()
         {
-            var viewModel = GetHtmlHeadViewModel(PageTitle);
+            var viewModel = GetHtmlHeadViewModel(String.Empty);
 
             logger.LogInformation($"{nameof(HtmlHead)} has returned content");
 
