@@ -105,6 +105,9 @@
             "metadata": {
                 "description": "Logging__LogLevel__Default"
             }
+        },
+        "SkillsServiceOptionsImageUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -294,6 +297,10 @@
                             {
                                 "name": "CmsApiClientOptions__ContentIds",
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                            },
+                            {
+                              "name": "SkillsServiceOptions__ImageUrl"  ,
+                              "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
