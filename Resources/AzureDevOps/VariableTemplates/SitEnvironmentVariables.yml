@@ -32,9 +32,7 @@ variables:
   - name: SubscriptionSettingsFilterIncludeEventTypes4
     value:
   - name: SubscriptionSettingsFilterPropertyContainsFilters0Values0
-    value: /content/banner/
-  - name: SubscriptionSettingsFilterPropertyContainsFilters0Values1
-    value: /content/pagebanner/
+    value: /content/sharedcontent/
   - name: EnableAzureMonitorAlerting
     value: true
   - name: aspTier

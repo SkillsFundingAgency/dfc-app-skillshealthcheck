@@ -59,9 +59,6 @@
         "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
             "value": "SubscriptionSettingsFilterPropertyContainsFilters0Values0"
         },
-        "SubscriptionSettingsFilterPropertyContainsFilters0Values1": {
-            "value": "SubscriptionSettingsFilterPropertyContainsFilters0Values1"
-        },
         "ApplicationName": {
             "value": "ApplicationName"
         },
@@ -97,6 +94,9 @@
         },
         "LoggingLogLevelDefault": {
             "value": "TraceLog"
+        },
+        "SkillsServiceOptionsImageUrl":{
+            "value": "https://foo"
         }
     }
 }
