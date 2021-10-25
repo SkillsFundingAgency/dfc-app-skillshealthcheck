@@ -4,33 +4,23 @@
 @{
     var assessmentQuestionViewModel = Model.AssessmentQuestionViewModel;
 }
-
-
-<div class="govuk-width-container" id="details-body-block">
-    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                
-                <h1 class="govuk-heading-xl">
-                    <span class="govuk-caption-xl">  Question @assessmentQuestionViewModel.QuestionNumber out of @assessmentQuestionViewModel.ActualTotalQuestions</span> @assessmentQuestionViewModel.Question.AssessmentTitle
-                </h1>
-                
-                @if (!(assessmentQuestionViewModel is FeedBackQuestionViewModel) && assessmentQuestionViewModel.QuestionNumber == 1)
-                {
-                    <h2 class="heading-large">
-                        @assessmentQuestionViewModel.Question.SubTitle
-                    </h2>
-                    <p>
-                        @Html.Raw(assessmentQuestionViewModel.Question.IntroductionText)
-                    </p>
-                }
-
-                <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel"/>
-
-            </div>
-            <div class="govuk-grid-column-one-third">
-                <partial name="_RightBar" model="@Model.RightBarViewModel"/>
-            </div>
-        </div>
-    </main>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            <span class="govuk-caption-xl">  Question @assessmentQuestionViewModel.QuestionNumber out of @assessmentQuestionViewModel.ActualTotalQuestions</span> @assessmentQuestionViewModel.Question.AssessmentTitle
+        </h1>
+        @if (!(assessmentQuestionViewModel is FeedBackQuestionViewModel) && assessmentQuestionViewModel.QuestionNumber == 1)
+        {
+            <h2 class="heading-large">
+                @assessmentQuestionViewModel.Question.SubTitle
+            </h2>
+            <p>
+                @Html.Raw(assessmentQuestionViewModel.Question.IntroductionText)
+            </p>
+        }
+        <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <partial name="_RightBar" model="@Model.RightBarViewModel" />
+    </div>
 </div>
