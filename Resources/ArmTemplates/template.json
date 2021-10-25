@@ -67,9 +67,6 @@
         "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
             "type": "string"
         },
-        "SubscriptionSettingsFilterPropertyContainsFilters0Values1": {
-            "type": "string"
-        },
         "ApplicationName": {
             "type": "string"
         },
@@ -108,9 +105,6 @@
             "metadata": {
                 "description": "Logging__LogLevel__Default"
             }
-        },
-        "SkillsServiceOptionsImageUrl": {
-            "type": "string"
         }
     },
     "variables": {
@@ -124,8 +118,7 @@
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillshealthcheck'))]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
-        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]",
-        "cosmosDBSessionStateCollectionName": "session-state"
+        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
     },
     "resources": [
         {
@@ -276,30 +269,10 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
-                                "value": "[parameters('cosmosDbCollectionName')]"
+                                "value": "shared-content"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
-                                "value": "[variables('cosmosDbCollectionPartitionKey')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__AccessKey",
-                                "value": "[parameters('cosmosDbKey')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__EndpointUrl",
-                                "value": "[variables('cosmosDbEndpoint')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__DatabaseId",
-                                "value": "[variables('cosmosDbDatabaseName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__CollectionId",
-                                "value": "[variables('cosmosDBSessionStateCollectionName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__PartitionKey",
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
                             },
                             {
@@ -321,10 +294,6 @@
                             {
                                 "name": "CmsApiClientOptions__ContentIds",
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
-                            },
-                            {
-                              "name": "SkillsServiceOptions__ImageUrl"  ,
-                              "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
@@ -381,10 +350,6 @@
                             {
                                 "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__0",
                                 "value": "[parameters('SubscriptionSettingsFilterPropertyContainsFilters0Values0')]"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__1",
-                                "value": "[parameters('SubscriptionSettingsFilterPropertyContainsFilters0Values1')]"
                             },
                             {
                                 "name": "Logging__LogLevel__Default",
@@ -448,39 +413,6 @@
                     },
                     "collectionName": {
                         "value": "[parameters('cosmosDbCollectionName')]"
-                    },
-                    "provisionRequestUnits": {
-                        "value": false
-                    },
-                    "partitionKey": {
-                        "value": "[variables('cosmosDbCollectionPartitionKey')]"
-                    }
-                }
-            }
-        },
-        {
-            "apiVersion": "2017-05-10",
-            "name": "[variables('cosmosDBSessionStateCollectionName')]",
-            "type": "Microsoft.Resources/deployments",
-            "dependsOn": [
-                "[variables('CosmosDbDatabaseName')]"
-            ],
-            "resourceGroup": "[parameters('CosmosDbResourceGroup')]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'CosmosDb/cosmos-collection.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "accountName": {
-                        "value": "[parameters('cosmosDbName')]"
-                    },
-                    "databaseName": {
-                        "value": "[variables('cosmosDbDatabaseName')]"
-                    },
-                    "collectionName": {
-                        "value": "[variables('cosmosDBSessionStateCollectionName')]"
                     },
                     "provisionRequestUnits": {
                         "value": false
