@@ -35,7 +35,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return new HtmlHeadViewModel
             {
                 CanonicalUrl = new Uri($"{Request.GetBaseAddress()}/skills-health-check", UriKind.RelativeOrAbsolute),
-                Title = $"{pageTitle} | {DefaultPageTitleSuffix}",
+                Title = !string.IsNullOrWhiteSpace(pageTitle) ? $"{pageTitle} | {DefaultPageTitleSuffix}" : DefaultPageTitleSuffix,
             };
         }
 
