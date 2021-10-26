@@ -273,7 +273,7 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
-                                "value": "shared-content"
+                                "value": "[parameters('cosmosDbCollectionName')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
