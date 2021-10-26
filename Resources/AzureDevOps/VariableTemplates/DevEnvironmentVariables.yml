@@ -4,7 +4,7 @@ variables:
   - name: AppServiceName
     value: $(WebAppPrefix)-as
   - name: cosmosDBCollectionName
-    value: skillshealthcheck
+    value: shared-content
   - name: ResourceGroup
     value: $(WebAppPrefix)-rg
   - name: WebAppProjectName

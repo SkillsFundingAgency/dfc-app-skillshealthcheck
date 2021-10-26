@@ -121,7 +121,7 @@
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillshealthcheck'))]",
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
-        "cosmosDBSessionStateCollectionName": "shared-content",
+        "cosmosDBSessionStateCollectionName": "session-state",
         "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
     },
     "resources": [
@@ -273,7 +273,7 @@
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
-                                "value": "[variables('cosmosDBSessionStateCollectionName')]"
+                                "value": "[parameters('cosmosDbCollectionName')]"
                             },
                             {
                                 "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
