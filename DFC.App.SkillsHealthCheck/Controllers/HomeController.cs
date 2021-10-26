@@ -65,8 +65,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpPost]
-        [Route("skills-health-check/home")]
-        [Route("skills-health-check")]
+        [Route("skills-health-check/start-skills-health-check")]
+        [Route("skills-health-check/start-skills-health-check/body")]
         public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
         {
             if (await CheckValidSession())
