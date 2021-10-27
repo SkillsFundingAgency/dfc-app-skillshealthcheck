@@ -5,6 +5,7 @@ using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
 using DFC.Compui.Sessionstate;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -44,9 +45,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("skills-health-check/save-my-progress/document")]
         [Route("skills-health-check/save-my-progress/")]
-        public IActionResult Document()
+        [Route("skills-health-check/save-my-progress/document")]
+        public IActionResult Document([FromQuery] string? type)
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
@@ -55,14 +56,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 HtmlHeadViewModel = htmlHeadViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
-                SaveMyProgressViewModel = new SaveMyProgressViewModel(),
+                SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
             });
         }
 
         [HttpPost]
-        [Route("skills-health-check/save-my-progress/document")]
         [Route("skills-health-check/save-my-progress/")]
-        public IActionResult Document(SaveMyProgressViewModel model)
+        [Route("skills-health-check/save-my-progress/document")]
+        public IActionResult Document(SaveMyProgressViewModel model, [FromQuery] string? type)
         {
             if (!ModelState.IsValid)
             {
@@ -73,35 +74,37 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     HtmlHeadViewModel = htmlHeadViewModel,
                     BreadcrumbViewModel = breadcrumbViewModel,
-                    SaveMyProgressViewModel = new SaveMyProgressViewModel(),
+                    SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
                 });
             }
 
-            return RedirectToAction("GetCode");
+            return Redirect("/skills-health-check/save-my-progress/getcode");
         }
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/body")]
-        public IActionResult Body()
+        public IActionResult Body([FromQuery] string? type)
         {
-            return this.NegotiateContentResult(null);
+            var model = GetSaveMyProgressViewModel(type);
+            return this.NegotiateContentResult(model);
         }
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/body")]
-        public async Task<IActionResult> Body(SaveMyProgressViewModel model)
+        public async Task<IActionResult> Body(SaveMyProgressViewModel model, [FromQuery] string? type)
         {
             if (!ModelState.IsValid)
             {
-                return this.NegotiateContentResult(null);
+                var viewModel = GetSaveMyProgressViewModel(type);
+                return this.NegotiateContentResult(viewModel);
             }
 
-            return RedirectToAction("GetCode");
+            return Redirect("/skills-health-check/save-my-progress/getcode");
         }
 
         [HttpGet]
-        [Route("skills-health-check/save-my-progress/getcode/document")]
         [Route("skills-health-check/save-my-progress/getcode")]
+        [Route("skills-health-check/save-my-progress/getcode/document")]
         public IActionResult GetCode()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
@@ -114,6 +117,26 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 HtmlHeadViewModel = htmlHeadViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
             });
+        }
+
+        private static SaveMyProgressViewModel GetSaveMyProgressViewModel(string? type)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                return new SaveMyProgressViewModel
+                {
+                    ReturnLink = "/skills-health-check/your-assessments",
+                    ReturnLinkText = "Return to your skills health check",
+                };
+            }
+            else
+            {
+                return new SaveMyProgressViewModel
+                {
+                    ReturnLink = $"/skills-health-check/question?assessmentType={type}",
+                    ReturnLinkText = "Return to your skills health check assessment",
+                };
+            }
         }
     }
 }
