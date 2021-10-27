@@ -12,6 +12,7 @@ using DFC.App.SkillsHealthCheck.Data.Models.CmsApiModels;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Content.Pkg.Netcore.Data.Contracts;
+using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.Extensions.Logging;
 
@@ -23,10 +24,12 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
         private readonly AutoMapper.IMapper mapper;
         private readonly ICmsApiService cmsApiService;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
+        private readonly Guid sharedContentId;
 
         public WebhooksService(
             ILogger<WebhooksService> logger,
             AutoMapper.IMapper mapper,
+            CmsApiClientOptions cmsApiClientOptions,
             ICmsApiService cmsApiService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService)
         {
@@ -34,10 +37,17 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService
             this.mapper = mapper;
             this.cmsApiService = cmsApiService;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
+            sharedContentId = Guid.Parse(cmsApiClientOptions?.ContentIds);
         }
 
         public async Task<HttpStatusCode> ProcessMessageAsync(WebhookCacheOperation webhookCacheOperation, Guid eventId, Guid contentId, string apiEndpoint)
         {
+            if (sharedContentId != contentId)
+            {
+                logger.LogInformation($"Event Id: {eventId}, is not a shared content item we are subscribed to, so no content has been processed");
+                return HttpStatusCode.OK;
+            }
+
             switch (webhookCacheOperation)
             {
                 case WebhookCacheOperation.Delete:
