@@ -27,8 +27,6 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
         private readonly ICmsApiService fakeCmsApiService = A.Fake<ICmsApiService>();
         private readonly SharedContentCacheReloadService sharedContentCacheReloadService;
 
-        //private readonly CmsApiClientOptions cmsApiClientOptions;
-
         public SharedContentCacheReloadServiceTests()
         {
             var cmsApiClientOptions = new CmsApiClientOptions { ContentIds = Guid.NewGuid().ToString() };
@@ -56,7 +54,6 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var dummyContentItem = A.Dummy<SharedContentItemApiDataModel>();
 
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).Returns(dummyContentItem);
-            //var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
             await sharedContentCacheReloadService.Reload(CancellationToken.None);
@@ -73,7 +70,6 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             var dummyContentItem = A.Dummy<SharedContentItemApiDataModel>();
 
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).Returns(dummyContentItem);
-            //var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
             await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None);
@@ -90,7 +86,6 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests
             SharedContentItemApiDataModel? nullContentItem = null;
 
             A.CallTo(() => fakeCmsApiService.GetItemAsync<SharedContentItemApiDataModel>(A<string>.Ignored, A<Guid>.Ignored)).Returns(nullContentItem);
-            //var sharedContentCacheReloadService = new SharedContentCacheReloadService(A.Fake<ILogger<SharedContentCacheReloadService>>(), fakeMapper, fakeSharedContentItemDocumentService, fakeCmsApiService);
 
             //Act
             await sharedContentCacheReloadService.ReloadSharedContent(CancellationToken.None);
