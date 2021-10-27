@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
@@ -17,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.ViewModels;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -28,7 +25,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<QuestionController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
-        private readonly ISkillsHealthCheckService skillsHealthCheckService;
         private readonly IQuestionService _questionService;
 
         public QuestionController(
@@ -36,14 +32,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService)
             : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
-            this.skillsHealthCheckService = skillsHealthCheckService;
             _questionService = questionService;
         }
 
@@ -138,8 +132,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 documentId = sessionDataModel.DocumentId;
             }
 
-            var documentResponse =
-                skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId, });
+            var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId,});
 
             if (!documentResponse.Success)
             {
@@ -157,9 +150,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 Response.Redirect(HomeURL);
             }
 
-            var assessmentQuestionOverview = await GetAssessmentQuestionsOverView(sessionDataModel, qnAssessmentType, level, accessibility, documentResponse.SkillsDocument);
+            var assessmentQuestionOverview = _questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument);
+            await SetSessionStateAsync(sessionDataModel);
 
-            var answerVm = _questionService.GetAssessmentQuestionViewModel(skillsHealthCheckService, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+            var answerVm = _questionService.GetAssessmentQuestionViewModel(level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+            //answerVm.ValidationErrors = GetValidationErrors(); TODO: needs to be looked at
 
             switch (answerVm)
             {
@@ -173,7 +168,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     tabularAnswer.ViewName = "_AqChecking";
                     break;
                 case FeedBackQuestionViewModel feedBackQuestion:
-                    feedBackQuestion.ViewName = "_FeedBackQuestion";
+                    feedBackQuestion.ViewName = "_AqFeedBackQuestion";
                     break;
                 default:
                     answerVm.ViewName = "_AqSimpleRadio";
@@ -183,28 +178,200 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return answerVm;
         }
 
-        private async Task<AssessmentQuestionsOverView> GetAssessmentQuestionsOverView(SessionDataModel sessionDataModel, AssessmentType assessmentType, Level level, Accessibility accessibility, SkillsDocument skillsDocument)
+        [HttpPost]
+        [Route("skills-health-check/question/answer-question")]
+        [Route("skills-health-check/question/answer-question/body")]
+        public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model, string answerAction)
         {
-            var overviewSessionId = string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType);
-            sessionDataModel.AssessmentQuestionsOverViews ??= new Dictionary<string, AssessmentQuestionsOverView>();
-
-            var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews.ContainsKey(overviewSessionId) ? sessionDataModel.AssessmentQuestionsOverViews[overviewSessionId] : new AssessmentQuestionsOverView();
-            if (assessmentQuestionOverview.ActualQuestionsNumber == 0)
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
             {
-                assessmentQuestionOverview = _questionService.GetAssessmentQuestionsOverview(skillsHealthCheckService, level, accessibility, assessmentType, skillsDocument);
-                if (sessionDataModel.AssessmentQuestionsOverViews.ContainsKey(overviewSessionId))
-                {
-                    sessionDataModel.AssessmentQuestionsOverViews[overviewSessionId] = assessmentQuestionOverview;
-                }
-                else
-                {
-                    sessionDataModel.AssessmentQuestionsOverViews.Add(overviewSessionId, assessmentQuestionOverview);
-                }
-
-                await SetSessionStateAsync(sessionDataModel);
+                Response.Redirect(HomeURL);
             }
 
-            return assessmentQuestionOverview;
+            if (ModelState.IsValid)
+            {
+                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                if (saveAnswerResponse.Success)
+                {
+                    await SetSessionStateAsync(sessionDataModel);
+                    //UpdateShcUsageDate();
+                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+                    //DoNextAction(model, answerAction);
+                }
+
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+            }
+
+            ViewData["QuestionAnswerError"] = true;
+
+            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/question/answer-multiple-question")]
+        [Route("skills-health-check/question/answer-multiple-question/body")]
+        public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model, string answerAction)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                if (saveAnswerResponse.Success)
+                {
+                    await SetSessionStateAsync(sessionDataModel);
+                    //UpdateShcUsageDate();
+                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+                    //DoNextAction(model, answerAction);
+                }
+
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+            }
+
+            ViewData["QuestionAnswerError"] = true;
+
+            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/question/answer-elimination-question")]
+        [Route("skills-health-check/question/answer-elimination-question/body")]
+        public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model, string answerAction)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                if (saveAnswerResponse.Success)
+                {
+                    await SetSessionStateAsync(sessionDataModel);
+                    //UpdateShcUsageDate();
+                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+                    //DoNextAction(model, answerAction);
+                }
+
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+            }
+
+            ViewData["QuestionAnswerError"] = true;
+
+            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/question/answer-feedback-question")]
+        [Route("skills-health-check/question/answer-feedback-question/body")]
+        public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model, string answerAction)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                if (saveAnswerResponse.Success)
+                {
+                    //UpdateShcUsageDate();
+                    //switch (answerAction)
+                    //{
+                    //    case "returntoskillshealthcheckpage":
+                    //        Response.Redirect("/skills-assessment/skills-health-check/your-assessments", true);
+                    //        break;
+                    //    case "continue":
+                    //        Response.Redirect(
+                    //            $"/skills-assessment/skills-health-check/question?assessmentType={model.FeedbackQuestion.AssessmentType}",
+                    //            true);
+                    //        break;
+                    //    default:
+                    //        Response.Redirect(
+                    //            $"/skills-assessment/skills-health-check/question?assessmentType={model.FeedbackQuestion.AssessmentType}",
+                    //            true);
+                    //        break;
+                    //}
+                    return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}");
+                }
+
+                return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+            }
+
+            ViewData["QuestionAnswerError"] = true;
+
+            return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}");
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/question/answer-checking-question")]
+        [Route("skills-health-check/question/answer-checking-question/body")]
+        public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model, string answerAction)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+
+            CheckingQuestionValidation(model);
+
+            if (ModelState.IsValid)
+            {
+                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                if (saveAnswerResponse.Success)
+                {
+                    await SetSessionStateAsync(sessionDataModel);
+                    //UpdateShcUsageDate();
+                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+                    //DoNextAction(model, answerAction);
+                }
+
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+            }
+
+            ViewData["QuestionAnswerError"] = true;
+
+            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+        }
+
+        private void CheckingQuestionValidation(TabularAnswerQuestionViewModel model)
+        {
+            // TODO: it appears Sitefinity is used to provide a degree of validation message content control
+            //if (model.AnswerSelection == null || !model.AnswerSelection.Any())
+            //{
+            //    string errorMessage = "Choose an answer";
+            //    string currentPageUrl = Request.Url.AbsolutePath;
+            //    var validationSet = ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl, nameof(model.AnswerSelection));
+            //    if (validationSet != null && validationSet.Required && !string.IsNullOrEmpty(validationSet.RequiredErrorMessage))
+            //    {
+            //        errorMessage = validationSet.RequiredErrorMessage;
+            //    }
+
+            //    ModelState.AddModelError(nameof(model.AnswerSelection), errorMessage);
+            //}
+
+            //if (model.AnswerSelection != null && model.AnswerSelection.Count() > 1 &&
+            //    model.AnswerSelection.Any(val => val.Equals("E", StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    string errorMessage = "When No error is selected no other answer can be chosen";
+            //    string currentPageUrl = Request.Url.AbsolutePath;
+            //    var validationSet = ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl, nameof(model.AnswerSelection));
+            //    if (validationSet != null && !string.IsNullOrEmpty(validationSet.CustomValidationErrorMessage))
+            //    {
+            //        errorMessage = validationSet.CustomValidationErrorMessage;
+            //    }
+            //    ModelState.AddModelError(nameof(model.AnswerSelection), errorMessage);
+            //}
         }
     }
 }

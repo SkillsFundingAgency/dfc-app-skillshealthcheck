@@ -11,22 +11,28 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         [Required(ErrorMessage = "Choose an answer")]
         public string QuestionAnswer { get; set; }
 
-        public Services.SkillsCentral.Models.Question Question { get; set; }
-
-        public string SaveAnswerError { get; set; }
+        public Services.SkillsCentral.Models.Question? Question { get; set; }
 
         public int QuestionNumber { get; set; }
 
         public int ActualTotalQuestions { get; set; }
 
-        public IEnumerable<Image> QuestionImages { get; set; }
+        public IEnumerable<Image>? QuestionImages { get; set; }
 
         // Used to pass the error messages to the client-side validation script skillsHealthCheck.js
-        public SkillsHealthCheckValidationErrors ValidationErrors { get; set; }
+        public SkillsHealthCheckValidationErrors? ValidationErrors { get; set; }
         //Used to store the content from the sitefinity content block when fetched the title "Speak to an Adviser".
         //which is passed to the view to render the page . On the right hand side of the page
         //Speak to an Adviser is displayed.
 
-        public string ViewName { get; set; }
+        /// <summary>
+        /// Gets or sets the assessment title.
+        /// </summary>
+        /// <value>
+        /// The assessment title.
+        /// </value>
+        public string? AssessmentTitle { get; set; }
+
+        public string? ViewName { get; set; }
     }
 }

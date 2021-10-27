@@ -23,6 +23,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         public readonly string HomeURL = $"/{RegistrationPath}/home";
         public readonly string YourAssessmentsURL = $"/{RegistrationPath}/your-assessments";
+        public readonly string QuestionURL = $"/{RegistrationPath}/question";
 
         protected BaseController(ILogger<TController> logger, ISessionStateService<SessionDataModel> sessionStateService)
         {

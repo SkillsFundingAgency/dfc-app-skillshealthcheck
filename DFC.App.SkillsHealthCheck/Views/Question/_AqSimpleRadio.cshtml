@@ -85,7 +85,7 @@ else
 }
 
 
-<form method="post" id="skillsForm" class="form" asp-action="AnswerQuestion">
+<form method="post" id="skillsForm" class="form" action="/skills-health-check/question/answer-question">
     <div class="form-group govuk-!-margin-bottom-5 @errorClass">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-visually-hidden">
@@ -125,12 +125,14 @@ else
     <div class="form-group">
         @if (Model.Question.QuestionNumber != Model.ActualTotalQuestions)
         {
-            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" />
+        }
         else
         {
             <p>This is the final question.</p>
             <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
-            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />}
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />
+        }
 
     </div>
 

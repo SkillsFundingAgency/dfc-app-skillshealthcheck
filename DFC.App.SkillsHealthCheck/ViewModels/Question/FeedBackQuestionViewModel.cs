@@ -17,13 +17,5 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         /// The feedback question.
         /// </value>
         public FeedbackQuestion FeedbackQuestion { get; set; }
-        /// <summary>
-        /// Gets or sets the assessment title.
-        /// </summary>
-        /// <value>
-        /// The assessment title.
-        /// </value>
-        public string AssessmentTitle { get; set; }
-
     }
 }

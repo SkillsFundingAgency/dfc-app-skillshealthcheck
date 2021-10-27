@@ -7,7 +7,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">
-            <span class="govuk-caption-xl">  Question @assessmentQuestionViewModel.QuestionNumber out of @assessmentQuestionViewModel.ActualTotalQuestions</span> @assessmentQuestionViewModel.Question.AssessmentTitle
+            <span class="govuk-caption-xl">  Question @assessmentQuestionViewModel.QuestionNumber out of @assessmentQuestionViewModel.ActualTotalQuestions</span> @assessmentQuestionViewModel.AssessmentTitle
         </h1>
         @if (!(assessmentQuestionViewModel is FeedBackQuestionViewModel) && assessmentQuestionViewModel.QuestionNumber == 1)
         {
