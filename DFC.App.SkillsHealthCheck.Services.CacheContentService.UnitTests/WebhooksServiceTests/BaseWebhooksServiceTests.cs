@@ -4,6 +4,7 @@ using DFC.App.SkillsHealthCheck.Data.Models.CmsApiModels;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Content.Pkg.Netcore.Data.Contracts;
+using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using FakeItEasy;
 
@@ -28,8 +29,6 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
         }
 
         protected Guid ContentIdForCreate { get; } = Guid.NewGuid();
-
-        protected Guid ContentIdForUpdate { get; } = Guid.NewGuid();
 
         protected Guid ContentIdForDelete { get; } = Guid.NewGuid();
 
@@ -59,7 +58,7 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
         {
             var model = new SharedContentItemModel()
             {
-                Id = ContentIdForUpdate,
+                Id = ContentIdForCreate,
                 Etag = Guid.NewGuid().ToString(),
                 Title = "an-article",
                 Url = new Uri("https://localhost"),
@@ -74,7 +73,8 @@ namespace DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests.Webho
 
         protected WebhooksService BuildWebhooksService()
         {
-            var service = new WebhooksService(Logger, FakeMapper, FakeCmsApiService, FakeSharedContentItemDocumentService);
+            var cmsApiClientOptions = new CmsApiClientOptions { ContentIds = ContentIdForCreate.ToString() };
+            var service = new WebhooksService(Logger, FakeMapper, cmsApiClientOptions, FakeCmsApiService, FakeSharedContentItemDocumentService);
 
             return service;
         }
