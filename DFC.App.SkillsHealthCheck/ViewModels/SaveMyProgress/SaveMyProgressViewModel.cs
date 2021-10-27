@@ -14,5 +14,9 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
         [Range((int)SaveMyProgressOption.Email, (int)SaveMyProgressOption.ReferenceCode, ErrorMessage = SelectedOptionValidationError)]
         [EnumDataType(typeof(SaveMyProgressOption))]
         public SaveMyProgressOption? SelectedOption { get; set; }
+
+        public string? ReturnLink { get; set; }
+
+        public string? ReturnLinkText { get; set; }
     }
 }

@@ -3,7 +3,9 @@
 using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
+using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
 using DFC.Compui.Sessionstate;
+
 using FakeItEasy;
 
 using FluentAssertions;
@@ -55,10 +57,27 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Body();
+            var result = controller.Body(null);
 
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
-            viewResult.ViewData.Model.Should().BeNull();
+            viewResult.ViewData.Model.Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData(null, "/skills-health-check/your-assessments", "Return to your skills health check")]
+        [InlineData("Skills", "/skills-health-check/question?assessmentType=Skills", "Return to your skills health check assessment")]
+        public void BodyGetRequestReturnsSuccessAndCorrectReturnLink(string? type, string expectedReturnLink, string expectedReturnLinkText)
+        {
+            using var controller = BuildController(MediaTypeNames.Text.Html);
+
+            var result = controller.Body(type);
+
+            var viewResult = result.Should().BeOfType<ViewResult>().Which;
+            var model = viewResult.ViewData.Model.Should().NotBeNull()
+                .And.BeOfType<SaveMyProgressViewModel>().Which;
+
+            model.ReturnLink.Should().Be(expectedReturnLink);
+            model.ReturnLinkText.Should().Be(expectedReturnLinkText);
         }
 
         private SaveMyProgressController BuildController(string mediaTypeName)
