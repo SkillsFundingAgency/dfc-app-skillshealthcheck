@@ -34,11 +34,12 @@ namespace DFC.App.SkillsHealthCheck.Services
                 : Constants.SkillsHealthCheck.QuestionSetStartedAction;
         }
 
-        public BodyViewModel GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs = null)
+        public BodyViewModel GetAssessmentListViewModel(long documentId)
         {
+            // TODO: selected jobs not implemented as yet
             var model = new BodyViewModel
             {
-                JobFamilyList = new JobFamilyList { SelectedJobs = selectedJobs ?? new List<string>() },
+                JobFamilyList = new JobFamilyList { SelectedJobs = new List<string>() },
             };
 
             var apiResult = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest

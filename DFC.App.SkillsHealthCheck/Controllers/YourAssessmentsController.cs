@@ -105,7 +105,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 documentId = sessionDataModel.DocumentId;
             }
 
-
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {
@@ -126,111 +125,5 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         // TODO: all this below should be moved to a separate service once the SHC service layer has been implemented
-        private static List<AssessmentOverview> GetAssessmentList()
-        {
-            return new List<AssessmentOverview>
-                {
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Skills.Action,
-                        AssessmentName = Assessments.Skills.Title,
-                        AssessmentCategory = Assessments.Skills.Category,
-                        Description = Assessments.Skills.Description,
-                        AssessmentDuration = Assessments.Skills.TimeToComplete,
-                        AssessmentType = AssessmentType.SkillAreas,
-                        PersonalAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Interests.Action,
-                        AssessmentName = Assessments.Interests.Title,
-                        AssessmentCategory = Assessments.Interests.Category,
-                        Description = Assessments.Interests.Description,
-                        AssessmentDuration = Assessments.Interests.TimeToComplete,
-                        AssessmentType = AssessmentType.Interest,
-                        PersonalAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Personal.Action,
-                        AssessmentName = Assessments.Personal.Title,
-                        AssessmentCategory = Assessments.Personal.Category,
-                        Description = Assessments.Personal.Description,
-                        AssessmentDuration = Assessments.Personal.TimeToComplete,
-                        AssessmentType = AssessmentType.Personal,
-                        PersonalAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Motivation.Action,
-                        AssessmentName = Assessments.Motivation.Title,
-                        AssessmentCategory = Assessments.Motivation.Category,
-                        Description = Assessments.Motivation.Description,
-                        AssessmentDuration = Assessments.Motivation.TimeToComplete,
-                        AssessmentType = AssessmentType.Motivation,
-                        PersonalAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Numeric.Action,
-                        AssessmentName = Assessments.Numeric.Title,
-                        AssessmentCategory = Assessments.Numeric.Category,
-                        Description = Assessments.Numeric.Description,
-                        AssessmentDuration = Assessments.Numeric.TimeToComplete,
-                        AssessmentType = AssessmentType.Numeric,
-                        ActivityAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Verbal.Action,
-                        AssessmentName = Assessments.Verbal.Title,
-                        AssessmentCategory = Assessments.Verbal.Category,
-                        Description = Assessments.Verbal.Description,
-                        AssessmentDuration = Assessments.Verbal.TimeToComplete,
-                        AssessmentType = AssessmentType.Verbal,
-                        ActivityAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Checking.Action,
-                        AssessmentName = Assessments.Checking.Title,
-                        AssessmentCategory = Assessments.Checking.Category,
-                        Description = Assessments.Checking.Description,
-                        AssessmentDuration = Assessments.Checking.TimeToComplete,
-                        AssessmentType = AssessmentType.Checking,
-                        ActivityAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Mechanical.Action,
-                        AssessmentName = Assessments.Mechanical.Title,
-                        AssessmentCategory = Assessments.Mechanical.Category,
-                        Description = Assessments.Mechanical.Description,
-                        AssessmentDuration = Assessments.Mechanical.TimeToComplete,
-                        AssessmentType = AssessmentType.Mechanical,
-                        ActivityAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Spatial.Action,
-                        AssessmentName = Assessments.Spatial.Title,
-                        AssessmentCategory = Assessments.Spatial.Category,
-                        Description = Assessments.Spatial.Description,
-                        AssessmentDuration = Assessments.Spatial.TimeToComplete,
-                        AssessmentType = AssessmentType.Spatial,
-                        ActivityAssessment = true,
-                    },
-                    new AssessmentOverview
-                    {
-                        Action = Assessments.Abstract.Action,
-                        AssessmentName = Assessments.Abstract.Title,
-                        AssessmentCategory = Assessments.Abstract.Category,
-                        Description = Assessments.Abstract.Description,
-                        AssessmentDuration = Assessments.Abstract.TimeToComplete,
-                        AssessmentType = AssessmentType.Abstract,
-                        ActivityAssessment = true,
-                    },
-                };
-        }
     }
 }
