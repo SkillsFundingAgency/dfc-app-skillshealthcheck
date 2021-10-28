@@ -7,6 +7,7 @@ using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static DFC.App.SkillsHealthCheck.Constants;
 
 namespace DFC.App.SkillsHealthCheck.Services
 {
@@ -81,100 +82,100 @@ namespace DFC.App.SkillsHealthCheck.Services
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.SkillsAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.SkillsAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.SkillsAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.SkillsAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.SkillsAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Skills.Title,
+                        AssessmentCategory = Assessments.Skills.Category,
+                        Description = Assessments.Skills.Description,
+                        AssessmentDuration = Assessments.Skills.TimeToComplete,
                         AssessmentType = AssessmentType.SkillAreas,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.InterestsAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.InterestsAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.InterestsAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.InterestsAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.InterestsAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Interests.Title,
+                        AssessmentCategory = Assessments.Interests.Category,
+                        Description = Assessments.Interests.Description,
+                        AssessmentDuration = Assessments.Interests.TimeToComplete,
                         AssessmentType = AssessmentType.Interest,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.PersonalAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.PersonalAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.PersonalAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.PersonalAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.PersonalAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Personal.Title,
+                        AssessmentCategory = Assessments.Personal.Category,
+                        Description = Assessments.Personal.Description,
+                        AssessmentDuration = Assessments.Personal.TimeToComplete,
                         AssessmentType = AssessmentType.Personal,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.MotivationAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.MotivationAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.MotivatioAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.MotivationAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.MotivationAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Motivation.Title,
+                        AssessmentCategory = Assessments.Motivation.Category,
+                        Description = Assessments.Motivation.Description,
+                        AssessmentDuration = Assessments.Motivation.TimeToComplete,
                         AssessmentType = AssessmentType.Motivation,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.NumericAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.NumericAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.NumericAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.NumericAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.NumericAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Numeric.Title,
+                        AssessmentCategory = Assessments.Numeric.Category,
+                        Description = Assessments.Numeric.Description,
+                        AssessmentDuration = Assessments.Numeric.TimeToComplete,
                         AssessmentType = AssessmentType.Numeric,
                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.VerbalAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.VerbalAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.VerbalAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.VerbalAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.VerbalAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Verbal.Title,
+                        AssessmentCategory = Assessments.Verbal.Category,
+                        Description = Assessments.Verbal.Description,
+                        AssessmentDuration = Assessments.Verbal.TimeToComplete,
                         AssessmentType = AssessmentType.Verbal,
                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.CheckingAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.CheckingAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.CheckinAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.CheckingAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.CheckingAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Checking.Title,
+                        AssessmentCategory = Assessments.Checking.Category,
+                        Description = Assessments.Checking.Description,
+                        AssessmentDuration = Assessments.Checking.TimeToComplete,
                         AssessmentType = AssessmentType.Checking,
                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.MechanicalAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.MechanicalAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.MechanicalAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.MechanicalAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.MechanicalAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Mechanical.Title,
+                        AssessmentCategory = Assessments.Mechanical.Category,
+                        Description = Assessments.Mechanical.Description,
+                        AssessmentDuration = Assessments.Mechanical.TimeToComplete,
                         AssessmentType = AssessmentType.Mechanical,
                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.SpatialAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.SpatialAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.SpatialAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.SpatialAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.SpatialAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Spatial.Title,
+                        AssessmentCategory = Assessments.Spatial.Category,
+                        Description = Assessments.Spatial.Description,
+                        AssessmentDuration = Assessments.Spatial.TimeToComplete,
                         AssessmentType = AssessmentType.Spatial,
                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.AbstractAssessmentComplete),
-                        AssessmentName = Constants.SkillsHealthCheck.AbstractAssessmentTitle,
-                        AssessmentCategory = Constants.SkillsHealthCheck.AbstractAssessmentCategory,
-                        Description = Constants.SkillsHealthCheck.AbstractAssessmentDescription,
-                        AssessmentDuration = Constants.SkillsHealthCheck.AbstractAssessmentTimeToComplete,
+                        AssessmentName = Assessments.Abstract.Title,
+                        AssessmentCategory = Assessments.Abstract.Category,
+                        Description = Assessments.Abstract.Description,
+                        AssessmentDuration = Assessments.Abstract.TimeToComplete,
                         AssessmentType = AssessmentType.Abstract,
                         ActivityAssessment = true,
                     },
