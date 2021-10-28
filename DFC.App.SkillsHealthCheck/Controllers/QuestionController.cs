@@ -196,8 +196,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
-                    //DoNextAction(model, answerAction);
+
+                    return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
@@ -226,8 +226,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
-                    //DoNextAction(model, answerAction);
+
+                    return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
@@ -256,8 +256,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
-                    //DoNextAction(model, answerAction);
+                    
+                    return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
@@ -285,23 +285,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 if (saveAnswerResponse.Success)
                 {
                     //UpdateShcUsageDate();
-                    //switch (answerAction)
-                    //{
-                    //    case "returntoskillshealthcheckpage":
-                    //        Response.Redirect("/skills-assessment/skills-health-check/your-assessments", true);
-                    //        break;
-                    //    case "continue":
-                    //        Response.Redirect(
-                    //            $"/skills-assessment/skills-health-check/question?assessmentType={model.FeedbackQuestion.AssessmentType}",
-                    //            true);
-                    //        break;
-                    //    default:
-                    //        Response.Redirect(
-                    //            $"/skills-assessment/skills-health-check/question?assessmentType={model.FeedbackQuestion.AssessmentType}",
-                    //            true);
-                    //        break;
-                    //}
-                    return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}");
+
+                    return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
@@ -332,8 +317,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
-                    //DoNextAction(model, answerAction);
+                    
+                    return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
@@ -342,6 +327,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ViewData["QuestionAnswerError"] = true;
 
             return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+        }
+
+        private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
+        {
+            if (model.QuestionNumber != model.ActualTotalQuestions)
+            {
+                var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel) model).FeedbackQuestion.AssessmentType : model.Question.AssessmentType;
+                return Redirect($"{QuestionURL}?assessmentType={assessmenttype}");
+            }
+
+            return Redirect($"{YourAssessmentsURL}");
         }
 
         private void CheckingQuestionValidation(TabularAnswerQuestionViewModel model)

@@ -117,7 +117,7 @@ else
                             @posibleResponse.Text}
                         @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
                         {
-                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource.Trim()}")" alt="Image for @posibleResponse.Text.Trim()"/>}
+                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />}
                     </label> } }
         </fieldset>
     </div>
@@ -140,4 +140,5 @@ else
     @Html.HiddenFor(model => model.Question.QuestionNumber)
     @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
     @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.QuestionNumber)
 </form>
