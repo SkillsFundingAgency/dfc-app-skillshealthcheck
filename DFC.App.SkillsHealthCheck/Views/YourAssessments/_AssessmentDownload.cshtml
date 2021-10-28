@@ -1,5 +1,5 @@
 ﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
-@if (Model.AssessmentsCompleted.Count > 0)
+@if ((Model.AssessmentsCompleted != null) && (Model.AssessmentsCompleted.Count > 0))
 {
     <div class="govuk-grid-row govuk-!-margin-top-5">
         <div class="govuk-grid-column-full">

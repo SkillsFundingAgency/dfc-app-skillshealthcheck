@@ -1,6 +1,7 @@
 ﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">
             Skills Health Check
             <span class="govuk-caption-xl">Started @Model.DateAssessmentsCreated.ToString("dd MMMM yyyy HH:mm")</span>
@@ -16,10 +17,10 @@
                 <li> download your report at anytime if you have finished the assessment</li>
             </ul>
         </div>
-        <partial name="_AssessmentSummary" />
-        <partial name="_AssessmentAcordion" />
-        <partial name="_AssessmentNextSteps" />
-        <partial name="_AssessmentDownload" />
+        <partial name="_AssessmentSummary"/>
+        <partial name="_AssessmentAcordion"/>
+        <partial name="_AssessmentNextSteps"/>
+        <partial name="_AssessmentDownload"/>
     </div>
 
     <div class="govuk-grid-column-one-third">

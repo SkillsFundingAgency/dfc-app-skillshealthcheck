@@ -8,6 +8,7 @@ using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Enums;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Cosmos.Contracts;
@@ -29,17 +30,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<YourAssessmentsController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly IYourAssessmentsService yourAssessmentsService;
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions)
+            CmsApiClientOptions cmsApiClientOptions,
+            IYourAssessmentsService yourAssessmentsService)
         :base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
+            this.yourAssessmentsService = yourAssessmentsService;
         }
 
         [HttpGet]
@@ -90,10 +94,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetBodyViewModel()
         {
-            if (!await CheckValidSession())
+            var sessionDataModel = await GetSessionDataModel();
+            long documentId = 0;
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
             {
                 Response.Redirect(HomeURL);
             }
+            else
+            {
+                documentId = sessionDataModel.DocumentId;
+            }
+
 
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
@@ -108,16 +119,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
 
-            var assessments = GetAssessmentList();
+            var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId);
+            bodyViewModel.RightBarViewModel = rightBarViewModel;
 
-            return new BodyViewModel
-            {
-                DateAssessmentsCreated = DateTime.Now,
-                RightBarViewModel = rightBarViewModel,
-                AssessmentsActivity = assessments.Where(assess => assess.ActivityAssessment).ToList(),
-                AssessmentsPersonal = assessments.Where(assess => assess.PersonalAssessment).ToList(),
-                AssessmentsCompleted = new List<AssessmentOverview>(),
-            };
+            return bodyViewModel;
         }
 
         // TODO: all this below should be moved to a separate service once the SHC service layer has been implemented
