@@ -1,7 +1,5 @@
 ﻿@model DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress.SaveMyProgressViewModel
-@{
 
-}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post" class="compui-validation">
@@ -18,7 +16,8 @@
             <input class="govuk-button" type="submit" name="selectOption" value="Continue">
             <input id="BackLinkType" name="BackLinkType" type="hidden" value="">
         </form>
-
-        <p><a href="/skills-health-check/your-assessments">Return to your skills health check</a></p>
+        <p>
+            <a href="@(Model.ReturnLink)">@Model.ReturnLinkText</a>
+        </p>
     </div>
 </div>
