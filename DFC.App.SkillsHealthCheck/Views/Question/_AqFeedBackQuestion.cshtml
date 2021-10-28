@@ -11,7 +11,7 @@
 
 </h3>
 
-<form method="post" id="skillsForm" class="form" asp-action="AnswerFeedBackQuestion">
+<form method="post" id="skillsForm" class="form" action="/skills-health-check/question/answer-feedback-question">
     <div class="form-group govuk-!-margin-bottom-5 @errorClass">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-visually-hidden">
@@ -26,7 +26,8 @@
                         <label class="block-label govuk-label" for="@id">
                             @Html.RadioButtonFor(model => model.QuestionAnswer, @posibleResponse.AnswerValue, new { @id }) @posibleResponse.AnswerText
                         </label> }
-                } }
+                }
+            }
         </fieldset>
     </div>
     <p>You must select an answer to continue.</p>

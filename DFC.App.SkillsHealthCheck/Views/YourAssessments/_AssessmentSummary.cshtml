@@ -1,10 +1,40 @@
-﻿<div class="govuk-grid-row govuk-!-margin-top-7 govuk-!-padding-left-0">
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
+@{
+    var selectionListError = Convert.ToBoolean(ViewData["selectionListError"]) ? "error" : string.Empty;
+}
+
+<div class="govuk-grid-row govuk-!-margin-top-7 govuk-!-padding-left-0">
     <div class="govuk-grid-column-full">
-        <h2 class="govuk-heading-l">You have not started any assessments</h2>
-        <p class="govuk-body">Find out more about yourself by taking a:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li><a href="#personal-skills">personal skills assessment</a></li>
-            <li><a href="#work-based-skills">work-based skills assessment</a></li>
-        </ul>
+        @if (Model.AssessmentsStarted != null && (Model.AssessmentsStarted.Count > 0))
+        {
+            <h2 class="govuk-heading-l">You have @(Model.AssessmentsStarted.Count) @(Model.AssessmentsStarted.Count <= 1 ? " assessment" : " assessments")  in progress</h2>
+            <p class="govuk-body">Click on any of the assessments to complete them. </p>
+            <ul class="govuk-list govuk-list--bullet in-progress">
+                @foreach (var assessment in Model.AssessmentsStarted)
+                {
+                    <li><a href="#accordion-@assessment.AssessmentName.Replace(" ", string.Empty)">@assessment.AssessmentName</a></li>
+                }
+            </ul>
+        }
+        @if ((Model.AssessmentsCompleted != null) && (Model.AssessmentsCompleted.Count > 0))
+        {
+            <h2 class="govuk-heading-l">You have finished @(Model.AssessmentsCompleted.Count == 10 ? "all" : $"{Model.AssessmentsCompleted.Count} out of 10" ) assessments</h2>
+            <ul class="govuk-list govuk-list--bullet in-progress">
+                @foreach (var assessment in Model.AssessmentsCompleted)
+                {
+                    <li>@assessment.AssessmentName</li>
+                }
+            </ul>
+            <a href="#get-your-report" role="button" draggable="false" class="govuk-button" data-module="govuk-button">Get your report</a>
+        }
+        @if ((Model.AssessmentsStarted == null || Model.AssessmentsStarted.Count == 0) && (Model.AssessmentsCompleted == null || Model.AssessmentsCompleted.Count == 0))
+        {
+            <h2 class="govuk-heading-l">You have not started any assessments</h2>
+            <p class="govuk-body">Find out more about yourself by taking a:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li><a href="#personal-skills">personal skills assessment</a></li>
+                <li><a href="#work-based-skills">work-based skills assessment</a></li>
+            </ul>
+        }
     </div>
 </div>
