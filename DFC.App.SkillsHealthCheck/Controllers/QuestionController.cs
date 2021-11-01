@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -94,7 +95,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<BodyViewModel> GetBodyViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
+            var assessmentTypeEnum = assessmentQuestionViewModel is FeedBackQuestionViewModel
+                ? ((FeedBackQuestionViewModel) assessmentQuestionViewModel).FeedbackQuestion.AssessmentType
+                : assessmentQuestionViewModel.Question.AssessmentType;
 
+            return new BodyViewModel
+            {
+                AssessmentQuestionViewModel = assessmentQuestionViewModel,
+                RightBarViewModel = await GetRightBarViewModel(assessmentTypeEnum),
+            };
+        }
+
+        private async Task<RightBarViewModel> GetRightBarViewModel(AssessmentType assessmentType)
+        {
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {
@@ -104,19 +117,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var rightBarViewModel = new RightBarViewModel
             {
-                AssessmentType = assessmentQuestionViewModel is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel)assessmentQuestionViewModel).FeedbackQuestion.AssessmentType.ToString() : assessmentQuestionViewModel.Question.AssessmentType.ToString(),
+                AssessmentType = assessmentType.ToString(),
             };
+
             if (speakToAnAdviser != null)
             {
                 rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
 
-
-            return new BodyViewModel
-            {
-                AssessmentQuestionViewModel = assessmentQuestionViewModel,
-                RightBarViewModel = rightBarViewModel,
-            };
+            return rightBarViewModel;
         }
 
         private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
@@ -142,19 +151,22 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var qnAssessmentType = FromSet<AssessmentType>.Get(assessmentType, AssessmentType.SkillAreas);
 
-            var assessmentToBeCompleted = documentResponse.SkillsDocument.AssessmentNotCompleted(qnAssessmentType);
-
-            if (!assessmentToBeCompleted)
+            if (!documentResponse.SkillsDocument.AssessmentNotCompleted(qnAssessmentType))
             {
                 // TODO: probably an error response on the question page would be better but this is how current system handles this
                 Response.Redirect(HomeURL);
             }
 
             var assessmentQuestionOverview = _questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument);
+
             await SetSessionStateAsync(sessionDataModel);
 
-            var answerVm = _questionService.GetAssessmentQuestionViewModel(level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
-            //answerVm.ValidationErrors = GetValidationErrors(); TODO: needs to be looked at
+            return GetAssessmentQuestionViewModel(level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+        }
+
+        private AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView)
+        {
+            var answerVm = _questionService.GetAssessmentQuestionViewModel(level, accessibility, assessmentType, skillsDocument, assessmentQuestionsOverView);
 
             switch (answerVm)
             {
@@ -178,10 +190,42 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return answerVm;
         }
 
+        private async Task<IActionResult> ReturnErrorPostback(SessionDataModel sessionDataModel, Level level, Accessibility accessibility, AssessmentType assessmentType)
+        {
+            ViewData["QuestionAnswerError"] = true;
+
+            var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews[string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType)];
+            var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = sessionDataModel.DocumentId, });
+            var assessmentQuestionViewModel = GetAssessmentQuestionViewModel(level, accessibility, assessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+
+            var bodyViewModel = new BodyViewModel
+            {
+                AssessmentQuestionViewModel = assessmentQuestionViewModel,
+                RightBarViewModel = await GetRightBarViewModel(assessmentType),
+            };
+
+            if (Request.Path.Value.Contains("body"))
+            {
+                return this.NegotiateContentResult(bodyViewModel);
+            }
+
+            var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
+                t.Key.Equals(assessmentQuestionViewModel.Question.AssessmentType.ToString(), StringComparison.InvariantCultureIgnoreCase)).Value;
+            var htmlHeadViewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
+            var breadcrumbViewModel = BuildBreadcrumb();
+
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = bodyViewModel,
+            });
+        }
+
         [HttpPost]
         [Route("skills-health-check/question/answer-question")]
         [Route("skills-health-check/question/answer-question/body")]
-        public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model, string answerAction)
+        public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
@@ -203,15 +247,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
             }
 
-            ViewData["QuestionAnswerError"] = true;
-
-            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+            return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
         }
 
         [HttpPost]
         [Route("skills-health-check/question/answer-multiple-question")]
         [Route("skills-health-check/question/answer-multiple-question/body")]
-        public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model, string answerAction)
+        public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
@@ -233,15 +275,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
             }
 
-            ViewData["QuestionAnswerError"] = true;
-
-            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+            return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
         }
 
         [HttpPost]
         [Route("skills-health-check/question/answer-elimination-question")]
         [Route("skills-health-check/question/answer-elimination-question/body")]
-        public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model, string answerAction)
+        public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
@@ -256,22 +296,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    
                     return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
             }
 
-            ViewData["QuestionAnswerError"] = true;
-
-            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+            return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
         }
 
         [HttpPost]
         [Route("skills-health-check/question/answer-feedback-question")]
         [Route("skills-health-check/question/answer-feedback-question/body")]
-        public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model, string answerAction)
+        public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
@@ -292,15 +329,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
             }
 
-            ViewData["QuestionAnswerError"] = true;
-
-            return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}");
+            return await ReturnErrorPostback(sessionDataModel, model.FeedbackQuestion.Level, model.FeedbackQuestion.Accessibility, model.FeedbackQuestion.AssessmentType);
         }
 
         [HttpPost]
         [Route("skills-health-check/question/answer-checking-question")]
         [Route("skills-health-check/question/answer-checking-question/body")]
-        public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model, string answerAction)
+        public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
@@ -317,16 +352,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     //UpdateShcUsageDate();
-                    
                     return RedirectToNextAction(model);
                 }
 
                 return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
             }
 
-            ViewData["QuestionAnswerError"] = true;
-
-            return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}");
+            return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
         }
 
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
@@ -342,32 +374,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private void CheckingQuestionValidation(TabularAnswerQuestionViewModel model)
         {
-            // TODO: it appears Sitefinity is used to provide a degree of validation message content control
-            //if (model.AnswerSelection == null || !model.AnswerSelection.Any())
-            //{
-            //    string errorMessage = "Choose an answer";
-            //    string currentPageUrl = Request.Url.AbsolutePath;
-            //    var validationSet = ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl, nameof(model.AnswerSelection));
-            //    if (validationSet != null && validationSet.Required && !string.IsNullOrEmpty(validationSet.RequiredErrorMessage))
-            //    {
-            //        errorMessage = validationSet.RequiredErrorMessage;
-            //    }
+            if (model.AnswerSelection == null || !model.AnswerSelection.Any())
+            {
+                ModelState.AddModelError(nameof(model.AnswerSelection), "Choose an answer");
+            }
 
-            //    ModelState.AddModelError(nameof(model.AnswerSelection), errorMessage);
-            //}
-
-            //if (model.AnswerSelection != null && model.AnswerSelection.Count() > 1 &&
-            //    model.AnswerSelection.Any(val => val.Equals("E", StringComparison.OrdinalIgnoreCase)))
-            //{
-            //    string errorMessage = "When No error is selected no other answer can be chosen";
-            //    string currentPageUrl = Request.Url.AbsolutePath;
-            //    var validationSet = ValidationRulesProvider.GetValidationSetPerPageAndPropertyName(currentPageUrl, nameof(model.AnswerSelection));
-            //    if (validationSet != null && !string.IsNullOrEmpty(validationSet.CustomValidationErrorMessage))
-            //    {
-            //        errorMessage = validationSet.CustomValidationErrorMessage;
-            //    }
-            //    ModelState.AddModelError(nameof(model.AnswerSelection), errorMessage);
-            //}
+            if (model.AnswerSelection != null && model.AnswerSelection.Count() > 1 && model.AnswerSelection.Any(val => val.Equals("E", StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError(nameof(model.AnswerSelection), "When No error is selected no other answer can be chosen");
+            }
         }
     }
 }
