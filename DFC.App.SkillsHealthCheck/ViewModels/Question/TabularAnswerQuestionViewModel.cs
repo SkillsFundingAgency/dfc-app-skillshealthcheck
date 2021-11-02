@@ -35,6 +35,6 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         /// <value>
         /// The answer selection.
         /// </value>
-        public IEnumerable<string> AnswerSelection { get; set; }
+        public IEnumerable<string>? AnswerSelection { get; set; }
     }
 }
