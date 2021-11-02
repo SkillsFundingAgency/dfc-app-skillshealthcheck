@@ -27,6 +27,9 @@
                 "IsHealthy": true,
                 "OfflineHtml": "<H3>Service Unavailable</H3>"
             }
-        ]
+        ],
+		"JavaScriptNames": {
+			"/js/dfc-app-skillshealthcheck.min.js": null
+		}
     }
 ]

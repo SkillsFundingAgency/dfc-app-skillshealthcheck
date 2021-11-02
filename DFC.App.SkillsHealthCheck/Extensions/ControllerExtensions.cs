@@ -39,7 +39,10 @@ namespace DFC.App.SkillsHealthCheck.Extensions
                             var viewName = ((AssessmentQuestionViewModel) viewModel).ViewName;
                             return controller.View(viewName, viewModel);
                         }
-
+                        else if (viewModel is DocumentViewModel)
+                        {
+                            return controller.View("Document", viewModel);
+                        }
                         return controller.View(viewModel);
                     }
                 }
