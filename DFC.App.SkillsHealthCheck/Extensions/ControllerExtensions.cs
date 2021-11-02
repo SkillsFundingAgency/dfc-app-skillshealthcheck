@@ -34,12 +34,11 @@ namespace DFC.App.SkillsHealthCheck.Extensions
 
                     if (items.Contains(MediaTypeNames.Text.Html, StringComparer.OrdinalIgnoreCase) || items.Contains("*/*"))
                     {
-                        if (viewModel is AssessmentQuestionViewModel)
+                        if (viewModel is BodyViewModel)
                         {
-                            var viewName = ((AssessmentQuestionViewModel) viewModel).ViewName;
-                            return controller.View(viewName, viewModel);
+                            return controller.View("Body", viewModel);
                         }
-                        else if (viewModel is DocumentViewModel)
+                        if (viewModel is DocumentViewModel)
                         {
                             return controller.View("Document", viewModel);
                         }
