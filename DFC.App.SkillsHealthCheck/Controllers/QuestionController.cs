@@ -63,6 +63,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/question/htmlhead")]
+        [Route("skills-health-check/question/answer-question/htmlhead")]
+        [Route("skills-health-check/question/answer-multiple-question/htmlhead")]
+        [Route("skills-health-check/question/answer-elimination-question/htmlhead")]
+        [Route("skills-health-check/question/answer-feedback-question/htmlhead")]
+        [Route("skills-health-check/question/answer-checking-question/htmlhead")]
         public IActionResult HtmlHead(string assessmentType)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
@@ -75,6 +80,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/question/breadcrumb")]
+        [Route("skills-health-check/question/answer-question/breadcrumb")]
+        [Route("skills-health-check/question/answer-multiple-question/breadcrumb")]
+        [Route("skills-health-check/question/answer-elimination-question/breadcrumb")]
+        [Route("skills-health-check/question/answer-feedback-question/breadcrumb")]
+        [Route("skills-health-check/question/answer-checking-question/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -95,8 +105,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<BodyViewModel> GetBodyViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
-            var assessmentTypeEnum = assessmentQuestionViewModel is FeedBackQuestionViewModel
-                ? ((FeedBackQuestionViewModel) assessmentQuestionViewModel).FeedbackQuestion.AssessmentType
+            var assessmentTypeEnum = assessmentQuestionViewModel is FeedBackQuestionViewModel fqvm
+                ? fqvm.FeedbackQuestion.AssessmentType
                 : assessmentQuestionViewModel.Question.AssessmentType;
 
             return new BodyViewModel
