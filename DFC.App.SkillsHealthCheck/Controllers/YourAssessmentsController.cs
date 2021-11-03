@@ -27,7 +27,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
-        private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
 
         public YourAssessmentsController(
@@ -35,8 +34,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            IYourAssessmentsService yourAssessmentsService,
-            ISkillsHealthCheckService skillsHealthCheckService)
+            IYourAssessmentsService yourAssessmentsService,)
 
         : base(logger, sessionStateService)
         {
@@ -44,7 +42,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.yourAssessmentsService = yourAssessmentsService;
-            this.skillsHealthCheckService = skillsHealthCheckService;
 
         }
 
