@@ -5,8 +5,8 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Enums;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Sessionstate;

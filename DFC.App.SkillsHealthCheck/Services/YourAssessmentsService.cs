@@ -1,5 +1,4 @@
-﻿using DFC.App.SkillsHealthCheck.Enums;
-using DFC.App.SkillsHealthCheck.Models;
+﻿using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
@@ -7,6 +6,9 @@ using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using static DFC.App.SkillsHealthCheck.Constants;
 
 namespace DFC.App.SkillsHealthCheck.Services
@@ -14,10 +16,289 @@ namespace DFC.App.SkillsHealthCheck.Services
     public class YourAssessmentsService : IYourAssessmentsService
     {
         private ISkillsHealthCheckService _skillsHealthCheckService;
+        private IUserAssetService _userAssetService;
 
-        public YourAssessmentsService(ISkillsHealthCheckService skillsHealthCheckService)
+        public YourAssessmentsService(ISkillsHealthCheckService skillsHealthCheckService,
+            IUserAssetService userAssetService,
+            IQuestionService questionService)
         {
+            _questionService = questionService;
+            _userAssetService = userAssetService;
             _skillsHealthCheckService = skillsHealthCheckService;
+        }
+
+        public DocumentFormatter GetFormatter(DownloadType downloadType)
+        {
+            return downloadType == DownloadType.Pdf
+                ? new DocumentFormatter
+                {
+                    Title = DocumentTitle.Pdf,
+                    FileExtension = DocumentFileExtensions.Pdf,
+                    ContentType = DocumentContentTypes.Pdf,
+                    FormatterName = DocumentFormatName.ShcFullPdfFormatter,
+                }
+                : new DocumentFormatter
+                {
+                    Title = DocumentTitle.Word,
+                    FileExtension = DocumentFileExtensions.Docx,
+                    ContentType = DocumentContentTypes.Docx,
+                    FormatterName = DocumentFormatName.ShcFullDocxFormatter,
+                };
+        }
+
+        public DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, out string documentTitle)
+        {
+            var documentId = sessionDataModel.DocumentId;
+
+            var skillsDocumentResponse = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
+            {
+                DocumentId = documentId,
+            });
+
+            if (skillsDocumentResponse.Success)
+            {
+                var downloadDocumentResponse = GetDownloadDocument(sessionDataModel, skillsDocumentResponse, formatter);
+                documentTitle = skillsDocumentResponse.SkillsDocument.SkillsDocumentTitle;
+                return downloadDocumentResponse;
+            }
+
+            documentTitle = string.Empty;
+            return new DownloadDocumentResponse
+            {
+                Success = false,
+            };
+        }
+
+        private DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, bool retry = false)
+        {
+            var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse {Success = true};
+            var skillsDocument = documentResponse.SkillsDocument;
+
+            //TODO: relates to a completed all assessments skills health check
+            //if (model.SkillsAssessmentComplete)
+            //{
+            //    for (var clearJob = 1; clearJob < 4; clearJob++)
+            //    {
+            //        skillsDocumentRequest.SkillsDocument =
+            //            skillsDocumentRequest.SkillsDocument.UpdateJobFamilyDataValue(clearJob, string.Empty);
+            //    }
+
+            //    if (model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
+            //    {
+            //        var jobNumber = 1;
+
+            //        foreach (var selectedJob in model.JobFamilyList.SelectedJobs)
+            //        {
+            //            skillsDocumentRequest.SkillsDocument =
+            //                skillsDocumentRequest.SkillsDocument.UpdateJobFamilyDataValue(jobNumber,
+            //                    selectedJob);
+            //            jobNumber++;
+            //        }
+            //    }
+
+            //    updateSkillsDocRequest = ServiceClient.SaveQuestionAnswer(new SaveQuestionAnswerRequest
+            //    {
+            //        DocumentId = documentId,
+            //        SkillsDocument = skillsDocumentRequest.SkillsDocument
+            //    });
+            //}
+
+            if (saveQuestionAnswerResponse.Success)
+            {
+                var result =
+                    Task.Run(
+                        () =>
+                            _userAssetService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName,
+                                skillsDocument.CreatedBy)).Result;
+
+                while (new[] {"Pending", "Creating"}.Contains(result, StringComparer.OrdinalIgnoreCase))
+                {
+                    Task.WaitAll(Task.Delay(1000));
+                    result =
+                        Task.Run(
+                                () =>
+                                    _userAssetService.QueryDownloadStatus(skillsDocument.DocumentId,
+                                        formatter.FormatterName))
+                            .Result;
+                }
+
+                if (result.Equals("Created", StringComparison.OrdinalIgnoreCase))
+                {
+                    var downloadRequest = new DownloadDocumentRequest
+                    {
+                        DocumentId = skillsDocument.DocumentId,
+                        Formatter = formatter.FormatterName,
+                    };
+
+                    var downloadResponse =
+                        Task.Run(() => _skillsHealthCheckService.DownloadDocument(downloadRequest)).Result;
+
+                    if (downloadResponse.Success)
+                    {
+                        return downloadResponse;
+                        //UpdateShcUsageDate();
+                    }
+                }
+
+                if (result.Equals("Error", StringComparison.OrdinalIgnoreCase) && !retry)
+                {
+                    saveQuestionAnswerResponse = UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(sessionDataModel, saveQuestionAnswerResponse, skillsDocument);
+                    if (saveQuestionAnswerResponse.Success)
+                    {
+                        return GetDownloadDocument(sessionDataModel, documentResponse, formatter, true);
+                    }
+                }
+            }
+
+            return new DownloadDocumentResponse
+            {
+                Success = false,
+            };
+        }
+
+        private SaveQuestionAnswerResponse UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(SessionDataModel sessionDataModel, SaveQuestionAnswerResponse saveQuestionAnswerResponse, SkillsDocument skillsDocument)
+        {
+            var diagnosticReportDataValues = skillsDocument.SkillsDocumentDataValues.Where(dv =>
+                validDataValues.Any(vdv =>
+                    dv.Title.Contains(vdv.Key, StringComparison.InvariantCultureIgnoreCase)));
+
+            // correct data issue
+            foreach (var dataValue in diagnosticReportDataValues.Where(dv => dv.Value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var validDataValue = validDataValues.First(vdv => vdv.Key.Equals(dataValue.Title, StringComparison.InvariantCultureIgnoreCase));
+                CheckAssessmentTypeDataValueAndCorrect(sessionDataModel, skillsDocument, validDataValue.Value, validDataValue.Key);
+            }
+
+            saveQuestionAnswerResponse =
+                _skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
+                {
+                    DocumentId = skillsDocument.DocumentId,
+                    SkillsDocument = skillsDocument,
+                });
+
+            return saveQuestionAnswerResponse;
+        }
+
+        private readonly Dictionary<string, AssessmentType> validDataValues = new Dictionary<string, AssessmentType>
+        {
+            {Constants.SkillsHealthCheck.NumericAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.VerbalAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.CheckingAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.MechanicalAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.SpatialAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.SkillsAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.InterestsAssessmentDataValue, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.PersonalAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.MotivationAssessmentComplete, AssessmentType.Numeric},
+            {Constants.SkillsHealthCheck.AbstractAssessmentComplete, AssessmentType.Numeric},
+        };
+
+        private IQuestionService _questionService;
+
+        private void CheckAssessmentTypeDataValueAndCorrect(SessionDataModel sessionDataModel, SkillsDocument skillsDocument, AssessmentType assessmentType, string assessmentCompleteTitle)
+        {
+            var answersDataValue = skillsDocument.SkillsDocumentDataValues.FirstOrDefault(docValue => docValue.Title.Equals(assessmentCompleteTitle.Replace("Complete", "Answers")));
+            if (answersDataValue != null)
+            {
+                var completedAnswers = answersDataValue.Value.Split(',').ToList();
+                var assessmentOverview = _questionService.GetAssessmentQuestionsOverview(sessionDataModel, Level.Level1, Accessibility.Full, assessmentType, skillsDocument);
+                int expectedAnswerCount;
+                switch (assessmentType)
+                {
+                    case AssessmentType.Abstract:
+                    case AssessmentType.Spatial:
+                    case AssessmentType.Verbal:
+                    case AssessmentType.Mechanical:
+                    case AssessmentType.Numeric:
+                        expectedAnswerCount = assessmentOverview.TotalQuestionsNumber;
+                        break;
+
+                    case AssessmentType.Personal:
+                    case AssessmentType.SkillAreas:
+                    case AssessmentType.Checking:
+                    case AssessmentType.Interest:
+                    case AssessmentType.Motivation:
+                        expectedAnswerCount = assessmentOverview.ActualQuestionsNumber;
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(assessmentType), assessmentType, null);
+                }
+
+                if (expectedAnswerCount < completedAnswers.Count)
+                {
+                    //Log.Writer.Write(
+                    //  $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
+                    //  new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
+                    //  1, TraceEventType.Error);
+
+                    var updatedList = completedAnswers.Take(expectedAnswerCount);
+
+                    answersDataValue.Value = string.Join(",", updatedList);
+
+                    //Log.Writer.Write(
+                    //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
+                    //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
+                    //    1, TraceEventType.Error);
+                }
+                else if (expectedAnswerCount > completedAnswers.Count)
+                {
+                    //Log.Writer.Write(
+                    //    $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Although marked as completed, Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
+                    //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
+                    //    1, TraceEventType.Error);
+
+                    var titleDataValue =
+                        skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
+                            docValue =>
+                                docValue.Title.Equals(
+                                    assessmentCompleteTitle, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (titleDataValue != null &&
+                        titleDataValue.Value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        // Start - Reset Survey Questions
+                        var howLongDocValue =
+                            skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
+                                docValue =>
+                                    docValue.Title.Equals($"{assessmentType}.Timing", StringComparison.OrdinalIgnoreCase));
+
+                        if (howLongDocValue != null)
+                        {
+                            howLongDocValue.Value = string.Empty;
+                        }
+
+                        var howEasyDocValue =
+                            skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
+                                docValue =>
+                                    docValue.Title.Equals($"{assessmentType}.Ease", StringComparison.OrdinalIgnoreCase));
+
+                        if (howEasyDocValue != null)
+                        {
+                            howEasyDocValue.Value = string.Empty;
+                        }
+
+                        var howEnjoyableDocValue =
+                            skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
+                                docValue =>
+                                    docValue.Title.Equals($"{assessmentType}.Enjoyment",
+                                        StringComparison.OrdinalIgnoreCase));
+
+                        if (howEnjoyableDocValue != null)
+                        {
+                            howEnjoyableDocValue.Value = string.Empty;
+                        }
+
+                        // Done - Reset Survey Questions
+
+                        titleDataValue.Value = bool.FalseString;
+                        //Log.Writer.Write(
+                        //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment from 'Complete = True' to 'Complete = {titleDataValue.Value}', reset additional surver questions",
+                        //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
+                        //    1, TraceEventType.Error);
+                    }
+                }
+            }
         }
 
         private string GetAssessmentOverviewAction(Dictionary<string, string> diagnosticReportDataValues, string key)

@@ -84,6 +84,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<IWebhooksService, WebhooksService>();
             services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
+            services.AddTransient<IUserAssetService, UserAssetService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
 

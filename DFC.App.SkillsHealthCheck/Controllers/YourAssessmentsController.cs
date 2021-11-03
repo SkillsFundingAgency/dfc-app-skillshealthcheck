@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
-using DFC.App.SkillsHealthCheck.Enums;
+﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using static DFC.App.SkillsHealthCheck.Constants;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -26,24 +23,29 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";
-        public const string PagePart = "your-assessments";
         private readonly ILogger<YourAssessmentsController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
+        private readonly ISkillsHealthCheckService skillsHealthCheckService;
+
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            IYourAssessmentsService yourAssessmentsService)
-        :base(logger, sessionStateService)
+            IYourAssessmentsService yourAssessmentsService,
+            ISkillsHealthCheckService skillsHealthCheckService)
+
+        : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.yourAssessmentsService = yourAssessmentsService;
+            this.skillsHealthCheckService = skillsHealthCheckService;
+
         }
 
         [HttpGet]
@@ -124,6 +126,35 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return bodyViewModel;
         }
 
-        // TODO: all this below should be moved to a separate service once the SHC service layer has been implemented
+        [HttpPost]
+        [Route("skills-health-check/your-assessments/download-document")]
+        [Route("skills-health-check/your-assessments/download-document/body")]
+        public async Task<IActionResult> DownloadDocument(BodyViewModel model)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+            else if (ModelState.IsValid)
+            {
+                var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
+                var downloadDocumentResponse = yourAssessmentsService.GetDownloadDocument(sessionDataModel, formatter, out string documentTitle);
+                if (downloadDocumentResponse.Success)
+                {
+                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{documentTitle}{formatter.FileExtension}");
+                }
+            }
+
+            var errors = ModelState.Where(val => val.Value.Errors.Count > 0).Select(md => md.Key);
+
+            var errorList = errors as IList<string> ?? errors.ToList();
+            ViewData["selectionListError"] = errorList.Any(key => key.ToLower().Contains("selectedjobs"));
+
+            //TODO: need to error properly
+            return this.NegotiateContentResult(model);
+
+            //return View("AssessmentsList", GetAssessmentListViewModel(string.Empty, default(long), string.Empty, model.JobFamilyList?.SelectedJobs));
+        }
     }
 }
