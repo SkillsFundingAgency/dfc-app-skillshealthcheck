@@ -1,31 +1,21 @@
 ﻿using System.Net.Mime;
 
 using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Enums;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
-using DFC.Compui.Sessionstate;
-
-using FakeItEasy;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
 
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressControllerTests
 {
     [Trait("Category", "Save My Progress Unit Tests")]
-    public class SaveMyProgressControllerTests
+    public class SaveMyProgressControllerTests : SaveMyProgressControllerTestsBase
     {
-        protected ILogger<SaveMyProgressController> Logger { get; } = A.Fake<ILogger<SaveMyProgressController>>();
-
-        protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
-
         [Fact]
         public void HtmlHeadRequestReturnsSuccess()
         {
@@ -52,17 +42,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             viewModel.Breadcrumbs[0].Title.Should().Be("Home");
         }
 
-        [Fact]
-        public void BodyGetRequestReturnsSuccess()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-
-            var result = controller.Body(null);
-
-            var viewResult = result.Should().BeOfType<ViewResult>().Which;
-            viewResult.ViewData.Model.Should().NotBeNull();
-        }
-
         [Theory]
         [InlineData(null, "/skills-health-check/your-assessments", "Return to your skills health check")]
         [InlineData("Skills", "/skills-health-check/question?assessmentType=Skills", "Return to your skills health check assessment")]
@@ -80,21 +59,19 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             model.ReturnLinkText.Should().Be(expectedReturnLinkText);
         }
 
-        private SaveMyProgressController BuildController(string mediaTypeName)
+        [Theory]
+        [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email?type=")]
+        [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode?type=")]
+        public void BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
         {
-            var httpContext = new DefaultHttpContext();
+            using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
+            var model = new SaveMyProgressViewModel { SelectedOption = option };
+            var result = controller.Body(model, null);
 
-            var controller = new SaveMyProgressController(Logger, SessionStateService)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = httpContext,
-                },
-            };
-
-            return controller;
+            result.Should().NotBeNull();
+            var redirectResult = result.Should().BeOfType<RedirectResult>().Which;
+            redirectResult.Url.Should().Be(expectedUrl);
         }
     }
 }
