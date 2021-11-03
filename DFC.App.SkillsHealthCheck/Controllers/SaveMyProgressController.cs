@@ -135,6 +135,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/getcode/body")]
+        public async Task<IActionResult> GetCodeBody(ReferenceNumberViewModel model, [FromQuery] string? type)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: send a text message
+                TempData["PhoneNumber"] = model.PhoneNumber;
+                return Redirect($"/skills-health-check/save-my-progress/sms?type={type}");
+            }
+
+            return await GetCodeBody(type);
+        }
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/getcode")]
         [Route("skills-health-check/save-my-progress/getcode/document")]
@@ -145,8 +159,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var (link, text) = GetBackLinkAndText(type);
             var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, Document = new Document() };
             await AddDocumentDetailsAsync(referenceViewModel.Document);
-
-            logger.LogInformation($"{nameof(GetCode)} has returned content");
 
             return this.NegotiateContentResult(new GetCodeViewModel
             {
@@ -167,18 +179,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 return Redirect($"/skills-health-check/save-my-progress/sms?type={type}");
             }
 
-            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
-            var (link, text) = GetBackLinkAndText(type);
-            var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, Document = new Document() };
-            await AddDocumentDetailsAsync(referenceViewModel.Document);
-
-            return this.NegotiateContentResult(new GetCodeViewModel
-            {
-                HtmlHeadViewModel = htmlHeadViewModel,
-                BreadcrumbViewModel = breadcrumbViewModel,
-                BodyViewModel = referenceViewModel,
-            });
+            return await GetCode(type);
         }
 
         [HttpGet]
