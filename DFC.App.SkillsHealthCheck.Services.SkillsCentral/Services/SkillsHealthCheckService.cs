@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ServiceModel;
+
 using AutoMapper;
+
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Extensions;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Mappers;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
-using Level = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums.Level;
+
 using SkillsDocumentService;
+
+using Level = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums.Level;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 {
@@ -43,8 +45,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 var request = createSkillsDocumentRequest.SkillsDocument.GetApiSkillsDocument();
 
                 var apiResult = _skillsCentralService.InsertDocument(request);
-                    //ServiceHelper.Instance()
-                    //    .Use<ISkillsCentralService, long>(x => x.InsertDocument(request));
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService, long>(x => x.InsertDocument(request));
 
                 response.DocumentId = apiResult;
                 response.Success = true;
@@ -90,8 +92,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
                 var apiResult = _skillsCentralService.GetSkillsHealthCheckQuestions(assessmentType,
                     getAssessmentQuestionRequest.QuestionNumber, level, accessibility);
-                    //ServiceHelper.Instance()
-                    //    .Use<ISkillsCentralService, Question>(x => x.GetSkillsHealthCheckQuestions(assessmentType, getAssessmentQuestionRequest.QuestionNumber, level, accessibility));
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService, Question>(x => x.GetSkillsHealthCheckQuestions(assessmentType, getAssessmentQuestionRequest.QuestionNumber, level, accessibility));
 
                 response.Question = apiResult.ConvertToModelQuestion();
                 response.Success = true;
@@ -201,10 +203,10 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
             try
             {
-                var apiResult = _skillsCentralService.ReadDocument(getSkillsDocumentRequest.DocumentId);
-                    //ServiceHelper.Instance()
-                    //    .Use<ISkillsCentralService, SkillsDocument>(
-                    //        x => x.ReadDocument(getSkillsDocumentRequest.DocumentId));
+                var apiResult = _skillsCentralService.ReadDocument(getSkillsDocumentRequest.DocumentId ?? 0);
+                //ServiceHelper.Instance()
+                //    .Use<ISkillsCentralService, SkillsDocument>(
+                //        x => x.ReadDocument(getSkillsDocumentRequest.DocumentId));
 
                 if (apiResult != null)
                 {
@@ -278,9 +280,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 response.DocumentBytes =
                     _skillsCentralService.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId,
                         downloadDocumentRequest.Formatter);
-                    //ServiceHelper.Instance()
-                    // .Use<ISkillsCentralService, byte[]>(
-                    //     x => x.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId, downloadDocumentRequest.Formatter));
+                //ServiceHelper.Instance()
+                // .Use<ISkillsCentralService, byte[]>(
+                //     x => x.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId, downloadDocumentRequest.Formatter));
                 response.Success = true;
             }
             catch (Exception ex)

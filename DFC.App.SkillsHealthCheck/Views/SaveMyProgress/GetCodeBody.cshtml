@@ -1,0 +1,48 @@
+﻿@using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
+@model ReferenceNumberViewModel
+
+@{
+    var showErrorClass = string.Empty;
+    var errorKey = nameof(ReferenceNumberViewModel.PhoneNumber);
+
+    if (ViewData.ModelState.Keys.Contains(errorKey))
+    {
+        if (ViewData.ModelState[errorKey] != null && ViewData.ModelState[errorKey].Errors.Any())
+        {
+            showErrorClass = "error govuk-form-group--error";
+        }
+    }
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_AppErrorSummary" />
+
+        <h1 class="govuk-heading-l">Your reference code</h1>
+        <div class="app-your-reference govuk-body">
+            <div class="banner-information-without-action govuk-!-margin-bottom-5">
+                <span class="govuk-heading-xl">@Model.Document?.Code</span>
+                <span class="govuk-caption-xl">@Model.Document?.DateAssessmentsCreated.ToString("dd MMMM yyyy")</span>
+            </div>
+        </div>
+
+        <div class="govuk-body">
+            <h2 class="govuk-heading-m">What to do with your reference</h2>
+            <p>The code above is your unique reference. You can use this to:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>return to your skills health check and continue</li>
+                <li>see your results and download your report at anytime if you have finished the skills health check</li>
+            </ul>
+            <h1 class="govuk-heading-m">By text message</h1>
+            <form method="post" class="compui-validation">
+                <span class="govuk-hint">We will only use this to send you a link to return to your skills health check</span>
+                @Html.EditorFor(m => m.PhoneNumber)
+
+                <input class="govuk-button" type="submit" name="sendAction" value="Send" />
+            </form>
+
+            <p><a href="@Model.ReturnLink">@Model.ReturnLinkText</a></p>
+
+        </div>
+    </div>
+</div>

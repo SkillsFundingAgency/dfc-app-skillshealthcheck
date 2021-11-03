@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.Compui.Sessionstate;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     public abstract class BaseController<TController> : Controller
-        where TController: Controller
+        where TController : Controller
     {
         private ISessionStateService<SessionDataModel> _sessionStateService;
         private ILogger<TController> _logger;
@@ -72,7 +73,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var sessionStateModel = await GetSessionStateAsync();
             return sessionStateModel?.State;
         }
-
 
         protected async Task<SessionStateModel<SessionDataModel>?> GetSessionStateAsync()
         {
