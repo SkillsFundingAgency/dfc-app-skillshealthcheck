@@ -1,19 +1,6 @@
 ﻿@using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
 @model ReferenceNumberViewModel
 
-@{
-    var showErrorClass = string.Empty;
-    var errorKey = nameof(ReferenceNumberViewModel.PhoneNumber);
-
-    if (ViewData.ModelState.Keys.Contains(errorKey))
-    {
-        if (ViewData.ModelState[errorKey] != null && ViewData.ModelState[errorKey].Errors.Any())
-        {
-            showErrorClass = "error govuk-form-group--error";
-        }
-    }
-}
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_AppErrorSummary" />

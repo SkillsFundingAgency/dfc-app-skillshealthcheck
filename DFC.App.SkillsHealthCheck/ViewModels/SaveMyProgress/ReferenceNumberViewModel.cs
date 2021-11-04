@@ -14,7 +14,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
 
         [Required(ErrorMessage = "Enter a phone number")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$", ErrorMessage = "Enter a mobile phone number, like 07700 900 982.")]
+        [RegularExpression(@"^(07[\d]{3}|\+447[\d]{3})[ ]?[\d]{3}[ ]?[\d]{3}$", ErrorMessage = "Enter a mobile phone number, like 07700 900 982.")]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
     }

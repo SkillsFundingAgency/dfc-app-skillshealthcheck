@@ -35,8 +35,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/save-my-progress/htmlhead")]
         [Route("skills-health-check/save-my-progress/getcode/htmlhead")]
+        [Route("skills-health-check/save-my-progress/sms/htmlhead")]
+        [Route("skills-health-check/save-my-progress/email/htmlhead")]
+        [Route("skills-health-check/save-my-progress/emailsent/htmlhead")]
         public IActionResult HtmlHead()
         {
+            TempData.Keep();
             var viewModel = GetHtmlHeadViewModel(PageTitle);
 
             logger.LogInformation($"{nameof(HtmlHead)} has returned content");
@@ -46,8 +50,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [Route("skills-health-check/save-my-progress/breadcrumb")]
         [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/sms/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/email/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/emailsent/breadcrumb")]
         public IActionResult Breadcrumb()
         {
+            TempData.Keep();
             var viewModel = BuildBreadcrumb();
 
             logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
@@ -76,20 +84,32 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/document")]
         public IActionResult Document(SaveMyProgressViewModel model, [FromQuery] string? type)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-                var breadcrumbViewModel = BuildBreadcrumb();
-
-                return this.NegotiateContentResult(new DocumentViewModel
+                switch (model?.SelectedOption)
                 {
-                    HtmlHeadViewModel = htmlHeadViewModel,
-                    BreadcrumbViewModel = breadcrumbViewModel,
-                    SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
-                });
+                    case Enums.SaveMyProgressOption.Email:
+                        return Redirect($"/skills-health-check/save-my-progress/email?type={type}");
+
+                    case Enums.SaveMyProgressOption.ReferenceCode:
+                        return Redirect($"/skills-health-check/save-my-progress/getcode?type={type}");
+
+                    default:
+                        break;
+                }
+
+                ModelState.AddModelError("SelectedOption", SaveMyProgressViewModel.SelectedOptionValidationError);
             }
 
-            return Redirect($"/skills-health-check/save-my-progress/getcode?type={type}");
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
+            });
         }
 
         [HttpGet]
@@ -201,7 +221,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var breadcrumbViewModel = BuildBreadcrumb();
             var (link, text) = GetBackLinkAndText(type);
             var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
-            TempData.Keep();
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
@@ -210,6 +229,92 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 HtmlHeadViewModel = htmlHeadViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = referenceViewModel,
+            });
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/email/body")]
+        public IActionResult EmailBody([FromQuery] string? type)
+        {
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/email/body")]
+        public async Task<IActionResult> EmailBody(EmailViewModel model, [FromQuery] string? type)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: send an email
+                TempData["Email"] = model.EmailAddress;
+                return Redirect($"/skills-health-check/save-my-progress/emailsent?type={type}");
+            }
+
+            return await GetCodeBody(type);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/email")]
+        [Route("skills-health-check/save-my-progress/email/document")]
+        public IActionResult Email([FromQuery] string? type)
+        {
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            var (link, text) = GetBackLinkAndText(type);
+            var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            return this.NegotiateContentResult(new EmailDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = emailViewModel,
+            });
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/email")]
+        public async Task<IActionResult> Email(EmailViewModel model, [FromQuery] string? type)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: send an email
+                TempData["Email"] = model.EmailAddress;
+                return Redirect($"/skills-health-check/save-my-progress/emailsent?type={type}");
+            }
+
+            return Email(type);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailsent/body")]
+        public IActionResult CheckYourEmailBody([FromQuery] string? type)
+        {
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailsent")]
+        [Route("skills-health-check/save-my-progress/emailsent/document")]
+        public IActionResult CheckYourEmail([FromQuery] string? type)
+        {
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            var (link, text) = GetBackLinkAndText(type);
+            var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            return this.NegotiateContentResult(new EmailDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = emailViewModel,
             });
         }
 
