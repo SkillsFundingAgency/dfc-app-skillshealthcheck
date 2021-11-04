@@ -12,10 +12,10 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
 
         public string? ReturnLinkText { get; set; }
 
-        [Display(Name = "Email")]
+        [Display(Name = "Email", Description = "We will only use this to send you a link to return to your skills health check")]
         [Required(ErrorMessage = "Enter an email address")]
-        [RegularExpression(RegExForEmailAddress, ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         [DataType(DataType.EmailAddress)]
+        [RegularExpression(RegExForEmailAddress, ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         public string? EmailAddress { get; set; }
     }
 }
