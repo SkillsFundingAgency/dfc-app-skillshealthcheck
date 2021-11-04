@@ -63,6 +63,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        #region SaveMyProgress
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/")]
         [Route("skills-health-check/save-my-progress/document")]
@@ -145,6 +147,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        #endregion
+
+        #region GetCode
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/getcode/body")]
         public async Task<IActionResult> GetCodeBody([FromQuery] string? type)
@@ -202,13 +208,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return await GetCode(type);
         }
 
+        #endregion
+
+        #region CheckYourPhone
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/sms/body")]
         public IActionResult CheckYourPhoneBody([FromQuery] string? type)
         {
             var (link, text) = GetBackLinkAndText(type);
             var viewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
-            TempData.Keep();
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -231,6 +240,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BodyViewModel = referenceViewModel,
             });
         }
+
+        #endregion
+
+        #region Email
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/email/body")]
@@ -317,6 +330,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BodyViewModel = emailViewModel,
             });
         }
+
+        #endregion
 
         private static SaveMyProgressViewModel GetSaveMyProgressViewModel(string? type)
         {

@@ -12,7 +12,7 @@ using Xunit;
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressControllerTests
 {
     [Trait("Category", "Save My Progress Unit Tests")]
-    public class GetCodeTests : SaveMyProgressControllerTestsBase
+    public class EmailTests : SaveMyProgressControllerTestsBase
     {
         [Fact]
         public async Task GetCodeBodyRequestReturnsSuccess()
@@ -36,15 +36,5 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                 .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms?type=");
         }
 
-        [Fact]
-        public async Task GetCodeBodyPostRequestReturnsRedirectResult()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-
-            var result = await controller.GetCodeBody(new ReferenceNumberViewModel(), null);
-
-            result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms?type=");
-        }
     }
 }
