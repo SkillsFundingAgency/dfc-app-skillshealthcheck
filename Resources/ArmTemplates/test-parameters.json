@@ -95,7 +95,10 @@
         "LoggingLogLevelDefault": {
             "value": "TraceLog"
         },
-        "SkillsServiceOptionsImageUrl":{
+        "SkillsServiceOptionsImageUrl": {
+            "value": "https://foo"
+        },
+        "SkillsCentralServiceEndpoint": {
             "value": "https://foo"
         }
     }

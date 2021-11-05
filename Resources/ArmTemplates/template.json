@@ -108,6 +108,9 @@
         },
         "SkillsServiceOptionsImageUrl": {
             "type": "string"
+        },
+        "SkillsCentralServiceEndpoint": {
+            "type": "string"
         }
     },
     "variables": {
@@ -320,8 +323,8 @@
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
                             },
                             {
-                              "name": "SkillsServiceOptions__ImageUrl"  ,
-                              "value": "[parameters('SkillsServiceOptionsImageUrl')]"
+                                "name": "SkillsServiceOptions__ImageUrl"  ,
+                                "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
@@ -382,6 +385,10 @@
                             {
                                 "name": "Logging__LogLevel__Default",
                                 "value": "[parameters('LoggingLogLevelDefault')]"
+                            },
+                            {
+                                "name": "SkillsCentralServiceEndpoint",
+                                "value": "[parameters('SkillsCentralServiceEndpoint')]"
                             }
                         ]
                     }
