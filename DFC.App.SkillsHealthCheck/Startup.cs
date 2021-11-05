@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.ServiceModel;
 
 using AutoMapper;
 
@@ -26,6 +27,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck
@@ -82,7 +84,13 @@ namespace DFC.App.SkillsHealthCheck
             services.AddHttpContextAccessor();
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
-            services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
+            //services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
+            services.AddTransient<ISkillsCentralService>(sp =>
+            {
+                var svc = new SkillsCentralServiceClient();
+                svc.ChannelFactory.Endpoint.Address = new EndpointAddress(configuration.GetValue<string>("SkillsCentralServiceEndpoint"));
+                return svc;
+            });
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
