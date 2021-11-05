@@ -1,0 +1,17 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress.EmailDocumentViewModel
+
+@{
+    Layout = "_LocalLayout";
+
+    if (!string.IsNullOrWhiteSpace(Model.HtmlHeadViewModel?.Title))
+    {
+        ViewData["Title"] = Model.HtmlHeadViewModel.Title;
+    }
+}
+<partial name="Breadcrumb" model=@Model.BreadcrumbViewModel />
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <partial name="EmailBody" model="@Model.BodyViewModel" />
+    </div>
+</div>

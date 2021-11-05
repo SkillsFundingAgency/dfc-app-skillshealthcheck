@@ -35,5 +35,16 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             result.Should().BeOfType<RedirectResult>()
                 .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms?type=");
         }
+
+        [Fact]
+        public async Task GetCodeBodyPostRequestReturnsRedirectResult()
+        {
+            using var controller = BuildController(MediaTypeNames.Text.Html);
+
+            var result = await controller.GetCodeBody(new ReferenceNumberViewModel(), null);
+
+            result.Should().BeOfType<RedirectResult>()
+                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms?type=");
+        }
     }
 }
