@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
 
@@ -15,11 +16,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
     public class CheckYourPhoneTests : SaveMyProgressControllerTestsBase
     {
         [Fact]
-        public void CheckYourPhoneBodyRequestReturnsSuccess()
+        public async Task CheckYourPhoneBodyRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", "123" } });
 
-            var result = controller.CheckYourPhoneBody();
+            var result = await controller.CheckYourPhoneBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -29,11 +30,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Fact]
-        public void CheckYourPhoneRequestReturnsSuccess()
+        public async Task CheckYourPhoneRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", "123" } });
 
-            var result = controller.CheckYourPhone();
+            var result = await controller.CheckYourPhone();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()

@@ -16,11 +16,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
     public class EmailTests : SaveMyProgressControllerTestsBase
     {
         [Fact]
-        public void EmailBodyRequestReturnsSuccess()
+        public async Task EmailBodyRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.EmailBody();
+            var result = await controller.EmailBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -30,11 +30,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Fact]
-        public void EmailRequestReturnsSuccess()
+        public async Task EmailRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Email();
+            var result = await controller.Email();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -66,11 +66,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Fact]
-        public void CheckYourEmailBodyRequestReturnsSuccess()
+        public async Task CheckYourEmailBodyRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", "123@abc.com" } });
 
-            var result = controller.CheckYourEmailBody();
+            var result = await controller.CheckYourEmailBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -80,11 +80,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Fact]
-        public void CheckYourEmailRequestReturnsSuccess()
+        public async Task CheckYourEmailRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", "123@abc.com" } });
 
-            var result = controller.CheckYourEmail();
+            var result = await controller.CheckYourEmail();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()

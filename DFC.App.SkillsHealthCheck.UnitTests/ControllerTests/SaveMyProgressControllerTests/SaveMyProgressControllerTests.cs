@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Enums;
@@ -62,12 +63,12 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         [Theory]
         [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email")]
         [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode")]
-        public void BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
+        public async Task BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
             var model = new SaveMyProgressViewModel { SelectedOption = option };
-            var result = controller.Body(model, null);
+            var result = await controller.Body(model);
 
             result.Should().NotBeNull();
             var redirectResult = result.Should().BeOfType<RedirectResult>().Which;
