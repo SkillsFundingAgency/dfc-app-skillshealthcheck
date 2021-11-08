@@ -127,5 +127,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return false;
         }
 
+        protected async Task SetAssessmentTypeAsync(string? type)
+        {
+            var sessionStateModel = await GetSessionStateAsync();
+            if (sessionStateModel?.State != null)
+            {
+                sessionStateModel.State.AssessmentType = type;
+                await SetSessionStateAsync(sessionStateModel.State);
+            }
+        }
+
+        protected async Task<string?> GetAssessmentTypeAsync()
+        {
+            var sessionStateModel = await GetSessionStateAsync();
+            return sessionStateModel?.State?.AssessmentType;
+        }
     }
 }
