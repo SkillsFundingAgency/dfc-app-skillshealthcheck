@@ -118,8 +118,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/body")]
-        public IActionResult Body([FromQuery] string? type)
+        public async Task<IActionResult> Body([FromQuery] string? type)
         {
+            await SetAssessmentTypeAsync(type);
             var model = GetSaveMyProgressViewModel(type);
             return this.NegotiateContentResult(model);
         }

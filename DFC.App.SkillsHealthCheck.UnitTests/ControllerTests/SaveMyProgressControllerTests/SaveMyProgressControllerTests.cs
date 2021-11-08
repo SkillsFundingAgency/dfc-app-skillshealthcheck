@@ -46,11 +46,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         [Theory]
         [InlineData(null, "/skills-health-check/your-assessments", "Return to your skills health check")]
         [InlineData("Skills", "/skills-health-check/question?assessmentType=Skills", "Return to your skills health check assessment")]
-        public void BodyGetRequestReturnsSuccessAndCorrectReturnLink(string? type, string expectedReturnLink, string expectedReturnLinkText)
+        public async Task BodyGetRequestReturnsSuccessAndCorrectReturnLink(string? type, string expectedReturnLink, string expectedReturnLinkText)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Body(type);
+            var result = await controller.Body(type);
 
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
             var model = viewResult.ViewData.Model.Should().NotBeNull()
