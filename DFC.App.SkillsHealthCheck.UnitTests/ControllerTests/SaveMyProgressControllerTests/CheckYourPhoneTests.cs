@@ -19,7 +19,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", "123" } });
 
-            var result = controller.CheckYourPhoneBody(null);
+            var result = controller.CheckYourPhoneBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -33,7 +33,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", "123" } });
 
-            var result = controller.CheckYourPhone(null);
+            var result = controller.CheckYourPhone();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()

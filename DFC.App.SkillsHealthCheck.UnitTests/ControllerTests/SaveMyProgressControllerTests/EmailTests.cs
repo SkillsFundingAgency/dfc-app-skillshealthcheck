@@ -20,7 +20,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.EmailBody(null);
+            var result = controller.EmailBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -34,7 +34,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Email(null);
+            var result = controller.Email();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -48,10 +48,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = await controller.Email(new EmailViewModel(), null);
+            var result = await controller.Email(new EmailViewModel());
 
             result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/emailsent?type=");
+                .Which.Url.Should().Be("/skills-health-check/save-my-progress/emailsent");
         }
 
         [Fact]
@@ -59,10 +59,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = await controller.EmailBody(new EmailViewModel(), null);
+            var result = await controller.EmailBody(new EmailViewModel());
 
             result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/emailsent?type=");
+                .Which.Url.Should().Be("/skills-health-check/save-my-progress/emailsent");
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", "123@abc.com" } });
 
-            var result = controller.CheckYourEmailBody(null);
+            var result = controller.CheckYourEmailBody();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()
@@ -84,7 +84,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", "123@abc.com" } });
 
-            var result = controller.CheckYourEmail(null);
+            var result = controller.CheckYourEmail();
 
             result.Should().NotBeNull()
                 .And.BeOfType<ViewResult>()

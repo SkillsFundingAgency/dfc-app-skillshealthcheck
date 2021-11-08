@@ -60,8 +60,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Theory]
-        [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email?type=")]
-        [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode?type=")]
+        [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email")]
+        [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode")]
         public void BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
