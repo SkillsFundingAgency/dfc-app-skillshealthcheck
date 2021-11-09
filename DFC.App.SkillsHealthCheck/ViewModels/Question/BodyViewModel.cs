@@ -3,7 +3,7 @@
 namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 {
     [ExcludeFromCodeCoverage]
-    public class BodyViewModel
+    public class BodyViewModel : IBodyPostback
     {
         public AssessmentQuestionViewModel AssessmentQuestionViewModel { get; set; }
 

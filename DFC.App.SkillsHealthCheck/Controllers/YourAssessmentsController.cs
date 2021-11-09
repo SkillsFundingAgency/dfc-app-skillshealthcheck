@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
-using DFC.App.SkillsHealthCheck.Enums;
+﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
@@ -14,11 +7,13 @@ using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using static DFC.App.SkillsHealthCheck.Constants;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -26,11 +21,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";
-        public const string PagePart = "your-assessments";
         private readonly ILogger<YourAssessmentsController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
+
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
@@ -38,12 +33,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
             IYourAssessmentsService yourAssessmentsService)
-        :base(logger, sessionStateService)
+
+        : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.yourAssessmentsService = yourAssessmentsService;
+
         }
 
         [HttpGet]
@@ -65,6 +62,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/your-assessments/htmlhead")]
+        [Route("skills-health-check/your-assessments/download-document/htmlhead")]
         public IActionResult HtmlHead()
         {
             var viewModel = GetHtmlHeadViewModel(PageTitle);
@@ -75,6 +73,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/your-assessments/breadcrumb")]
+        [Route("skills-health-check/your-assessments/download-document/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -92,7 +91,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        private async Task<BodyViewModel> GetBodyViewModel()
+        private async Task<BodyViewModel> GetBodyViewModel(IEnumerable<string> selectedJobs = null)
         {
             var sessionDataModel = await GetSessionDataModel();
             long documentId = 0;
@@ -105,6 +104,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 documentId = sessionDataModel.DocumentId;
             }
 
+            var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
+            bodyViewModel.RightBarViewModel = await GetRightBarViewModel();
+
+            return bodyViewModel;
+        }
+
+        private async Task<RightBarViewModel> GetRightBarViewModel()
+        {
             SharedContentItemModel? speakToAnAdviser = null;
             if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
             {
@@ -118,12 +125,77 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
             }
 
-            var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId);
-            bodyViewModel.RightBarViewModel = rightBarViewModel;
-
-            return bodyViewModel;
+            return rightBarViewModel;
         }
 
-        // TODO: all this below should be moved to a separate service once the SHC service layer has been implemented
+
+        [HttpPost]
+        [Route("skills-health-check/your-assessments/download-document")]
+        public async Task<IActionResult> DownloadDocument(BodyViewModel model)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+            else if (ModelState.IsValid)
+            {
+                var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
+                var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
+                    ? model.JobFamilyList?.SelectedJobs.ToList() ?? new List<string>() : new List<string>();
+                var downloadDocumentResponse = yourAssessmentsService.GetDownloadDocument(sessionDataModel, formatter, selectedJobs, out string documentTitle);
+                if (downloadDocumentResponse.Success)
+                {
+                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{documentTitle}{formatter.FileExtension}");
+                }
+            }
+
+            ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
+            var bodyViewModel = await GetBodyViewModel(model.JobFamilyList.SelectedJobs);
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = GetHtmlHeadViewModel(PageTitle),
+                BreadcrumbViewModel = BuildBreadcrumb(),
+                BodyViewModel = bodyViewModel,
+            });
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/your-assessments/download-document/body")]
+        public async Task<IActionResult> DownloadDocumentBody(BodyViewModel model)
+        {
+            var sessionDataModel = await GetSessionDataModel();
+            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
+            {
+                Response.Redirect(HomeURL);
+            }
+
+            var selectedJobs = new List<string>();
+            if (model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value && model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
+            {
+                if (model.JobFamilyList.SelectedJobs.Count() == 1 && model.JobFamilyList.SelectedJobs.First().Contains(','))
+                {
+                    model.JobFamilyList.SelectedJobs = model.JobFamilyList.SelectedJobs.First().Split(',');
+                }
+
+                ModelState.Clear();
+                TryValidateModel(model);
+                selectedJobs = model.JobFamilyList?.SelectedJobs.ToList();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
+                var downloadDocumentResponse = yourAssessmentsService.GetDownloadDocument(sessionDataModel, formatter, selectedJobs, out string documentTitle);
+                if (downloadDocumentResponse.Success)
+                {
+                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{documentTitle}{formatter.FileExtension}");
+                }
+            }
+
+            ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
+            var bodyViewModel = await GetBodyViewModel(selectedJobs);
+            return this.NegotiateContentResult(bodyViewModel);
+        }
     }
 }

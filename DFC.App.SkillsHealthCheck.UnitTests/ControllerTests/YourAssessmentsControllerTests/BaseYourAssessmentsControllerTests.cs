@@ -2,7 +2,7 @@
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
-using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;

@@ -3,7 +3,7 @@
 namespace DFC.App.SkillsHealthCheck.ViewModels.YourAssessments
 {
     [ExcludeFromCodeCoverage]
-    public class DocumentViewModel
+    public class DocumentViewModel : IDocumentPostback
     {
         public HtmlHeadViewModel HtmlHeadViewModel { get; set; }
 

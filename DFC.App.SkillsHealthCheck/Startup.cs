@@ -92,6 +92,7 @@ namespace DFC.App.SkillsHealthCheck
                 return svc;
             });
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
+            services.AddTransient<IUserAssetService, UserAssetService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
 

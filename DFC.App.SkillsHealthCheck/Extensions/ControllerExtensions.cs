@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -34,14 +35,16 @@ namespace DFC.App.SkillsHealthCheck.Extensions
 
                     if (items.Contains(MediaTypeNames.Text.Html, StringComparer.OrdinalIgnoreCase) || items.Contains("*/*"))
                     {
-                        if (viewModel is BodyViewModel)
+                        if (viewModel is IBodyPostback)
                         {
                             return controller.View("Body", viewModel);
                         }
-                        if (viewModel is DocumentViewModel)
+
+                        if (viewModel is IDocumentPostback)
                         {
                             return controller.View("Document", viewModel);
                         }
+
                         return controller.View(viewModel);
                     }
                 }

@@ -1,4 +1,4 @@
-﻿using DFC.App.SkillsHealthCheck.Enums;
+﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 
 namespace DFC.App.SkillsHealthCheck.Models
 {
