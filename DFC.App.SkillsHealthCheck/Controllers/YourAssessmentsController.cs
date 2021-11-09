@@ -150,11 +150,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 }
             }
 
-            var errors = ModelState.Where(val => val.Value.Errors.Count > 0).Select(md => md.Key);
-
-            var errorList = errors as IList<string> ?? errors.ToList();
-            ViewData["selectionListError"] = errorList.Any(key => key.ToLower().Contains("selectedjobs"));
-
+            ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
             var bodyViewModel = await GetBodyViewModel(model.JobFamilyList.SelectedJobs);
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -197,11 +193,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 }
             }
 
-            var errors = ModelState.Where(val => val.Value.Errors.Count > 0).Select(md => md.Key);
-
-            var errorList = errors as IList<string> ?? errors.ToList();
-            ViewData["selectionListError"] = errorList.Any(key => key.ToLower().Contains("selectedjobs"));
-
+            ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
             var bodyViewModel = await GetBodyViewModel(selectedJobs);
             return this.NegotiateContentResult(bodyViewModel);
         }

@@ -22,14 +22,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
     public sealed class UserAssetService : IUserAssetService
     {
 
-        private Object SyncRoot
+        private object SyncRoot
         {
             get
             {
                 return m_syncRoot.Value;
             }
         }
-        private Lazy<Object> m_syncRoot = new Lazy<Object>(() => new object());
+        private Lazy<object> m_syncRoot = new Lazy<object>(() => new object());
 
         private SkillsCentralServiceClient ServiceClient
         {
@@ -119,15 +119,16 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         //    }
         //}
 
-        private FormatDocumentResponse RequestDownloadPrivate(Int64 documentId, String formatter, String requestedBy)
+        private FormatDocumentResponse RequestDownloadPrivate(long documentId, string formatter, string requestedBy)
         {
+            //TODO: not sure about these locks and can't this just be asynchronous? Needs looking at
             lock (this.SyncRoot)
             {
                 return this.ServiceClient.FormatDocumentMakeRequestAsync(documentId, formatter, requestedBy).Result;
             }
         }
 
-        private FormatDocumentResponse QueryDownloadStatusPrivate(Int64 documentId, String formatter)
+        private FormatDocumentResponse QueryDownloadStatusPrivate(long documentId, string formatter)
         {
             lock (this.SyncRoot)
             {
@@ -135,7 +136,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             }
         }
 
-        private byte[] DownloadPrivate(Int64 documentId, String formatter)
+        private byte[] DownloadPrivate(long documentId, string formatter)
         {
             lock (this.SyncRoot)
             {
@@ -274,19 +275,19 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         //    return null;
         //}
 
-        public String RequestDownload(Int64 documentId, String formatter, String requestedBy)
+        public string RequestDownload(long documentId, string formatter, string requestedBy)
         {
             if (documentId <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(documentId));
             }
 
-            if (String.IsNullOrWhiteSpace(formatter) == true)
+            if (string.IsNullOrWhiteSpace(formatter))
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            if (String.IsNullOrWhiteSpace(requestedBy) == true)
+            if (string.IsNullOrWhiteSpace(requestedBy))
             {
                 throw new ArgumentNullException(nameof(requestedBy));
             }
@@ -294,14 +295,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             return this.RequestDownloadPrivate(documentId, formatter, requestedBy).Status.ToString();
         }
 
-        public String QueryDownloadStatus(Int64 documentId, String formatter)
+        public string QueryDownloadStatus(long documentId, string formatter)
         {
             if (documentId <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(documentId));
             }
 
-            if (String.IsNullOrWhiteSpace(formatter) == true)
+            if (string.IsNullOrWhiteSpace(formatter))
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
@@ -309,14 +310,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             return this.QueryDownloadStatusPrivate(documentId, formatter).Status.ToString();
         }
 
-        public Byte[] Download(Int64 documentId, String formatter)
+        public byte[] Download(long documentId, string formatter)
         {
             if (documentId <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(documentId));
             }
 
-            if (String.IsNullOrWhiteSpace(formatter) == true)
+            if (string.IsNullOrWhiteSpace(formatter))
             {
                 throw new ArgumentNullException(nameof(formatter));
             }

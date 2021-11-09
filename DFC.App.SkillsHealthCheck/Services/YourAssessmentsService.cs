@@ -97,21 +97,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (saveQuestionAnswerResponse.Success)
             {
-                var result =
-                    Task.Run(
-                        () =>
-                            _userAssetService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName,
-                                skillsDocument.CreatedBy)).Result;
+                var result = _userAssetService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
 
                 while (new[] {"Pending", "Creating"}.Contains(result, StringComparer.OrdinalIgnoreCase))
                 {
                     Task.WaitAll(Task.Delay(1000));
-                    result =
-                        Task.Run(
-                                () =>
-                                    _userAssetService.QueryDownloadStatus(skillsDocument.DocumentId,
-                                        formatter.FormatterName))
-                            .Result;
+                    result = _userAssetService.QueryDownloadStatus(skillsDocument.DocumentId, formatter.FormatterName);
                 }
 
                 if (result.Equals("Created", StringComparison.OrdinalIgnoreCase))
