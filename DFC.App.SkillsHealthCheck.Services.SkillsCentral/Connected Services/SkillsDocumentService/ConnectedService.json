@@ -1,7 +1,7 @@
 {
   "ExtendedData": {
     "inputs": [
-      "http://cds-dev-01-skillscentral.cloudapp.net/SkillsService.svc?wsdl"
+      "http://randomurl.cloudapp.net/SkillsService.svc?wsdl"
     ],
     "collectionTypes": [
       "System.Collections.Generic.Dictionary`2",

@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Enums;
@@ -45,11 +46,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         [Theory]
         [InlineData(null, "/skills-health-check/your-assessments", "Return to your skills health check")]
         [InlineData("Skills", "/skills-health-check/question?assessmentType=Skills", "Return to your skills health check assessment")]
-        public void BodyGetRequestReturnsSuccessAndCorrectReturnLink(string? type, string expectedReturnLink, string expectedReturnLinkText)
+        public async Task BodyGetRequestReturnsSuccessAndCorrectReturnLink(string? type, string expectedReturnLink, string expectedReturnLinkText)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Body(type);
+            var result = await controller.Body(type);
 
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
             var model = viewResult.ViewData.Model.Should().NotBeNull()
@@ -60,14 +61,14 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         }
 
         [Theory]
-        [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email?type=")]
-        [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode?type=")]
-        public void BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
+        [InlineData(SaveMyProgressOption.Email, "/skills-health-check/save-my-progress/email")]
+        [InlineData(SaveMyProgressOption.ReferenceCode, "/skills-health-check/save-my-progress/getcode")]
+        public async Task BodyPostRequestRedirectsToGetCode(SaveMyProgressOption option, string expectedUrl)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
             var model = new SaveMyProgressViewModel { SelectedOption = option };
-            var result = controller.Body(model, null);
+            var result = await controller.Body(model);
 
             result.Should().NotBeNull();
             var redirectResult = result.Should().BeOfType<RedirectResult>().Which;

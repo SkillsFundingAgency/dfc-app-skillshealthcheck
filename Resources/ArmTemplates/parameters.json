@@ -106,6 +106,9 @@
         },
         "SkillsServiceOptionsImageUrl": {
             "value": "__SkillsServiceOptionsImageUrl__"
+        },
+        "SkillsCentralServiceEndpoint": {
+            "value": "__SkillsCentralServiceEndpoint__"
         }
     }
 }

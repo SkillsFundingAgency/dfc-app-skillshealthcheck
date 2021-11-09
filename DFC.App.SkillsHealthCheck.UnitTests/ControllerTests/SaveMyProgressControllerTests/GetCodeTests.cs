@@ -19,7 +19,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = await controller.GetCodeBody(null);
+            var result = await controller.GetCodeBody();
 
             result.Should().BeOfType<ViewResult>()
                  .Which.ViewData.Model.Should().NotBeNull();
@@ -30,10 +30,21 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = await controller.GetCode(new ReferenceNumberViewModel(), null);
+            var result = await controller.GetCode(new ReferenceNumberViewModel());
 
             result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms?type=");
+                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
+        }
+
+        [Fact]
+        public async Task GetCodeBodyPostRequestReturnsRedirectResult()
+        {
+            using var controller = BuildController(MediaTypeNames.Text.Html);
+
+            var result = await controller.GetCodeBody(new ReferenceNumberViewModel());
+
+            result.Should().BeOfType<RedirectResult>()
+                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
         }
     }
 }

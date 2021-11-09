@@ -1,19 +1,6 @@
 ﻿@using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
 @model ReferenceNumberViewModel
 
-@{
-    var showErrorClass = string.Empty;
-    var errorKey = nameof(ReferenceNumberViewModel.PhoneNumber);
-
-    if (ViewData.ModelState.Keys.Contains(errorKey))
-    {
-        if (ViewData.ModelState[errorKey] != null && ViewData.ModelState[errorKey].Errors.Any())
-        {
-            showErrorClass = "error govuk-form-group--error";
-        }
-    }
-}
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <partial name="_AppErrorSummary" />
@@ -35,14 +22,11 @@
             </ul>
             <h1 class="govuk-heading-m">By text message</h1>
             <form method="post" class="compui-validation">
-                <span class="govuk-hint">We will only use this to send you a link to return to your skills health check</span>
                 @Html.EditorFor(m => m.PhoneNumber)
-
                 <input class="govuk-button" type="submit" name="sendAction" value="Send" />
             </form>
 
             <p><a href="@Model.ReturnLink">@Model.ReturnLinkText</a></p>
-
         </div>
     </div>
 </div>

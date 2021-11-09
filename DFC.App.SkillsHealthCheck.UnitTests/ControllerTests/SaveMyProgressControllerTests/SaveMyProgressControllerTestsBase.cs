@@ -1,6 +1,9 @@
-﻿using DFC.App.SkillsHealthCheck.Controllers;
+﻿using System.Collections.Generic;
+
+using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.UnitTests.TestDoubles;
 using DFC.Compui.Sessionstate;
 
 using FakeItEasy;
@@ -34,6 +37,27 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                     HttpContext = httpContext,
                 },
                 TempData = new TempDataDictionary(httpContext, A.Fake<ITempDataProvider>()),
+            };
+
+            return controller;
+        }
+
+        protected SaveMyProgressController BuildController(string mediaTypeName, Dictionary<string, object> dictionary)
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
+
+            ITempDataProvider provider = new FakeTempDataProvider();
+            provider.SaveTempData(httpContext, dictionary);
+
+            var controller = new SaveMyProgressController(Logger, SessionStateService, SkillsHealthCheckService)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext,
+                },
+                TempData = new TempDataDictionary(httpContext, provider),
             };
 
             return controller;

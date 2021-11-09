@@ -35,8 +35,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/save-my-progress/htmlhead")]
         [Route("skills-health-check/save-my-progress/getcode/htmlhead")]
+        [Route("skills-health-check/save-my-progress/sms/htmlhead")]
+        [Route("skills-health-check/save-my-progress/email/htmlhead")]
+        [Route("skills-health-check/save-my-progress/emailsent/htmlhead")]
         public IActionResult HtmlHead()
         {
+            TempData.Keep();
             var viewModel = GetHtmlHeadViewModel(PageTitle);
 
             logger.LogInformation($"{nameof(HtmlHead)} has returned content");
@@ -46,8 +50,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [Route("skills-health-check/save-my-progress/breadcrumb")]
         [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/sms/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/email/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/emailsent/breadcrumb")]
         public IActionResult Breadcrumb()
         {
+            TempData.Keep();
             var viewModel = BuildBreadcrumb();
 
             logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
@@ -55,14 +63,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        #region SaveMyProgress
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/")]
         [Route("skills-health-check/save-my-progress/document")]
-        public IActionResult Document([FromQuery] string? type)
+        public async Task<IActionResult> Document([FromQuery] string? type)
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
 
+            await SetAssessmentTypeAsync(type);
             return this.NegotiateContentResult(new DocumentViewModel
             {
                 HtmlHeadViewModel = htmlHeadViewModel,
@@ -74,45 +85,60 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/save-my-progress/")]
         [Route("skills-health-check/save-my-progress/document")]
-        public IActionResult Document(SaveMyProgressViewModel model, [FromQuery] string? type)
-        {
-            if (!ModelState.IsValid)
-            {
-                var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-                var breadcrumbViewModel = BuildBreadcrumb();
-
-                return this.NegotiateContentResult(new DocumentViewModel
-                {
-                    HtmlHeadViewModel = htmlHeadViewModel,
-                    BreadcrumbViewModel = breadcrumbViewModel,
-                    SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
-                });
-            }
-
-            return Redirect($"/skills-health-check/save-my-progress/getcode?type={type}");
-        }
-
-        [HttpGet]
-        [Route("skills-health-check/save-my-progress/body")]
-        public IActionResult Body([FromQuery] string? type)
-        {
-            var model = GetSaveMyProgressViewModel(type);
-            return this.NegotiateContentResult(model);
-        }
-
-        [HttpPost]
-        [Route("skills-health-check/save-my-progress/body")]
-        public IActionResult Body(SaveMyProgressViewModel model, [FromQuery] string? type)
+        public async Task<IActionResult> Document(SaveMyProgressViewModel model)
         {
             if (ModelState.IsValid)
             {
                 switch (model?.SelectedOption)
                 {
                     case Enums.SaveMyProgressOption.Email:
-                        return Redirect($"/skills-health-check/save-my-progress/email?type={type}");
+                        return Redirect("/skills-health-check/save-my-progress/email");
 
                     case Enums.SaveMyProgressOption.ReferenceCode:
-                        return Redirect($"/skills-health-check/save-my-progress/getcode?type={type}");
+                        return Redirect("/skills-health-check/save-my-progress/getcode");
+
+                    default:
+                        break;
+                }
+
+                ModelState.AddModelError("SelectedOption", SaveMyProgressViewModel.SelectedOptionValidationError);
+            }
+
+            var type = await GetAssessmentTypeAsync();
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                SaveMyProgressViewModel = GetSaveMyProgressViewModel(type),
+            });
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/body")]
+        public async Task<IActionResult> Body([FromQuery] string? type)
+        {
+            await SetAssessmentTypeAsync(type);
+            var model = GetSaveMyProgressViewModel(type);
+            return this.NegotiateContentResult(model);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/body")]
+        public async Task<IActionResult> Body(SaveMyProgressViewModel model)
+        {
+            var type = await GetAssessmentTypeAsync();
+            if (ModelState.IsValid)
+            {
+                switch (model?.SelectedOption)
+                {
+                    case Enums.SaveMyProgressOption.Email:
+                        return Redirect("/skills-health-check/save-my-progress/email");
+
+                    case Enums.SaveMyProgressOption.ReferenceCode:
+                        return Redirect("/skills-health-check/save-my-progress/getcode");
 
                     default:
                         break;
@@ -125,10 +151,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        #endregion
+
+        #region GetCode
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/getcode/body")]
-        public async Task<IActionResult> GetCodeBody([FromQuery] string? type)
+        public async Task<IActionResult> GetCodeBody()
         {
+            var type = await GetAssessmentTypeAsync();
+            TempData.Keep();
             var (link, text) = GetBackLinkAndText(type);
             var viewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, Document = new Document() };
             await AddDocumentDetailsAsync(viewModel.Document);
@@ -137,23 +169,26 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode/body")]
-        public async Task<IActionResult> GetCodeBody(ReferenceNumberViewModel model, [FromQuery] string? type)
+        public async Task<IActionResult> GetCodeBody(ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // TODO: send a text message
-                TempData["PhoneNumber"] = model.PhoneNumber;
-                return Redirect($"/skills-health-check/save-my-progress/sms?type={type}");
+                TempData["PhoneNumber"] = model?.PhoneNumber;
+                TempData.Keep();
+                return Redirect($"/skills-health-check/save-my-progress/sms");
             }
 
-            return await GetCodeBody(type);
+            return await GetCodeBody();
         }
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/getcode")]
         [Route("skills-health-check/save-my-progress/getcode/document")]
-        public async Task<IActionResult> GetCode([FromQuery] string? type)
+        public async Task<IActionResult> GetCode()
         {
+            var type = await GetAssessmentTypeAsync();
+            TempData.Keep();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
             var (link, text) = GetBackLinkAndText(type);
@@ -170,38 +205,43 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode")]
-        public async Task<IActionResult> GetCode(ReferenceNumberViewModel model, [FromQuery] string? type)
+        public async Task<IActionResult> GetCode(ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // TODO: send a text message
-                TempData["PhoneNumber"] = model.PhoneNumber;
-                return Redirect($"/skills-health-check/save-my-progress/sms?type={type}");
+                TempData["PhoneNumber"] = model?.PhoneNumber;
+                TempData.Keep();
+                return Redirect($"/skills-health-check/save-my-progress/sms");
             }
 
-            return await GetCode(type);
+            return await GetCode();
         }
+
+        #endregion
+
+        #region CheckYourPhone
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/sms/body")]
-        public IActionResult CheckYourPhoneBody([FromQuery] string? type)
+        public async Task<IActionResult> CheckYourPhoneBody()
         {
+            var type = await GetAssessmentTypeAsync();
             var (link, text) = GetBackLinkAndText(type);
             var viewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
-            TempData.Keep();
             return this.NegotiateContentResult(viewModel);
         }
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/sms")]
         [Route("skills-health-check/save-my-progress/sms/document")]
-        public IActionResult CheckYourPhone([FromQuery] string? type)
+        public async Task<IActionResult> CheckYourPhone()
         {
+            var type = await GetAssessmentTypeAsync();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
             var (link, text) = GetBackLinkAndText(type);
             var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
-            TempData.Keep();
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
@@ -212,6 +252,106 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BodyViewModel = referenceViewModel,
             });
         }
+
+        #endregion
+
+        #region Email
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/email/body")]
+        public async Task<IActionResult> EmailBody()
+        {
+            var type = await GetAssessmentTypeAsync();
+            TempData.Keep();
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/email/body")]
+        public async Task<IActionResult> EmailBody(EmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: send an email
+                TempData["Email"] = model?.EmailAddress;
+                TempData.Keep();
+                return Redirect($"/skills-health-check/save-my-progress/emailsent");
+            }
+
+            return await EmailBody();
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/email")]
+        [Route("skills-health-check/save-my-progress/email/document")]
+        public async Task<IActionResult> Email()
+        {
+            var type = await GetAssessmentTypeAsync();
+            TempData.Keep();
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            var (link, text) = GetBackLinkAndText(type);
+            var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            return this.NegotiateContentResult(new EmailDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = emailViewModel,
+            });
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/save-my-progress/email")]
+        public async Task<IActionResult> Email(EmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO: send an email
+                TempData["Email"] = model?.EmailAddress;
+                TempData.Keep();
+                return Redirect($"/skills-health-check/save-my-progress/emailsent");
+            }
+
+            return await Email();
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailsent/body")]
+        public async Task<IActionResult> CheckYourEmailBody()
+        {
+            var type = await GetAssessmentTypeAsync();
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailsent")]
+        [Route("skills-health-check/save-my-progress/emailsent/document")]
+        public async Task<IActionResult> CheckYourEmail()
+        {
+            var type = await GetAssessmentTypeAsync();
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            var (link, text) = GetBackLinkAndText(type);
+            var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            return this.NegotiateContentResult(new EmailDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = emailViewModel,
+            });
+        }
+
+        #endregion
 
         private static SaveMyProgressViewModel GetSaveMyProgressViewModel(string? type)
         {
@@ -250,7 +390,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 Response.Redirect("/alerts/500?errorcode=saveProgressResponse", true);
             }
 
-            document.Code = document.Code?.ToUpper();
+            document.Code = document.Code?.ToUpper(System.Globalization.CultureInfo.CurrentCulture);
         }
     }
 }
