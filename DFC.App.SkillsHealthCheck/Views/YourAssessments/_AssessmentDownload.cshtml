@@ -1,10 +1,57 @@
 ﻿@model DFC.App.SkillsHealthCheck.ViewModels.YourAssessments.BodyViewModel
+@{
+    var selectionListError = Convert.ToBoolean(ViewData["selectionListError"]) ? "error" : string.Empty;
+}
 @if ((Model.AssessmentsCompleted != null) && (Model.AssessmentsCompleted.Count > 0))
 {
     <div class="govuk-grid-row govuk-!-margin-top-5">
         <form method="post" action="/skills-health-check/your-assessments/download-document" id="skillsListForm" class="form">
             <div class="govuk-grid-column-full">
                 <h3 class="govuk-heading-l" id="get-your-report">Get your report</h3>
+                @if (Model.SkillsAssessmentComplete.HasValue && Model.SkillsAssessmentComplete.Value)
+                {
+                    <!--only for skill areas assessment -->
+                    <p>
+                        Your skills health check report will suggest jobs
+                        families based on the results of your assessments.
+                    </p>
+                    <p>
+                        There may be some areas of work you already know you're
+                        not interested in. Tell us more about what they are so we
+                        can personalise your report.
+                    </p>
+                    <div class="form-group govuk-!-margin-bottom-5 @selectionListError">
+                        <details class="govuk-details" data-module="govuk-details">
+                            <summary class="govuk-details__summary">
+                                <span class="summary govuk-details__summary-text">Choose up to 3 areas of work you're not interested in</span>
+                            </summary>
+                            <div class="govuk-details__text panel panel-border-narrow">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-visually-hidden">I want to exclude the following job families</legend>
+                                    @foreach (var jobfamily in Model.JobFamilyList.JobFamilies)
+                                    {
+                                        if (Model.JobFamilyList.SelectedJobs.Any() && Model.JobFamilyList.SelectedJobs.Any(jobid => jobid.Equals(jobfamily.Id)))
+                                        {
+                                            <label class="block-label" for="@jobfamily.Id">
+                                                <input id="@jobfamily.Id" name="JobFamilyList.SelectedJobs"
+                                                       type="checkbox" value="@jobfamily.Id" checked="checked">@jobfamily.Name
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label class="block-label" for="@jobfamily.Id">
+                                                <input id="@jobfamily.Id" name="JobFamilyList.SelectedJobs"
+                                                       type="checkbox" value="@jobfamily.Id">@jobfamily.Name
+                                            </label>
+                                        }
+                                    }
+                                </fieldset>
+                            </div>
+                        </details>
+                        @Html.ValidationMessageFor(model => model.JobFamilyList.SelectedJobs, null, new {id = "selectedJobError", @class = "error-message"})
+                    </div>
+                    <!--only for skill areas assessment end-->
+                }
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
                         <legend id="changed-name-hint" class="govuk-hint"> Choose your document type </legend>
@@ -30,6 +77,7 @@
                     </div>
                 </details>
             </div>
+            @Html.HiddenFor(model => model.SkillsAssessmentComplete, new {id = "skillsAssessmentComplete" })
         </form>
     </div>
 }

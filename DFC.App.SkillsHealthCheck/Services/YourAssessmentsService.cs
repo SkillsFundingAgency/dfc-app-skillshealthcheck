@@ -1,14 +1,15 @@
 ﻿using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using static DFC.App.SkillsHealthCheck.Constants;
 
 namespace DFC.App.SkillsHealthCheck.Services
@@ -46,7 +47,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 };
         }
 
-        public DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, out string documentTitle)
+        public DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs, out string documentTitle)
         {
             var documentId = sessionDataModel.DocumentId;
 
@@ -57,7 +58,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (skillsDocumentResponse.Success)
             {
-                var downloadDocumentResponse = GetDownloadDocument(sessionDataModel, skillsDocumentResponse, formatter);
+                var downloadDocumentResponse = GetDownloadDocument(sessionDataModel, skillsDocumentResponse, formatter, selectedJobs);
                 documentTitle = skillsDocumentResponse.SkillsDocument.SkillsDocumentTitle;
                 return downloadDocumentResponse;
             }
@@ -69,39 +70,30 @@ namespace DFC.App.SkillsHealthCheck.Services
             };
         }
 
-        private DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, bool retry = false)
+        private DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
         {
             var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse {Success = true};
             var skillsDocument = documentResponse.SkillsDocument;
 
-            //TODO: relates to a completed all assessments skills health check
-            //if (model.SkillsAssessmentComplete)
-            //{
-            //    for (var clearJob = 1; clearJob < 4; clearJob++)
-            //    {
-            //        skillsDocumentRequest.SkillsDocument =
-            //            skillsDocumentRequest.SkillsDocument.UpdateJobFamilyDataValue(clearJob, string.Empty);
-            //    }
+            if (selectedJobs.Any())
+            {
+                for (var clearJob = 1; clearJob < 4; clearJob++)
+                {
+                    skillsDocument = skillsDocument.UpdateJobFamilyDataValue(clearJob, string.Empty);
+                }
 
-            //    if (model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
-            //    {
-            //        var jobNumber = 1;
+                var jobNumber = 1;
+                foreach (var selectedJob in selectedJobs)
+                {
+                    skillsDocument = skillsDocument.UpdateJobFamilyDataValue(jobNumber++, selectedJob);
+                }
 
-            //        foreach (var selectedJob in model.JobFamilyList.SelectedJobs)
-            //        {
-            //            skillsDocumentRequest.SkillsDocument =
-            //                skillsDocumentRequest.SkillsDocument.UpdateJobFamilyDataValue(jobNumber,
-            //                    selectedJob);
-            //            jobNumber++;
-            //        }
-            //    }
-
-            //    updateSkillsDocRequest = ServiceClient.SaveQuestionAnswer(new SaveQuestionAnswerRequest
-            //    {
-            //        DocumentId = documentId,
-            //        SkillsDocument = skillsDocumentRequest.SkillsDocument
-            //    });
-            //}
+                saveQuestionAnswerResponse = _skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
+                {
+                    DocumentId = sessionDataModel.DocumentId,
+                    SkillsDocument = skillsDocument,
+                });
+            }
 
             if (saveQuestionAnswerResponse.Success)
             {
@@ -145,7 +137,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     saveQuestionAnswerResponse = UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(sessionDataModel, saveQuestionAnswerResponse, skillsDocument);
                     if (saveQuestionAnswerResponse.Success)
                     {
-                        return GetDownloadDocument(sessionDataModel, documentResponse, formatter, true);
+                        return GetDownloadDocument(sessionDataModel, documentResponse, formatter, selectedJobs, true);
                     }
                 }
             }
@@ -316,12 +308,12 @@ namespace DFC.App.SkillsHealthCheck.Services
                 : Constants.SkillsHealthCheck.QuestionSetStartedAction;
         }
 
-        public BodyViewModel GetAssessmentListViewModel(long documentId)
+        public BodyViewModel GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs = null)
         {
             // TODO: selected jobs not implemented as yet
             var model = new BodyViewModel
             {
-                JobFamilyList = new JobFamilyList { SelectedJobs = new List<string>() },
+                JobFamilyList = new JobFamilyList { SelectedJobs = selectedJobs ?? new List<string>() },
             };
 
             var apiResult = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest

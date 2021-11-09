@@ -9,10 +9,10 @@ namespace DFC.App.SkillsHealthCheck.Services.Interfaces
 {
     public interface IYourAssessmentsService
     {
-        BodyViewModel GetAssessmentListViewModel(long documentId);
+        BodyViewModel GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs);
 
         DocumentFormatter GetFormatter(DownloadType downloadType);
 
-        DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, out string documentTitle);
+        DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs,  out string documentTitle);
     }
 }

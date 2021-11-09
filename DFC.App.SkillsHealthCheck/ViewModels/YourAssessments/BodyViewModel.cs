@@ -7,7 +7,7 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 namespace DFC.App.SkillsHealthCheck.ViewModels.YourAssessments
 {
     [ExcludeFromCodeCoverage]
-    public class BodyViewModel
+    public class BodyViewModel : IBodyPostback
     {
         public bool? InValidDocumentId { get; set; }
 
