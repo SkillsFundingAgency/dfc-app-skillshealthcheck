@@ -17,5 +17,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
         [DataType(DataType.EmailAddress)]
         [RegularExpression(RegExForEmailAddress, ErrorMessage = "Enter an email address in the correct format, like name@example.com")]
         public string? EmailAddress { get; set; }
+
+        public Document? Document { get; set; }
     }
 }

@@ -6,8 +6,11 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+
 using Microsoft.AspNetCore.Routing;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -20,24 +23,24 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             internal static RegexOptions commonRegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
             public static class PostCode
             {
-                public const String Postcode = @"^[A-Za-z0-9-.\(\)\/\\\s]*$";
-                public const String UKPostCode = @"^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4}|[gG][iI][rR]\s{0,1}0[aA][aA]|[a-pr-uwyzA-PR-UWYZ]([0-9]{1,2}|([a-hk-yA-HK-Y][0-9]|[a-hk-yA-HK-Y][0-9]([0-9]|[abehmnprv-yABEHMNPRV-Y]))|[0-9][a-hjkps-uwA-HJKPS-UW])\s{0,1}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2})$";
-                public const String EnglishOrBFPOPostCode = @"^(?!ab|bt|cf|ch5|ch6|ch7|ch8|dd|dg|eh|fk|g[0-9]|gy|hs|im|iv|je|ka|kw|ky|ld|ll|ml|np|pa|ph|sa|sy|td|ze)+.*$";
-                public const String BfpoPostCode = @"^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4})$";
+                public const string Postcode = @"^[A-Za-z0-9-.\(\)\/\\\s]*$";
+                public const string UKPostCode = @"^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4}|[gG][iI][rR]\s{0,1}0[aA][aA]|[a-pr-uwyzA-PR-UWYZ]([0-9]{1,2}|([a-hk-yA-HK-Y][0-9]|[a-hk-yA-HK-Y][0-9]([0-9]|[abehmnprv-yABEHMNPRV-Y]))|[0-9][a-hjkps-uwA-HJKPS-UW])\s{0,1}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2})$";
+                public const string EnglishOrBFPOPostCode = @"^(?!ab|bt|cf|ch5|ch6|ch7|ch8|dd|dg|eh|fk|g[0-9]|gy|hs|im|iv|je|ka|kw|ky|ld|ll|ml|np|pa|ph|sa|sy|td|ze)+.*$";
+                public const string BfpoPostCode = @"^([bB][fF][pP][oO]\s{0,1}[0-9]{1,4})$";
             }
             public static class PhoneNumber
             {
-                public const String ContactPhone = @"^[+0]{1}[0-9( )-]{10,19}$";
-                public const String ContactMobilePhone = @"^((\+44)|(0044)|(0))7([1-5]|[7-9])[0-9]{8}$";
+                public const string ContactPhone = @"^[+0]{1}[0-9( )-]{10,19}$";
+                public const string ContactMobilePhone = @"^((\+44)|(0044)|(0))7([1-5]|[7-9])[0-9]{8}$";
             }
             public static class Other
             {
-                public const String Name = @"^[A-Za-z'-. `]*$";
-                public const String Email = @"^[A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+([.][A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+)*@[A-Za-z0-9\[\]:]+([.-][A-Za-z0-9\[\]:]+)*\.[A-Za-z0-9\[\]:]+([-.][A-Za-z0-9\[\]:]+)*$";
-                public const String AddressString = @"^[A-Za-z0-9'-. `_,:&*#\""\(\)\/\\]*$";
-                public const String Day = @"^(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$";
-                public const String Month = @"^(0[1-9]|[1-9]|1[0-2])$";
-                public const String Numeric = @"^[0-9]*$";
+                public const string Name = @"^[A-Za-z'-. `]*$";
+                public const string Email = @"^[A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+([.][A-Za-z0-9_\-\+/{\t\n\r}#$%^\\&\[\]*=()|?'~`! :]+)*@[A-Za-z0-9\[\]:]+([.-][A-Za-z0-9\[\]:]+)*\.[A-Za-z0-9\[\]:]+([-.][A-Za-z0-9\[\]:]+)*$";
+                public const string AddressString = @"^[A-Za-z0-9'-. `_,:&*#\""\(\)\/\\]*$";
+                public const string Day = @"^(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])$";
+                public const string Month = @"^(0[1-9]|[1-9]|1[0-2])$";
+                public const string Numeric = @"^[0-9]*$";
             }
 
             /// <summary>
@@ -63,71 +66,70 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             }
         }
 
-        public static Boolean IsValidEmailAddress(String emailAddress)
+        public static bool IsValidEmailAddress(string emailAddress)
         {
             return
-                String.IsNullOrWhiteSpace(emailAddress) == false &&
-                (Regex.IsMatch(emailAddress, RegexPatterns.Other.Email, RegexPatterns.commonRegexOptions));
+                !string.IsNullOrWhiteSpace(emailAddress) &&
+                Regex.IsMatch(emailAddress, RegexPatterns.Other.Email, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean IsValidUkPostcode(String postalCode)
+
+        public static bool IsValidUkPostcode(string postalCode)
         {
             return
-                String.IsNullOrWhiteSpace(postalCode) == false &&
-                (Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions));
+                !string.IsNullOrWhiteSpace(postalCode) &&
+                Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean IsValidBfpoPostcode(String postalCode)
+
+        public static bool IsValidBfpoPostcode(string postalCode)
         {
             return
-                String.IsNullOrWhiteSpace(postalCode) == false &&
-                (
-                    Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
-                    Regex.IsMatch(postalCode, RegexPatterns.PostCode.BfpoPostCode, RegexPatterns.commonRegexOptions)
-                );
+                !string.IsNullOrWhiteSpace(postalCode) &&
+                Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
+                Regex.IsMatch(postalCode, RegexPatterns.PostCode.BfpoPostCode, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean IsValidUKEnglandOrBfpoPostcode(String postalCode)
+
+        public static bool IsValidUKEnglandOrBfpoPostcode(string postalCode)
         {
             return
-                String.IsNullOrWhiteSpace(postalCode) == false &&
-                (
-                    Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
-                    Regex.IsMatch(postalCode, RegexPatterns.PostCode.EnglishOrBFPOPostCode, RegexPatterns.commonRegexOptions)
-                );
+                !string.IsNullOrWhiteSpace(postalCode) &&
+                Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
+                Regex.IsMatch(postalCode, RegexPatterns.PostCode.EnglishOrBFPOPostCode, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean IsValidContactPhoneOrMobileNumber(String contactNumber)
+        public static bool IsValidContactPhoneOrMobileNumber(string contactNumber)
         {
-            return String.IsNullOrWhiteSpace(contactNumber) == false &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 (
                     Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactPhone, RegexPatterns.commonRegexOptions) ||
                     Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactMobilePhone, RegexPatterns.commonRegexOptions)
                 );
         }
-        public static Boolean IsValidContactPhoneNumber(String contactNumber)
+        public static bool IsValidContactPhoneNumber(string contactNumber)
         {
-            return String.IsNullOrWhiteSpace(contactNumber) == false &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactPhone, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean IsValidContactMobilePhoneNumber(String contactNumber)
+        public static bool IsValidContactMobilePhoneNumber(string contactNumber)
         {
-            return String.IsNullOrWhiteSpace(contactNumber) == false &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactMobilePhone, RegexPatterns.commonRegexOptions);
         }
-        public static Boolean ActionPlanActionStatusSelectorIsEnabled(String currentStatus)
+        public static bool ActionPlanActionStatusSelectorIsEnabled(string currentStatus)
         {
-            if (String.IsNullOrWhiteSpace(currentStatus) == false &&
+            if (!string.IsNullOrWhiteSpace(currentStatus) &&
                 (
                     currentStatus.Equals("", StringComparison.OrdinalIgnoreCase) ||
                     currentStatus.Equals("Completed", StringComparison.OrdinalIgnoreCase)
                 )
               )
             {
-                return false; //@"disabled=""disabled""";
+                return false; //@"disabled= ""disabled""";
             }
             return true;
         }
 
-        public static IDictionary<String, String> GetActionPlanStatusOptions(String currentStatus)
+        public static IDictionary<string, string> GetActionPlanStatusOptions(string currentStatus)
         {
-            if (String.IsNullOrWhiteSpace(currentStatus) == true)
+            if (string.IsNullOrWhiteSpace(currentStatus) == true)
             {
                 return ACTION_PLAN_ACTION_STATUSES;
             }
@@ -137,8 +139,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             }
         }
 
-        private static readonly IDictionary<String, String> ACTION_PLAN_ACTION_STATUSES =
-            new Dictionary<String, String>() {
+        private static readonly IDictionary<string, string> ACTION_PLAN_ACTION_STATUSES =
+            new Dictionary<string, string>() {
                 { "", "" },
                 { "Not Applicable", "NoLongerApplicable" },
                 { "Not Started", "PendingNotYetStarted" },
@@ -152,92 +154,93 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         internal static readonly List<DocumentType> DOCUMENT_TYPES =
             new List<DocumentType> {
                 new DocumentType {
-                    Title ="Adviser Created Action Plan",
+                    Title = "Adviser Created Action Plan",
                     TypeCode = DocumentTypeCode.ACAP,
-                    DocumentTypes = new List<String> {
+                    DocumentTypes = new List<string> {
                         "ap.advised.1"
                     },
                     Formatters = new List<DocumentFormatter>()
                 },
                 new DocumentType {
-                    Title ="CV",
+                    Title = "CV",
                     TypeCode =DocumentTypeCode.CV,
-                    DocumentTypes = new List<String> {
+                    DocumentTypes = new List<string> {
                         "cv.1.0"
                     },
                     Formatters = new List<DocumentFormatter>(){
                         {
                             new DocumentFormatter() {
-                                Title ="Pdf",
+                                Title = "Pdf",
                                 FileExtension = DocumentFileExtensions.Pdf,
                                 ContentType = DocumentContentTypes.Pdf,
-                                FormatterName ="CVPDFFormatter"
+                                FormatterName = "CVPDFFormatter"
                             }
                         },
                         {
                             new DocumentFormatter() {
-                                Title ="Word",
+                                Title = "Word",
                                 FileExtension = DocumentFileExtensions.Docx,
                                 ContentType = DocumentContentTypes.Docx,
-                                FormatterName ="CVDocxFormatter"
+                                FormatterName = "CVDocxFormatter"
                             }
                         }
                     }
                 },
                 new DocumentType {
-                    Title ="Skills Health Check",
-                    TypeCode =DocumentTypeCode.SHC,
-                    DocumentTypes = new List<String> {
+                    Title = "Skills Health Check",
+                    TypeCode = DocumentTypeCode.SHC,
+                    DocumentTypes = new List<string> {
                         "sdt.dr.6"
                     },
                     Formatters = new List<DocumentFormatter>{
                         new DocumentFormatter
                         {
-                            Title ="Full pdf",
+                            Title = "Full pdf",
                             FileExtension = DocumentFileExtensions.Pdf,
                             ContentType = DocumentContentTypes.Pdf,
-                            FormatterName ="SHCFullPdfFormatter"
+                            FormatterName = "SHCFullPdfFormatter"
                         },
                         new DocumentFormatter
                         {
-                            Title ="Full word",
+                            Title = "Full word",
                             FileExtension = DocumentFileExtensions.Docx,
                             ContentType = DocumentContentTypes.Docx,
-                            FormatterName ="SHCFullDocxFormatter"
+                            FormatterName = "SHCFullDocxFormatter"
                         }
                     }
                 },
                 new DocumentType {
-                    Title ="Personal Action Plan",
+                    Title = "Personal Action Plan",
                     TypeCode =DocumentTypeCode.PAP,
-                    DocumentTypes = new List<String> {
+                    DocumentTypes = new List<string>
+                    {
                         "ap.personal.7"
                     },
-                    Formatters = new List<DocumentFormatter>(){
+                    Formatters = new List<DocumentFormatter>()
+                    {
                         {
                             new DocumentFormatter() {
-                                Title ="Pdf",
+                                Title = "Pdf",
                                 FileExtension = DocumentFileExtensions.Pdf,
                                 ContentType = DocumentContentTypes.Pdf,
-                                FormatterName ="ActionPlanPdfFormatter"
-                    }
+                                FormatterName = "ActionPlanPdfFormatter"
+                            }
                         },
                         {
                             new DocumentFormatter() {
-                                Title ="Word",
+                                Title = "Word",
                                 FileExtension = DocumentFileExtensions.Docx,
                                 ContentType = DocumentContentTypes.Docx,
-                                FormatterName ="ActionPlanDocxFormatter"
+                                FormatterName = "ActionPlanDocxFormatter"
                             }
                         }
                     }
                 }
             };
 
-        public static DocumentFormatter GetDocumentFormatter(DocumentTypeCode skillsDocumentType, String targetFormat)
+        public static DocumentFormatter GetDocumentFormatter(DocumentTypeCode skillsDocumentType, string targetFormat)
         {
             return DOCUMENT_TYPES.
-                AsEnumerable().
                 FirstOrDefault(x => x.TypeCode.Equals(skillsDocumentType)).
                 Formatters.
                 FirstOrDefault(x => x.Title.Equals(targetFormat, StringComparison.OrdinalIgnoreCase));
@@ -245,23 +248,18 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
         public static DocumentType GetDocumentType(this DocumentTypeCode skillsDocumentType)
         {
-            return DOCUMENT_TYPES.AsEnumerable().FirstOrDefault(x => x.TypeCode.Equals(skillsDocumentType));
+            return DOCUMENT_TYPES.FirstOrDefault(x => x.TypeCode.Equals(skillsDocumentType));
         }
 
         public static DocumentType GetDocumentType(this string skillsDocumentType)
         {
-            return DOCUMENT_TYPES.AsEnumerable().FirstOrDefault(x => x.DocumentTypes.Contains(skillsDocumentType));
+            return DOCUMENT_TYPES.FirstOrDefault(x => x.DocumentTypes.Contains(skillsDocumentType));
         }
 
-        public static IEnumerable<DocumentType> GetDocumentTypes()
-        {
-            return ServiceCommon.DOCUMENT_TYPES;
-        }
-
-        public static IEnumerable<dynamic> JsonArrayToExpando(String item)
+        public static IEnumerable<dynamic> JsonArrayToExpando(string item)
         {
             var converter = new ExpandoObjectConverter();
-            return JsonConvert.DeserializeObject<ExpandoObject[]>(item, converter) as ExpandoObject[];
+            return JsonConvert.DeserializeObject<ExpandoObject[]>(item, converter);
         }
 
         public static ExpandoObject ToExpando(this object anonymousObject)

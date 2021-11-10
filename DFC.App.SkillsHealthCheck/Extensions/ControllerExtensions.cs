@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mime;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
@@ -35,17 +36,14 @@ namespace DFC.App.SkillsHealthCheck.Extensions
 
                     if (items.Contains(MediaTypeNames.Text.Html, StringComparer.OrdinalIgnoreCase) || items.Contains("*/*"))
                     {
-                        if (viewModel is IBodyPostback)
+                        return viewModel switch
                         {
-                            return controller.View("Body", viewModel);
-                        }
-
-                        if (viewModel is IDocumentPostback)
-                        {
-                            return controller.View("Document", viewModel);
-                        }
-
-                        return controller.View(viewModel);
+                            IBodyPostback _ => controller.View("Body", viewModel),
+                            IDocumentPostback _ => controller.View("Document", viewModel),
+                            ViewModels.SaveMyProgress.ErrorViewModel _ => controller.View("ErrorBody", viewModel),
+                            ViewModels.SaveMyProgress.ErrorDocumentViewModel _ => controller.View("Error", viewModel),
+                            _ => controller.View(viewModel),
+                        };
                     }
                 }
             }
