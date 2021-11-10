@@ -9,6 +9,7 @@ using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services;
 using DFC.App.SkillsHealthCheck.Services.CacheContentService;
+using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
@@ -74,6 +75,10 @@ namespace DFC.App.SkillsHealthCheck
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
+            services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
+            services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
+
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
@@ -82,9 +87,30 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddHostedServiceTelemetryWrapper();
+            services.AddHostedService<SharedContentCacheReloadBackgroundService>();
+            services.AddSubscriptionBackgroundService(configuration);
+
+            var policyRegistry = services.AddPolicyRegistry();
+
+            services.AddApiServices(configuration, policyRegistry);
+
+            RegisterServices(services);
+
+            services.AddMvc(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            })
+                .AddNewtonsoftJson()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
-            //services.AddTransient<ISkillsCentralService, SkillsCentralServiceClient>();
             services.AddTransient<ISkillsCentralService>(sp =>
             {
                 var svc = new SkillsCentralServiceClient();
@@ -94,25 +120,8 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
-
-            services.AddAutoMapper(typeof(Startup).Assembly);
-            services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
-            services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
-            services.AddHostedServiceTelemetryWrapper();
-            services.AddHostedService<SharedContentCacheReloadBackgroundService>();
-            services.AddSubscriptionBackgroundService(configuration);
-
-            var policyRegistry = services.AddPolicyRegistry();
-
-            services.AddApiServices(configuration, policyRegistry);
-
-            services.AddMvc(config =>
-                {
-                    config.RespectBrowserAcceptHeader = true;
-                    config.ReturnHttpNotAcceptable = true;
-                })
-                .AddNewtonsoftJson()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddTransient<IGovUkNotifyClientProxy, GovUkNotifyClientProxy>();
+            services.AddTransient<IGovNotifyService, GovNotifyService>();
         }
     }
 }

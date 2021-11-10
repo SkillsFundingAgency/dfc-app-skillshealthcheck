@@ -2,6 +2,7 @@
 
 using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.UnitTests.TestDoubles;
 using DFC.Compui.Sessionstate;
@@ -24,13 +25,15 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
 
         protected ISkillsHealthCheckService SkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
+        protected IGovNotifyService GovNotifyService { get; } = A.Fake<IGovNotifyService>();
+
         protected SaveMyProgressController BuildController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new SaveMyProgressController(Logger, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, GovNotifyService, SessionStateService, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -51,7 +54,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             ITempDataProvider provider = new FakeTempDataProvider();
             provider.SaveTempData(httpContext, dictionary);
 
-            var controller = new SaveMyProgressController(Logger, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, GovNotifyService, SessionStateService, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {

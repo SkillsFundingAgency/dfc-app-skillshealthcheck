@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
@@ -21,14 +22,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public const string PageTitle = "Save My Progress";
 
         private readonly ILogger<SaveMyProgressController> logger;
+        private readonly IGovNotifyService govNotifyService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public SaveMyProgressController(
             ILogger<SaveMyProgressController> logger,
+            IGovNotifyService govNotifyService,
             ISessionStateService<SessionDataModel> sessionStateService,
             ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService)
         {
             this.logger = logger;
+            this.govNotifyService = govNotifyService;
             this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
@@ -36,8 +40,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/htmlhead")]
         [Route("skills-health-check/save-my-progress/getcode/htmlhead")]
         [Route("skills-health-check/save-my-progress/sms/htmlhead")]
+        [Route("skills-health-check/save-my-progress/smsfailed/htmlhead")]
         [Route("skills-health-check/save-my-progress/email/htmlhead")]
         [Route("skills-health-check/save-my-progress/emailsent/htmlhead")]
+        [Route("skills-health-check/save-my-progress/emailfailed/htmlhead")]
         public IActionResult HtmlHead()
         {
             TempData.Keep();
@@ -51,8 +57,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/breadcrumb")]
         [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
         [Route("skills-health-check/save-my-progress/sms/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/smsfailed/breadcrumb")]
         [Route("skills-health-check/save-my-progress/email/breadcrumb")]
         [Route("skills-health-check/save-my-progress/emailsent/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/emailfailed/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             TempData.Keep();
@@ -159,12 +167,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/getcode/body")]
         public async Task<IActionResult> GetCodeBody()
         {
-            var type = await GetAssessmentTypeAsync();
             TempData.Keep();
-            var (link, text) = GetBackLinkAndText(type);
-            var viewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, Document = new Document() };
-            await AddDocumentDetailsAsync(viewModel.Document);
-            return this.NegotiateContentResult(viewModel);
+            var referenceViewModel = await GetReferenceNumberViewModelAsync();
+            await AddDocumentDetailsAsync(referenceViewModel.Document!);
+            return this.NegotiateContentResult(referenceViewModel);
         }
 
         [HttpPost]
@@ -173,10 +179,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: send a text message
-                TempData["PhoneNumber"] = model?.PhoneNumber;
-                TempData.Keep();
-                return Redirect($"/skills-health-check/save-my-progress/sms");
+                return await ProcessSmsRequestAsync(model);
             }
 
             return await GetCodeBody();
@@ -187,13 +190,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/getcode/document")]
         public async Task<IActionResult> GetCode()
         {
-            var type = await GetAssessmentTypeAsync();
             TempData.Keep();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var (link, text) = GetBackLinkAndText(type);
-            var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, Document = new Document() };
-            await AddDocumentDetailsAsync(referenceViewModel.Document);
+
+            var referenceViewModel = await GetReferenceNumberViewModelAsync();
+            await AddDocumentDetailsAsync(referenceViewModel.Document!);
 
             return this.NegotiateContentResult(new GetCodeViewModel
             {
@@ -209,10 +211,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: send a text message
-                TempData["PhoneNumber"] = model?.PhoneNumber;
-                TempData.Keep();
-                return Redirect($"/skills-health-check/save-my-progress/sms");
+                return await ProcessSmsRequestAsync(model);
             }
 
             return await GetCode();
@@ -220,15 +219,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         #endregion
 
-        #region CheckYourPhone
+        #region SMS
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/sms/body")]
         public async Task<IActionResult> CheckYourPhoneBody()
         {
-            var type = await GetAssessmentTypeAsync();
-            var (link, text) = GetBackLinkAndText(type);
-            var viewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
+            var viewModel = await GetReferenceNumberViewModelAsync();
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -237,20 +234,45 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/sms/document")]
         public async Task<IActionResult> CheckYourPhone()
         {
-            var type = await GetAssessmentTypeAsync();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var (link, text) = GetBackLinkAndText(type);
-            var referenceViewModel = new ReferenceNumberViewModel() { ReturnLink = link, ReturnLinkText = text, PhoneNumber = TempData["PhoneNumber"]?.ToString() ?? string.Empty };
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
-            return this.NegotiateContentResult(new GetCodeViewModel
+            var viewModel = new GetCodeViewModel
             {
                 HtmlHeadViewModel = htmlHeadViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
-                BodyViewModel = referenceViewModel,
-            });
+                BodyViewModel = await GetReferenceNumberViewModelAsync(),
+            };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/smsfailed/body")]
+        public async Task<IActionResult> SmsFailedBody()
+        {
+            var viewModel = await GetErrorViewModelAsync(TempData["PhoneNumber"]?.ToString());
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/smsfailed")]
+        [Route("skills-health-check/save-my-progress/smsfailed/document")]
+        public async Task<IActionResult> SmsFailed()
+        {
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            var viewModel = new ErrorDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = await GetErrorViewModelAsync(TempData["PhoneNumber"]?.ToString()),
+            };
+            return this.NegotiateContentResult(viewModel);
         }
 
         #endregion
@@ -274,10 +296,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: send an email
-                TempData["Email"] = model?.EmailAddress;
-                TempData.Keep();
-                return Redirect($"/skills-health-check/save-my-progress/emailsent");
+                return await ProcessEmailRequestAsync(model);
             }
 
             return await EmailBody();
@@ -311,10 +330,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: send an email
-                TempData["Email"] = model?.EmailAddress;
-                TempData.Keep();
-                return Redirect($"/skills-health-check/save-my-progress/emailsent");
+                return await ProcessEmailRequestAsync(model);
             }
 
             return await Email();
@@ -324,9 +340,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/emailsent/body")]
         public async Task<IActionResult> CheckYourEmailBody()
         {
-            var type = await GetAssessmentTypeAsync();
-            var (link, text) = GetBackLinkAndText(type);
-            var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
+            var viewModel = await GetEmailViewModelAsync();
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -335,20 +349,44 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/save-my-progress/emailsent/document")]
         public async Task<IActionResult> CheckYourEmail()
         {
-            var type = await GetAssessmentTypeAsync();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var (link, text) = GetBackLinkAndText(type);
-            var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text, EmailAddress = TempData["Email"]?.ToString() ?? string.Empty };
-
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
-            return this.NegotiateContentResult(new EmailDocumentViewModel
+            var viewModel = new EmailDocumentViewModel
             {
                 HtmlHeadViewModel = htmlHeadViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
-                BodyViewModel = emailViewModel,
-            });
+                BodyViewModel = await GetEmailViewModelAsync(),
+            };
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailfailed/body")]
+        public async Task<IActionResult> EmailFailedBody()
+        {
+            var viewModel = await GetErrorViewModelAsync(TempData["Email"]?.ToString());
+            return this.NegotiateContentResult(viewModel);
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/save-my-progress/emailfailed")]
+        [Route("skills-health-check/save-my-progress/emailfailed/document")]
+        public async Task<IActionResult> EmailFailed()
+        {
+            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var breadcrumbViewModel = BuildBreadcrumb();
+
+            logger.LogInformation($"{nameof(GetCode)} has returned content");
+
+            var viewModel = new ErrorDocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = await GetErrorViewModelAsync(TempData["Email"]?.ToString()),
+            };
+            return this.NegotiateContentResult(viewModel);
         }
 
         #endregion
@@ -371,6 +409,60 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
         }
 
+        private async Task<ErrorViewModel> GetErrorViewModelAsync(string? sendTo)
+        {
+            var type = await GetAssessmentTypeAsync();
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new ErrorViewModel()
+            {
+                ReturnLink = link,
+                ReturnLinkText = text,
+                SendTo = sendTo,
+                Code = await GetDocumentCodeAsync(),
+            };
+            return viewModel;
+        }
+
+        private async Task<EmailViewModel> GetEmailViewModelAsync()
+        {
+            var type = await GetAssessmentTypeAsync();
+            var (link, text) = GetBackLinkAndText(type);
+            var viewModel = new EmailViewModel()
+            {
+                ReturnLink = link,
+                ReturnLinkText = text,
+                Document = new Document(),
+                EmailAddress = TempData["Email"]?.ToString() ?? string.Empty,
+            };
+            await AddDocumentDetailsAsync(viewModel.Document);
+            return viewModel;
+        }
+
+        private async Task<ReferenceNumberViewModel> GetReferenceNumberViewModelAsync()
+        {
+            var type = await GetAssessmentTypeAsync();
+            var (link, text) = GetBackLinkAndText(type);
+            var referenceViewModel = new ReferenceNumberViewModel()
+            {
+                ReturnLink = link,
+                ReturnLinkText = text,
+                PhoneNumber = TempData["PhoneNumber"]?.ToString(),
+                Document = new Document(),
+            };
+            return referenceViewModel;
+        }
+
+        private async Task<string?> GetDocumentCodeAsync()
+        {
+            var documentId = await GetDocumentId();
+            var response = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest() { DocumentId = documentId });
+            var code = response?.SkillsDocument?.SkillsDocumentIdentifiers?
+                .FirstOrDefault(d => d.ServiceName == Constants.SkillsHealthCheck.DocumentSystemIdentifierName)?
+                .Value;
+
+            return code?.ToUpper(System.Globalization.CultureInfo.CurrentCulture) ?? throw new Exception("No document found.");
+        }
+
         private async Task AddDocumentDetailsAsync(Document document)
         {
             var documentId = await GetDocumentId();
@@ -391,6 +483,43 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             document.Code = document.Code?.ToUpper(System.Globalization.CultureInfo.CurrentCulture);
+        }
+
+        private string GetDomainUrl()
+        {
+            return $"{Request.Scheme}://{Request.Host}/skills-health-check/home";
+        }
+
+        private async Task<IActionResult> ProcessSmsRequestAsync(ReferenceNumberViewModel model)
+        {
+            var document = new Document();
+            await AddDocumentDetailsAsync(document);
+            var response = await govNotifyService.SendSmsAsync(GetDomainUrl(), model.PhoneNumber!, document.Code!);
+            TempData["PhoneNumber"] = model?.PhoneNumber;
+            TempData.Keep();
+            if (response.IsSuccess)
+            {
+                return Redirect("/skills-health-check/save-my-progress/sms");
+            }
+
+            logger.LogError($"Failed to send SMS. {response.Message}");
+            return Redirect("/skills-health-check/save-my-progress/smsfailed");
+        }
+
+        private async Task<IActionResult> ProcessEmailRequestAsync(EmailViewModel model)
+        {
+            var document = new Document();
+            await AddDocumentDetailsAsync(document);
+            var response = await govNotifyService.SendEmailAsync(GetDomainUrl(), model.EmailAddress!, document.Code!);
+            TempData["Email"] = model?.EmailAddress;
+            TempData.Keep();
+            if (response.IsSuccess)
+            {
+                return Redirect("/skills-health-check/save-my-progress/emailsent");
+            }
+
+            logger.LogError($"Failed to send Email. {response.Message}");
+            return Redirect("/skills-health-check/save-my-progress/emailfailed");
         }
     }
 }
