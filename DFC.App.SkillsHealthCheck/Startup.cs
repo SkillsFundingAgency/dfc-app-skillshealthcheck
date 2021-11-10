@@ -96,7 +96,7 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddApiServices(configuration, policyRegistry);
 
-            RegisterServices(services);
+            RegisterSkillsHealthCheckServices(services);
 
             services.AddMvc(config =>
             {
@@ -107,7 +107,7 @@ namespace DFC.App.SkillsHealthCheck
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
-        private void RegisterServices(IServiceCollection services)
+        private void RegisterSkillsHealthCheckServices(IServiceCollection services)
         {
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
