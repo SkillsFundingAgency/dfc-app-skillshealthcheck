@@ -136,6 +136,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/htmlhead")]
+        [Route("skills-health-check/{article}/htmlhead")]
         [Route("skills-health-check/htmlhead")]
         public IActionResult HtmlHead()
         {
@@ -147,6 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/home/breadcrumb")]
+        [Route("skills-health-check/{article}/breadcrumb")]
         [Route("skills-health-check/breadcrumb")]
         public IActionResult Breadcrumb()
         {
@@ -159,6 +161,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/body")]
+        [Route("skills-health-check/{article}/body")]
         [Route("skills-health-check/body")]
         public async Task<IActionResult> Body()
         {
