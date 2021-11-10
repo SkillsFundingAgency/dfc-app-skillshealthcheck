@@ -80,7 +80,6 @@ namespace DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests
             // Assert
             response.Should().NotBeNull();
             response.IsSuccess.Should().BeTrue();
-
         }
 
         [Fact]

@@ -22,7 +22,7 @@ namespace DFC.App.SkillsHealthCheck.Services.GovNotify
             try
             {
                 var personalisation = GetPersonalisation(domain, sessionId);
-                var response = await notifyClientProxy.SendEmailAsync(emailAddress, govNotifyOptions.EmailTemplateId, personalisation);
+                await notifyClientProxy.SendEmailAsync(emailAddress, govNotifyOptions.EmailTemplateId, personalisation);
                 return new NotifyResponse() { IsSuccess = true };
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace DFC.App.SkillsHealthCheck.Services.GovNotify
             try
             {
                 var personalisation = GetPersonalisation(domain, sessionId);
-                var response = await notifyClientProxy.SendSmsAsync(mobileNumber, govNotifyOptions.SmsTemplateId, personalisation);
+                await notifyClientProxy.SendSmsAsync(mobileNumber, govNotifyOptions.SmsTemplateId, personalisation);
                 return new NotifyResponse() { IsSuccess = true };
             }
             catch (Exception ex)

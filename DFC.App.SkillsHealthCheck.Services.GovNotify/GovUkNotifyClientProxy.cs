@@ -13,13 +13,12 @@ namespace DFC.App.SkillsHealthCheck.Services.GovNotify
     [ExcludeFromCodeCoverage]
     public class GovUkNotifyClientProxy : IGovUkNotifyClientProxy
     {
-        private readonly GovNotifyOptions govNotifyOptions;
         private readonly NotificationClient client;
 
-        public GovUkNotifyClientProxy(IOptions<GovNotifyOptions> options)
+        public GovUkNotifyClientProxy(IOptions<GovNotifyOptions> govNotifyOptions)
         {
-            govNotifyOptions = options.Value ?? throw new ArgumentNullException(nameof(GovNotifyOptions));
-            client = new NotificationClient(govNotifyOptions.APIKey);
+            _ = govNotifyOptions.Value?.APIKey ?? throw new ArgumentNullException(nameof(govNotifyOptions), "GovNotify API key is missing.");
+            client = new NotificationClient(govNotifyOptions.Value.APIKey);
         }
 
         public async Task<EmailNotificationResponse> SendEmailAsync(string emailAddress, string templateId, Dictionary<string, dynamic> personalisation)
