@@ -55,3 +55,9 @@ variables:
     value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
   - name: LoggingLogLevelDefault
     value: Trace
+  - name: GovNotifyOptionsAPIKey
+    value: findcareerteamwhitelist-a80a0410-bbff-4076-8e27-d7678fd30048-40dca06a-aab0-4e23-b0de-61284715b923
+  - name: GovNotifyOptionsEmailTemplateId
+    value: 7c5bd660-8d05-4efa-a83a-27de619b195b
+  - name: GovNotifyOptionsSmsTemplateId
+    value: 769da3de-26a6-4aa9-8662-18f09734ee24

@@ -97,6 +97,15 @@
         "CPUPercentageThreshold": {
             "type": "string"
         },
+        "GovNotifyOptionsAPIKey": {
+            "type": "string"
+        },
+        "GovNotifyOptionsEmailTemplateId": {
+            "type": "string"
+        },
+        "GovNotifyOptionsSmsTemplateId": {
+            "type": "string"
+        },
         "MemoryPercentageThreshold": {
             "type": "string"
         },
@@ -323,8 +332,20 @@
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
                             },
                             {
-                                "name": "SkillsServiceOptions__ImageUrl"  ,
+                                "name": "SkillsServiceOptions__ImageUrl",
                                 "value": "[parameters('SkillsServiceOptionsImageUrl')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__APIKey",
+                                "value": "[parameters('GovNotifyOptionsAPIKey')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__EmailTemplateId",
+                                "value": "[parameters('GovNotifyOptionsEmailTemplateId')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__SmsTemplateId",
+                                "value": "[parameters('GovNotifyOptionsSmsTemplateId')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",

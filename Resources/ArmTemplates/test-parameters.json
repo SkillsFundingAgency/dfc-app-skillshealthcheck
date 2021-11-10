@@ -95,6 +95,15 @@
         "LoggingLogLevelDefault": {
             "value": "TraceLog"
         },
+        "GovNotifyOptionsAPIKey": {
+            "value": "GovNotifyOptionsAPIKey"
+        },
+        "GovNotifyOptionsEmailTemplateId": {
+            "value": "GovNotifyOptionsEmailTemplateId"
+        },
+        "GovNotifyOptionsSmsTemplateId": {
+            "value": "GovNotifyOptionsSmsTemplateId"
+        },
         "SkillsServiceOptionsImageUrl": {
             "value": "https://foo"
         },
