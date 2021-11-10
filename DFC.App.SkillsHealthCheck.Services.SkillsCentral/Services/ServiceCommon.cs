@@ -69,21 +69,21 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         public static bool IsValidEmailAddress(string emailAddress)
         {
             return
-                string.IsNullOrWhiteSpace(emailAddress) &&
+                !string.IsNullOrWhiteSpace(emailAddress) &&
                 Regex.IsMatch(emailAddress, RegexPatterns.Other.Email, RegexPatterns.commonRegexOptions);
         }
 
         public static bool IsValidUkPostcode(string postalCode)
         {
             return
-                string.IsNullOrWhiteSpace(postalCode) &&
+                !string.IsNullOrWhiteSpace(postalCode) &&
                 Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions);
         }
 
         public static bool IsValidBfpoPostcode(string postalCode)
         {
             return
-                string.IsNullOrWhiteSpace(postalCode) &&
+                !string.IsNullOrWhiteSpace(postalCode) &&
                 Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
                 Regex.IsMatch(postalCode, RegexPatterns.PostCode.BfpoPostCode, RegexPatterns.commonRegexOptions);
         }
@@ -91,13 +91,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         public static bool IsValidUKEnglandOrBfpoPostcode(string postalCode)
         {
             return
-                string.IsNullOrWhiteSpace(postalCode) &&
+                !string.IsNullOrWhiteSpace(postalCode) &&
                 Regex.IsMatch(postalCode, RegexPatterns.PostCode.UKPostCode, RegexPatterns.commonRegexOptions) &&
                 Regex.IsMatch(postalCode, RegexPatterns.PostCode.EnglishOrBFPOPostCode, RegexPatterns.commonRegexOptions);
         }
         public static bool IsValidContactPhoneOrMobileNumber(string contactNumber)
         {
-            return string.IsNullOrWhiteSpace(contactNumber) &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 (
                     Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactPhone, RegexPatterns.commonRegexOptions) ||
                     Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactMobilePhone, RegexPatterns.commonRegexOptions)
@@ -105,17 +105,17 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
         }
         public static bool IsValidContactPhoneNumber(string contactNumber)
         {
-            return string.IsNullOrWhiteSpace(contactNumber) &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactPhone, RegexPatterns.commonRegexOptions);
         }
         public static bool IsValidContactMobilePhoneNumber(string contactNumber)
         {
-            return string.IsNullOrWhiteSpace(contactNumber) &&
+            return !string.IsNullOrWhiteSpace(contactNumber) &&
                 Regex.IsMatch(contactNumber, RegexPatterns.PhoneNumber.ContactMobilePhone, RegexPatterns.commonRegexOptions);
         }
         public static bool ActionPlanActionStatusSelectorIsEnabled(string currentStatus)
         {
-            if (string.IsNullOrWhiteSpace(currentStatus) &&
+            if (!string.IsNullOrWhiteSpace(currentStatus) &&
                 (
                     currentStatus.Equals("", StringComparison.OrdinalIgnoreCase) ||
                     currentStatus.Equals("Completed", StringComparison.OrdinalIgnoreCase)
