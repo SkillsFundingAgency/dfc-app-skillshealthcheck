@@ -5,8 +5,8 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Enums;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Sessionstate;
@@ -55,7 +55,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
             controller.Request.Headers.Add(ConstantStrings.CompositeSessionIdHeaderName, Guid.NewGuid().ToString());
             A.CallTo(() => SessionStateService.GetAsync(A<Guid>._)).Returns(new SessionStateModel<SessionDataModel>
                 {State = new SessionDataModel {DocumentId = 1}});
-            A.CallTo(() => FakeYourAssessmentService.GetAssessmentListViewModel(A<long>._)).Returns(GetFakeBodyViewModel());
+            A.CallTo(() => FakeYourAssessmentService.GetAssessmentListViewModel(A<long>._, null)).Returns(GetFakeBodyViewModel());
             var result = await controller.Body();
 
             var viewResult = Assert.IsType<ViewResult>(result);

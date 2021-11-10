@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
-
+using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 
 using Microsoft.AspNetCore.Mvc;
@@ -38,8 +38,8 @@ namespace DFC.App.SkillsHealthCheck.Extensions
                     {
                         return viewModel switch
                         {
-                            BodyViewModel _ => controller.View("Body", viewModel),
-                            DocumentViewModel _ => controller.View("Document", viewModel),
+                            IBodyPostback _ => controller.View("Body", viewModel),
+                            IDocumentPostback _ => controller.View("Document", viewModel),
                             ViewModels.SaveMyProgress.ErrorViewModel _ => controller.View("ErrorBody", viewModel),
                             ViewModels.SaveMyProgress.ErrorDocumentViewModel _ => controller.View("Error", viewModel),
                             _ => controller.View(viewModel),

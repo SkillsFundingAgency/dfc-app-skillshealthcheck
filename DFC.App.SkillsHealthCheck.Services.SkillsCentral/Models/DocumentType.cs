@@ -52,6 +52,20 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
         public static readonly String Docx = ".docx";
     }
 
+    public static class DocumentFormatName
+    {
+        public const string ShcSummaryDocxFormatter = "SHCSummaryDocxFormatter";
+        public const string ShcSummaryPdfFormatter = "SHCSummaryPdfFormatter";
+        public const string ShcFullPdfFormatter = "SHCFullPdfFormatter";
+        public const string ShcFullDocxFormatter = "SHCFullDocxFormatter";
+    }
+
+    public static class DocumentTitle
+    {
+        public const string Pdf = "Pdf";
+        public const string Word = "Word";
+    }
+
     public static class DocumentContentTypes
     {
         public static readonly String Pdf = "application/pdf";

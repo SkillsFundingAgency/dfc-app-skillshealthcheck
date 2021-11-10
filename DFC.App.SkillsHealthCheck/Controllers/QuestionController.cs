@@ -388,6 +388,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 ModelState.AddModelError(nameof(model.AnswerSelection), "Choose an answer");
             }
+
             // Shell breaks the model binding so need to fix here
             else if (model.AnswerSelection.Count() == 1 && model.AnswerSelection.First().Contains(","))
             {
