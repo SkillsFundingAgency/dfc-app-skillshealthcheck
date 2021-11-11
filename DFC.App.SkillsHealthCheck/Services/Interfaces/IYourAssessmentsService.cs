@@ -4,6 +4,7 @@ using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Services.Interfaces
 {
@@ -15,6 +16,6 @@ namespace DFC.App.SkillsHealthCheck.Services.Interfaces
 
         DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs,  out string documentTitle);
 
-        GetSkillsDocumentIdResponse GetSkillsDocumentByReference(string referenceId);
+        Task<bool> GetSkillsDocumentIDByReferenceAndStore(SessionDataModel sessionDataModel, string referenceId);
     }
 }

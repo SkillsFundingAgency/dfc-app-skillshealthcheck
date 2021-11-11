@@ -19,7 +19,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         private ISkillsHealthCheckService _skillsHealthCheckService;
         private IUserAssetService _userAssetService;
 
-        public YourAssessmentsService(ISkillsHealthCheckService skillsHealthCheckService,
+        public YourAssessmentsService(
+            ISkillsHealthCheckService skillsHealthCheckService,
             IUserAssetService userAssetService,
             IQuestionService questionService)
         {
@@ -176,6 +177,7 @@ namespace DFC.App.SkillsHealthCheck.Services
             {Constants.SkillsHealthCheck.AbstractAssessmentComplete, AssessmentType.Numeric},
         };
 
+        // TODO: can we avoid having this service here?
         private IQuestionService _questionService;
 
         private void CheckAssessmentTypeDataValueAndCorrect(SessionDataModel sessionDataModel, SkillsDocument skillsDocument, AssessmentType assessmentType, string assessmentCompleteTitle)
@@ -501,9 +503,16 @@ namespace DFC.App.SkillsHealthCheck.Services
             }
         }
 
-        public GetSkillsDocumentIdResponse GetSkillsDocumentByReference(string referenceId)
+        public async Task<bool> GetSkillsDocumentIDByReferenceAndStore(SessionDataModel sessionDataModel, string referenceId)
         {
-            return _skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
+            var response = _skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
+            if (response.Success && response.DocumentId > 0)
+            {
+                sessionDataModel.DocumentId = response.DocumentId;
+                return true;
+            }
+
+            return false;
         }
     }
 }

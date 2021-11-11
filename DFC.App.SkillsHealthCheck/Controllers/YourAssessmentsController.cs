@@ -211,9 +211,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
+                    await SetSessionStateAsync(sessionStateModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
@@ -232,9 +234,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
+                    await SetSessionStateAsync(sessionStateModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
@@ -252,20 +256,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
-        }
-
-        private async Task<bool> ReferenceFound(string referenceId)
-        {
-            var response = yourAssessmentsService.GetSkillsDocumentByReference(referenceId);
-            if (response.Success && response.DocumentId > 0)
-            {
-                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                sessionStateModel.DocumentId = response.DocumentId;
-                await SetSessionStateAsync(sessionStateModel);
-                return true;
-            }
-
-            return false;
         }
     }
 }

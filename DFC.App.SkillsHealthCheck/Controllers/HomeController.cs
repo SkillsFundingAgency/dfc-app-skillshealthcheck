@@ -8,16 +8,17 @@ using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -28,6 +29,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public HomeController(
@@ -35,13 +37,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            ISkillsHealthCheckService skillsHealthCheckService)
+            ISkillsHealthCheckService skillsHealthCheckService,
+            IYourAssessmentsService yourAssesmentsService)
         : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.skillsHealthCheckService = skillsHealthCheckService;
+            this.yourAssessmentsService = yourAssesmentsService;
         }
 
         [HttpGet]
@@ -188,6 +192,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
 
+
+            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
             var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
             {
                 DocumentType = Constants.SkillsHealthCheck.DocumentType,
@@ -219,9 +225,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
+                    await SetSessionStateAsync(sessionStateModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
@@ -240,9 +248,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (ModelState.IsValid)
             {
-                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
+                    await SetSessionStateAsync(sessionStateModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
@@ -260,20 +270,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
-        }
-
-        private async Task<bool> ReferenceFound(string referenceId)
-        {
-            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
-            if (response.Success && response.DocumentId > 0)
-            {
-                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                sessionStateModel.DocumentId = response.DocumentId;
-                await SetSessionStateAsync(sessionStateModel);
-                return true;
-            }
-
-            return false;
         }
     }
 }
