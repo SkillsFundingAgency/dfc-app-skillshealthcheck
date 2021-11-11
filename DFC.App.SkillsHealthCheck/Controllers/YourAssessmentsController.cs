@@ -63,6 +63,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/your-assessments/htmlhead")]
         [Route("skills-health-check/your-assessments/download-document/htmlhead")]
+        [Route("skills-health-check/your-assessments/return-to-assessment/htmlhead")]
         public IActionResult HtmlHead()
         {
             var viewModel = GetHtmlHeadViewModel(PageTitle);
@@ -74,6 +75,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [Route("skills-health-check/your-assessments/breadcrumb")]
         [Route("skills-health-check/your-assessments/download-document/breadcrumb")]
+        [Route("skills-health-check/your-assessments/return-to-assessment/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
