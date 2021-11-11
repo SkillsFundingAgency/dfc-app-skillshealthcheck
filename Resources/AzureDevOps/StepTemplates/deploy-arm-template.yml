@@ -68,4 +68,3 @@ steps:
       ScriptPath: '${{ parameters.SqlUserScript }}'
       ScriptArguments: "-KeyVaultName $(sharedKeyVaultName) -SqlServerName $(sharedSqlServerName) -SqlDatabaseName $(SqlDatabaseName) -EditorAdminUsername svcSkillsHealthCheck"
       azurePowerShellVersion: LatestVersion
-      "${{ parameters.DfCDevopsPath }}/PSCoreScripts/Test-CosmosDbDatabaseDoesntExist.ps1"
