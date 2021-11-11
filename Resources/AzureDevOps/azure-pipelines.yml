@@ -314,3 +314,6 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
+          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
+          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
+          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
