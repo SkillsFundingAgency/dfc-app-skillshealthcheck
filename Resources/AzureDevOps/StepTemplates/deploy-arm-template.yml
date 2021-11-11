@@ -11,6 +11,7 @@ parameters:
   ArmOutputVariableName: "ARMOutputs"
   AppSharedResourceGroup: ""
   appSharedCosmosDBName: ""
+  SqlUserScript: ""
 
 steps:
   - checkout: dfc-devops
@@ -59,3 +60,12 @@ steps:
       SourceFolder: "${{ parameters.ArmTemplateFolder }}"
       Contents: parameters.json
     condition: always()
+
+  - task: AzurePowerShell@5
+    displayName: 'Create SQL user'
+    inputs:
+      azureSubscription: '${{ parameters.AzureSubscription }}'
+      ScriptPath: '${{ parameters.SqlUserScript }}'
+      ScriptArguments: "-KeyVaultName $(sharedKeyVaultName) -SqlServerName $(sharedSqlServerName) -SqlDatabaseName $(SqlDatabaseName) -EditorAdminUsername svcSkillsHealthCheck"
+      azurePowerShellVersion: LatestVersion
+      "${{ parameters.DfCDevopsPath }}/PSCoreScripts/Test-CosmosDbDatabaseDoesntExist.ps1"

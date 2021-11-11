@@ -118,8 +118,19 @@
         "GovNotifyOptionsSmsTemplateId": {
             "type": "string"
         },
-
         "SkillsCentralServiceEndpoint": {
+            "type": "string"
+        },
+        "sharedResourceGroup": {
+            "type": "string"
+        },
+        "SqlElasticPoolName": {
+            "type": "string"
+        },
+        "SqlServerName": {
+            "type": "string"
+        },
+        "SqlConnectionString": {
             "type": "string"
         }
     },
@@ -135,7 +146,9 @@
         "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
         "cosmosDBSessionStateCollectionName": "session-state",
-        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
+        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]",
+        "sqlDatabaseName": "dfc-app-skillshealthcheck",
+        "DatabaseTier": "[if(equals(parameters('SqlElasticPoolName'), ''), 'Standard', 'ElasticPool')]"
     },
     "resources": [
         {
@@ -411,6 +424,10 @@
                             {
                                 "name": "SkillsCentralServiceEndpoint",
                                 "value": "[parameters('SkillsCentralServiceEndpoint')]"
+                            },
+                            {
+                                "name": "Configuration__SqlConnectionString",
+                                "value": "[parameters('SqlConnectionString')]"
                             }
                         ]
                     }
@@ -699,6 +716,33 @@
                     },
                     "resourceId": {
                         "value": "[resourceId('Microsoft.Web/serverFarms', variables('AppServicePlanName'))]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[variables('sqlDatabaseName')]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'SqlServer/sql-database.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "databaseName": {
+                        "value": "[variables('sqlDatabaseName')]"
+                    },
+                    "sqlServerName": {
+                        "value": "[parameters('SqlServerName')]"
+                    },
+                    "elasticPoolName": {
+                        "value": "[parameters('SqlElasticPoolName')]"
+                    },
+                    "databaseTier": {
+                        "value": "[variables('DatabaseTier')]"
                     }
                 }
             }

@@ -109,6 +109,18 @@
         },
         "SkillsCentralServiceEndpoint": {
             "value": "https://foo"
+        },
+        "sharedResourceGroup": {
+            "value": "dfc-dev-shared-rg"
+        },
+        "SqlElasticPoolName": {
+            "value": "dfc-dev-shared-epl"
+        },
+        "SqlServerName": {
+            "value": "dfc-dev-shared-sql"
+        },
+        "SqlConnectionString": {
+            "value": "SqlConnectionString"
         }
     }
 }

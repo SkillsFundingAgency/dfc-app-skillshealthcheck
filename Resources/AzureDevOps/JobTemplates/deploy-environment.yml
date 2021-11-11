@@ -26,6 +26,7 @@ parameters:
   PageRegistrationFile: ""
   AppRegistryApiUrl: ""
   ApimCompositeKey: ""
+  SqlUserScript: ""
   
 jobs:
   - deployment: DeployTemplate
@@ -49,6 +50,7 @@ jobs:
                 ArmTemplateFolder: "${{ parameters.ArmTemplateFolder }}"
                 AppSharedResourceGroup: "${{ parameters.AppSharedResourceGroup }}"
                 appSharedCosmosDBName: "${{ parameters.appSharedCosmosDBName }}"
+                SqlUserScript: "${{ parameters.SqlUserScript }}"
 
   - deployment: DeployApplication
     displayName: "Deploy Application"

@@ -118,6 +118,18 @@
         },
         "SkillsCentralServiceEndpoint": {
             "value": "__SkillsCentralServiceEndpoint__"
+        },
+        "sharedResourceGroup": {
+            "value": "__sharedResourceGroup__"
+        },
+        "SqlElasticPoolName": {
+            "value": "__elasticPoolName__"
+        },
+        "SqlServerName": {
+            "value": "__sharedSqlServerName__"
+        },
+        "SqlConnectionString": {
+            "value": "__SqlConnectionString__"
         }
     }
 }
