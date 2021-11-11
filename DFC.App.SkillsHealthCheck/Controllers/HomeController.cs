@@ -19,6 +19,7 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using System.Diagnostics;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -270,6 +271,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
