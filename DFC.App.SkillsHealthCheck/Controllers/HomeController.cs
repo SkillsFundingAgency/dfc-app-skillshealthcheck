@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,16 +8,18 @@ using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using System.Diagnostics;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -29,6 +30,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public HomeController(
@@ -36,13 +38,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
-            ISkillsHealthCheckService skillsHealthCheckService)
+            ISkillsHealthCheckService skillsHealthCheckService,
+            IYourAssessmentsService yourAssesmentsService)
         : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.skillsHealthCheckService = skillsHealthCheckService;
+            this.yourAssessmentsService = yourAssesmentsService;
         }
 
         [HttpGet]
@@ -136,6 +140,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/htmlhead")]
+        [Route("skills-health-check/return-to-assessment/htmlhead")]
         [Route("skills-health-check/{article}/htmlhead")]
         [Route("skills-health-check/htmlhead")]
         public IActionResult HtmlHead()
@@ -148,6 +153,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/home/breadcrumb")]
+        [Route("skills-health-check/return-to-assessment/breadcrumb")]
         [Route("skills-health-check/{article}/breadcrumb")]
         [Route("skills-health-check/breadcrumb")]
         public IActionResult Breadcrumb()
@@ -178,9 +184,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var viewModel = new BodyViewModel
             {
-                RightBarViewModel = new RightBarViewModel(),
+                RightBarViewModel = new RightBarViewModel
+                {
+                    ReturnToAssessmentViewModel = new ReturnToAssessmentViewModel
+                    {
+                        ActionUrl = "/skills-health-check/return-to-assessment",
+                    },
+                },
             };
 
+
+            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
             var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
             {
                 DocumentType = Constants.SkillsHealthCheck.DocumentType,
@@ -204,6 +218,59 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             return viewModel;
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/return-to-assessment/body")]
+        public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
+                if (referenceFound)
+                {
+                    await SetSessionStateAsync(sessionStateModel);
+                    return Redirect(YourAssessmentsURL);
+                }
+
+                ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
+            }
+
+            var bodyViewModel = await GetHomeBodyViewModel();
+            viewModel.HasError = true;
+            bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
+            return this.NegotiateContentResult(bodyViewModel);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/return-to-assessment")]
+        public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
+                if (referenceFound)
+                {
+                    await SetSessionStateAsync(sessionStateModel);
+                    return Redirect(YourAssessmentsURL);
+                }
+
+                ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
+            }
+
+            var bodyViewModel = await GetHomeBodyViewModel();
+            viewModel.HasError = true;
+            bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
+            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = bodyViewModel,
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

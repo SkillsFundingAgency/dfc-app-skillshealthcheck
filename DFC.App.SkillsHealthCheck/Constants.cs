@@ -181,6 +181,8 @@ namespace DFC.App.SkillsHealthCheck
 
         public static class SkillsHealthCheck
         {
+            public const string ReferenceCouldNotBeFoundMessage = "The reference could not be found";
+
             public const string DefaultDocumentName = "Skills Health Check";
 
             public const string DocumentType = "sdt.DR.6";

@@ -1,14 +1,6 @@
 ﻿@model RightBarViewModel
-<div class="app-related-items">
-    <h2 class="govuk-heading-m">Return to a skills health check</h2>
-    <form action="/skills-health-check/your-assessments/returnToAssessmentFromList/" class="form" id="enterReferenceForm" method="post">
-        <div class="form-group govuk-!-margin-bottom-5 " id="EnterReference">
-            <label class="govuk-label" for="enterReferenceViewModel_Reference">Enter your reference</label>
-            <input class="govuk-input" id="event-name" name="enterReferenceViewModel.Reference" type="text" value="">
-        </div>
-        <button type="submit" class="govuk-button app-button"> Continue </button>
-    </form>
-</div>
+
+<partial name="_ReturnToAssessment" model="@Model.ReturnToAssessmentViewModel"/>
 
 @if (Model.SpeakToAnAdviser != null)
 {
