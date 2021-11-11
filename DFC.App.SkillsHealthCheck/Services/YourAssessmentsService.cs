@@ -500,5 +500,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                 }
             }
         }
+
+        public GetSkillsDocumentIdResponse GetSkillsDocumentByReference(string referenceId)
+        {
+            return _skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
+        }
     }
 }

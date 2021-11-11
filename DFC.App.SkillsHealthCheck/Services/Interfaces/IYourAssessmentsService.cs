@@ -14,5 +14,7 @@ namespace DFC.App.SkillsHealthCheck.Services.Interfaces
         DocumentFormatter GetFormatter(DownloadType downloadType);
 
         DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs,  out string documentTitle);
+
+        GetSkillsDocumentIdResponse GetSkillsDocumentByReference(string referenceId);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -136,6 +135,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/htmlhead")]
+        [Route("skills-health-check/return-to-assessment/htmlhead")]
         [Route("skills-health-check/{article}/htmlhead")]
         [Route("skills-health-check/htmlhead")]
         public IActionResult HtmlHead()
@@ -148,6 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/home/breadcrumb")]
+        [Route("skills-health-check/return-to-assessment/breadcrumb")]
         [Route("skills-health-check/{article}/breadcrumb")]
         [Route("skills-health-check/breadcrumb")]
         public IActionResult Breadcrumb()
@@ -178,7 +179,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var viewModel = new BodyViewModel
             {
-                RightBarViewModel = new RightBarViewModel(),
+                RightBarViewModel = new RightBarViewModel
+                {
+                    ReturnToAssessmentViewModel = new ReturnToAssessmentViewModel
+                    {
+                        ActionUrl = "/skills-health-check/return-to-assessment",
+                    },
+                },
             };
 
             var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
@@ -206,10 +213,67 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return viewModel;
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        [Route("skills-health-check/return-to-assessment/body")]
+        public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (ModelState.IsValid)
+            {
+                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                if (referenceFound)
+                {
+                    return Redirect(YourAssessmentsURL);
+                }
+
+                ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
+            }
+
+            var bodyViewModel = await GetHomeBodyViewModel();
+            viewModel.HasError = true;
+            bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
+            return this.NegotiateContentResult(bodyViewModel);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/return-to-assessment")]
+        public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var referenceFound = await ReferenceFound(viewModel.ReferenceId);
+                if (referenceFound)
+                {
+                    return Redirect(YourAssessmentsURL);
+                }
+
+                ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
+            }
+
+            var bodyViewModel = await GetHomeBodyViewModel();
+            viewModel.HasError = true;
+            bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
+            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var breadcrumbViewModel = BuildBreadcrumb();
+            return this.NegotiateContentResult(new DocumentViewModel
+            {
+                HtmlHeadViewModel = htmlHeadViewModel,
+                BreadcrumbViewModel = breadcrumbViewModel,
+                BodyViewModel = bodyViewModel,
+            });
+        }
+
+        private async Task<bool> ReferenceFound(string referenceId)
+        {
+            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
+            if (response.Success && response.DocumentId > 0)
+            {
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                sessionStateModel.DocumentId = response.DocumentId;
+                await SetSessionStateAsync(sessionStateModel);
+                return true;
+            }
+
+            return false;
         }
     }
 }

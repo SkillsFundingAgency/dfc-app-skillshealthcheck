@@ -7,6 +7,9 @@ namespace DFC.App.SkillsHealthCheck.ViewModels
     public class RightBarViewModel
     {
         public string AssessmentType { get; set; }
+
         public SharedContentItemModel SpeakToAnAdviser { get; set; }
+
+        public ReturnToAssessmentViewModel ReturnToAssessmentViewModel { get; set; }
     }
 }
