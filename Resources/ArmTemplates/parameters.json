@@ -107,6 +107,15 @@
         "SkillsServiceOptionsImageUrl": {
             "value": "__SkillsServiceOptionsImageUrl__"
         },
+        "GovNotifyOptionsAPIKey": {
+            "value": "__GovNotifyOptionsAPIKey__"
+        },
+        "GovNotifyOptionsEmailTemplateId": {
+            "value": "__GovNotifyOptionsEmailTemplateId__"
+        },
+        "GovNotifyOptionsSmsTemplateId": {
+            "value": "__GovNotifyOptionsSmsTemplateId__"
+        },
         "SkillsCentralServiceEndpoint": {
             "value": "__SkillsCentralServiceEndpoint__"
         }

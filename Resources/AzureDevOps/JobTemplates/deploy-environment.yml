@@ -26,7 +26,7 @@ parameters:
   PageRegistrationFile: ""
   AppRegistryApiUrl: ""
   ApimCompositeKey: ""
-
+  
 jobs:
   - deployment: DeployTemplate
     displayName: "Deploy arm templates"

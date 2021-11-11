@@ -109,6 +109,16 @@
         "SkillsServiceOptionsImageUrl": {
             "type": "string"
         },
+        "GovNotifyOptionsAPIKey": {
+            "type": "string"
+        },
+        "GovNotifyOptionsEmailTemplateId": {
+            "type": "string"
+        },
+        "GovNotifyOptionsSmsTemplateId": {
+            "type": "string"
+        },
+
         "SkillsCentralServiceEndpoint": {
             "type": "string"
         }
@@ -385,6 +395,18 @@
                             {
                                 "name": "Logging__LogLevel__Default",
                                 "value": "[parameters('LoggingLogLevelDefault')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__APIKey",
+                                "value": "[parameters('GovNotifyOptionsAPIKey')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__EmailTemplateId",
+                                "value": "[parameters('GovNotifyOptionsEmailTemplateId')]"
+                            },
+                            {
+                                "name": "GovNotifyOptions__SmsTemplateId",
+                                "value": "[parameters('GovNotifyOptionsSmsTemplateId')]"
                             },
                             {
                                 "name": "SkillsCentralServiceEndpoint",

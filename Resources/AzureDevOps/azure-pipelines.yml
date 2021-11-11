@@ -213,6 +213,7 @@ stages:
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
 
+
   - stage: DeployToPP
     condition: and(eq(dependencies.DeployToSit.result,'Succeeded'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #standard condition
     #condition: succeeded() #use when testing feature branch only
