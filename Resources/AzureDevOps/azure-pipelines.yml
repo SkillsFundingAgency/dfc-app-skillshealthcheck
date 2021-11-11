@@ -123,11 +123,6 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
-          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
-          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
-          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
-
-
 
   - stage: DeployToDev
     dependsOn: Build
@@ -173,9 +168,6 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
-          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
-          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
-          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
 
   - stage: DeployToSit
     condition: and(eq(dependencies.DeployToDev.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
@@ -220,9 +212,7 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
-          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
-          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
-          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
+
 
   - stage: DeployToPP
     condition: and(eq(dependencies.DeployToSit.result,'Succeeded'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #standard condition
@@ -267,9 +257,6 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
-          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
-          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
-          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
 
   - stage: DeployToProd
     condition: and(eq(dependencies.DeployToPP.result,'Succeeded'), eq(variables['Build.SourceBranch'], 'refs/heads/master')) #standard condition
@@ -314,6 +301,3 @@ stages:
           PageRegistrationFile: "$(PageRegistrationFile)"
           AppRegistryApiUrl: "$(AppRegistryApiUrl)"
           ApimCompositeKey: "$(ApimCompositeKey)"
-          GovNotifyOptionsAPIKey: "$(GovNotifyOptionsAPIKey)"
-          GovNotifyOptionsEmailTemplateId: "$(GovNotifyOptionsEmailTemplateId)"
-          GovNotifyOptionsSmsTemplateId: "$(GovNotifyOptionsSmsTemplateId)"
