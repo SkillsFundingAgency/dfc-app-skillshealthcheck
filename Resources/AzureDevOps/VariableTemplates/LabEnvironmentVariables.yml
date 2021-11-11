@@ -55,3 +55,9 @@ variables:
     value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
   - name: LoggingLogLevelDefault
     value: Trace
+  - name: GovNotifyOptionsAPIKey
+    value: $(GovNotifyOptionsAPIKey)
+  - name: GovNotifyOptionsEmailTemplateId
+    value: $(GovNotifyOptionsEmailTemplateId)
+  - name: GovNotifyOptionsSmsTemplateId
+    value: $(GovNotifyOptionsSmsTemplateId)

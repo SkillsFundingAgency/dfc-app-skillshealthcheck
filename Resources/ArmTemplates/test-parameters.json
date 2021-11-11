@@ -98,6 +98,15 @@
         "SkillsServiceOptionsImageUrl": {
             "value": "https://foo"
         },
+        "GovNotifyOptionsAPIKey": {
+            "value": "GovNotifyOptionsAPIKey"
+        },
+        "GovNotifyOptionsEmailTemplateId": {
+            "value": "GovNotifyOptionsEmailTemplateId"
+        },
+        "GovNotifyOptionsSmsTemplateId": {
+            "value": "GovNotifyOptionsSmsTemplateId"
+        },
         "SkillsCentralServiceEndpoint": {
             "value": "https://foo"
         }

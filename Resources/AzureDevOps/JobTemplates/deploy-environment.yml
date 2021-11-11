@@ -26,6 +26,9 @@ parameters:
   PageRegistrationFile: ""
   AppRegistryApiUrl: ""
   ApimCompositeKey: ""
+  GovNotifyOptionsAPIKey: ""
+  GovNotifyOptionsEmailTemplateId: ""
+  GovNotifyOptionsSmsTemplateId: ""
 
 jobs:
   - deployment: DeployTemplate
