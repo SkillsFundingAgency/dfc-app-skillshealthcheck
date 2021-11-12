@@ -139,6 +139,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/htmlhead")]
+        [HttpGet("skills-health-check/home/reload/htmlhead")]
         [Route("skills-health-check/return-to-assessment/htmlhead")]
         [Route("skills-health-check/{article}/htmlhead")]
         [Route("skills-health-check/htmlhead")]
@@ -152,6 +153,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/home/breadcrumb")]
+        [HttpGet("skills-health-check/home/reload/breadcrumb")]
         [Route("skills-health-check/return-to-assessment/breadcrumb")]
         [Route("skills-health-check/{article}/breadcrumb")]
         [Route("skills-health-check/breadcrumb")]
