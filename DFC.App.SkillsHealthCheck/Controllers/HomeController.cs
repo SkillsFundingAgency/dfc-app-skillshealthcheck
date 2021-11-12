@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,26 +8,25 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
-using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using System.Diagnostics;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
-
         private readonly ILogger<HomeController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
@@ -90,7 +90,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
 
-            if (!string.IsNullOrWhiteSpace(viewModel.ListTypeFields))
+            if (!string.IsNullOrWhiteSpace(viewModel?.ListTypeFields))
             {
                 var fieldList = viewModel.ListTypeFields.Split(',');
                 foreach (var field in fieldList.Where(f => !f.Equals(Constants.SkillsHealthCheck.FieldName, StringComparison.InvariantCultureIgnoreCase)))
@@ -144,7 +144,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/htmlhead")]
         public IActionResult HtmlHead()
         {
-            var viewModel = GetHtmlHeadViewModel(String.Empty);
+            var viewModel = GetHtmlHeadViewModel(string.Empty);
 
             logger.LogInformation($"{nameof(HtmlHead)} has returned content");
 
@@ -174,49 +174,21 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        private async Task<BodyViewModel> GetHomeBodyViewModel()
+        [HttpGet("skills-health-check/home/reload")]
+        [HttpGet("skills-health-check/home/reload/body")]
+        public async Task<ActionResult> Reload(string sessionId)
         {
-            if (await CheckValidSession())
+            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(sessionId);
+            if (response.Success && response.DocumentId > 0)
             {
-                Response.Redirect(YourAssessmentsURL);
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                sessionStateModel.DocumentId = response.DocumentId;
+                await SetSessionStateAsync(sessionStateModel);
+                return Redirect(YourAssessmentsURL);
             }
 
-            var viewModel = new BodyViewModel
-            {
-                RightBarViewModel = new RightBarViewModel
-                {
-                    ReturnToAssessmentViewModel = new ReturnToAssessmentViewModel
-                    {
-                        ActionUrl = "/skills-health-check/return-to-assessment",
-                    },
-                },
-            };
-
-
-            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
-            var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
-            {
-                DocumentType = Constants.SkillsHealthCheck.DocumentType,
-            });
-
-            if (apiResult.Success)
-            {
-                viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
-            }
-
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
-            {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
-            }
-
-            if (speakToAnAdviser != null)
-            {
-                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
-            }
-
-            return viewModel;
+            logger.LogError(response.ErrorMessage);
+            return Redirect("/alerts/500?errorcode=saveProgressResponse");
         }
 
         [HttpPost]
@@ -276,6 +248,50 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task<BodyViewModel> GetHomeBodyViewModel()
+        {
+            if (await CheckValidSession())
+            {
+                Response.Redirect(YourAssessmentsURL);
+            }
+
+            var viewModel = new BodyViewModel
+            {
+                RightBarViewModel = new RightBarViewModel
+                {
+                    ReturnToAssessmentViewModel = new ReturnToAssessmentViewModel
+                    {
+                        ActionUrl = "/skills-health-check/return-to-assessment",
+                    },
+                },
+            };
+
+            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
+            var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
+            {
+                DocumentType = Constants.SkillsHealthCheck.DocumentType,
+            });
+
+            if (apiResult.Success)
+            {
+                viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
+            }
+
+            SharedContentItemModel? speakToAnAdviser = null;
+            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            {
+                speakToAnAdviser = await sharedContentItemDocumentService
+                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+            }
+
+            if (speakToAnAdviser != null)
+            {
+                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+            }
+
+            return viewModel;
         }
     }
 }
