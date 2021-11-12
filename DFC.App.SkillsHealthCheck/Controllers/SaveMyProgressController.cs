@@ -487,7 +487,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private string GetDomainUrl()
         {
-            return $"{Request.Scheme}://{Request.Host}/skills-health-check/home";
+            return $"{Request.GetBaseAddress()}/skills-health-check/home";
         }
 
         private async Task<IActionResult> ProcessSmsRequestAsync(ReferenceNumberViewModel model)

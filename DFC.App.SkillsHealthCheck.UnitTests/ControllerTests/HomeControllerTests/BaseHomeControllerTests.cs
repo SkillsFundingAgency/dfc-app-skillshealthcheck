@@ -6,7 +6,9 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
 using FakeItEasy;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,8 +26,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected CmsApiClientOptions CmsApiClientOptions { get; set; }
 
-        protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get;  }
-        protected IYourAssessmentsService FakeYourAssessmentsService { get;  }
+        protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get; }
+
+        protected IYourAssessmentsService FakeYourAssessmentsService { get; }
 
         protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 

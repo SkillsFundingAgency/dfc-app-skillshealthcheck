@@ -16,27 +16,27 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public abstract class BaseController<TController> : Controller
         where TController : Controller
     {
-        private ISessionStateService<SessionDataModel> _sessionStateService;
-        private ILogger<TController> _logger;
-
         public const string RegistrationPath = "skills-health-check";
         public const string DefaultPageTitleSuffix = "Skills Health Check | National Careers Service";
 
-        public readonly string HomeURL = $"/{RegistrationPath}/home";
-        public readonly string YourAssessmentsURL = $"/{RegistrationPath}/your-assessments";
-        public readonly string QuestionURL = $"/{RegistrationPath}/question";
+        public static readonly string HomeURL = $"/{RegistrationPath}/home";
+        public static readonly string YourAssessmentsURL = $"/{RegistrationPath}/your-assessments";
+        public static readonly string QuestionURL = $"/{RegistrationPath}/question";
+
+        private readonly ISessionStateService<SessionDataModel> sessionStateService;
+        private readonly ILogger<TController> logger;
 
         protected BaseController(ILogger<TController> logger, ISessionStateService<SessionDataModel> sessionStateService)
         {
-            _logger = logger;
-            _sessionStateService = sessionStateService;
+            this.logger = logger;
+            this.sessionStateService = sessionStateService;
         }
 
         protected HtmlHeadViewModel GetHtmlHeadViewModel(string pageTitle)
         {
             return new HtmlHeadViewModel
             {
-                CanonicalUrl = new Uri($"{Request.GetBaseAddress()}/skills-health-check", UriKind.RelativeOrAbsolute),
+                CanonicalUrl = new Uri($"{Request.GetBaseAddress()}/{RegistrationPath}", UriKind.RelativeOrAbsolute),
                 Title = !string.IsNullOrWhiteSpace(pageTitle) ? $"{pageTitle} | {DefaultPageTitleSuffix}" : DefaultPageTitleSuffix,
             };
         }
@@ -79,12 +79,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var compositeSessionId = Request.CompositeSessionId();
             if (compositeSessionId.HasValue)
             {
-                _logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
+                logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
 
-                return await _sessionStateService.GetAsync(compositeSessionId.Value);
+                return await sessionStateService.GetAsync(compositeSessionId.Value);
             }
 
-            _logger.LogError($"Error getting the session state - compositeSessionId = {compositeSessionId}");
+            logger.LogError($"Error getting the session state - compositeSessionId = {compositeSessionId}");
 
             return default;
         }
@@ -94,20 +94,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var compositeSessionId = Request.CompositeSessionId();
             if (compositeSessionId.HasValue)
             {
-                _logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
+                logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
 
-                var sessionStateModel = await _sessionStateService.GetAsync(compositeSessionId.Value);
+                var sessionStateModel = await sessionStateService.GetAsync(compositeSessionId.Value);
                 sessionStateModel.Ttl = 1800;
                 sessionStateModel.State = sessionDataModel;
 
-                _logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");
+                logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");
 
-                var result = await _sessionStateService.SaveAsync(sessionStateModel);
+                var result = await sessionStateService.SaveAsync(sessionStateModel);
 
                 return result == HttpStatusCode.OK || result == HttpStatusCode.Created;
             }
 
-            _logger.LogError($"Error saving the session state - compositeSessionId = {compositeSessionId}");
+            logger.LogError($"Error saving the session state - compositeSessionId = {compositeSessionId}");
 
             return false;
         }
@@ -117,12 +117,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var compositeSessionId = Request.CompositeSessionId();
             if (compositeSessionId.HasValue)
             {
-                _logger.LogInformation($"Deleting the session state - compositeSessionId = {compositeSessionId}");
+                logger.LogInformation($"Deleting the session state - compositeSessionId = {compositeSessionId}");
 
-                return await _sessionStateService.DeleteAsync(compositeSessionId.Value);
+                return await sessionStateService.DeleteAsync(compositeSessionId.Value);
             }
 
-            _logger.LogError($"Error deleting the session state - compositeSessionId = {compositeSessionId}");
+            logger.LogError($"Error deleting the session state - compositeSessionId = {compositeSessionId}");
 
             return false;
         }
