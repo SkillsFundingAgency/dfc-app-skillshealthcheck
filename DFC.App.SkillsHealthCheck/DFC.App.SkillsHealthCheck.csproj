@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
     <Nullable>enable</Nullable>
+    <UserSecretsId>113a83df-aa82-434a-82c1-71ee8ea17bfa</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

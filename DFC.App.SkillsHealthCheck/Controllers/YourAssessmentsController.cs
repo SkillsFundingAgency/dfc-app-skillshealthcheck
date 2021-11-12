@@ -150,10 +150,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
                 var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
                     ? model.JobFamilyList?.SelectedJobs.ToList() ?? new List<string>() : new List<string>();
-                var downloadDocumentResponse = yourAssessmentsService.GetDownloadDocument(sessionDataModel, formatter, selectedJobs, out string documentTitle);
+                var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
                 if (downloadDocumentResponse.Success)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{documentTitle}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
                 }
             }
 
@@ -193,10 +193,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
-                var downloadDocumentResponse = yourAssessmentsService.GetDownloadDocument(sessionDataModel, formatter, selectedJobs, out string documentTitle);
+                var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
                 if (downloadDocumentResponse.Success)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{documentTitle}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
                 }
             }
 

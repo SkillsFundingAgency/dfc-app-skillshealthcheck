@@ -45,7 +45,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 };
         }
 
-        public DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs, out string documentTitle)
+        public async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs)
         {
             var documentId = sessionDataModel.DocumentId;
 
@@ -56,19 +56,18 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (skillsDocumentResponse.Success)
             {
-                var downloadDocumentResponse = GetDownloadDocument(sessionDataModel, skillsDocumentResponse, formatter, selectedJobs);
-                documentTitle = skillsDocumentResponse.SkillsDocument.SkillsDocumentTitle;
+                var downloadDocumentResponse = await GetDownloadDocumentAsync(sessionDataModel, skillsDocumentResponse, formatter, selectedJobs);
+                downloadDocumentResponse.DocumentName = skillsDocumentResponse.SkillsDocument.SkillsDocumentTitle;
                 return downloadDocumentResponse;
             }
 
-            documentTitle = string.Empty;
             return new DownloadDocumentResponse
             {
                 Success = false,
             };
         }
 
-        private DownloadDocumentResponse GetDownloadDocument(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
+        private async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
         {
             var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse {Success = true};
             var skillsDocument = documentResponse.SkillsDocument;
@@ -95,15 +94,15 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (saveQuestionAnswerResponse.Success)
             {
-                var result = _skillsHealthCheckService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
+                var result = await _skillsHealthCheckService.RequestDownloadAsync(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
 
-                while (new[] {"Pending", "Creating"}.Contains(result, StringComparer.OrdinalIgnoreCase))
+                while (new[] {DocumentStatus.Pending, DocumentStatus.Creating}.Any(ds => ds == result))
                 {
                     Task.WaitAll(Task.Delay(1000));
-                    result = _skillsHealthCheckService.QueryDownloadStatus(skillsDocument.DocumentId, formatter.FormatterName);
+                    result = await _skillsHealthCheckService.QueryDownloadStatusAsync(skillsDocument.DocumentId, formatter.FormatterName);
                 }
 
-                if (result.Equals("Created", StringComparison.OrdinalIgnoreCase))
+                if (result.Equals(DocumentStatus.Created))
                 {
                     var downloadRequest = new DownloadDocumentRequest
                     {
@@ -120,12 +119,12 @@ namespace DFC.App.SkillsHealthCheck.Services
                     }
                 }
 
-                if (result.Equals("Error", StringComparison.OrdinalIgnoreCase) && !retry)
+                if (result.Equals(DocumentStatus.Error) && !retry)
                 {
                     saveQuestionAnswerResponse = UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(sessionDataModel, saveQuestionAnswerResponse, skillsDocument);
                     if (saveQuestionAnswerResponse.Success)
                     {
-                        return GetDownloadDocument(sessionDataModel, documentResponse, formatter, selectedJobs, true);
+                        return await GetDownloadDocumentAsync(sessionDataModel, documentResponse, formatter, selectedJobs, true);
                     }
                 }
             }
@@ -161,16 +160,16 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private readonly Dictionary<string, AssessmentType> validDataValues = new Dictionary<string, AssessmentType>
         {
-            {Constants.SkillsHealthCheck.NumericAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.VerbalAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.CheckingAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.MechanicalAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.SpatialAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.SkillsAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.InterestsAssessmentDataValue, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.PersonalAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.MotivationAssessmentComplete, AssessmentType.Numeric},
-            {Constants.SkillsHealthCheck.AbstractAssessmentComplete, AssessmentType.Numeric},
+            { Constants.SkillsHealthCheck.NumericAssessmentComplete, AssessmentType.Numeric },
+            { Constants.SkillsHealthCheck.VerbalAssessmentComplete, AssessmentType.Verbal },
+            { Constants.SkillsHealthCheck.CheckingAssessmentComplete, AssessmentType.Checking },
+            { Constants.SkillsHealthCheck.MechanicalAssessmentComplete, AssessmentType.Mechanical },
+            { Constants.SkillsHealthCheck.SpatialAssessmentComplete, AssessmentType.Spatial },
+            { Constants.SkillsHealthCheck.SkillsAssessmentComplete, AssessmentType.SkillAreas },
+            { Constants.SkillsHealthCheck.InterestsAssessmentDataValue, AssessmentType.Interest },
+            { Constants.SkillsHealthCheck.PersonalAssessmentComplete, AssessmentType.Personal },
+            { Constants.SkillsHealthCheck.MotivationAssessmentComplete, AssessmentType.Motivation },
+            { Constants.SkillsHealthCheck.AbstractAssessmentComplete, AssessmentType.Abstract },
         };
 
         // TODO: can we avoid having this service here?
