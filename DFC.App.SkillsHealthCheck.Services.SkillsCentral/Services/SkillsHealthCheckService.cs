@@ -45,9 +45,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 var request = createSkillsDocumentRequest.SkillsDocument.GetApiSkillsDocument();
 
                 var apiResult = _skillsCentralService.InsertDocument(request);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService, long>(x => x.InsertDocument(request));
-
                 response.DocumentId = apiResult;
                 response.Success = true;
             }
@@ -92,9 +89,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
                 var apiResult = _skillsCentralService.GetSkillsHealthCheckQuestions(assessmentType,
                     getAssessmentQuestionRequest.QuestionNumber, level, accessibility);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService, Question>(x => x.GetSkillsHealthCheckQuestions(assessmentType, getAssessmentQuestionRequest.QuestionNumber, level, accessibility));
-
                 response.Question = apiResult.ConvertToModelQuestion();
                 response.Success = true;
             }
@@ -127,10 +121,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             try
             {
                 var apiResult = _skillsCentralService.ListTypeFields(getListTypeFieldsRequest.DocumentType);
-                //    ServiceHelper.Instance()
-                //        .Use<ISkillsCentralService, List<string>>(
-                //            x => x.ListTypeFields(getListTypeFieldsRequest.DocumentType));
-
                 if (apiResult != null)
                 {
                     response.TypeFields = apiResult;
@@ -163,10 +153,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             try
             {
                 var apiResult = _skillsCentralService.FindDocumentByKeyValue(Identifier, false);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService, SkillsDocument>(
-                //        x => x.FindDocumentByKeyValue(Identifier, false));
-
                 if (apiResult != null)
                 {
                     response.DocumentId = apiResult.DocumentId;
@@ -204,10 +190,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             try
             {
                 var apiResult = _skillsCentralService.ReadDocument(getSkillsDocumentRequest.DocumentId ?? 0);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService, SkillsDocument>(
-                //        x => x.ReadDocument(getSkillsDocumentRequest.DocumentId));
-
                 if (apiResult != null)
                 {
                     response.SkillsDocument = apiResult.ConvertToModelSkillsDocument();
@@ -247,9 +229,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 var apiDocument = saveQuestionAnswerRequest.SkillsDocument.GetApiSkillsDocument();
                 apiDocument.DocumentId = saveQuestionAnswerRequest.DocumentId;
                 _skillsCentralService.UpdateSkillsDocumentDataValues(saveQuestionAnswerRequest.DocumentId, apiDocument);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService>(
-                //        x => x.UpdateSkillsDocumentDataValues(saveQuestionAnswerRequest.DocumentId, apiDocument));
                 response.Success = true;
             }
             catch (Exception ex)
@@ -264,6 +243,42 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
 
             return response;
         }
+
+        public string RequestDownload(long documentId, string formatter, string requestedBy)
+        {
+            if (documentId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(documentId));
+            }
+
+            if (string.IsNullOrWhiteSpace(formatter))
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+
+            if (string.IsNullOrWhiteSpace(requestedBy))
+            {
+                throw new ArgumentNullException(nameof(requestedBy));
+            }
+
+            return _skillsCentralService.FormatDocumentMakeRequestAsync(documentId, formatter, requestedBy).Result.Status.ToString();
+        }
+
+        public string QueryDownloadStatus(long documentId, string formatter)
+        {
+            if (documentId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(documentId));
+            }
+
+            if (string.IsNullOrWhiteSpace(formatter))
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+
+            return _skillsCentralService.FormatDocumentPollStatusAsync(documentId, formatter).Result.Status.ToString();
+        }
+
         /// <summary>
         /// Downloads the document.
         /// </summary>
@@ -280,48 +295,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
                 response.DocumentBytes =
                     _skillsCentralService.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId,
                         downloadDocumentRequest.Formatter);
-                //ServiceHelper.Instance()
-                // .Use<ISkillsCentralService, byte[]>(
-                //     x => x.FormatDocumentGetPayload(downloadDocumentRequest.DocumentId, downloadDocumentRequest.Formatter));
-                response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType()
-                    .Name.Equals(nameof(CommunicationException), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    response.ErrorType = ErrorType.CommunicationError;
-                }
-                response.ErrorMessage = ex.Message;
-            }
-
-            return response;
-        }
-
-
-        /// <summary>
-        /// Updates the skills document.
-        /// </summary>
-        /// <param name="updateSkillsDocumentRequest">The update skills document request.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public UpdateSkillsDocumentResponse UpdateSkillsDocument(UpdateSkillsDocumentRequest updateSkillsDocumentRequest)
-        {
-            if (updateSkillsDocumentRequest == null)
-            {
-                throw new ArgumentNullException(nameof(updateSkillsDocumentRequest));
-            }
-
-            var response = new UpdateSkillsDocumentResponse();
-
-            try
-            {
-                var apiDocument = updateSkillsDocumentRequest.SkillsDocument.GetApiSkillsDocument();
-                apiDocument.DocumentId = updateSkillsDocumentRequest.DocumentId;
-                _skillsCentralService.UpdateDocument(apiDocument);
-                //ServiceHelper.Instance()
-                //    .Use<ISkillsCentralService>(
-                //        x => x.UpdateDocument(apiDocument));
                 response.Success = true;
             }
             catch (Exception ex)
