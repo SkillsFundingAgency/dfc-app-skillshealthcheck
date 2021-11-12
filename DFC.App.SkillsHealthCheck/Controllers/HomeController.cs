@@ -123,7 +123,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
             if (apiResult.Success)
             {
-                //UpdateShcUsageDate(); TODO: this needs to be looked into and implemented
                 var sessionStateDataModel = new SessionDataModel
                 {
                     DocumentId = apiResult.DocumentId,

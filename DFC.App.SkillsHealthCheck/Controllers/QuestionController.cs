@@ -249,7 +249,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
-                    //UpdateShcUsageDate();
 
                     return RedirectToNextAction(model);
                 }
@@ -277,7 +276,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
-                    //UpdateShcUsageDate();
 
                     return RedirectToNextAction(model);
                 }
@@ -305,7 +303,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
-                    //UpdateShcUsageDate();
                     return RedirectToNextAction(model);
                 }
 
@@ -331,8 +328,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
-                    //UpdateShcUsageDate();
-
                     return RedirectToNextAction(model);
                 }
 
@@ -361,7 +356,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
-                    //UpdateShcUsageDate();
                     return RedirectToNextAction(model);
                 }
 

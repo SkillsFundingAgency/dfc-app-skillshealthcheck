@@ -11,7 +11,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
         /// <returns></returns>
         GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest);
 
-
         /// <summary>
         /// Gets the skills document.
         /// </summary>
@@ -48,6 +47,23 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
         /// <returns></returns>
         SaveQuestionAnswerResponse SaveQuestionAnswer(SaveQuestionAnswerRequest saveQuestionAnswerRequest);
 
+        /// <summary>
+        /// Request the preparation of a document for download.
+        /// </summary>
+        /// <param name="documentId">The document id.</param>
+        /// <param name="formatter">The document format type.</param>
+        /// <param name="documentId">Name associated with request.</param>
+        /// <returns></returns>
+        string RequestDownload(long documentId, string formatter, string requestedBy);
+
+        /// <summary>
+        /// Query download status to see if document is ready.
+        /// </summary>
+        /// <param name="documentId">The document id.</param>
+        /// <param name="formatter">The document format type.</param>
+        /// <returns></returns>
+        string QueryDownloadStatus(long documentId, string formatter);
+
 
         /// <summary>
         /// Downloads the document.
@@ -55,12 +71,5 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
         /// <param name="downloadDocumentRequest">The download document request.</param>
         /// <returns></returns>
         DownloadDocumentResponse DownloadDocument(DownloadDocumentRequest downloadDocumentRequest);
-
-        /// <summary>
-        /// Updates the skills document.
-        /// </summary>
-        /// <param name="updateSkillsDocumentRequest">The update skills document request.</param>
-        /// <returns></returns>
-        UpdateSkillsDocumentResponse UpdateSkillsDocument(UpdateSkillsDocumentRequest updateSkillsDocumentRequest);
     }
 }

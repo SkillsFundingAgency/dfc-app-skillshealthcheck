@@ -17,15 +17,12 @@ namespace DFC.App.SkillsHealthCheck.Services
     public class YourAssessmentsService : IYourAssessmentsService
     {
         private ISkillsHealthCheckService _skillsHealthCheckService;
-        private IUserAssetService _userAssetService;
 
         public YourAssessmentsService(
             ISkillsHealthCheckService skillsHealthCheckService,
-            IUserAssetService userAssetService,
             IQuestionService questionService)
         {
             _questionService = questionService;
-            _userAssetService = userAssetService;
             _skillsHealthCheckService = skillsHealthCheckService;
         }
 
@@ -98,12 +95,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (saveQuestionAnswerResponse.Success)
             {
-                var result = _userAssetService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
+                var result = _skillsHealthCheckService.RequestDownload(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
 
                 while (new[] {"Pending", "Creating"}.Contains(result, StringComparer.OrdinalIgnoreCase))
                 {
                     Task.WaitAll(Task.Delay(1000));
-                    result = _userAssetService.QueryDownloadStatus(skillsDocument.DocumentId, formatter.FormatterName);
+                    result = _skillsHealthCheckService.QueryDownloadStatus(skillsDocument.DocumentId, formatter.FormatterName);
                 }
 
                 if (result.Equals("Created", StringComparison.OrdinalIgnoreCase))
@@ -120,7 +117,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                     if (downloadResponse.Success)
                     {
                         return downloadResponse;
-                        //UpdateShcUsageDate();
                     }
                 }
 
