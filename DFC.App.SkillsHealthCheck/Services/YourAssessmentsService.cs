@@ -110,8 +110,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                         Formatter = formatter.FormatterName,
                     };
 
-                    var downloadResponse =
-                        Task.Run(() => _skillsHealthCheckService.DownloadDocument(downloadRequest)).Result;
+                    var downloadResponse = _skillsHealthCheckService.DownloadDocument(downloadRequest);
 
                     if (downloadResponse.Success)
                     {

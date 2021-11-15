@@ -44,8 +44,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests", "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests\DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests.csproj", "{354C9FC2-19BA-46D4-8D7A-0543C40482BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.SkillsHealthCheck.Services.UnitTests", "DFC.App.SkillsHealthCheck.Services.UnitTests\DFC.App.SkillsHealthCheck.Services.UnitTests.csproj", "{53338924-7DBE-4676-A0D6-DF224CE0AA09}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,10 +86,6 @@ Global
 		{354C9FC2-19BA-46D4-8D7A-0543C40482BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{354C9FC2-19BA-46D4-8D7A-0543C40482BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354C9FC2-19BA-46D4-8D7A-0543C40482BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53338924-7DBE-4676-A0D6-DF224CE0AA09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53338924-7DBE-4676-A0D6-DF224CE0AA09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53338924-7DBE-4676-A0D6-DF224CE0AA09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53338924-7DBE-4676-A0D6-DF224CE0AA09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,7 +103,6 @@ Global
 		{4BC773B1-AA72-492C-B643-1173A396238E} = {A5DD8004-1372-40B1-8235-8B259C0473B5}
 		{42340438-AB59-4B13-9A41-938A70F07E78} = {A5DD8004-1372-40B1-8235-8B259C0473B5}
 		{354C9FC2-19BA-46D4-8D7A-0543C40482BA} = {9BA7A34A-1C2A-487E-89A1-F1A71DB70429}
-		{53338924-7DBE-4676-A0D6-DF224CE0AA09} = {9BA7A34A-1C2A-487E-89A1-F1A71DB70429}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {042BE92B-75BC-4D9D-A8A0-1547EC76E1C8}
