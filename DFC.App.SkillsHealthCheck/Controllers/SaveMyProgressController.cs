@@ -12,6 +12,7 @@ using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
 using DFC.Compui.Sessionstate;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -23,16 +24,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private readonly ILogger<SaveMyProgressController> logger;
         private readonly IGovNotifyService govNotifyService;
+        private readonly IConfiguration configuration;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
         public SaveMyProgressController(
             ILogger<SaveMyProgressController> logger,
             IGovNotifyService govNotifyService,
+            IConfiguration configuration,
             ISessionStateService<SessionDataModel> sessionStateService,
             ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService)
         {
             this.logger = logger;
             this.govNotifyService = govNotifyService;
+            this.configuration = configuration;
             this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
@@ -487,7 +491,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private string GetDomainUrl()
         {
-            return $"{Request.GetBaseAddress()}skills-health-check/home";
+            return $"{configuration["CompositeBaseUrl"]}skills-health-check/home";
         }
 
         private async Task<IActionResult> ProcessSmsRequestAsync(ReferenceNumberViewModel model)

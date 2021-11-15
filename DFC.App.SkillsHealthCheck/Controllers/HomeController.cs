@@ -139,6 +139,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/home/htmlhead")]
+        [Route("skills-health-check/home/reload/htmlhead")]
         [Route("skills-health-check/return-to-assessment/htmlhead")]
         [Route("skills-health-check/{article}/htmlhead")]
         [Route("skills-health-check/htmlhead")]
@@ -151,6 +152,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        [HttpGet]
+        [Route("skills-health-check/home/reload/breadcrumb")]
         [Route("skills-health-check/home/breadcrumb")]
         [Route("skills-health-check/return-to-assessment/breadcrumb")]
         [Route("skills-health-check/{article}/breadcrumb")]
@@ -174,8 +177,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        [HttpGet("skills-health-check/home/reload")]
-        [HttpGet("skills-health-check/home/reload/body")]
+        [HttpGet]
+        [Route("skills-health-check/home/reload")]
+        [Route("skills-health-check/home/reload/body")]
         public async Task<ActionResult> Reload(string sessionId)
         {
             var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(sessionId);

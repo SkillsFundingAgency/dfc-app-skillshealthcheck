@@ -12,6 +12,7 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
@@ -27,13 +28,15 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
 
         protected IGovNotifyService GovNotifyService { get; } = A.Fake<IGovNotifyService>();
 
+        protected IConfiguration Configuration { get; } = A.Fake<IConfiguration>();
+
         protected SaveMyProgressController BuildController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new SaveMyProgressController(Logger, GovNotifyService, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, GovNotifyService, Configuration, SessionStateService, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -54,7 +57,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             ITempDataProvider provider = new FakeTempDataProvider();
             provider.SaveTempData(httpContext, dictionary);
 
-            var controller = new SaveMyProgressController(Logger, GovNotifyService, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, GovNotifyService, Configuration, SessionStateService, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {
