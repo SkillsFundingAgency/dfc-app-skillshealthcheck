@@ -55,4 +55,5 @@ variables:
     value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
   - name: LoggingLogLevelDefault
     value: Warning
-
+  - name: CompositeBaseUrl
+    value: https://staging.nationalcareers.service.gov.uk/

@@ -55,4 +55,5 @@ variables:
     value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
   - name: LoggingLogLevelDefault
     value: Trace
-    
+  - name: CompositeBaseUrl
+    value: https://sit-beta.nationalcareersservice.org.uk/

@@ -121,6 +121,10 @@
 
         "SkillsCentralServiceEndpoint": {
             "type": "string"
+        },
+
+        "CompositeBaseUrl": {
+            "type": "string"
         }
     },
     "variables": {
@@ -411,6 +415,10 @@
                             {
                                 "name": "SkillsCentralServiceEndpoint",
                                 "value": "[parameters('SkillsCentralServiceEndpoint')]"
+                            },
+                            {
+                                "name": "CompositeBaseUrl",
+                                "value": "[parameters('CompositeBaseUrl')]"
                             }
                         ]
                     }

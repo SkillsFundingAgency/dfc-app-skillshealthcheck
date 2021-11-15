@@ -109,6 +109,9 @@
         },
         "SkillsCentralServiceEndpoint": {
             "value": "https://foo"
+        },
+        "CompositeBaseUrl": {
+            "value": "https://foo"
         }
     }
 }
