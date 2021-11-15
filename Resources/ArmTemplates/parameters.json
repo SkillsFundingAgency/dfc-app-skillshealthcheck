@@ -118,6 +118,9 @@
         },
         "SkillsCentralServiceEndpoint": {
             "value": "__SkillsCentralServiceEndpoint__"
+        },
+        "CompositeBaseUrl": {
+            "value": "__CompositeBaseUrl__"
         }
     }
 }
