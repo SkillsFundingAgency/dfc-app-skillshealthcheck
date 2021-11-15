@@ -118,11 +118,9 @@
         "GovNotifyOptionsSmsTemplateId": {
             "type": "string"
         },
-
         "SkillsCentralServiceEndpoint": {
             "type": "string"
         },
-
         "CompositeBaseUrl": {
             "type": "string"
         }
