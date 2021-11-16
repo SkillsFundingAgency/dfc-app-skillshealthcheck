@@ -52,11 +52,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> Document()
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
@@ -99,11 +94,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> Body()
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-
             var viewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
             return this.NegotiateContentResult(viewModel);
         }
@@ -145,11 +135,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> DownloadDocument(BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-            else if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
                 var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
@@ -176,11 +162,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> DownloadDocumentBody(BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-
             var selectedJobs = new List<string>();
             if (model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value && model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
             {
@@ -214,11 +195,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, viewModel.ReferenceId);
@@ -242,11 +218,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                return Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, viewModel.ReferenceId);

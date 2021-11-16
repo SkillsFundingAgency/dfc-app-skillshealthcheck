@@ -145,16 +145,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var sessionDataModel = await GetSessionDataModel();
-            long documentId = 0;
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-            else
-            {
-                documentId = sessionDataModel.DocumentId;
-            }
-
+            long documentId =  sessionDataModel.DocumentId;
             var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId,});
 
             if (!documentResponse.Success)
@@ -242,11 +233,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -269,11 +255,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -296,11 +277,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -322,11 +298,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -347,11 +318,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             CheckingQuestionValidation(model);
 
             if (ModelState.IsValid)
