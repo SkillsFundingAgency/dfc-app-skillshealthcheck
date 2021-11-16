@@ -52,6 +52,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
         /// </summary>
         TabularCheckbox = 3
     }
+
     /// <summary>
     /// Level enumeration
     /// </summary>
@@ -72,6 +73,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
         /// </summary>
         Level3 = 3
     }
+
     /// <summary>
     /// Accessibility enumeration
     /// </summary>
@@ -139,5 +141,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
         /// The verbal question set
         /// </summary>
         Verbal
+    }
+
+    public enum DocumentStatus
+    {
+        Pending = 1,
+        Creating = 2,
+        Created = 3,
+        Error = 4,
     }
 }

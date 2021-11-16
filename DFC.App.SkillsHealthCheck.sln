@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{C0B887DB-D9EA-4DE7-BC8F-804F159CFD59}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.GovNotify", "DFC.App.SkillsHealthCheck.Services.GovNotify\DFC.App.SkillsHealthCheck.Services.GovNotify.csproj", "{42340438-AB59-4B13-9A41-938A70F07E78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests", "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests\DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests.csproj", "{354C9FC2-19BA-46D4-8D7A-0543C40482BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests", "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests\DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests.csproj", "{354C9FC2-19BA-46D4-8D7A-0543C40482BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

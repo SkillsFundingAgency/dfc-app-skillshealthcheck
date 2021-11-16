@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
-
+using System.Threading.Tasks;
 using AutoMapper;
 
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
@@ -244,7 +244,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             return response;
         }
 
-        public string RequestDownload(long documentId, string formatter, string requestedBy)
+        public async Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy)
         {
             if (documentId <= 0)
             {
@@ -260,11 +260,12 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             {
                 throw new ArgumentNullException(nameof(requestedBy));
             }
+            var response = await _skillsCentralService.FormatDocumentMakeRequestAsync(documentId, formatter, requestedBy);
 
-            return _skillsCentralService.FormatDocumentMakeRequestAsync(documentId, formatter, requestedBy).Result.Status.ToString();
+            return Enum.Parse<DocumentStatus>(response.Status.ToString());
         }
 
-        public string QueryDownloadStatus(long documentId, string formatter)
+        public async Task<DocumentStatus> QueryDownloadStatusAsync(long documentId, string formatter)
         {
             if (documentId <= 0)
             {
@@ -275,8 +276,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
+            var response = await _skillsCentralService.FormatDocumentPollStatusAsync(documentId, formatter);
 
-            return _skillsCentralService.FormatDocumentPollStatusAsync(documentId, formatter).Result.Status.ToString();
+            return Enum.Parse<DocumentStatus>(response.Status.ToString());
         }
 
         /// <summary>

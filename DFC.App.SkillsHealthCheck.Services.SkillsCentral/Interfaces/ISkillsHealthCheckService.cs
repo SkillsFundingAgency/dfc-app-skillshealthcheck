@@ -1,4 +1,6 @@
-﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 {
@@ -54,7 +56,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
         /// <param name="formatter">The document format type.</param>
         /// <param name="documentId">Name associated with request.</param>
         /// <returns></returns>
-        string RequestDownload(long documentId, string formatter, string requestedBy);
+        Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy);
 
         /// <summary>
         /// Query download status to see if document is ready.
@@ -62,7 +64,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
         /// <param name="documentId">The document id.</param>
         /// <param name="formatter">The document format type.</param>
         /// <returns></returns>
-        string QueryDownloadStatus(long documentId, string formatter);
+        Task<DocumentStatus> QueryDownloadStatusAsync(long documentId, string formatter);
 
 
         /// <summary>
