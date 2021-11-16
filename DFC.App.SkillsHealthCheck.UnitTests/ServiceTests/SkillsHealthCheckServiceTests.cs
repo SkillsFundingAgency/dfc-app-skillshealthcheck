@@ -7,7 +7,6 @@ using FakeItEasy;
 using SkillsDocumentService;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
@@ -56,6 +55,85 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             // Assert
             Assert.True(response.Success);
             Assert.Equal(123, response.DocumentId);
+        }
+
+        [Fact]
+        public void CreateSkillsDocumentResponseException()
+        {
+            // Arrange
+            var createSkillsDocumentRequest = new CreateSkillsDocumentRequest
+            {
+                SkillsDocument = new Services.SkillsCentral.Models.SkillsDocument
+                {
+                    SkillsDocumentTitle = Constants.SkillsHealthCheck.DefaultDocumentName,
+                    SkillsDocumentType = Constants.SkillsHealthCheck.DocumentType,
+                    CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
+                    SkillsDocumentExpiry = SkillsDocumentExpiry.Physical,
+                    ExpiresTimespan = new TimeSpan(0, Constants.SkillsHealthCheck.SkillsDocumentExpiryTime, 0, 0),
+                },
+            };
+            createSkillsDocumentRequest.SkillsDocument.SkillsDocumentIdentifiers.Add(new Services.SkillsCentral.Models.SkillsDocumentIdentifier
+            {
+                ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
+                Value = Guid.NewGuid().ToString(),
+            });
+
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.InsertDocument(A<SkillsDocument>.Ignored));
+            aCallToSkillsCentralServiceInsertDocument.Throws(new Exception("Test exception"));
+
+            // Act
+            var response = skillsHealthCheckService.CreateSkillsDocument(createSkillsDocumentRequest);
+
+            // Assert
+            Assert.False(response.Success);
+            Assert.Equal("Test exception", response.ErrorMessage);
+        }
+
+        [Fact]
+        public void GetAssessmentQuestionSuccess()
+        {
+            // Arrange
+            var getAssessmentQuestionRequest = new GetAssessmentQuestionRequest
+            {
+                Level = Services.SkillsCentral.Enums.Level.Level1,
+                Accessibility = Services.SkillsCentral.Enums.Accessibility.Accessible,
+                AsessmentType = Services.SkillsCentral.Enums.AssessmentType.Abstract,
+                QuestionNumber = 1,
+            };
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
+            aCallToSkillsCentralServiceInsertDocument.Returns(new Question
+            {
+                QuestionNumber = 1,
+                PossibleResponses = new List<Answer>(),
+            });
+
+            // Act
+            var response = skillsHealthCheckService.GetAssessmentQuestion(getAssessmentQuestionRequest);
+
+            // Assert
+            Assert.True(response.Success);
+        }
+
+        [Fact]
+        public void GetAssessmentQuestionException()
+        {
+            // Arrange
+            var getAssessmentQuestionRequest = new GetAssessmentQuestionRequest
+            {
+                Level = Services.SkillsCentral.Enums.Level.Level1,
+                Accessibility = Services.SkillsCentral.Enums.Accessibility.Accessible,
+                AsessmentType = Services.SkillsCentral.Enums.AssessmentType.Abstract,
+                QuestionNumber = 1,
+            };
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
+            aCallToSkillsCentralServiceInsertDocument.Throws(new Exception("Test exception"));
+
+            // Act
+            var response = skillsHealthCheckService.GetAssessmentQuestion(getAssessmentQuestionRequest);
+
+            // Assert
+            Assert.False(response.Success);
+            Assert.Equal("Test exception", response.ErrorMessage);
         }
     }
 }
