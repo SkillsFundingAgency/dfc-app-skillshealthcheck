@@ -7,6 +7,7 @@ using FakeItEasy;
 using SkillsDocumentService;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
@@ -134,6 +135,71 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             // Assert
             Assert.False(response.Success);
             Assert.Equal("Test exception", response.ErrorMessage);
+        }
+
+        [Fact]
+        public async Task RequestDownloadAsyncSuccess()
+        {
+            // Arrange
+            var aCallToSkillsCentralServiceFormatDocumentMakeRequestAsync = A.CallTo(() => _skillsCentralService.FormatDocumentMakeRequestAsync(A<long>.Ignored, A<string>.Ignored, A<string>.Ignored));
+            aCallToSkillsCentralServiceFormatDocumentMakeRequestAsync.Returns(new FormatDocumentResponse
+            {
+                Status = FormatDocumentStatusEnum.Pending,
+            });
+
+            // Act
+            var response = await skillsHealthCheckService.RequestDownloadAsync(123, "pdf", "anonymous");
+
+            // Assert
+            Assert.Equal(DocumentStatus.Pending, response);
+        }
+
+        [Fact]
+        public async Task RequestDownloadAsyncFailsWithInvalidParams()
+        {
+            // Arrange
+            // Act
+
+            // Assert
+            var ex1 = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await skillsHealthCheckService.RequestDownloadAsync(0, "pdf", "anonymous"));
+            Assert.Equal("Specified argument was out of the range of valid values. (Parameter 'documentId')", ex1.Message);
+
+            var ex2 = await Assert.ThrowsAsync<ArgumentNullException>(async () => await skillsHealthCheckService.RequestDownloadAsync(1, string.Empty, "anonymous"));
+            Assert.Equal("Value cannot be null. (Parameter 'formatter')", ex2.Message);
+
+            var ex3 = await Assert.ThrowsAsync<ArgumentNullException>(async () => await skillsHealthCheckService.RequestDownloadAsync(1, "pdf", string.Empty));
+            Assert.Equal("Value cannot be null. (Parameter 'requestedBy')", ex3.Message);
+        }
+
+        [Fact]
+        public async Task QueryDownloadStatusAsyncSuccess()
+        {
+            // Arrange
+            var aCallToSkillsCentralServiceFFormatDocumentPollStatusAsync = A.CallTo(() => _skillsCentralService.FormatDocumentPollStatusAsync(A<long>.Ignored, A<string>.Ignored));
+            aCallToSkillsCentralServiceFFormatDocumentPollStatusAsync.Returns(new FormatDocumentResponse
+            {
+                Status = FormatDocumentStatusEnum.Creating,
+            });
+
+            // Act
+            var response = await skillsHealthCheckService.QueryDownloadStatusAsync(123, "pdf");
+
+            // Assert
+            Assert.Equal(DocumentStatus.Creating, response);
+        }
+
+        [Fact]
+        public async Task QueryDownloadStatusAsyncFailsWithInvalidParams()
+        {
+            // Arrange
+            // Act
+
+            // Assert
+            var ex1 = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await skillsHealthCheckService.QueryDownloadStatusAsync(0, "pdf"));
+            Assert.Equal("Specified argument was out of the range of valid values. (Parameter 'documentId')", ex1.Message);
+
+            var ex2 = await Assert.ThrowsAsync<ArgumentNullException>(async () => await skillsHealthCheckService.QueryDownloadStatusAsync(1, string.Empty));
+            Assert.Equal("Value cannot be null. (Parameter 'formatter')", ex2.Message);
         }
     }
 }
