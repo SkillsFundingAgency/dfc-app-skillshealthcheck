@@ -22,7 +22,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public static readonly string HomeURL = $"/{RegistrationPath}/home";
         public static readonly string YourAssessmentsURL = $"/{RegistrationPath}/your-assessments";
         public static readonly string QuestionURL = $"/{RegistrationPath}/question";
-
+        public static readonly string SessionTimeoutURL = $"/{RegistrationPath}/session-timeout";
         private readonly ISessionStateService<SessionDataModel> sessionStateService;
         private readonly ILogger<TController> logger;
 

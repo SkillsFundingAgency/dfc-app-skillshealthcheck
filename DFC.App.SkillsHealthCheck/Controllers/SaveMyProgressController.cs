@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Logging;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
+    [TypeFilter(typeof(SessionStateFilter))]
     public class SaveMyProgressController : BaseController<SaveMyProgressController>
     {
         public const string PageTitle = "Save My Progress";

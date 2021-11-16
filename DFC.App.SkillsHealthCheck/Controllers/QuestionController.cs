@@ -1,24 +1,28 @@
-﻿using System;
-using System.Linq;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.SkillsHealthCheck.Services.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
-using DFC.App.SkillsHealthCheck.ViewModels;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
+    [TypeFilter(typeof(SessionStateFilter))]
     public class QuestionController : BaseController<QuestionController>
     {
         public const string PageTitle = "Question";
