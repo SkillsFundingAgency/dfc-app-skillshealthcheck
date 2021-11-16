@@ -3,11 +3,13 @@ using DFC.App.SkillsHealthCheck.Models;
 using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 
 namespace DFC.App.SkillsHealthCheck.Filters
 {
+    [ExcludeFromCodeCoverage]
     public class SessionStateFilter : IActionFilter
     {
         private readonly ISessionStateService<SessionDataModel> sessionStateService;
