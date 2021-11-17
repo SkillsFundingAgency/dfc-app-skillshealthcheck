@@ -20,7 +20,7 @@ using Microsoft.Extensions.Options;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
-    [TypeFilter(typeof(SessionStateFilter))]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class SaveMyProgressController : BaseController<SaveMyProgressController>
     {
         public const string PageTitle = "Save My Progress";

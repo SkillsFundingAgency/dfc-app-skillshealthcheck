@@ -17,12 +17,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
-    [TypeFilter(typeof(SessionStateFilter))]
+    [ExcludeFromCodeCoverage]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class QuestionController : BaseController<QuestionController>
     {
         public const string PageTitle = "Question";

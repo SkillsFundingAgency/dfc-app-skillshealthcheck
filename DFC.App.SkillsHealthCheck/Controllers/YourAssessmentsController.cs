@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
-    [TypeFilter(typeof(SessionStateFilter))]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";

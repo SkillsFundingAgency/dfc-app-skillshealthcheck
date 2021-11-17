@@ -5,6 +5,7 @@ using AutoMapper;
 
 using DFC.App.SkillsHealthCheck.Data.Contracts;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services;
@@ -123,6 +124,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IGovUkNotifyClientProxy, GovUkNotifyClientProxy>();
             services.AddTransient<IGovNotifyService, GovNotifyService>();
+            services.AddScoped<SessionStateFilter>();
         }
     }
 }
