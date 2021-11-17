@@ -15,6 +15,7 @@ using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -31,10 +32,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         public SaveMyProgressController(
             ILogger<SaveMyProgressController> logger,
+            ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions,
             IGovNotifyService govNotifyService,
             IConfiguration configuration,
-            ISessionStateService<SessionDataModel> sessionStateService,
-            ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService)
+            ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.govNotifyService = govNotifyService;

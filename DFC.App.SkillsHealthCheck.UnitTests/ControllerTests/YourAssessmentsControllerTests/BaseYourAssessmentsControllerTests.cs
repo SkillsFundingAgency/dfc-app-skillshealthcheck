@@ -10,32 +10,26 @@ using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsControllerTests
 {
     public abstract class BaseYourAssessmentsControllerTests
     {
-        protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; }
+        protected ILogger<YourAssessmentsController> Logger { get; } = A.Fake<ILogger<YourAssessmentsController>>();
 
-        protected ILogger<YourAssessmentsController> Logger { get; }
+        protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
 
-        protected ISessionStateService<SessionDataModel> SessionStateService { get; }
+        protected IOptions<SessionStateOptions> SessionStateOptions { get; } = A.Fake<IOptions<SessionStateOptions>>();
 
-        protected CmsApiClientOptions CmsApiClientOptions { get; set; }
+        protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; } = A.Fake<IDocumentService<SharedContentItemModel>>();
 
-        protected IYourAssessmentsService FakeYourAssessmentService { get; }
+        protected CmsApiClientOptions CmsApiClientOptions { get;  } = new CmsApiClientOptions() { ContentIds = testContentId };
+
+        protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
 
         protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
-
-        protected BaseYourAssessmentsControllerTests()
-        {
-            Logger = A.Fake<ILogger<YourAssessmentsController>>();
-            SessionStateService = A.Fake<ISessionStateService<SessionDataModel>>();
-            FakeSharedContentItemDocumentService = A.Fake<IDocumentService<SharedContentItemModel>>();
-            CmsApiClientOptions = new CmsApiClientOptions() { ContentIds = testContentId };
-            FakeYourAssessmentService = A.Fake<IYourAssessmentsService>();
-        }
 
         protected YourAssessmentsController BuildHomeController(string mediaTypeName)
         {
@@ -43,7 +37,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new YourAssessmentsController(Logger, SessionStateService, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeYourAssessmentService)
+            var controller = new YourAssessmentsController(Logger, SessionStateService, SessionStateOptions, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeYourAssessmentsService)
             {
                 ControllerContext = new ControllerContext()
                 {

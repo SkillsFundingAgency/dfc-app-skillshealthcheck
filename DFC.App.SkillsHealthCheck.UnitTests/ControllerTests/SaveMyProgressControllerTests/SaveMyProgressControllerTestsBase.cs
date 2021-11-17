@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressControllerTests
@@ -23,6 +24,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
         protected ILogger<SaveMyProgressController> Logger { get; } = A.Fake<ILogger<SaveMyProgressController>>();
 
         protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
+
+        protected IOptions<SessionStateOptions> SessionStateOptions { get; } = A.Fake<IOptions<SessionStateOptions>>();
 
         protected ISkillsHealthCheckService SkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
@@ -36,7 +39,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new SaveMyProgressController(Logger, GovNotifyService, Configuration, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, SessionStateService, SessionStateOptions, GovNotifyService, Configuration, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -57,7 +60,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             ITempDataProvider provider = new FakeTempDataProvider();
             provider.SaveTempData(httpContext, dictionary);
 
-            var controller = new SaveMyProgressController(Logger, GovNotifyService, Configuration, SessionStateService, SkillsHealthCheckService)
+            var controller = new SaveMyProgressController(Logger, SessionStateService, SessionStateOptions, GovNotifyService, Configuration, SkillsHealthCheckService)
             {
                 ControllerContext = new ControllerContext()
                 {

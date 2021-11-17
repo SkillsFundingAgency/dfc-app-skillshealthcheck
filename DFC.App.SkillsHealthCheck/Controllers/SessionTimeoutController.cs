@@ -4,6 +4,7 @@ using DFC.App.SkillsHealthCheck.ViewModels.SessionTimout;
 using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
@@ -14,8 +15,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<SessionTimeoutController> logger;
         public const string PageTitle = "Session timed out";
 
-        public SessionTimeoutController(ILogger<SessionTimeoutController> logger,
-            ISessionStateService<SessionDataModel> sessionStateService) : base(logger, sessionStateService)
+        public SessionTimeoutController(
+            ILogger<SessionTimeoutController> logger,
+            ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions) : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
         }

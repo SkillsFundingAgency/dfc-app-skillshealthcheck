@@ -15,7 +15,7 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,10 +35,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public QuestionController(
             ILogger<QuestionController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
             IQuestionService questionService)
-            : base(logger, sessionStateService)
+            : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
