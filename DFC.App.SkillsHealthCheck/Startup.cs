@@ -5,6 +5,7 @@ using AutoMapper;
 
 using DFC.App.SkillsHealthCheck.Data.Contracts;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services;
@@ -78,6 +79,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
+            services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
 
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
@@ -122,6 +124,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IGovUkNotifyClientProxy, GovUkNotifyClientProxy>();
             services.AddTransient<IGovNotifyService, GovNotifyService>();
+            services.AddScoped<SessionStateFilter>();
         }
     }
 }

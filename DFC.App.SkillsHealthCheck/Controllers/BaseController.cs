@@ -10,6 +10,7 @@ using DFC.Compui.Sessionstate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -22,14 +23,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public static readonly string HomeURL = $"/{RegistrationPath}/home";
         public static readonly string YourAssessmentsURL = $"/{RegistrationPath}/your-assessments";
         public static readonly string QuestionURL = $"/{RegistrationPath}/question";
-
+        public static readonly string SessionTimeoutURL = $"/{RegistrationPath}/session-timeout";
         private readonly ISessionStateService<SessionDataModel> sessionStateService;
+        private readonly SessionStateOptions sessionStateOptions;
         private readonly ILogger<TController> logger;
 
-        protected BaseController(ILogger<TController> logger, ISessionStateService<SessionDataModel> sessionStateService)
+        protected BaseController(ILogger<TController> logger, ISessionStateService<SessionDataModel> sessionStateService, IOptions<SessionStateOptions> sessionStateOptions)
         {
             this.logger = logger;
             this.sessionStateService = sessionStateService;
+            this.sessionStateOptions = sessionStateOptions?.Value;
+            if (this.sessionStateOptions == null || this.sessionStateOptions.Ttl == 0)
+            {
+                this.sessionStateOptions = new SessionStateOptions { Ttl = 1800 };
+            }
         }
 
         protected HtmlHeadViewModel GetHtmlHeadViewModel(string pageTitle)
@@ -97,7 +104,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 logger.LogInformation($"Getting the session state - compositeSessionId = {compositeSessionId}");
 
                 var sessionStateModel = await sessionStateService.GetAsync(compositeSessionId.Value);
-                sessionStateModel.Ttl = 1800;
+                sessionStateModel.Ttl = sessionStateOptions.Ttl;
                 sessionStateModel.State = sessionDataModel;
 
                 logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");

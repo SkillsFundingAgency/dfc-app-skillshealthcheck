@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
@@ -14,10 +15,12 @@ using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class SaveMyProgressController : BaseController<SaveMyProgressController>
     {
         public const string PageTitle = "Save My Progress";
@@ -29,10 +32,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         public SaveMyProgressController(
             ILogger<SaveMyProgressController> logger,
+            ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions,
             IGovNotifyService govNotifyService,
             IConfiguration configuration,
-            ISessionStateService<SessionDataModel> sessionStateService,
-            ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService)
+            ISkillsHealthCheckService skillsHealthCheckService) : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.govNotifyService = govNotifyService;

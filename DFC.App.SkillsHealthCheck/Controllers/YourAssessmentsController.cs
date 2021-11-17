@@ -1,5 +1,6 @@
 ﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.ViewModels;
@@ -7,8 +8,10 @@ using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,6 +21,7 @@ using System.Threading.Tasks;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";
@@ -30,17 +34,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
             IYourAssessmentsService yourAssessmentsService)
-
-        : base(logger, sessionStateService)
+        : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.yourAssessmentsService = yourAssessmentsService;
-
         }
 
         [HttpGet]
@@ -48,9 +51,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments")]
         public async Task<IActionResult> Document()
         {
+            var sessionDataModel = await GetSessionDataModel();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var bodyViewModel = await GetBodyViewModel();
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -89,23 +93,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments/body")]
         public async Task<IActionResult> Body()
         {
-            var viewModel = await GetBodyViewModel();
+            var sessionDataModel = await GetSessionDataModel();
+            var viewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
             return this.NegotiateContentResult(viewModel);
         }
 
-        private async Task<BodyViewModel> GetBodyViewModel(IEnumerable<string> selectedJobs = null)
+        private async Task<BodyViewModel> GetBodyViewModel(long documentId, IEnumerable<string> selectedJobs = null)
         {
-            var sessionDataModel = await GetSessionDataModel();
-            long documentId = 0;
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-            else
-            {
-                documentId = sessionDataModel.DocumentId;
-            }
-
             var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
             bodyViewModel.RightBarViewModel = await GetRightBarViewModel();
 
@@ -141,11 +135,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> DownloadDocument(BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-            else if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
                 var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
@@ -158,7 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
-            var bodyViewModel = await GetBodyViewModel(model.JobFamilyList.SelectedJobs);
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList.SelectedJobs);
             return this.NegotiateContentResult(new DocumentViewModel
             {
                 HtmlHeadViewModel = GetHtmlHeadViewModel(PageTitle),
@@ -172,11 +162,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> DownloadDocumentBody(BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             var selectedJobs = new List<string>();
             if (model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value && model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
             {
@@ -201,7 +186,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
-            var bodyViewModel = await GetBodyViewModel(selectedJobs);
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, selectedJobs);
             return this.NegotiateContentResult(bodyViewModel);
         }
 
@@ -209,20 +194,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments/return-to-assessment/body")]
         public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
         {
+            var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
-                    await SetSessionStateAsync(sessionStateModel);
+                    await SetSessionStateAsync(sessionDataModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
                 ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
             }
 
-            var bodyViewModel = await GetBodyViewModel();
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
             viewModel.HasError = true;
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             return this.NegotiateContentResult(bodyViewModel);
@@ -232,20 +217,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/your-assessments/return-to-assessment")]
         public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
         {
+            var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
+                var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
-                    await SetSessionStateAsync(sessionStateModel);
+                    await SetSessionStateAsync(sessionDataModel);
                     return Redirect(YourAssessmentsURL);
                 }
 
                 ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
             }
 
-            var bodyViewModel = await GetBodyViewModel();
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
             viewModel.HasError = true;
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);

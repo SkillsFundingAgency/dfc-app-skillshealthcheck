@@ -1,24 +1,30 @@
-﻿using System;
-using System.Linq;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
+using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
-using DFC.App.SkillsHealthCheck.Services.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
-using DFC.App.SkillsHealthCheck.ViewModels;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
+    [ExcludeFromCodeCoverage]
+    [ServiceFilter(typeof(SessionStateFilter))]
     public class QuestionController : BaseController<QuestionController>
     {
         public const string PageTitle = "Question";
@@ -31,10 +37,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public QuestionController(
             ILogger<QuestionController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
+            IOptions<SessionStateOptions> sessionStateOptions,
             IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
             CmsApiClientOptions cmsApiClientOptions,
             IQuestionService questionService)
-            : base(logger, sessionStateService)
+            : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
@@ -141,16 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var sessionDataModel = await GetSessionDataModel();
-            long documentId = 0;
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-            else
-            {
-                documentId = sessionDataModel.DocumentId;
-            }
-
+            long documentId =  sessionDataModel.DocumentId;
             var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId,});
 
             if (!documentResponse.Success)
@@ -238,11 +236,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -265,11 +258,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -292,11 +280,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -318,11 +301,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
@@ -343,11 +321,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (sessionDataModel == null || sessionDataModel.DocumentId == 0)
-            {
-                Response.Redirect(HomeURL);
-            }
-
             CheckingQuestionValidation(model);
 
             if (ModelState.IsValid)
