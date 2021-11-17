@@ -32,7 +32,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             this.logger = logger;
             this.sessionStateService = sessionStateService;
-            this.sessionStateOptions = sessionStateOptions?.Value ?? new SessionStateOptions { Ttl = 1800 };
+            this.sessionStateOptions = sessionStateOptions?.Value;
+            if (this.sessionStateOptions == null || this.sessionStateOptions.Ttl == 0)
+            {
+                this.sessionStateOptions = new SessionStateOptions { Ttl = 1800 };
+            }
         }
 
         protected HtmlHeadViewModel GetHtmlHeadViewModel(string pageTitle)
