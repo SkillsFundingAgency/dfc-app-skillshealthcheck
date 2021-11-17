@@ -78,6 +78,7 @@ namespace DFC.App.SkillsHealthCheck
             services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
+            services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
 
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
