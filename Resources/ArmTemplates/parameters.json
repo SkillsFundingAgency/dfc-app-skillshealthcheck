@@ -121,6 +121,9 @@
         },
         "CompositeBaseUrl": {
             "value": "__CompositeBaseUrl__"
+        },
+        "SessionStateOptionsTtl": {
+            "value": "__SessionStateOptionsTtl__"
         }
     }
 }

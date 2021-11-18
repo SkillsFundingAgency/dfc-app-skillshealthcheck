@@ -123,6 +123,12 @@
         },
         "CompositeBaseUrl": {
             "type": "string"
+        },
+        "SessionStateOptionsTtl": {
+            "type": "string",
+            "metadata": {
+                "description": "session state options ttl"
+            }
         }
     },
     "variables": {
@@ -420,7 +426,7 @@
                             },
                             {
                                 "name": "SessionStateOptions__Ttl",
-                                "value": "1800"
+                                "value": "[parameters('SessionStateOptionsTtl')]"
                             }
                         ]
                     }

@@ -55,3 +55,5 @@ variables:
     value: https://$(AppServiceName).$(AppServiceDomain)/subscription/
   - name: LoggingLogLevelDefault
     value: Warning
+  - name: SessionStateOptionsTtl
+    value: 1800

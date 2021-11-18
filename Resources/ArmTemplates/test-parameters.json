@@ -112,6 +112,9 @@
         },
         "CompositeBaseUrl": {
             "value": "https://foo"
+        },
+        "SessionStateOptionsTtl": {
+            "value": "345354800"
         }
     }
 }
