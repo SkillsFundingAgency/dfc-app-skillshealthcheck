@@ -294,7 +294,7 @@
                                 "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
                                 "value": "[variables('cosmosDbCollectionPartitionKey')]"
                             },
-                                                        {
+                            {
                                 "name": "Configuration__CosmosDbConnections__SessionState__AccessKey",
                                 "value": "[parameters('cosmosDbKey')]"
                             },
@@ -335,7 +335,7 @@
                                 "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
                             },
                             {
-                                "name": "SkillsServiceOptions__ImageUrl"  ,
+                                "name": "SkillsServiceOptions__ImageUrl",
                                 "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
@@ -417,6 +417,10 @@
                             {
                                 "name": "CompositeBaseUrl",
                                 "value": "[parameters('CompositeBaseUrl')]"
+                            },
+                            {
+                                "name": "SessionStateOptions__Ttl",
+                                "value": "1800"
                             }
                         ]
                     }
@@ -515,6 +519,9 @@
                     },
                     "partitionKey": {
                         "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                    },
+                    "timeToLive": {
+                        "value": -1
                     }
                 }
             }
