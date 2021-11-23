@@ -43,8 +43,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<BreadcrumbViewModel>(viewResult.ViewData.Model);
             Assert.NotNull(viewModel.Breadcrumbs);
-            Assert.Single(viewModel.Breadcrumbs);
+            Assert.Equal(2, viewModel.Breadcrumbs.Count);
             Assert.Equal("Home", viewModel.Breadcrumbs[0].Title);
+            Assert.Equal("Skills assessment", viewModel.Breadcrumbs[1].Title);
         }
 
         [Fact]
