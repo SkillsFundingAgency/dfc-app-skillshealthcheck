@@ -10,8 +10,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 {
     public class RobotController : Controller
     {
-        public const string RobotsViewCanonicalName = "robots";
-
         private readonly ILogger<RobotController> logger;
         private readonly IWebHostEnvironment hostingEnvironment;
 
@@ -22,7 +20,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("pages/robots")]
+        [Route("skills-health-check/robots")]
         public IActionResult RobotView()
         {
             var result = Robot();

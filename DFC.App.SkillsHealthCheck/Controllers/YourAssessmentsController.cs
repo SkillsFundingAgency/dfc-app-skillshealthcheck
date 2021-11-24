@@ -1,4 +1,10 @@
-﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
+
+using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
@@ -12,11 +18,6 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -132,7 +133,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/download-document")]
-        public async Task<IActionResult> DownloadDocument(BodyViewModel model)
+        public async Task<IActionResult> DownloadDocument([FromBody] BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -159,11 +160,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/download-document/body")]
-        public async Task<IActionResult> DownloadDocumentBody(BodyViewModel model)
+        public async Task<IActionResult> DownloadDocumentBody([FromBody] BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             var selectedJobs = new List<string>();
-            if (model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value && model.JobFamilyList != null && model.JobFamilyList.SelectedJobs.Any())
+            if (model?.SkillsAssessmentComplete is true && model?.JobFamilyList?.SelectedJobs?.Any() is true)
             {
                 if (model.JobFamilyList.SelectedJobs.Count() == 1 && model.JobFamilyList.SelectedJobs.First().Contains(','))
                 {
@@ -172,7 +173,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
                 ModelState.Clear();
                 TryValidateModel(model);
-                selectedJobs = model.JobFamilyList?.SelectedJobs.ToList();
+                selectedJobs = model.JobFamilyList.SelectedJobs.ToList();
             }
 
             if (ModelState.IsValid)
@@ -192,7 +193,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/return-to-assessment/body")]
-        public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
+        public async Task<IActionResult> ReturnToAssessment([FromBody] ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -215,7 +216,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/return-to-assessment")]
-        public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
+        public async Task<IActionResult> ReturnToAssessmentDocument([FromBody] ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
