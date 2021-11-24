@@ -11,8 +11,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 {
     public class SitemapController : Controller
     {
-        public const string SitemapViewCanonicalName = "sitemap";
-
         private readonly ILogger<SitemapController> logger;
 
         public SitemapController(ILogger<SitemapController> logger)
@@ -21,7 +19,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("pages/sitemap")]
+        [Route("skills-health-check/sitemap")]
         public IActionResult SitemapView()
         {
             var result = Sitemap();

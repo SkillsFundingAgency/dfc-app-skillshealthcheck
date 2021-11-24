@@ -14,8 +14,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 {
     public class HealthController : Controller
     {
-        public const string HealthViewCanonicalName = "health";
-
         private readonly ILogger<HealthController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly string resourceName = typeof(Program).Namespace!;
@@ -27,7 +25,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("pages/health")]
+        [Route("skills-health-check/health")]
         public async Task<IActionResult> HealthView()
         {
             var result = await Health();

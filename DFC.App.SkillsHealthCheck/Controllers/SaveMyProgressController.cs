@@ -44,6 +44,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
+        #region HtmlHead
+
         [HttpGet]
         [Route("skills-health-check/save-my-progress/htmlhead")]
         [Route("skills-health-check/save-my-progress/getcode/htmlhead")]
@@ -62,6 +64,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        #endregion
+
+        #region Breadcrumb
+
         [Route("skills-health-check/save-my-progress/breadcrumb")]
         [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
         [Route("skills-health-check/save-my-progress/sms/breadcrumb")]
@@ -78,6 +84,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             return this.NegotiateContentResult(viewModel);
         }
+
+        #endregion
 
         #region SaveMyProgress
 
@@ -101,7 +109,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/save-my-progress/")]
         [Route("skills-health-check/save-my-progress/document")]
-        public async Task<IActionResult> Document(SaveMyProgressViewModel model)
+        public async Task<IActionResult> Document([FromBody] SaveMyProgressViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -138,14 +146,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             await SetAssessmentTypeAsync(type);
             var model = GetSaveMyProgressViewModel(type);
+
+            logger.LogInformation($"{nameof(Body)} has returned content");
             return this.NegotiateContentResult(model);
         }
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/body")]
-        public async Task<IActionResult> Body(SaveMyProgressViewModel model)
+        public async Task<IActionResult> Body([FromBody] SaveMyProgressViewModel model)
         {
-            var type = await GetAssessmentTypeAsync();
             if (ModelState.IsValid)
             {
                 switch (model?.SelectedOption)
@@ -163,6 +172,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 ModelState.AddModelError("SelectedOption", SaveMyProgressViewModel.SelectedOptionValidationError);
             }
 
+            var type = await GetAssessmentTypeAsync();
             var viewModel = GetSaveMyProgressViewModel(type);
             return this.NegotiateContentResult(viewModel);
         }
@@ -178,12 +188,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             TempData.Keep();
             var referenceViewModel = await GetReferenceNumberViewModelAsync();
             await AddDocumentDetailsAsync(referenceViewModel.Document!);
+
+            logger.LogInformation($"{nameof(GetCodeBody)} has returned content");
             return this.NegotiateContentResult(referenceViewModel);
         }
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode/body")]
-        public async Task<IActionResult> GetCodeBody(ReferenceNumberViewModel model)
+        public async Task<IActionResult> GetCodeBody([FromBody] ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -215,7 +227,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode")]
-        public async Task<IActionResult> GetCode(ReferenceNumberViewModel model)
+        public async Task<IActionResult> GetCode([FromBody] ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -234,6 +246,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> CheckYourPhoneBody()
         {
             var viewModel = await GetReferenceNumberViewModelAsync();
+
+            logger.LogInformation($"{nameof(CheckYourPhoneBody)} has returned content");
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -261,6 +275,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> SmsFailedBody()
         {
             var viewModel = await GetErrorViewModelAsync(TempData["PhoneNumber"]?.ToString());
+
+            logger.LogInformation($"{nameof(SmsFailedBody)} has returned content");
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -295,12 +311,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             TempData.Keep();
             var (link, text) = GetBackLinkAndText(type);
             var viewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
+
+            logger.LogInformation($"{nameof(EmailBody)} has returned content");
             return this.NegotiateContentResult(viewModel);
         }
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/email/body")]
-        public async Task<IActionResult> EmailBody(EmailViewModel model)
+        public async Task<IActionResult> EmailBody([FromBody]EmailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -334,7 +352,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/email")]
-        public async Task<IActionResult> Email(EmailViewModel model)
+        public async Task<IActionResult> Email([FromBody]EmailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -349,6 +367,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> CheckYourEmailBody()
         {
             var viewModel = await GetEmailViewModelAsync();
+
+            logger.LogInformation($"{nameof(CheckYourEmailBody)} has returned content");
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -375,6 +395,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> EmailFailedBody()
         {
             var viewModel = await GetErrorViewModelAsync(TempData["Email"]?.ToString());
+
+            logger.LogInformation($"{nameof(EmailFailedBody)} has returned content");
             return this.NegotiateContentResult(viewModel);
         }
 

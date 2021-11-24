@@ -1,4 +1,9 @@
-﻿using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
+
+using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
@@ -16,10 +21,6 @@ using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -32,7 +33,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<QuestionController> logger;
         private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
-        private readonly IQuestionService _questionService;
+        private readonly IQuestionService questionService;
 
         public QuestionController(
             ILogger<QuestionController> logger,
@@ -46,7 +47,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.logger = logger;
             this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.cmsApiClientOptions = cmsApiClientOptions;
-            _questionService = questionService;
+            this.questionService = questionService;
         }
 
         [HttpGet]
@@ -109,7 +110,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        private async Task<BodyViewModel> GetBodyViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
+        private async Task<BodyViewModel> GetBodyViewModel(string assessmentType)
         {
             var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
             var assessmentTypeEnum = assessmentQuestionViewModel is FeedBackQuestionViewModel fqvm
@@ -148,8 +149,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
         {
             var sessionDataModel = await GetSessionDataModel();
-            long documentId =  sessionDataModel.DocumentId;
-            var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest {DocumentId = documentId,});
+            long documentId = sessionDataModel.DocumentId;
+            var documentResponse = questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = documentId, });
 
             if (!documentResponse.Success)
             {
@@ -165,7 +166,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 Response.Redirect(HomeURL);
             }
 
-            var assessmentQuestionOverview = _questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument);
+            var assessmentQuestionOverview = questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument);
 
             await SetSessionStateAsync(sessionDataModel);
 
@@ -174,7 +175,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView)
         {
-            var answerVm = _questionService.GetAssessmentQuestionViewModel(level, accessibility, assessmentType, skillsDocument, assessmentQuestionsOverView);
+            var answerVm = questionService.GetAssessmentQuestionViewModel(level, accessibility, assessmentType, skillsDocument, assessmentQuestionsOverView);
 
             switch (answerVm)
             {
@@ -203,7 +204,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ViewData["QuestionAnswerError"] = true;
 
             var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews[string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType)];
-            var documentResponse = _questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = sessionDataModel.DocumentId, });
+            var documentResponse = questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = sessionDataModel.DocumentId, });
             var assessmentQuestionViewModel = GetAssessmentQuestionViewModel(level, accessibility, assessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
 
             var bodyViewModel = new BodyViewModel
@@ -233,12 +234,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-question")]
         [Route("skills-health-check/question/answer-question/body")]
-        public async Task<IActionResult> AnswerQuestion(AssessmentQuestionViewModel model)
+        public async Task<IActionResult> AnswerQuestion([FromBody] AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
@@ -255,12 +256,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-multiple-question")]
         [Route("skills-health-check/question/answer-multiple-question/body")]
-        public async Task<IActionResult> AnswerMultipleQuestion(MultipleAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerMultipleQuestion([FromBody] MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
@@ -277,12 +278,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-elimination-question")]
         [Route("skills-health-check/question/answer-elimination-question/body")]
-        public async Task<IActionResult> AnswerEliminationQuestion(EliminationAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerEliminationQuestion([FromBody] EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
@@ -298,12 +299,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-feedback-question")]
         [Route("skills-health-check/question/answer-feedback-question/body")]
-        public async Task<IActionResult> AnswerFeedbackQuestion(FeedBackQuestionViewModel model)
+        public async Task<IActionResult> AnswerFeedbackQuestion([FromBody] FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
             {
-                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
                     return RedirectToNextAction(model);
@@ -318,14 +319,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-checking-question")]
         [Route("skills-health-check/question/answer-checking-question/body")]
-        public async Task<IActionResult> AnswerCheckingQuestion(TabularAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerCheckingQuestion([FromBody] TabularAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             CheckingQuestionValidation(model);
 
             if (ModelState.IsValid)
             {
-                var saveAnswerResponse = await _questionService.SubmitAnswer(sessionDataModel!, model);
+                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse.Success)
                 {
                     await SetSessionStateAsync(sessionDataModel);
@@ -342,7 +343,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             if (model.QuestionNumber != model.ActualTotalQuestions)
             {
-                var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel) model).FeedbackQuestion.AssessmentType : model.Question.AssessmentType;
+                var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel)model).FeedbackQuestion.AssessmentType : model.Question.AssessmentType;
                 return Redirect($"{QuestionURL}?assessmentType={assessmenttype}");
             }
 
