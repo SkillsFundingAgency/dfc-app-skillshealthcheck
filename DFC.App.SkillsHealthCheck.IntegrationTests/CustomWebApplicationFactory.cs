@@ -83,7 +83,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
             builder.ConfigureServices(services =>
             {
                 var configuration = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("appsettings-test.json", optional: true, reloadOnChange: true)
                     .Build();
 
                 services.AddSingleton<IConfiguration>(configuration);
