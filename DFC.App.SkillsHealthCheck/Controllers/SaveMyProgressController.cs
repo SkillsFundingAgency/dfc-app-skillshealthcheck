@@ -109,7 +109,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/save-my-progress/")]
         [Route("skills-health-check/save-my-progress/document")]
-        public async Task<IActionResult> Document([FromBody] SaveMyProgressViewModel model)
+        public async Task<IActionResult> Document([FromForm] SaveMyProgressViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -153,7 +153,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/body")]
-        public async Task<IActionResult> Body([FromBody] SaveMyProgressViewModel model)
+        public async Task<IActionResult> Body([FromForm] SaveMyProgressViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -195,7 +195,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode/body")]
-        public async Task<IActionResult> GetCodeBody([FromBody] ReferenceNumberViewModel model)
+        public async Task<IActionResult> GetCodeBody([FromForm] ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -227,7 +227,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/getcode")]
-        public async Task<IActionResult> GetCode([FromBody] ReferenceNumberViewModel model)
+        public async Task<IActionResult> GetCode([FromForm] ReferenceNumberViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -318,7 +318,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/email/body")]
-        public async Task<IActionResult> EmailBody([FromBody]EmailViewModel model)
+        public async Task<IActionResult> EmailBody([FromForm] EmailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -352,7 +352,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/save-my-progress/email")]
-        public async Task<IActionResult> Email([FromBody]EmailViewModel model)
+        public async Task<IActionResult> Email([FromForm] EmailViewModel model)
         {
             if (ModelState.IsValid)
             {

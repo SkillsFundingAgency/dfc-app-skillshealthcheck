@@ -234,7 +234,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-question")]
         [Route("skills-health-check/question/answer-question/body")]
-        public async Task<IActionResult> AnswerQuestion([FromBody] AssessmentQuestionViewModel model)
+        public async Task<IActionResult> AnswerQuestion([FromForm] AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -256,7 +256,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-multiple-question")]
         [Route("skills-health-check/question/answer-multiple-question/body")]
-        public async Task<IActionResult> AnswerMultipleQuestion([FromBody] MultipleAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerMultipleQuestion([FromForm] MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -278,7 +278,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-elimination-question")]
         [Route("skills-health-check/question/answer-elimination-question/body")]
-        public async Task<IActionResult> AnswerEliminationQuestion([FromBody] EliminationAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerEliminationQuestion([FromForm] EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -299,7 +299,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-feedback-question")]
         [Route("skills-health-check/question/answer-feedback-question/body")]
-        public async Task<IActionResult> AnswerFeedbackQuestion([FromBody] FeedBackQuestionViewModel model)
+        public async Task<IActionResult> AnswerFeedbackQuestion([FromForm] FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -319,7 +319,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/answer-checking-question")]
         [Route("skills-health-check/question/answer-checking-question/body")]
-        public async Task<IActionResult> AnswerCheckingQuestion([FromBody] TabularAnswerQuestionViewModel model)
+        public async Task<IActionResult> AnswerCheckingQuestion([FromForm] TabularAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             CheckingQuestionValidation(model);

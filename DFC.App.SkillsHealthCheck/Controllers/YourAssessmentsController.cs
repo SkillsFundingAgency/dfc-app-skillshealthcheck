@@ -133,7 +133,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/download-document")]
-        public async Task<IActionResult> DownloadDocument([FromBody] BodyViewModel model)
+        public async Task<IActionResult> DownloadDocument([FromForm] BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -160,7 +160,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/download-document/body")]
-        public async Task<IActionResult> DownloadDocumentBody([FromBody] BodyViewModel model)
+        public async Task<IActionResult> DownloadDocumentBody([FromForm] BodyViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
             var selectedJobs = new List<string>();
@@ -193,7 +193,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/return-to-assessment/body")]
-        public async Task<IActionResult> ReturnToAssessment([FromBody] ReturnToAssessmentViewModel viewModel)
+        public async Task<IActionResult> ReturnToAssessment([FromForm] ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
@@ -216,7 +216,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/your-assessments/return-to-assessment")]
-        public async Task<IActionResult> ReturnToAssessmentDocument([FromBody] ReturnToAssessmentViewModel viewModel)
+        public async Task<IActionResult> ReturnToAssessmentDocument([FromForm] ReturnToAssessmentViewModel viewModel)
         {
             var sessionDataModel = await GetSessionDataModel();
             if (ModelState.IsValid)
