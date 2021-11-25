@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 
 using FluentAssertions;
@@ -54,23 +54,20 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.QuestionCon
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            var model = new EliminationAnswerQuestionViewModel
-            {
-                QuestionAnswer = "some answer",
-                Question = new Question
-                {
-                    AssessmentType = AssessmentType.SkillAreas,
-                    Level = Level.Level1,
-                    Accessibility = Accessibility.Full,
-                },
-            };
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, model);
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["QuestionAnswer"] = "some answer",
+                ["Question.AssessmentType"] = AssessmentType.SkillAreas.ToString(),
+                ["Question.Level"] = Level.Level1.ToString(),
+                ["Question.Accessibility"] = Accessibility.Full.ToString(),
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            response.Headers.Location.ToString().Should().Contain($"skills-health-check/question?assessmentType={model.Question.AssessmentType}");
+            response.Headers.Location.ToString().Should().Contain($"skills-health-check/question?assessmentType={AssessmentType.SkillAreas}");
         }
     }
 }

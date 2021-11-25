@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -57,7 +58,12 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
                 .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1, Success = true });
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { ReferenceId = "some known reference", ActionUrl = "localhost" });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["ReferenceId"] = "some known reference",
+                ["ActionUrl"] = "localhost"
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);

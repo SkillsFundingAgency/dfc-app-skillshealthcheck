@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -112,7 +113,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             SetSendSms(true);
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new ReferenceNumberViewModel { PhoneNumber = "07700 900 982" });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["PhoneNumber"] = "07700 900 982"
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
@@ -132,7 +137,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             SetSendSms(false);
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new ReferenceNumberViewModel { PhoneNumber = "07700 900 982" });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["PhoneNumber"] = "07700 900 982"
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);

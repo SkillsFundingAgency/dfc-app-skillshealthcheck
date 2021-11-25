@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -53,23 +54,20 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.QuestionCon
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            var model = new FeedBackQuestionViewModel
-            {
-                QuestionAnswer = "some answer",
-                FeedbackQuestion = new Services.SkillsCentral.Messages.FeedbackQuestion
-                {
-                    AssessmentType = AssessmentType.SkillAreas,
-                    Level = Level.Level1,
-                    Accessibility = Accessibility.Full,
-                },
-            };
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, model);
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["QuestionAnswer"] = "some answer",
+                ["FeedbackQuestion.AssessmentType"] = AssessmentType.SkillAreas.ToString(),
+                ["FeedbackQuestion.Level"] = Level.Level1.ToString(),
+                ["FeedbackQuestion.Accessibility"] = Accessibility.Full.ToString(),
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            response.Headers.Location.ToString().Should().Contain($"skills-health-check/question?assessmentType={model.FeedbackQuestion.AssessmentType}");
+            response.Headers.Location.ToString().Should().Contain($"skills-health-check/question?assessmentType={AssessmentType.SkillAreas}");
         }
     }
 }

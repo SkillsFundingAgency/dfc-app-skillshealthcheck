@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -63,7 +64,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
                 .Returns(new DownloadDocumentResponse { Success = true, DocumentName = "test", DocumentBytes = GetFileBytes() });
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new BodyViewModel { DownloadType = downloadType });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["DownloadType"] = downloadType.ToString()
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);

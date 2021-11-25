@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -112,7 +113,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             SetSendEmail(true);
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new EmailViewModel { EmailAddress = "123@abc.com" });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["EmailAddress"] = "123@abc.com"
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
@@ -132,7 +137,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             SetSendEmail(false);
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new EmailViewModel { EmailAddress = "123@abc.com" });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["EmailAddress"] = "123@abc.com"
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
