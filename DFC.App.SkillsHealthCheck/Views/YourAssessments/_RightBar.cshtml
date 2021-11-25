@@ -1,5 +1,11 @@
 ﻿@model RightBarViewModel
 
+<div class="app-related-items">
+    <h2 class="govuk-heading-m">Return to this later</h2>
+    <p><a href="/skills-health-check/save-my-progress?type=@Model.AssessmentType">Save my progress</a></p>
+    <p>To make sure your skills health check assessments and results will not be lost at any time get a reference code.</p>
+</div>
+
 <partial name="_ReturnToAssessment" model="@Model.ReturnToAssessmentViewModel"/>
 
 @if (Model.SpeakToAnAdviser != null)

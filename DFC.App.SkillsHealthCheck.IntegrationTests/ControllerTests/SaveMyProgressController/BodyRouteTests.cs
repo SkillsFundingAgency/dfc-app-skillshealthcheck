@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
@@ -114,7 +115,11 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             SetSession(client, factory);
 
             // Act
-            var response = await client.PostAsJsonAsync(uri, new SaveMyProgressViewModel { SelectedOption = option });
+            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+            {
+                ["SelectedOption"] = option.ToString()
+            });
+            var response = await client.PostAsync(uri, content);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
