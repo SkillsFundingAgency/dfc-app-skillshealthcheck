@@ -1,13 +1,56 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <ProjectGuid>{8B1587D4-29FC-42D1-B8BD-6D993ED57C2D}</ProjectGuid>
+    <CodeAnalysisRuleSet>../UnitTests.CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <Compile Remove="ControllerTests\PagesControllerTests\BasePagesControllerTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyFooterTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTopTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBreadcrumbTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerDocumentTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHeroBannerTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHtmlHeadTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerIndexTests.cs" />
+    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerRouteTests.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="7.0.1" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck\DFC.App.SkillsHealthCheck.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ControllerTests\PagesControllerTests\" />
+  </ItemGroup>
+
 </Project>

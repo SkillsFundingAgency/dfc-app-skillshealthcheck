@@ -1,0 +1,23 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress.SaveMyProgressViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post" class="compui-validation">
+            <partial name="_AppErrorSummary" />
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">How would you like to return to your skills health check?</h1>
+                    </legend>
+                    @Html.EditorFor(model => model.SelectedOption)
+                </fieldset>
+            </div>
+            <input class="govuk-button" type="submit" name="selectOption" value="Continue">
+            <input id="BackLinkType" name="BackLinkType" type="hidden" value="">
+        </form>
+        <p>
+            <a href="@Model.ReturnLink">@Model.ReturnLinkText</a>
+        </p>
+    </div>
+</div>

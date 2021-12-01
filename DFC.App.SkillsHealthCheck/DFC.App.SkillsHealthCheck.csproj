@@ -1,6 +1,60 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <ProjectGuid>{A6CAE020-4B22-4BA0-9A44-C8FA6612BA2A}</ProjectGuid>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>113a83df-aa82-434a-82c1-71ee8ea17bfa</UserSecretsId>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>1701;1702;</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.15" />
+    <PackageReference Include="DFC.Compui.Subscriptions" Version="1.0.96" />
+    <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Data\DFC.App.SkillsHealthCheck.Data.csproj" />
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.CacheContentService\DFC.App.SkillsHealthCheck.Services.CacheContentService.csproj" />
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.GovNotify\DFC.App.SkillsHealthCheck.Services.GovNotify.csproj" />
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.SkillsCentral\DFC.App.SkillsHealthCheck.Services.SkillsCentral.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+
 </Project>

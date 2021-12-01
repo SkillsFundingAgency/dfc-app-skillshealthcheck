@@ -1,0 +1,10 @@
+﻿@model RightBarViewModel
+
+<partial name="_ReturnToAssessment" model="@Model.ReturnToAssessmentViewModel"/>
+
+@if (Model.SpeakToAnAdviser != null)
+{
+    <div class="app-related-items">
+        @Html.Raw(Model.SpeakToAnAdviser.Content)
+    </div>
+}

@@ -1,0 +1,50 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.Question.FeedBackQuestionViewModel
+
+@{
+
+    var id = string.Empty;
+    var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
+}
+
+<h3 class="heading-medium">
+    @Model.FeedbackQuestion.Question
+
+</h3>
+
+<form method="post" id="skillsForm" class="form" action="/skills-health-check/question/answer-feedback-question">
+    <div class="form-group govuk-!-margin-bottom-5 @errorClass">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-visually-hidden">
+            </legend>
+            <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
+            @{ if (Model.FeedbackQuestion.FeedbackAnswers != null && Model.FeedbackQuestion.FeedbackAnswers.Any())
+                {
+                    foreach (var posibleResponse in Model.FeedbackQuestion.FeedbackAnswers)
+                    {
+                        id = string.Format("radio-{0}", posibleResponse.AnswerValue);
+
+                        <label class="block-label govuk-label" for="@id">
+                            @Html.RadioButtonFor(model => model.QuestionAnswer, @posibleResponse.AnswerValue, new { @id }) @posibleResponse.AnswerText
+                        </label> }
+                }
+            }
+        </fieldset>
+    </div>
+    <p>You must select an answer to continue.</p>
+    <div class="form-group">
+        @if (Model.QuestionNumber != Model.ActualTotalQuestions)
+        {
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+        else
+        {
+            <p>This is the final question.</p>
+            <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to skills health check page" />}
+
+    </div>
+
+    @Html.HiddenFor(model => model.FeedbackQuestion.AssessmentType)
+    @Html.HiddenFor(model => model.QuestionNumber)
+    @Html.HiddenFor(model => model.ActualTotalQuestions)
+    @Html.HiddenFor(model => model.FeedbackQuestion.DocValueTitle)
+</form>

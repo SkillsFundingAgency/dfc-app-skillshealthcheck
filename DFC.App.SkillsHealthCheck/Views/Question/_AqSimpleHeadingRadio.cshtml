@@ -1,0 +1,86 @@
+﻿@using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
+@using Microsoft.AspNetCore.Html
+@using Microsoft.Extensions.Options
+@using DFC.App.SkillsHealthCheck.Models
+@inject IOptions<SkillsServiceOptions> _skillServiceOptions;
+@model DFC.App.SkillsHealthCheck.ViewModels.Question.MultipleAnswerQuestionViewModel
+@{
+    var assessmentType = Model.Question.AssessmentType == AssessmentType.Numeric ? "Numerical" : Model.Question.AssessmentType.ToString();
+    var id = string.Empty;
+    var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
+}
+
+@if (Model.Question.AssessmentType != AssessmentType.Motivation)
+{
+    if (Model.Question.AssessmentType != AssessmentType.Interest)
+    {
+        <h3 class="heading-medium">
+            @(new HtmlString(Model.Question.QuestionText))
+        </h3>
+    }
+    else
+    {
+        <p>@(new HtmlString(Model.Question.QuestionText))</p>
+
+    }
+}
+
+<h3 class="heading-medium">
+    @{
+        var index = 1;
+        foreach (var posibleResponse in Model.Question.PossibleResponses)
+        {
+            if (index == Model.CurrentQuestion)
+            {
+                @posibleResponse.Text
+            }
+            index++;
+        }
+    }
+</h3>
+
+<form method="post" id="skillsForm" class="form" action="/skills-health-check/question/answer-multiple-question">
+    <div class="form-group govuk-!-margin-bottom-5 @errorClass">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-visually-hidden">
+                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
+            </legend>
+            <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
+            @{ var i = 1;
+                foreach (var posibleResponse in Model.Question.AnswerHeadings)
+                {
+
+                    id = string.Format("radio-{0}", posibleResponse);
+
+                    <label class="block-label govuk-label" for="@id">
+                        @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse
+                    </label> i++;
+
+                } }
+        </fieldset>
+    </div>
+    <p>You must select an answer to continue.</p>
+    <div class="form-group">
+        @if (Model.QuestionNumber != Model.ActualTotalQuestions)
+        {
+            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+        else
+        {
+            <p>This is the final question.</p>
+            <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
+            <input class="govuk-button" type="submit" name="answerAction" value="Return to Skills health check page" />}
+
+    </div>
+
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.QuestionNumber)
+    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
+    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.SubQuestions)
+    @Html.HiddenFor(model => model.Question.AssessmentType)
+    @Html.HiddenFor(model => model.Question.Level)
+    @Html.HiddenFor(model => model.Question.Accessibility)
+    @Html.HiddenFor(model => model.CurrentQuestion)
+    @Html.HiddenFor(model => model.QuestionNumber)
+    @Html.HiddenFor(model => model.ActualTotalQuestions)
+</form>

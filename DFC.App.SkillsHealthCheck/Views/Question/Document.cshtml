@@ -1,0 +1,17 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.Question.DocumentViewModel
+
+@{
+    Layout = "_LocalLayout";
+
+    if (!string.IsNullOrWhiteSpace(Model.HtmlHeadViewModel?.Title))
+    {
+        ViewData["Title"] = Model.HtmlHeadViewModel.Title;
+    }
+}
+<partial name="Breadcrumb" model=@Model.BreadcrumbViewModel />
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <partial name="Body" model="@Model.BodyViewModel" />
+    </div>
+</div>

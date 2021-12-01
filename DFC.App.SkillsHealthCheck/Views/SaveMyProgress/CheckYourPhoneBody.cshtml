@@ -1,0 +1,15 @@
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress.ReferenceNumberViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-body">
+            <h1 class="govuk-heading-xl">Check your phone</h1>
+
+            <p>A text message has been sent to @Model.PhoneNumber</p>
+
+            <p>Click on the link in the text message to return to your skills health check.</p>
+
+            <p><a class="govuk-button" href="@Model.ReturnLink">@Model.ReturnLinkText</a></p>
+        </div>
+    </div>
+</div>

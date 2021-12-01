@@ -1,0 +1,35 @@
+﻿@model ReturnToAssessmentViewModel
+@if (Model.HasError)
+{
+    <div id="error-validation-summary" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+            There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list">
+                @foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    if (modelStateVal?.Errors.Count > 0)
+                    {
+                        <li>
+                            <a href="#">@Html.Raw(modelStateVal.Errors[0].ErrorMessage)</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}
+<div class="app-related-items">
+    <h2 class="govuk-heading-m">Return to a skills health check</h2>
+    <form action="@Model.ActionUrl" class="form" id="enterReferenceForm" method="post">
+        <div class="form-group govuk-!-margin-bottom-5 @(Model.HasError ? "error": string.Empty)" id="EnterReference">
+            @Html.LabelFor(model => model.ReferenceId, new { @class = "govuk-label" })
+            <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.ReferenceId, null, new { @class = "govuk-error-message" })</span>
+            @Html.TextBoxFor(model => model.ReferenceId, new { @class = "govuk-input", data_val = "false" })
+        </div>
+        <button type="submit" class="govuk-button app-button"> Continue </button>
+        @Html.HiddenFor(model => model.ActionUrl)
+    </form>
+</div>
