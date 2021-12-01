@@ -110,6 +110,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
+        private static Accessibility GetDefaultAccessibility(AssessmentType assessmentType) =>
+            assessmentType switch
+            {
+                AssessmentType.Numeric => Accessibility.Accessible,
+                _ => Accessibility.Full,
+            };
+
         private async Task<BodyViewModel> GetBodyViewModel(string assessmentType)
         {
             var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
@@ -146,7 +153,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return rightBarViewModel;
         }
 
-        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1, Accessibility accessibility = Accessibility.Full)
+        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, Level level = Level.Level1)
         {
             var sessionDataModel = await GetSessionDataModel();
             long documentId = sessionDataModel.DocumentId;
@@ -159,6 +166,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             var qnAssessmentType = FromSet<AssessmentType>.Get(assessmentType, AssessmentType.SkillAreas);
+            var accessibility = GetDefaultAccessibility(qnAssessmentType);
 
             if (!documentResponse.SkillsDocument.AssessmentNotCompleted(qnAssessmentType))
             {
