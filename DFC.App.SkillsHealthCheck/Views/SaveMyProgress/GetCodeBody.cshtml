@@ -8,7 +8,7 @@
         <h1 class="govuk-heading-l">Your reference code</h1>
         <div class="app-your-reference govuk-body">
             <div class="banner-information-without-action govuk-!-margin-bottom-5">
-                <span class="govuk-heading-xl">@Model.Document?.Code</span>
+                <span class="govuk-heading-xl">@Html.Raw(Model.Document?.Code?.Replace("-", "-<wbr>"))</span>
                 <span class="govuk-caption-xl">@Model.Document?.DateAssessmentsCreated.ToString("dd MMMM yyyy")</span>
             </div>
         </div>
