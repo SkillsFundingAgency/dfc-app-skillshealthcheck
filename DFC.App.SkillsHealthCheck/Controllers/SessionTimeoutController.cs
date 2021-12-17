@@ -1,11 +1,13 @@
-﻿using DFC.App.SkillsHealthCheck.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.SessionTimout;
 using DFC.Compui.Sessionstate;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -27,12 +29,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/session-timeout")]
         public IActionResult Document()
         {
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var headViewModel = GetHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = new BodyViewModel
                 {
@@ -42,12 +44,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("skills-health-check/session-timeout/htmlhead")]
-        public IActionResult HtmlHead()
+        [Route("skills-health-check/session-timeout/head")]
+        public IActionResult Head()
         {
-            var viewModel = GetHtmlHeadViewModel(PageTitle);
+            var viewModel = GetHeadViewModel(PageTitle);
 
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+            logger.LogInformation($"{nameof(Head)} has returned content");
 
             return this.NegotiateContentResult(viewModel);
         }

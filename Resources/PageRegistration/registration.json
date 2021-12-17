@@ -10,7 +10,7 @@
     "Regions": [
       {
         "PageRegion": 1,
-        "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/skills-health-check/{0}/htmlhead",
+        "RegionEndpoint": "https://__AppServiceName__.__appServiceDomain__/skills-health-check/{0}/head",
         "HealthCheckRequired": true,
         "IsHealthy": true,
         "OfflineHtml": null

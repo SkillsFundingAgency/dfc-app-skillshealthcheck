@@ -31,7 +31,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
 
-
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
@@ -53,27 +52,27 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> Document()
         {
             var sessionDataModel = await GetSessionDataModel();
-            var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
+            var headViewModel = GetHeadViewModel(PageTitle);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
         }
 
         [HttpGet]
-        [Route("skills-health-check/your-assessments/htmlhead")]
-        [Route("skills-health-check/your-assessments/download-document/htmlhead")]
-        [Route("skills-health-check/your-assessments/return-to-assessment/htmlhead")]
-        public IActionResult HtmlHead()
+        [Route("skills-health-check/your-assessments/head")]
+        [Route("skills-health-check/your-assessments/download-document/head")]
+        [Route("skills-health-check/your-assessments/return-to-assessment/head")]
+        public IActionResult Head()
         {
-            var viewModel = GetHtmlHeadViewModel(PageTitle);
+            var viewModel = GetHeadViewModel(PageTitle);
 
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+            logger.LogInformation($"{nameof(Head)} has returned content");
 
             return this.NegotiateContentResult(viewModel);
         }
@@ -152,7 +151,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList.SelectedJobs);
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = GetHtmlHeadViewModel(PageTitle),
+                HeadViewModel = GetHeadViewModel(PageTitle),
                 BreadcrumbViewModel = BuildBreadcrumb(),
                 BodyViewModel = bodyViewModel,
             });
@@ -234,11 +233,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId);
             viewModel.HasError = true;
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var headViewModel = GetHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });

@@ -58,13 +58,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check")]
         public async Task<IActionResult> Document()
         {
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var headViewModel = GetHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetHomeBodyViewModel();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
@@ -140,16 +140,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("skills-health-check/home/htmlhead")]
-        [Route("skills-health-check/home/reload/htmlhead")]
-        [Route("skills-health-check/return-to-assessment/htmlhead")]
-        [Route("skills-health-check/{article}/htmlhead")]
-        [Route("skills-health-check/htmlhead")]
-        public IActionResult HtmlHead()
+        [Route("skills-health-check/home/head")]
+        [Route("skills-health-check/home/reload/head")]
+        [Route("skills-health-check/return-to-assessment/head")]
+        [Route("skills-health-check/{article}/head")]
+        [Route("skills-health-check/head")]
+        public IActionResult Head()
         {
-            var viewModel = GetHtmlHeadViewModel(string.Empty);
+            var viewModel = GetHeadViewModel(string.Empty);
 
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+            logger.LogInformation($"{nameof(Head)} has returned content");
 
             return this.NegotiateContentResult(viewModel);
         }
@@ -240,11 +240,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
+            var headViewModel = GetHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });

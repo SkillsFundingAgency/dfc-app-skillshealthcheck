@@ -10,10 +10,13 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
 using DFC.Compui.Sessionstate;
+
 using FakeItEasy;
+
 using Microsoft.AspNetCore.Mvc;
 
 using Xunit;
+
 using static DFC.App.SkillsHealthCheck.Constants;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsControllerTests
@@ -22,14 +25,14 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
     public class YourAssessmentsControllerTests : BaseYourAssessmentsControllerTests
     {
         [Fact]
-        public void YourAssessmentsControllerHtmlHeadRequestReturnsSuccess()
+        public void YourAssessmentsControllerHeadRequestReturnsSuccess()
         {
             using var controller = BuildHomeController(MediaTypeNames.Text.Html);
 
-            var result = controller.HtmlHead();
+            var result = controller.Head();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
+            var viewModel = Assert.IsAssignableFrom<HeadViewModel>(viewResult.ViewData.Model);
             Assert.Equal($"{YourAssessmentsController.PageTitle} | {YourAssessmentsController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 
@@ -55,7 +58,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
             controller.Request.Headers.Add(ConstantStrings.CompositeSessionIdHeaderName, Guid.NewGuid().ToString());
             A.CallTo(() => SessionStateService.GetAsync(A<Guid>._)).Returns(new SessionStateModel<SessionDataModel>
-                {State = new SessionDataModel {DocumentId = 1}});
+            { State = new SessionDataModel { DocumentId = 1 } });
             A.CallTo(() => FakeYourAssessmentsService.GetAssessmentListViewModel(A<long>._, null)).Returns(GetFakeBodyViewModel());
             var result = await controller.Body();
 
@@ -180,6 +183,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
                         ActivityAssessment = true,
                     },
                 };
-        
+
     }
 }

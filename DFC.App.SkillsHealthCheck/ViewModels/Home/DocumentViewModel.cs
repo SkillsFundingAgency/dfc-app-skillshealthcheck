@@ -5,7 +5,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Home
     [ExcludeFromCodeCoverage]
     public class DocumentViewModel : IDocumentPostback
     {
-        public HtmlHeadViewModel HtmlHeadViewModel { get; set; }
+        public HeadViewModel HeadViewModel { get; set; }
 
         public BodyViewModel BodyViewModel { get; set; }
 

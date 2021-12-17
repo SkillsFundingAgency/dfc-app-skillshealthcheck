@@ -7,7 +7,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels
     [ExcludeFromCodeCoverage]
     public class BaseDocumentViewModel
     {
-        public HtmlHeadViewModel HtmlHead { get; set; } = new HtmlHeadViewModel();
+        public HeadViewModel Head { get; set; } = new HeadViewModel();
 
         public BreadcrumbViewModel? Breadcrumb { get; set; }
 
