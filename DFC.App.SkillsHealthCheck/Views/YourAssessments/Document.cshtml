@@ -3,9 +3,9 @@
 @{
     Layout = "_LocalLayout";
 
-    if (!string.IsNullOrWhiteSpace(Model.HtmlHeadViewModel?.Title))
+    if (!string.IsNullOrWhiteSpace(Model.HeadViewModel?.Title))
     {
-        ViewData["Title"] = Model.HtmlHeadViewModel.Title;
+        ViewData["Title"] = Model.HeadViewModel.Title;
     }
 }
 

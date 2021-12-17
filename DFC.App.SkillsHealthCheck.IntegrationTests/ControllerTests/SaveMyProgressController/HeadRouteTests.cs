@@ -14,29 +14,29 @@ using Xunit;
 namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgressController
 {
     [Trait("Category", "SaveMyProgress Controller Integration Tests")]
-    public class HtmlHeadRouteTests : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class HeadRouteTests : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly CustomWebApplicationFactory<Startup> factory;
 
-        public HtmlHeadRouteTests(CustomWebApplicationFactory<Startup> factory)
+        public HeadRouteTests(CustomWebApplicationFactory<Startup> factory)
         {
             this.factory = factory;
         }
 
         public static IEnumerable<object[]> RouteData => new List<object[]>
         {
-            new object[] { "skills-health-check/save-my-progress/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/getcode/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/sms/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/smsfailed/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/email/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/emailsent/htmlhead" },
-            new object[] { "skills-health-check/save-my-progress/emailfailed/htmlhead" },
+            new object[] { "skills-health-check/save-my-progress/head" },
+            new object[] { "skills-health-check/save-my-progress/getcode/head" },
+            new object[] { "skills-health-check/save-my-progress/sms/head" },
+            new object[] { "skills-health-check/save-my-progress/smsfailed/head" },
+            new object[] { "skills-health-check/save-my-progress/email/head" },
+            new object[] { "skills-health-check/save-my-progress/emailsent/head" },
+            new object[] { "skills-health-check/save-my-progress/emailfailed/head" },
         };
 
         [Theory]
         [MemberData(nameof(RouteData))]
-        public async Task GetHtmlHeadContentEndpointsReturnSuccessAndCorrectContentType(string url)
+        public async Task GetHeadContentEndpointsReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
             var uri = new Uri(url, UriKind.Relative);
@@ -54,7 +54,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
 
         [Theory]
         [MemberData(nameof(RouteData))]
-        public async Task GetHtmlHeadContentEndpointsReturnSuccessAndCorrectContent(string url)
+        public async Task GetHeadContentEndpointsReturnSuccessAndCorrectContent(string url)
         {
             // Arrange
             var uri = new Uri(url, UriKind.Relative);
@@ -68,7 +68,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Application.Json);
-            var result = await response.Content.ReadAsAsync<HtmlHeadViewModel>();
+            var result = await response.Content.ReadAsAsync<HeadViewModel>();
             result.Should().NotBeNull();
             result.Title.Should().Be("Save My Progress | Skills Health Check | National Careers Service");
         }

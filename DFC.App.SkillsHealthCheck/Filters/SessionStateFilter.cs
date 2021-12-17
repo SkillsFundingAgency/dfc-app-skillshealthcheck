@@ -1,11 +1,13 @@
-﻿using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Models;
-using DFC.Compui.Sessionstate;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
+
+using DFC.App.SkillsHealthCheck.Controllers;
+using DFC.App.SkillsHealthCheck.Models;
+using DFC.Compui.Sessionstate;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace DFC.App.SkillsHealthCheck.Filters
 {
@@ -13,7 +15,7 @@ namespace DFC.App.SkillsHealthCheck.Filters
     public class SessionStateFilter : IActionFilter
     {
         private readonly ISessionStateService<SessionDataModel> sessionStateService;
-        private readonly string[] urlRegionParts = new[] { "/htmlhead", "/breadcrumb" };
+        private readonly string[] urlRegionParts = new[] { "/head", "/breadcrumb" };
 
         public SessionStateFilter(ISessionStateService<SessionDataModel> sessionStateService)
         {
@@ -30,7 +32,7 @@ namespace DFC.App.SkillsHealthCheck.Filters
             var path = request.Path.ToString();
             if (urlRegionParts.Any(p => path.EndsWith(p, System.StringComparison.InvariantCultureIgnoreCase)))
             {
-                // We are not fussed about checking session state for the htmlhead and breadcrumb requests
+                // We are not fussed about checking session state for the head and breadcrumb requests
                 return;
             }
             else if (path.EndsWith("/body", System.StringComparison.CurrentCultureIgnoreCase))

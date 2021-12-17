@@ -5,7 +5,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress
     [ExcludeFromCodeCoverage]
     public class ErrorDocumentViewModel
     {
-        public HtmlHeadViewModel? HtmlHeadViewModel { get; set; }
+        public HeadViewModel? HeadViewModel { get; set; }
 
         public BreadcrumbViewModel? BreadcrumbViewModel { get; set; }
 

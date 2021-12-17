@@ -57,32 +57,32 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
                 t.Key.Equals(assessmentType, StringComparison.InvariantCultureIgnoreCase)).Value;
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
+            var headViewModel = GetHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
             var breadcrumbViewModel = BuildBreadcrumb();
             var bodyViewModel = await GetBodyViewModel(assessmentType);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });
         }
 
         [HttpGet]
-        [Route("skills-health-check/question/htmlhead")]
-        [Route("skills-health-check/question/answer-question/htmlhead")]
-        [Route("skills-health-check/question/answer-multiple-question/htmlhead")]
-        [Route("skills-health-check/question/answer-elimination-question/htmlhead")]
-        [Route("skills-health-check/question/answer-feedback-question/htmlhead")]
-        [Route("skills-health-check/question/answer-checking-question/htmlhead")]
-        public IActionResult HtmlHead(string assessmentType)
+        [Route("skills-health-check/question/head")]
+        [Route("skills-health-check/question/answer-question/head")]
+        [Route("skills-health-check/question/answer-multiple-question/head")]
+        [Route("skills-health-check/question/answer-elimination-question/head")]
+        [Route("skills-health-check/question/answer-feedback-question/head")]
+        [Route("skills-health-check/question/answer-checking-question/head")]
+        public IActionResult Head(string assessmentType)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
                 t.Key.Equals(assessmentType, StringComparison.InvariantCultureIgnoreCase)).Value;
-            var viewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
+            var viewModel = GetHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
 
-            logger.LogInformation($"{nameof(HtmlHead)} has returned content");
+            logger.LogInformation($"{nameof(Head)} has returned content");
 
             return this.NegotiateContentResult(viewModel);
         }
@@ -228,12 +228,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
                 t.Key.Equals(assessmentQuestionViewModel.Question.AssessmentType.ToString(), StringComparison.InvariantCultureIgnoreCase)).Value;
-            var htmlHeadViewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
+            var headViewModel = GetHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
             var breadcrumbViewModel = BuildBreadcrumb();
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
-                HtmlHeadViewModel = htmlHeadViewModel,
+                HeadViewModel = headViewModel,
                 BreadcrumbViewModel = breadcrumbViewModel,
                 BodyViewModel = bodyViewModel,
             });

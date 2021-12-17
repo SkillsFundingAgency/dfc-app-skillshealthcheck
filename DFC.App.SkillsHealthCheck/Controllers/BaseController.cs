@@ -39,9 +39,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
         }
 
-        protected HtmlHeadViewModel GetHtmlHeadViewModel(string pageTitle)
+        protected HeadViewModel GetHeadViewModel(string pageTitle)
         {
-            return new HtmlHeadViewModel
+            return new HeadViewModel
             {
                 CanonicalUrl = new Uri($"{Request.GetBaseAddress()}/{RegistrationPath}", UriKind.RelativeOrAbsolute),
                 Title = !string.IsNullOrWhiteSpace(pageTitle) ? $"{pageTitle} | {DefaultPageTitleSuffix}" : DefaultPageTitleSuffix,

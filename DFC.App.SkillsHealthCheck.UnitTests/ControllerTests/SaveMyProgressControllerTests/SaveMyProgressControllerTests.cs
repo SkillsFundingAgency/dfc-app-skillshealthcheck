@@ -18,14 +18,14 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
     public class SaveMyProgressControllerTests : SaveMyProgressControllerTestsBase
     {
         [Fact]
-        public void HtmlHeadRequestReturnsSuccess()
+        public void HeadRequestReturnsSuccess()
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.HtmlHead();
+            var result = controller.Head();
 
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
-            var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<HtmlHeadViewModel>().Which;
+            var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<HeadViewModel>().Which;
             Assert.Equal($"{SaveMyProgressController.PageTitle} | {SaveMyProgressController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 

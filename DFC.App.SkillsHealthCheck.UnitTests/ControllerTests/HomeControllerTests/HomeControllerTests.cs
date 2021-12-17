@@ -24,14 +24,14 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
     public class HomeControllerTests : BaseHomeControllerTests
     {
         [Fact]
-        public void HomeControllerHtmlHeadRequestReturnsSuccess()
+        public void HomeControllerHeadRequestReturnsSuccess()
         {
             using var controller = BuildHomeController(MediaTypeNames.Text.Html);
 
-            var result = controller.HtmlHead();
+            var result = controller.Head();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-            var viewModel = Assert.IsAssignableFrom<HtmlHeadViewModel>(viewResult.ViewData.Model);
+            var viewModel = Assert.IsAssignableFrom<HeadViewModel>(viewResult.ViewData.Model);
             Assert.Equal($"{YourAssessmentsController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 

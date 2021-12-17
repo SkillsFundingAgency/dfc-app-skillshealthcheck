@@ -28,11 +28,11 @@ namespace DFC.App.SkillsHealthCheck.AutoMapperProfiles
             CreateMap<SharedContentItemModel, IndexDocumentViewModel>();
 
             CreateMap<SharedContentItemModel, BaseDocumentViewModel>()
-                .ForMember(d => d.HtmlHead, s => s.MapFrom(a => a))
+                .ForMember(d => d.Head, s => s.MapFrom(a => a))
                 .ForMember(d => d.Breadcrumb, s => s.Ignore())
                 .ForMember(d => d.BodyViewModel, s => s.MapFrom(a => a));
 
-            CreateMap<SharedContentItemModel, HtmlHeadViewModel>()
+            CreateMap<SharedContentItemModel, HeadViewModel>()
                 .ForMember(d => d.CanonicalUrl, s => s.Ignore())
                 .ForMember(d => d.Description, s => s.Ignore())
                 .ForMember(d => d.Keywords, s => s.Ignore());
