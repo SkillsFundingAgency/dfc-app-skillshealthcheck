@@ -125,8 +125,8 @@ stages:
 
   - stage: DeployToDev
     dependsOn: Build
-    condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
-    #condition: succeeded() #use when testing feature branch only
+    #condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
+    condition: succeeded() #use when testing feature branch only
     displayName: Deploy to DEV
     variables:
       - group: dfc-shared-all
