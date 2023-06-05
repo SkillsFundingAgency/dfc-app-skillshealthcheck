@@ -84,6 +84,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 return Redirect(YourAssessmentsURL);
             }
 
+            logger.LogInformation($"creating new skills document request");
+
             var apiRequest = new CreateSkillsDocumentRequest
             {
                 SkillsDocument = new SkillsDocument
@@ -129,6 +131,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
             if (apiResult.Success)
             {
+                logger.LogInformation($" Created new Skills Document, redirectng");
+
                 var sessionStateDataModel = new SessionDataModel
                 {
                     DocumentId = apiResult.DocumentId,
@@ -139,6 +143,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             var bodyViewModel = await GetHomeBodyViewModel();
+
+            logger.LogWarning($" Creating new Skills Document wasnt successful");
 
             return this.NegotiateContentResult(bodyViewModel);
         }
