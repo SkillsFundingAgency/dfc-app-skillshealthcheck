@@ -75,10 +75,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/start-skills-health-check/body")]
         public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
         {
+
+            logger.LogInformation($"{nameof(StartSkillsHealthCheck)} has been called");
+
             if (await CheckValidSession())
             {
+                logger.LogInformation($"Found valid session, redirecting");
                 return Redirect(YourAssessmentsURL);
             }
+
+            logger.LogInformation($"creating new skills document request");
 
             var apiRequest = new CreateSkillsDocumentRequest
             {
@@ -125,6 +131,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
             if (apiResult.Success)
             {
+                logger.LogInformation($" Created new Skills Document, redirectng");
+
                 var sessionStateDataModel = new SessionDataModel
                 {
                     DocumentId = apiResult.DocumentId,
@@ -135,6 +143,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             var bodyViewModel = await GetHomeBodyViewModel();
+
+            logger.LogWarning($" Creating new Skills Document wasnt successful");
 
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -176,6 +186,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> Body()
         {
             var viewModel = await GetHomeBodyViewModel();
+
+            logger.LogInformation($"{nameof(Body)} has returned content");
+
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -184,16 +197,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/home/reload/body")]
         public async Task<ActionResult> Reload(string sessionId)
         {
+            logger.LogInformation($"{nameof(Reload)} has been called");
+
             var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(sessionId);
             if (response.Success && response.DocumentId > 0)
             {
                 var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
                 sessionStateModel.DocumentId = response.DocumentId;
                 await SetSessionStateAsync(sessionStateModel);
+                logger.LogInformation($"{nameof(Reload)} was successful");
                 return Redirect(YourAssessmentsURL);
             }
 
-            logger.LogError(response.ErrorMessage);
+            logger.LogError($"{nameof(Reload)} failed with message: {response.ErrorMessage}");
             return Redirect("/alerts/500?errorcode=saveProgressResponse");
         }
 
@@ -201,21 +217,29 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/return-to-assessment/body")]
         public async Task<IActionResult> ReturnToAssessment(ReturnToAssessmentViewModel viewModel)
         {
+            logger.LogInformation($"{nameof(ReturnToAssessment)} has been called");
+
             if (ModelState.IsValid)
             {
+                logger.LogInformation("ModelState is valid, looking for assessment reference");
+
                 var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
                 var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
                     await SetSessionStateAsync(sessionStateModel);
+                    logger.LogInformation($"Reference found, redirecting");
                     return Redirect(YourAssessmentsURL);
                 }
+
+                logger.LogWarning("Couldn't find valid reference, adding model error");
 
                 ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
             }
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
+            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -224,21 +248,28 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/return-to-assessment")]
         public async Task<IActionResult> ReturnToAssessmentDocument(ReturnToAssessmentViewModel viewModel)
         {
+            logger.LogInformation($"{nameof(ReturnToAssessmentDocument)} has been called");
+
             if (ModelState.IsValid)
             {
+                logger.LogInformation("ModelState is valid, looking for assessment document reference");
                 var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
                 var referenceFound = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionStateModel, viewModel.ReferenceId);
                 if (referenceFound)
                 {
                     await SetSessionStateAsync(sessionStateModel);
+                    logger.LogInformation($"Assessment document reference found, redirecting");
                     return Redirect(YourAssessmentsURL);
                 }
+
+                logger.LogWarning("Couldn't find valid reference, adding model error");
 
                 ModelState.AddModelError(nameof(ReturnToAssessmentViewModel.ReferenceId), Constants.SkillsHealthCheck.ReferenceCouldNotBeFoundMessage);
             }
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
+            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
@@ -253,6 +284,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            logger.LogInformation($"{nameof(Error)} has been called");
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
