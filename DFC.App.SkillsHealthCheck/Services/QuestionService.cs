@@ -16,10 +16,10 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class QuestionService : IQuestionService
     {
-        private readonly ILogger logger;
+        private readonly ILogger<QuestionService> logger;
         private ISkillsHealthCheckService _skillsHealthCheckService;
 
-        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService, ILogger logger)
+        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService, ILogger<QuestionService> logger)
         {
             _skillsHealthCheckService = skillsHealthCheckService;
             this.logger = logger;

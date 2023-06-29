@@ -18,13 +18,13 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
         private readonly IQuestionService questionService;
-        private readonly ILogger logger;
+        private readonly ILogger<YourAssessmentsService> logger;
 
         public YourAssessmentsServiceTests()
         {
             skillsHealthCheckService = A.Fake<ISkillsHealthCheckService>();
             questionService = A.Fake<QuestionService>();
-            logger = A.Fake<ILogger>();
+            logger = A.Fake<ILogger<YourAssessmentsService>>();
             yourAssessmentsService = new YourAssessmentsService(skillsHealthCheckService, questionService, logger);
         }
 

@@ -17,13 +17,13 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class YourAssessmentsService : IYourAssessmentsService
     {
-        private readonly ILogger logger;
+        private readonly ILogger<YourAssessmentsService> logger;
         private ISkillsHealthCheckService _skillsHealthCheckService;
 
         public YourAssessmentsService(
             ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService,
-            ILogger logger)
+            ILogger<YourAssessmentsService> logger)
         {
             _questionService = questionService;
             _skillsHealthCheckService = skillsHealthCheckService;
