@@ -22,18 +22,14 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public YourAssessmentsService(
             ISkillsHealthCheckService skillsHealthCheckService,
-            IQuestionService questionService,
-            ILogger logger)
+            IQuestionService questionService)
         {
             _questionService = questionService;
             _skillsHealthCheckService = skillsHealthCheckService;
-            this.logger = logger;
         }
 
         public DocumentFormatter GetFormatter(DownloadType downloadType)
         {
-            logger.LogInformation($"{nameof(GetFormatter)} has been called");
-
             return downloadType == DownloadType.Pdf
                 ? new DocumentFormatter
                 {
@@ -53,8 +49,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs)
         {
-            logger.LogInformation($"{nameof(GetDownloadDocumentAsync)} has been called");
-
             var documentId = sessionDataModel.DocumentId;
 
             var skillsDocumentResponse = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
@@ -68,10 +62,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                 downloadDocumentResponse.DocumentName = skillsDocumentResponse.SkillsDocument.SkillsDocumentTitle;
                 return downloadDocumentResponse;
             }
-            else
-            {
-                logger.LogWarning($"{nameof(skillsDocumentResponse)} has returned unsuccessfully");
-            }
 
             return new DownloadDocumentResponse
             {
@@ -81,8 +71,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
         {
-            logger.LogInformation($"{nameof(GetDownloadDocumentAsync)} has been called with {nameof(documentResponse)}");
-
             var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse {Success = true};
             var skillsDocument = documentResponse.SkillsDocument;
 
@@ -105,15 +93,9 @@ namespace DFC.App.SkillsHealthCheck.Services
                     SkillsDocument = skillsDocument,
                 });
             }
-            else
-            {
-                logger.LogWarning($"{nameof(selectedJobs)} is empty");
-            }
 
             if (saveQuestionAnswerResponse.Success)
             {
-                logger.LogInformation($"{nameof(saveQuestionAnswerResponse)} has returned successfully");
-
                 var result = await _skillsHealthCheckService.RequestDownloadAsync(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
 
                 while (new[] {DocumentStatus.Pending, DocumentStatus.Creating}.Any(ds => ds == result))
@@ -156,8 +138,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private SaveQuestionAnswerResponse UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(SessionDataModel sessionDataModel, SaveQuestionAnswerResponse saveQuestionAnswerResponse, SkillsDocument skillsDocument)
         {
-            logger.LogInformation($"{nameof(UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument)} has been called");
-
             var diagnosticReportDataValues = skillsDocument.SkillsDocumentDataValues.Where(dv =>
                 validDataValues.Any(vdv =>
                     dv.Title.Contains(vdv.Key, StringComparison.InvariantCultureIgnoreCase)));
@@ -310,8 +290,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private string GetAssessmentOverviewAction(Dictionary<string, string> diagnosticReportDataValues, string key)
         {
-            logger.LogInformation($"{nameof(GetAssessmentOverviewAction)} has been called");
-
             var dataValue =
                 diagnosticReportDataValues.FirstOrDefault(d => d.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
 
@@ -327,8 +305,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public BodyViewModel GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs = null)
         {
-            logger.LogInformation($"{nameof(GetAssessmentListViewModel)} has been called");
-
             // TODO: selected jobs not implemented as yet
             var model = new BodyViewModel
             {
@@ -342,7 +318,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (apiResult.Success)
             {
-                logger.LogInformation($"{nameof(apiResult)} has returned successfully");
                 model.DateAssessmentsCreated = TimeZoneInfo.ConvertTimeFromUtc(
                     apiResult.SkillsDocument.CreatedAt, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
 
@@ -474,8 +449,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                     },
                 };
 
-                logger.LogInformation($"{nameof(assessments)} has been created successfully");
-
                 model.SkillsAssessmentComplete = diagnosticReportDataValues.FirstOrDefault(d => d.Key.Equals(Constants.SkillsHealthCheck.SkillsAssessmentComplete, StringComparison.InvariantCultureIgnoreCase)).Value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
 
                 model.AssessmentsActivity = assessments.Where(assess => assess.ActivityAssessment).ToList();
@@ -499,7 +472,6 @@ namespace DFC.App.SkillsHealthCheck.Services
             else
             {
                 logger.LogWarning($"{nameof(apiResult)} has returned unsuccessfully");
-
                 model.IsAPiError = true;
                 model.ApiErrorMessage = apiResult.ErrorMessage;
                 model.InValidDocumentId = true;
@@ -510,8 +482,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private void ChangeActionText(IList<AssessmentOverview> assessments)
         {
-            logger.LogInformation($"{nameof(ChangeActionText)} has been called");
-
             foreach (var assessment in assessments)
             {
                 var settings = SHCWidgetSettings.SHCWidgetSettingsList.SingleOrDefault(s => s.SHCAssessmentType == assessment.AssessmentType);
@@ -538,8 +508,6 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<bool> GetSkillsDocumentIDByReferenceAndStore(SessionDataModel sessionDataModel, string referenceId)
         {
-            logger.LogInformation($"{nameof(GetSkillsDocumentIDByReferenceAndStore)} has been called");
-
             var response = _skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
             if (response.Success && response.DocumentId > 0)
             {
