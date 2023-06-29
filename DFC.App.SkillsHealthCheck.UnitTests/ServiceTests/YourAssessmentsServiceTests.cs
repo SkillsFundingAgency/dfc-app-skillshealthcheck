@@ -6,6 +6,7 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using FakeItEasy;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,12 +18,14 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
         private readonly IQuestionService questionService;
+        private readonly ILogger logger;
 
         public YourAssessmentsServiceTests()
         {
             skillsHealthCheckService = A.Fake<ISkillsHealthCheckService>();
             questionService = A.Fake<QuestionService>();
-            yourAssessmentsService = new YourAssessmentsService(skillsHealthCheckService, questionService);
+            logger = A.Fake<ILogger>();
+            yourAssessmentsService = new YourAssessmentsService(skillsHealthCheckService, questionService, logger);
         }
 
         [Fact]
