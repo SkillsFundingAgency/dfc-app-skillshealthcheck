@@ -10,25 +10,32 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Models;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Services
 {
     public class QuestionService : IQuestionService
     {
+        private readonly ILogger logger;
         private ISkillsHealthCheckService _skillsHealthCheckService;
 
-        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService)
+        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService, ILogger logger)
         {
             _skillsHealthCheckService = skillsHealthCheckService;
+            this.logger = logger;
         }
 
         public GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest)
         {
+            logger.LogInformation($"{nameof(GetSkillsDocument)} has been called");
+
             return _skillsHealthCheckService.GetSkillsDocument(getSkillsDocumentRequest);
         }
 
         public AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
+            logger.LogInformation($"{nameof(GetAssessmentQuestionViewModel)} has been called");
+
             var feedbackQuestionNext = false;
 
             var questionNumber = GetQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
@@ -107,6 +114,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <returns></returns>
         private AssessmentQuestionViewModel GetAssessmentFeedBackQuestionViewModel(AssessmentType assessmentType, int questionNumber, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
+            logger.LogInformation($"{nameof(GetAssessmentFeedBackQuestionViewModel)} has been called");
+
             var viewModel = new FeedBackQuestionViewModel
             {
                 AssessmentTitle = assessmentQuestionOverview.AssessmentTitle
@@ -160,6 +169,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                     return viewModel;
                 }
             }
+            else
+            {
+                logger.LogWarning($"{nameof(howLongDocValue)} has returned null");
+            }
 
             var howEasyDocValue =
                 skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
@@ -175,6 +188,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Ease";
                     return viewModel;
                 }
+            }
+            else
+            {
+                logger.LogWarning($"{nameof(howEasyDocValue)} has returned null");
             }
 
             var howEnjoyableDocValue =
@@ -193,6 +210,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                     return viewModel;
                 }
             }
+            else
+            {
+                logger.LogWarning($"{nameof(howEnjoyableDocValue)} has returned null");
+            }
 
             return viewModel;
         }
@@ -209,6 +230,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <returns></returns>
         private AssessmentQuestionViewModel GetDetailedAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, int questionNumber, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
+            logger.LogInformation($"{nameof(GetDetailedAssessmentQuestionViewModel)} has been called");
+
             var viewModel = new AssessmentQuestionViewModel();
 
             var apiRequest = new GetAssessmentQuestionRequest
@@ -222,6 +245,8 @@ namespace DFC.App.SkillsHealthCheck.Services
             var apiResponse = _skillsHealthCheckService.GetAssessmentQuestion(apiRequest);
             if (apiResponse.Success)
             {
+                logger.LogInformation($"{nameof(apiResponse)} has returned successfully");
+
                 switch (assessmentType)
                 {
                     case AssessmentType.Abstract:
@@ -293,6 +318,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                         };
                 }
             }
+            else
+            {
+                logger.LogWarning($"{nameof(apiResponse)} has returned unsuccessfully");
+            }
 
             return viewModel;
         }
@@ -307,6 +336,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <returns></returns>
         private AssessmentQuestionsOverView GetAssessmentQuestionsOverview(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument activeSkillsDocument)
         {
+            logger.LogInformation($"{nameof(GetAssessmentQuestionsOverview)} has been called");
+
             var assessmentQuestionOverview = new AssessmentQuestionsOverView {AssessmentType = assessmentType};
             var apiOverviewRequest = new GetAssessmentQuestionRequest
             {
@@ -319,6 +350,8 @@ namespace DFC.App.SkillsHealthCheck.Services
             var overViewResponse = _skillsHealthCheckService.GetAssessmentQuestion(apiOverviewRequest);
             if (overViewResponse.Success)
             {
+                logger.LogInformation($"{nameof(overViewResponse)} has returned successfully");
+
                 assessmentQuestionOverview.TotalQuestionsNumber = overViewResponse.Question.TotalQuestionNumber;
                 assessmentQuestionOverview.SubTitle = overViewResponse.Question.SubTitle;
                 assessmentQuestionOverview.AssessmentTitle = overViewResponse.Question.AssessmentTitle;
@@ -374,6 +407,10 @@ namespace DFC.App.SkillsHealthCheck.Services
 
                 assessmentQuestionOverview.ActualQuestionsNumber = actualQuestionsNumber;
             }
+            else
+            {
+                logger.LogWarning($"{nameof(overViewResponse)} has returned unsuccessfully");
+            }
 
             assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback =
                 assessmentQuestionOverview.ActualQuestionsNumber;
@@ -412,6 +449,8 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<SaveQuestionAnswerResponse> SubmitAnswer(SessionDataModel sessionDataModel, AssessmentQuestionViewModel model)
         {
+            logger.LogInformation($"{nameof(SubmitAnswer)} has been called");
+
             var getDocumentResponse = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
             {
                 DocumentId = sessionDataModel.DocumentId,
@@ -419,6 +458,8 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (!getDocumentResponse.Success)
             {
+                logger.LogInformation($"{nameof(getDocumentResponse)} has returned unsuccessfully");
+
                 return new SaveQuestionAnswerResponse
                 {
                     Success = false,
@@ -476,6 +517,8 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public AssessmentQuestionsOverView GetAssessmentQuestionsOverview(SessionDataModel sessionDataModel, Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument)
         {
+            logger.LogInformation($"{nameof(GetAssessmentQuestionsOverview)} has been called");
+
             var overviewSessionId = string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType);
 
             sessionDataModel.AssessmentQuestionsOverViews ??= new Dictionary<string, AssessmentQuestionsOverView>();
