@@ -7,7 +7,7 @@
 
         <h1 class="govuk-heading-l">Your reference code</h1>
         <div class="app-your-reference govuk-body">
-            <div class="banner-information-without-action govuk-!-margin-bottom-5">
+            <div class="banner-information-without-action ncs-notification-banner govuk-!-margin-bottom-5">
                 <span class="govuk-heading-xl">@Html.Raw(Model.Document?.Code?.Replace("-", "-<wbr>"))</span>
                 <span class="govuk-caption-xl">@Model.Document?.DateAssessmentsCreated.ToString("dd MMMM yyyy")</span>
             </div>
@@ -23,7 +23,7 @@
             <h1 class="govuk-heading-m">By text message</h1>
             <form method="post" class="compui-validation">
                 @Html.EditorFor(m => m.PhoneNumber)
-                <input class="govuk-button" type="submit" name="sendAction" value="Send" />
+                <input class="govuk-button ncs-button__primary" type="submit" name="sendAction" value="Send" />
             </form>
 
             <p><a href="@Model.ReturnLink">@Model.ReturnLinkText</a></p>
