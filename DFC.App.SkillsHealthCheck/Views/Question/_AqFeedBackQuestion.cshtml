@@ -34,12 +34,14 @@
     <div class="form-group">
         @if (Model.QuestionNumber != Model.ActualTotalQuestions)
         {
-            <input class="govuk-button" type="submit" name="answerAction" value="Continue" /> }
+            <input class="govuk-button ncs-button__primary" type="submit" name="answerAction" value="Continue" />
+        }
         else
         {
             <p>This is the final question.</p>
             <p>Return to the Skills health check page to download your latest report or complete more assessments.</p>
-            <input class="govuk-button" type="submit" name="answerAction" value="Return to skills health check page" />}
+            <input class="govuk-button ncs-button__primary" type="submit" name="answerAction" value="Return to skills health check page" />
+        }
 
     </div>
 

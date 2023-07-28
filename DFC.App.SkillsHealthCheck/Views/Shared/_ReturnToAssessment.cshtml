@@ -29,7 +29,7 @@
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.ReferenceId, null, new { @class = "govuk-error-message" })</span>
             @Html.TextBoxFor(model => model.ReferenceId, new { @class = "govuk-input", data_val = "false" })
         </div>
-        <button type="submit" class="govuk-button app-button"> Continue </button>
+        <button type="submit" class="govuk-button ncs-button__primary app-button"> Continue </button>
         @Html.HiddenFor(model => model.ActionUrl)
     </form>
 </div>
