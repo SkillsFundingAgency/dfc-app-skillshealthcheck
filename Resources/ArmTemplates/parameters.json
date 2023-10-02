@@ -124,6 +124,9 @@
         },
         "SessionStateOptionsTtl": {
             "value": "__SessionStateOptionsTtl__"
-        }
+        },
+        "appInsightsInstrumentationKey": {
+          "value": "__appInsightsInstrumentationKey__" 
+        }  
     }
 }
