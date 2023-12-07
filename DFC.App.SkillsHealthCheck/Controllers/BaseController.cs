@@ -72,7 +72,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     new BreadcrumbItemViewModel
                     {
                         Route = "/skills-health-check/save-my-progress",
-                        Title = "Save Progress",
+                        Title = "Save progress",
                     },
                     new BreadcrumbItemViewModel
                     {
