@@ -42,7 +42,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             viewModel.Breadcrumbs.Should().HaveCount(3);
             viewModel.Breadcrumbs![0].Title.Should().Be("Home");
             viewModel.Breadcrumbs![1].Title.Should().Be("Skills assessment");
-            viewModel.Breadcrumbs![1].Title.Should().Be("Skills health check");
+            viewModel.Breadcrumbs![2].Title.Should().Be("Skills health check");
         }
 
         [Theory]
