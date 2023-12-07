@@ -64,6 +64,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                         Route = "/skills-assessment",
                         Title = "Skills assessment",
                     },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-health-check/home",
+                        Title = "Skills health check",
+                    },
                 },
             };
         }
