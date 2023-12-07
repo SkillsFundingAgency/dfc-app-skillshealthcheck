@@ -69,6 +69,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                         Route = "/skills-health-check/home",
                         Title = "Skills health check",
                     },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-health-check/save-my-progress",
+                        Title = "Save Progress",
+                    },
+                     {
+                        Route = "/skills-health-check/save-my-progress/getcode",
+                        Title = "Reference code",
+                    },
                 },
             };
         }

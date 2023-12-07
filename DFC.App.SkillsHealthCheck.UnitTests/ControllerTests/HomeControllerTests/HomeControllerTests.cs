@@ -45,10 +45,12 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
             var viewResult = Assert.IsType<ViewResult>(result);
             var viewModel = Assert.IsAssignableFrom<BreadcrumbViewModel>(viewResult.ViewData.Model);
             Assert.NotNull(viewModel.Breadcrumbs);
-            Assert.Equal(3, viewModel.Breadcrumbs.Count);
+            Assert.Equal(5, viewModel.Breadcrumbs.Count);
             Assert.Equal("Home", viewModel.Breadcrumbs[0].Title);
             Assert.Equal("Skills assessment", viewModel.Breadcrumbs[1].Title);
             Assert.Equal("Skills health check", viewModel.Breadcrumbs[2].Title);
+            Assert.Equal("Save progress", viewModel.Breadcrumbs[3].Title);
+            Assert.Equal("Reference code", viewModel.Breadcrumbs[4].Title);
         }
 
         [Fact]
