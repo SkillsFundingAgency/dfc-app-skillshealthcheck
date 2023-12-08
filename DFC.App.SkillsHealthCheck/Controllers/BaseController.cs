@@ -66,12 +66,65 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     },
                     new BreadcrumbItemViewModel
                     {
-                        Route = "/skills-health-check/home",
+                        Route = "/skills-health-check",
+                        Title = "Skills health check",
+                    },
+                },
+            };
+        }
+        protected static BreadcrumbViewModel BuildBreadcrumbSaveProgress()
+        {
+            return new BreadcrumbViewModel
+            {
+                Breadcrumbs = new List<BreadcrumbItemViewModel>
+                {
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/",
+                        Title = "Home",
+                    },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-assessment",
+                        Title = "Skills assessment",
+                    },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-health-check",
                         Title = "Skills health check",
                     },
                     new BreadcrumbItemViewModel
                     {
-                        Route = "/skills-health-check/save-my-progress",
+                        Route = "/skills-health-check/save-my-progress?type=",
+                        Title = "Save progress",
+                    },
+                },
+            };
+        }
+        protected static BreadcrumbViewModel BuildBreadcrumbGetCode()
+        {
+            return new BreadcrumbViewModel
+            {
+                Breadcrumbs = new List<BreadcrumbItemViewModel>
+                {
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/",
+                        Title = "Home",
+                    },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-assessment",
+                        Title = "Skills assessment",
+                    },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-health-check",
+                        Title = "Skills health check",
+                    },
+                    new BreadcrumbItemViewModel
+                    {
+                        Route = "/skills-health-check/save-my-progress?type=",
                         Title = "Save progress",
                     },
                     new BreadcrumbItemViewModel
