@@ -39,12 +39,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             var viewResult = result.Should().BeOfType<ViewResult>().Which;
             var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<BreadcrumbViewModel>().Which;
             viewModel.Breadcrumbs.Should().NotBeNull();
-            viewModel.Breadcrumbs.Should().HaveCount(5);
+            viewModel.Breadcrumbs.Should().HaveCount(3);
             viewModel.Breadcrumbs![0].Title.Should().Be("Home");
             viewModel.Breadcrumbs![1].Title.Should().Be("Skills assessment");
             viewModel.Breadcrumbs![2].Title.Should().Be("Skills health check");
-            viewModel.Breadcrumbs![3].Title.Should().Be("Save progress");
-            viewModel.Breadcrumbs![4].Title.Should().Be("Reference code");
         }
 
         [Theory]
