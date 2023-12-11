@@ -72,6 +72,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
         }
+
         protected static BreadcrumbViewModel BuildBreadcrumbSaveProgress()
         {
             return new BreadcrumbViewModel
@@ -101,6 +102,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
         }
+
         protected static BreadcrumbViewModel BuildBreadcrumbGetCode()
         {
             return new BreadcrumbViewModel

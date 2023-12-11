@@ -66,6 +66,25 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
         }
 
         [Fact]
+        public async Task GetCodeBodyEndpointWithActiveSessionReturnSuccessAndCorrectContentTypeBreadcrumb()
+        {
+            // Arrange
+            var uri = new Uri("skills-health-check/save-my-progress/getcode/breadcrumb", UriKind.Relative);
+            var client = factory.CreateClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+            SetSession(client, factory);
+            factory.SetSkillsDocument();
+
+            // Act
+            var response = await client.GetAsync(uri);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
+        }
+
+        [Fact]
         public async Task PostGetCodeBodyEndpointWithoutActiveSessionRedirectToSessionTimeout()
         {
             // Arrange
