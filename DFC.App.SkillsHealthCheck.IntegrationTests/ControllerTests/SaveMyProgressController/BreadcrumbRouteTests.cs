@@ -26,7 +26,6 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
         public static IEnumerable<object[]> RouteData => new List<object[]>
         {
             new object[] { "skills-health-check/save-my-progress/breadcrumb" },
-            new object[] { "skills-health-check/save-my-progress/getcode/breadcrumb" },
             new object[] { "skills-health-check/save-my-progress/sms/breadcrumb" },
             new object[] { "skills-health-check/save-my-progress/smsfailed/breadcrumb" },
             new object[] { "skills-health-check/save-my-progress/email/breadcrumb" },
