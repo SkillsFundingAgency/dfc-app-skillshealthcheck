@@ -206,7 +206,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/save-my-progress/getcode")]
-        [Route("skills-health-check/save-my-progress/getcode/document")]
         [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
         public async Task<IActionResult> GetCode()
         {
