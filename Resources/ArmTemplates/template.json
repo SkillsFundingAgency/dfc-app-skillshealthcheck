@@ -129,6 +129,12 @@
             "metadata": {
                 "description": "session state options ttl"
             }
+        },
+        "workspaceName": {
+            "type": "string"
+        },
+        "workspaceResourceGroup": {
+            "type": "string"
         }
     },
     "variables": {
@@ -189,6 +195,12 @@
                     },
                     "attachedService": {
                         "value": ""
+                    },
+                    "workspaceName": {
+                        "value": "[parameters('workspaceName')]"
+                    },
+                    "workspaceResourceGroup": {
+                        "value": "[parameters('workspaceResourceGroup')]"
                     }
                 }
             }
