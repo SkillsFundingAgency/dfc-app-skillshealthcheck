@@ -71,5 +71,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 HomePageUrl = HomeURL,
             });
         }
+
+        [HttpGet]
+        [Route("skills-health-check/session-timeout/pop-up")]
+        public IActionResult ShowPopup()
+        {
+          return PartialView(Popup);
+        }
     }
 }
