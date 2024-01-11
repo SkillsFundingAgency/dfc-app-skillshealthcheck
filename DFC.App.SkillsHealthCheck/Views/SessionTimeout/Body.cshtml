@@ -7,10 +7,20 @@
             <p>Select <b>'extend my session'</b> if you want to continue or click <b>'end my session'</b> to leave.</p>
             <p>This message will show for 5 minutes. If there is no further activity, your session will automatically end.</p>
          </div>
-         <button class="govuk-button button-start" data-module="govuk-button" href="@Model.HomePageUrl">
+         <button class="govuk-button button-start" data-module="govuk-button" href="#popup1">
          Extend session
          </button>
-         <a class="govuk-link" href="tel:0800100900" rel="external">Leave skills health check</a>
+         <a class="govuk-link" href="@Model.HomePageUrl" rel="external">Leave skills health check</a>
       </div>
    </div>
+</div>
+
+<div id="popup1" class="overlay">
+	<div class="popup">
+		<h2>Here i am</h2>
+		<a class="close" href="#">&times;</a>
+		<div class="content">
+			Thank to pop me out of that button, but now i'm done so you can close this window.
+		</div>
+	</div>
 </div>
