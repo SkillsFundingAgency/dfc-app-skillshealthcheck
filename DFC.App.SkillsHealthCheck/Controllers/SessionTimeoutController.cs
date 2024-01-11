@@ -76,9 +76,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/session-timeout/pop-up")]
         public IActionResult Popup()
         {
-            return this.NegotiateContentResult(new sessionTimeOutModel
+            return this.NegotiateContentResult(new SessionTimeOutModel
             {
-                Timeoutpop = TimeoutURL,
+                Timeoutpop = SessionTimeoutURL,
             });
         }
     }
