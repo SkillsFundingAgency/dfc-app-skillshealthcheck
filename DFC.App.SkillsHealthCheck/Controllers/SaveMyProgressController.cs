@@ -69,8 +69,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         #region Breadcrumb
 
         [Route("skills-health-check/save-my-progress/breadcrumb")]
-        [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
         [Route("skills-health-check/save-my-progress/sms/breadcrumb")]
+        [Route("skills-health-check/save-my-progress/getcode/breadcrumb")]
         [Route("skills-health-check/save-my-progress/smsfailed/breadcrumb")]
         [Route("skills-health-check/save-my-progress/email/breadcrumb")]
         [Route("skills-health-check/save-my-progress/emailsent/breadcrumb")]
@@ -78,7 +78,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public IActionResult Breadcrumb()
         {
             TempData.Keep();
-            var viewModel = BuildBreadcrumb();
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var viewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             logger.LogInformation($"{nameof(Breadcrumb)} has returned content");
 
@@ -95,7 +96,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> Document([FromQuery] string? type)
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             await SetAssessmentTypeAsync(type);
             return this.NegotiateContentResult(new DocumentViewModel
@@ -130,7 +133,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var type = await GetAssessmentTypeAsync();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -206,13 +211,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [HttpGet]
-        [Route("skills-health-check/save-my-progress/getcode")]
         [Route("skills-health-check/save-my-progress/getcode/document")]
         public async Task<IActionResult> GetCode()
         {
             TempData.Keep();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             var referenceViewModel = await GetReferenceNumberViewModelAsync();
             await AddDocumentDetailsAsync(referenceViewModel.Document!);
@@ -257,7 +263,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> CheckYourPhone()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
@@ -286,7 +294,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> SmsFailed()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
@@ -336,7 +345,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var type = await GetAssessmentTypeAsync();
             TempData.Keep();
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
             var (link, text) = GetBackLinkAndText(type);
             var emailViewModel = new EmailViewModel() { ReturnLink = link, ReturnLinkText = text };
 
@@ -378,7 +388,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> CheckYourEmail()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
             var viewModel = new EmailDocumentViewModel
@@ -406,7 +417,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> EmailFailed()
         {
             var htmlHeadViewModel = GetHtmlHeadViewModel(PageTitle);
-            var breadcrumbViewModel = BuildBreadcrumb();
+            string requestedRoute = this.ControllerContext.HttpContext.Request.Path.ToString();
+            var breadcrumbViewModel = BuildBreadcrumbSaveProgress(requestedRoute);
 
             logger.LogInformation($"{nameof(GetCode)} has returned content");
 
