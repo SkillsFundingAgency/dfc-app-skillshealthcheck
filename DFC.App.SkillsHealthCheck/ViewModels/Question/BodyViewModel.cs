@@ -9,5 +9,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 
         public RightBarViewModel RightBarViewModel { get; set; }
 
+        public bool SessionTimedOut { get; set; }
+
     }
 }

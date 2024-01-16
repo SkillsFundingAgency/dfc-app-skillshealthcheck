@@ -119,6 +119,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetBodyViewModel(string assessmentType)
         {
+
+
+            var sessionDataModel = await GetSessionDataModel();
+            var sessionTime = (DateTime)sessionDataModel.Timestamp;
+            var sessionTimeIn30Min = sessionTime.AddMinutes(1);
+            var sessionTimedOut = false;
+            if (sessionTimeIn30Min < DateTime.Now)
+            {
+                sessionTimedOut = true;
+            }
             var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
             var assessmentTypeEnum = assessmentQuestionViewModel is FeedBackQuestionViewModel fqvm
                 ? fqvm.FeedbackQuestion.AssessmentType
@@ -128,6 +138,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 AssessmentQuestionViewModel = assessmentQuestionViewModel,
                 RightBarViewModel = await GetRightBarViewModel(assessmentTypeEnum),
+                SessionTimedOut = sessionTimedOut,
             };
         }
 
