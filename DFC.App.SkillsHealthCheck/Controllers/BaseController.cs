@@ -110,6 +110,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
                 var sessionStateModel = await sessionStateService.GetAsync(compositeSessionId.Value);
                 sessionStateModel.Ttl = sessionStateOptions.Ttl;
+                sessionDataModel.Timestamp = DateTime.Now;
+
                 sessionStateModel.State = sessionDataModel;
 
                 logger.LogInformation($"Saving the session state - compositeSessionId = {compositeSessionId}");

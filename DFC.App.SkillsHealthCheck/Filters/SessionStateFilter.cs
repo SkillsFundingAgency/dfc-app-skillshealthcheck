@@ -1,8 +1,10 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Models;
+using DFC.App.SkillsHealthCheck.ViewModels.Home;
 using DFC.Compui.Sessionstate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -44,12 +46,15 @@ namespace DFC.App.SkillsHealthCheck.Filters
             if (compositeSessionId.HasValue)
             {
                 var sessionDataModel = sessionStateService.GetAsync(compositeSessionId.Value).Result;
-                authorised = sessionDataModel?.State != null && sessionDataModel.State.DocumentId != 0;
+                var sessionTime = (DateTime)sessionDataModel.State.Timestamp;
+                var sessionTimeIn30Min = sessionTime.AddMinutes(30);
+
+                authorised = sessionDataModel?.State != null && sessionTimeIn30Min > DateTime.Now;
             }
 
             if (!authorised)
             {
-                context.Result = new RedirectResult($"{BaseController<SessionTimeoutController>.SessionTimeoutURL}?returnurl={HttpUtility.UrlEncode(path)}");
+                context.Result = new RedirectResult(path);
             }
         }
     }
