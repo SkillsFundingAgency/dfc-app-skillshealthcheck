@@ -1,6 +1,5 @@
 ﻿@using DFC.App.SkillsHealthCheck.ViewModels.Question
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.BodyViewModel
-
 @{
     var assessmentQuestionViewModel = Model.AssessmentQuestionViewModel;
 }
@@ -21,35 +20,24 @@
         <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />
     </div>
 
-    <div class="session-timeout">
+<div class="session-timeout">
     <div id="popup1" class="overlay">
-        <div class="popup">
-            <div class="govuk-grid-row">
-                <div class="text-styling">
-                    <h2 class="heading-medium">Your current session is about to end due to 25 minutes of inactivity</h2>
-                    <p>Select <b>'Extend My Session'</b> if you want to continue or click <b>'End My Session'</b> to
-                        leave.</p>
-                    <p>This message will show for 5 minutes. If there is no further activity, your session will
-                        automatically end.</p>
-                </div>
-                <button class="govuk-button ncs-button__primary govuk-button--s" data-module="govuk-button"
-                    href="#popup1">
-                    Extend My Session
-                </button>
-                <a class="govuk-link" href="/skills-health-check/home" rel="external">End My Session</a>
+	    <div class="popup">
+		    <div class="govuk-grid-row">
+            <div class="text-styling">
+                <h2 class="heading-medium">Your current session is about to end due to 25 minutes of inactivity</h2>
+                <p>Select <b>'Extend My Session'</b> if you want to continue or click <b>'End My Session'</b> to leave.</p>
+                <p>This message will show for 5 minutes. If there is no further activity, your session will automatically end.</p>
             </div>
-        </div>
-    </div>
+            <button class="govuk-button ncs-button__primary govuk-button--s" data-module="govuk-button" href="#popup1">
+                 Extend My Session
+            </button>
+            <a class="govuk-link" href="/skills-health-check/home" rel="external">End My Session</a>
+      </div>
+   </div>
 </div>
 
     <div class="govuk-grid-column-one-third">
         <partial name="_RightBar" model="@Model.RightBarViewModel" />
     </div>
-
 </div>
-
-
-
-
-
-    
