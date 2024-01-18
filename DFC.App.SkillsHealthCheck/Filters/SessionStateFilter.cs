@@ -48,7 +48,7 @@ namespace DFC.App.SkillsHealthCheck.Filters
 
             if (!authorised)
             {
-                context.Result = new RedirectResult($"{BaseController<SessionTimeoutController>.SessionTimeoutURL}?returnurl={HttpUtility.UrlEncode(path)}");
+                context.Result = new RedirectResult($"{BaseController<SessionTimeoutController>.HomeURL}?returnurl={HttpUtility.UrlEncode(path)}");
             }
         }
     }
