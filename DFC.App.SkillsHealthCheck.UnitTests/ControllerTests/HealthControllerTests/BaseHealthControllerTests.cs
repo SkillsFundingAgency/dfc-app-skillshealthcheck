@@ -3,6 +3,7 @@ using System.Net.Mime;
 
 using DFC.App.SkillsHealthCheck.Controllers;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 
 using FakeItEasy;
@@ -20,6 +21,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
         {
             FakeContentPageService = A.Fake<IDocumentService<SharedContentItemModel>>();
             FakeLogger = A.Fake<ILogger<HealthController>>();
+            FakeContentPageService = A.Fake<ISharedContentRedisInterface>();
         }
 
         public static IEnumerable<object[]> HtmlMediaTypes => new List<object[]>
@@ -38,17 +40,18 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             new string[] { MediaTypeNames.Application.Json },
         };
 
-        protected IDocumentService<SharedContentItemModel> FakeContentPageService { get; }
+        //protected IDocumentService<SharedContentItemModel> FakeContentPageService { get; }
+        protected ISharedContentRedisInterface FakeRedisInterface;
 
         protected ILogger<HealthController> FakeLogger { get; }
 
         protected HealthController BuildHealthController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
-
+         
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HealthController(FakeLogger, FakeContentPageService)
+            var controller = new HealthController(FakeLogger, FakeRedisInterface)
             {
                 ControllerContext = new ControllerContext()
                 {

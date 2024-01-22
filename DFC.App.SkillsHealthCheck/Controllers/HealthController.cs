@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.ViewModels;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class HealthController : Controller
     {
         private readonly ILogger<HealthController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
+        //private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly string resourceName = typeof(Program).Namespace!;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
 
-        public HealthController(ILogger<HealthController> logger, IDocumentService<SharedContentItemModel> sharedContentItemDocumentService)
+        public HealthController(ILogger<HealthController> logger, ISharedContentRedisInterface sharedContentRedis)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
+            //this.sharedContentItemDocumentService = sharedContentItemDocumentService;
+            this.sharedContentRedis = sharedContentRedis;
         }
 
         [HttpGet]
@@ -39,21 +42,24 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             logger.LogInformation("Generating Health report");
 
-            var isHealthy = await sharedContentItemDocumentService.PingAsync();
 
-            if (isHealthy)
-            {
-                const string message = "Document store is available";
-                logger.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
 
-                var viewModel = CreateHealthViewModel(message);
+            //var isHealthy = await sharedContentItemDocumentService.PingAsync();
 
-                logger.LogInformation("Generated Health report");
+            //if (isHealthy)
+            //{
+            //    const string message = "Document store is available";
+            //    logger.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
 
-                return this.NegotiateContentResult(viewModel, viewModel.HealthItems);
-            }
+            //    var viewModel = CreateHealthViewModel(message);
 
-            logger.LogError($"{nameof(Health)}: Ping to {resourceName} has failed");
+            //    logger.LogInformation("Generated Health report");
+
+            //    return this.NegotiateContentResult(viewModel, viewModel.HealthItems);
+            //}
+
+            //logger.LogError($"{nameof(Health)}: Ping to {resourceName} has failed");
+
 
             return StatusCode((int)HttpStatusCode.ServiceUnavailable);
         }

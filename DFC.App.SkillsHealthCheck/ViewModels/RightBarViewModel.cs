@@ -8,7 +8,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels
     {
         public string AssessmentType { get; set; }
 
-        public SharedContentItemModel SpeakToAnAdviser { get; set; }
+        public string SpeakToAnAdviser { get; set; }
 
         public ReturnToAssessmentViewModel ReturnToAssessmentViewModel { get; set; }
     }

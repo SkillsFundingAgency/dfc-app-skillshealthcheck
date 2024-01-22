@@ -26,7 +26,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             bool expectedResult = true;
             using var controller = BuildHealthController(MediaTypeNames.Application.Json);
 
-            A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeRedisInterface.PingAsync()).Returns(expectedResult);
 
             // Act
             var result = await controller.Health();
@@ -49,7 +49,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HealthControllerTe
             bool expectedResult = false;
             using var controller = BuildHealthController(MediaTypeNames.Application.Json);
 
-            A.CallTo(() => FakeContentPageService.PingAsync()).Returns(expectedResult);
+            A.CallTo(() => FakeRedisInterface.PingAsync()).Returns(expectedResult);
 
             // Act
             var result = await controller.Health();

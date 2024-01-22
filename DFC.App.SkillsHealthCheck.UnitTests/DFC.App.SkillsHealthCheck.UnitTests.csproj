@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ControllerTests\HealthControllerTests\**" />
+    <EmbeddedResource Remove="ControllerTests\HealthControllerTests\**" />
+    <None Remove="ControllerTests\HealthControllerTests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ControllerTests\PagesControllerTests\BasePagesControllerTests.cs" />
     <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyFooterTests.cs" />
     <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTests.cs" />

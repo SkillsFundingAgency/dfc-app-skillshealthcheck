@@ -15,6 +15,8 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
@@ -28,8 +30,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
+        private const string SharedContentStaxId = "2f92ded1-300d-4c3b-91cd-270d77ebc6d7";
         private readonly ILogger<HomeController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
+        //private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
@@ -38,14 +42,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ILogger<HomeController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
+            ISharedContentRedisInterface sharedContentRedis,
             CmsApiClientOptions cmsApiClientOptions,
             ISkillsHealthCheckService skillsHealthCheckService,
             IYourAssessmentsService yourAssesmentsService)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
+            //this.sharedContentItemDocumentService = sharedContentItemDocumentService;
+            this.sharedContentRedis = sharedContentRedis;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.skillsHealthCheckService = skillsHealthCheckService;
             this.yourAssessmentsService = yourAssesmentsService;
@@ -318,18 +323,24 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
             }
 
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            //SharedContentItemModel? speakToAnAdviser = null;
+            //if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            //{
+            //    speakToAnAdviser = await sharedContentItemDocumentService
+            //          .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+            //}
+            try
             {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+
+                var speakToAnAdviser= await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
+            }
+            catch (Exception e)
+            {
+                viewModel.RightBarViewModel.SpeakToAnAdviser = "<h1> Error Retrieving Data from Redis<h1><p>" + e.ToString() + "</p>";
             }
 
-            if (speakToAnAdviser != null)
-            {
-                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
-            }
-
+     
             return viewModel;
         }
     }
