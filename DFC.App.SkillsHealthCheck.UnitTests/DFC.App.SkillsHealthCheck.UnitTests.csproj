@@ -9,8 +9,11 @@
 
   <ItemGroup>
     <Compile Remove="ControllerTests\HealthControllerTests\**" />
+    <Compile Remove="ControllerTests\WebhookControllerTests\**" />
     <EmbeddedResource Remove="ControllerTests\HealthControllerTests\**" />
+    <EmbeddedResource Remove="ControllerTests\WebhookControllerTests\**" />
     <None Remove="ControllerTests\HealthControllerTests\**" />
+    <None Remove="ControllerTests\WebhookControllerTests\**" />
   </ItemGroup>
 
   <ItemGroup>

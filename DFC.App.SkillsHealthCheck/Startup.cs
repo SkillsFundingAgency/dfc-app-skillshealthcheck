@@ -108,9 +108,9 @@ namespace DFC.App.SkillsHealthCheck
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
+            //var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
             var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
-            services.AddDocumentServices<SharedContentItemModel>(cosmosDbConnectionSharedContent, env.IsDevelopment(), cosmosRetryOptions);
+            //services.AddDocumentServices<SharedContentItemModel>(cosmosDbConnectionSharedContent, env.IsDevelopment(), cosmosRetryOptions);
             services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
 
             services.AddApplicationInsightsTelemetry();
@@ -138,7 +138,7 @@ namespace DFC.App.SkillsHealthCheck
         private void RegisterSkillsHealthCheckServices(IServiceCollection services)
         {
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
-            services.AddTransient<IWebhooksService, WebhooksService>();
+           // services.AddTransient<IWebhooksService, WebhooksService>();
             services.AddTransient<ISkillsCentralService>(sp =>
             {
                 var svc = new SkillsCentralServiceClient();
