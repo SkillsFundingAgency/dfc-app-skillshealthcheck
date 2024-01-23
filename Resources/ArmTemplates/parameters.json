@@ -39,19 +39,19 @@
       "value": "__CPUPercentageThreshold__"
     },
     "CmsTokenEndPointUrl": {
-      "value": "__CmsTokenEndPointUrl__"
+      "value": "__StaxGraphqlTokenEndPointUrl__"
     },
     "CmsGraphApiUrl": {
-      "value": "__CmsGraphApiUrl__"
+      "value": "__StaxGraphqlApiUrl__"
     },
     "CmsClientId": {
-      "value": "__CmsClientId__"
+      "value": "__StaxGraphqlClientId__"
     },
     "CmsClientSecret": {
-      "value": "__CmsClientSecret__"
+      "value": "__StaxGraphqlClientSecret__"
     },
     "CmsRedisCacheConnectionString": {
-      "value": "__CmsRedisCacheConnectionString__"
+      "value": "__RedisConnectionString__"
     },
 
     "environment": {
