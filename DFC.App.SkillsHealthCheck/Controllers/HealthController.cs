@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.ViewModels;
@@ -23,34 +22,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/health")]
         public async Task<IActionResult> HealthView()
         {
-            var result = await Health();
-
-            return result;
+            return await Health();
         }
 
         [HttpGet]
         [Route("health")]
         public async Task<IActionResult> Health()
         {
-            logger.LogInformation("Generating Health report");
+            const string message = "Document store is available";
+            logger.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
 
-            var isHealthy = true;
+            var viewModel = CreateHealthViewModel(message);
 
-            if (isHealthy)
-            {
-                const string message = "Document store is available";
-                logger.LogInformation($"{nameof(Health)} responded with: {resourceName} - {message}");
-
-                var viewModel = CreateHealthViewModel(message);
-
-                logger.LogInformation("Generated Health report");
-
-                return this.NegotiateContentResult(viewModel, viewModel.HealthItems);
-            }
-
-            logger.LogError($"{nameof(Health)}: Ping to {resourceName} has failed");
-
-            return StatusCode((int)HttpStatusCode.ServiceUnavailable);
+            return this.NegotiateContentResult(viewModel, viewModel.HealthItems);
         }
 
         [HttpGet]
