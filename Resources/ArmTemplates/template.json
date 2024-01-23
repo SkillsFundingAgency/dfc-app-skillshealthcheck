@@ -39,7 +39,7 @@
     },
 
     "CmsRedisCacheConnectionString": {
-      "type": "string"
+      "type": "securestring"
     },
     "CmsClientSecret": {
       "type": "string"
