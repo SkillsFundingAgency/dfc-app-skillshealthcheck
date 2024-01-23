@@ -8,15 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ControllerTests\HealthControllerTests\**" />
-    <Compile Remove="ControllerTests\WebhookControllerTests\**" />
-    <EmbeddedResource Remove="ControllerTests\HealthControllerTests\**" />
-    <EmbeddedResource Remove="ControllerTests\WebhookControllerTests\**" />
-    <None Remove="ControllerTests\HealthControllerTests\**" />
-    <None Remove="ControllerTests\WebhookControllerTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="ControllerTests\PagesControllerTests\BasePagesControllerTests.cs" />
     <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyFooterTests.cs" />
     <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTests.cs" />
