@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using DFC.App.SkillsHealthCheck.Data.Contracts;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
@@ -22,7 +20,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using Moq;
 
 namespace DFC.App.SkillsHealthCheck.IntegrationTests

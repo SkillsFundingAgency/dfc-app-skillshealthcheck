@@ -30,7 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\" />
     <Folder Include="Enums\" />
+    <Folder Include="Models\CmsApiModels\" />
+    <Folder Include="Models\ContentModels\" />
   </ItemGroup>
 
 </Project>

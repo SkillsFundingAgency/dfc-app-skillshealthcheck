@@ -4,19 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
-using DFC.Common.SharedContent.Pkg.Netcore;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
-using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,7 +27,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public const string PageTitle = "Your assessments";
         private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<YourAssessmentsController> logger;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
 
@@ -40,13 +35,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
             ISharedContentRedisInterface sharedContentRedis,
-            CmsApiClientOptions cmsApiClientOptions,
             IYourAssessmentsService yourAssessmentsService)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentRedis = sharedContentRedis;
-            this.cmsApiClientOptions = cmsApiClientOptions;
             this.yourAssessmentsService = yourAssessmentsService;
         }
 

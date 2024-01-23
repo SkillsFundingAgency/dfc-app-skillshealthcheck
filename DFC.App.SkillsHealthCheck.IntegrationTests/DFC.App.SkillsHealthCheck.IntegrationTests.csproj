@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Data\DFC.App.SkillsHealthCheck.Data.csproj" />
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck\DFC.App.SkillsHealthCheck.csproj" />
   </ItemGroup>
 

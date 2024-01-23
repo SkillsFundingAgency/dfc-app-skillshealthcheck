@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Data\DFC.App.SkillsHealthCheck.Data.csproj" />
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.CacheContentService\DFC.App.SkillsHealthCheck.Services.CacheContentService.csproj" />
   </ItemGroup>
 

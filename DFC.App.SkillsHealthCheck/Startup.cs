@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using DFC.App.SkillsHealthCheck.Data.Contracts;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Filters;
-using DFC.App.SkillsHealthCheck.HostedServices;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services;
-using DFC.App.SkillsHealthCheck.Services.CacheContentService;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
@@ -16,13 +12,10 @@ using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Common.SharedContent.Pkg.Netcore.RequestHandler;
-using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.Compui.Subscriptions.Pkg.Netstandard.Extensions;
 using DFC.Compui.Telemetry;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
-using DFC.Content.Pkg.Netcore.Extensions;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
@@ -85,7 +78,6 @@ namespace DFC.App.SkillsHealthCheck
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(configuration.GetSection(nameof(CmsApiClientOptions)).Get<CmsApiClientOptions>() ?? new CmsApiClientOptions());
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
             services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
@@ -117,12 +109,9 @@ namespace DFC.App.SkillsHealthCheck
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddHostedServiceTelemetryWrapper();
-            services.AddHostedService<SharedContentCacheReloadBackgroundService>();
             services.AddSubscriptionBackgroundService(configuration);
 
             var policyRegistry = services.AddPolicyRegistry();
-
-            services.AddApiServices(configuration, policyRegistry);
 
             RegisterSkillsHealthCheckServices(services);
 
@@ -137,8 +126,6 @@ namespace DFC.App.SkillsHealthCheck
 
         private void RegisterSkillsHealthCheckServices(IServiceCollection services)
         {
-            services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
-           // services.AddTransient<IWebhooksService, WebhooksService>();
             services.AddTransient<ISkillsCentralService>(sp =>
             {
                 var svc = new SkillsCentralServiceClient();
