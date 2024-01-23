@@ -32,7 +32,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     {
         private const string SharedContentStaxId = "2f92ded1-300d-4c3b-91cd-270d77ebc6d7";
         private readonly ILogger<HomeController> logger;
-        //private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
@@ -49,7 +48,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            //this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.sharedContentRedis = sharedContentRedis;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.skillsHealthCheckService = skillsHealthCheckService;
@@ -323,16 +321,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
             }
 
-            //SharedContentItemModel? speakToAnAdviser = null;
-            //if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
-            //{
-            //    speakToAnAdviser = await sharedContentItemDocumentService
-            //          .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
-            //}
             try
             {
-
-                var speakToAnAdviser= await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
+                var speakToAnAdviser= await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
                 viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
             catch (Exception e)
@@ -340,7 +331,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 viewModel.RightBarViewModel.SpeakToAnAdviser = "<h1> Error Retrieving Data from Redis<h1><p>" + e.ToString() + "</p>";
             }
 
-     
             return viewModel;
         }
     }

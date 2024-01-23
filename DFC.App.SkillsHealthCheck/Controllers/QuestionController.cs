@@ -33,7 +33,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public const string PageTitle = "Question";
         private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<QuestionController> logger;
-        //private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
         private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IQuestionService questionService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
@@ -48,7 +47,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            //this.sharedContentItemDocumentService = sharedContentItemDocumentService;
             this.sharedContentRedis = sharedContentRedis;
             this.cmsApiClientOptions = cmsApiClientOptions;
             this.questionService = questionService;
@@ -137,17 +135,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<RightBarViewModel> GetRightBarViewModel(AssessmentType assessmentType)
         {
-            //SharedContentItemModel? speakToAnAdviser = null;
-            //if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
-            //{
-            //    var sharedhtml = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + ContactUsStaxId);
-            //    speakToAnAdviser = await sharedContentItemDocumentService.GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
-            //}
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
 
-
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("sharedContent/" + SharedContentStaxId);
-
-        
             var rightBarViewModel = new RightBarViewModel
             {
                 AssessmentType = assessmentType.ToString(),
