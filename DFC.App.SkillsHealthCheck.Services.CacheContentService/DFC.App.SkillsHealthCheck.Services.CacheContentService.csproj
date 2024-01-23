@@ -26,8 +26,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Data\DFC.App.SkillsHealthCheck.Data.csproj" />
-  </ItemGroup>
-
 </Project>
