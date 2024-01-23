@@ -1,12 +1,9 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
-using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using FakeItEasy;
 
@@ -26,11 +23,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
-        //protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; } = A.Fake<IDocumentService<SharedContentItemModel>>();
-
         private ISharedContentRedisInterface _sharedContentRedisInterface;
-
-        protected CmsApiClientOptions CmsApiClientOptions { get; } = new CmsApiClientOptions() { ContentIds = testContentId };
 
         protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
@@ -45,7 +38,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
             _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
-            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, _sharedContentRedisInterface, CmsApiClientOptions, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
+            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, _sharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
             {
                 ControllerContext = new ControllerContext()
                 {
