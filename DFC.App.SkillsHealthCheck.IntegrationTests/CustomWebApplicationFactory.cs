@@ -91,9 +91,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                     .Build();
 
                 services.AddSingleton<IConfiguration>(configuration);
-                services.AddScoped<ISharedContentRedisInterface>(_ => MockSharedContentRedis.Object);
             });
-          
 
             builder.ConfigureTestServices(services =>
             {
@@ -117,6 +115,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                 services.AddTransient(sp => FakeSessionStateService);
                 services.AddTransient(sp => FakeGovNotifyService);
                 services.AddTransient(sp => FakeSkillsHealthCheckService);
+                services.AddScoped<ISharedContentRedisInterface>(_ => MockSharedContentRedis.Object);
             });
         }
     }
