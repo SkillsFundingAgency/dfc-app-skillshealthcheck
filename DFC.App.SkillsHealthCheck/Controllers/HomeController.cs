@@ -39,13 +39,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             IOptions<SessionStateOptions> sessionStateOptions,
             ISharedContentRedisInterface sharedContentRedis,
             ISkillsHealthCheckService skillsHealthCheckService,
-            IYourAssessmentsService yourAssesmentsService)
+            IYourAssessmentsService yourAssessmentsService)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentRedis = sharedContentRedis;
             this.skillsHealthCheckService = skillsHealthCheckService;
-            this.yourAssessmentsService = yourAssesmentsService;
+            this.yourAssessmentsService = yourAssessmentsService;
         }
 
         [HttpGet]

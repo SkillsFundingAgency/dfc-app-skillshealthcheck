@@ -23,11 +23,11 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
-        private ISharedContentRedisInterface SharedContentRedisInterface { get; } = A.Fake<ISharedContentRedisInterface>();
-
         protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
+
+        protected ISharedContentRedisInterface SharedContentRedisInterface { get; } = A.Fake<ISharedContentRedisInterface>();
 
         protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
