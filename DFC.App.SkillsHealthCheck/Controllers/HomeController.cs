@@ -27,7 +27,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
-        private const string SharedContentStaxId = "2f92ded1-300d-4c3b-91cd-270d77ebc6d7";
+        private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<HomeController> logger;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IYourAssessmentsService yourAssessmentsService;
