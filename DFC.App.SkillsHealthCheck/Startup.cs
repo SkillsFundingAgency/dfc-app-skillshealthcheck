@@ -22,7 +22,6 @@ using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,10 +37,11 @@ namespace DFC.App.SkillsHealthCheck
     [ExcludeFromCodeCoverage]
     public class Startup
     {
+        private const string CosmosDbSessionStateConfigAppSettings = "Configuration:CosmosDbConnections:SessionState";
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
-        private readonly IConfiguration configuration;
-        private readonly IWebHostEnvironment env;
+        private IConfiguration configuration;
+        private IWebHostEnvironment env;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -97,7 +97,9 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
-
+            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
+            var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
+            services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(Startup).Assembly);
