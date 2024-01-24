@@ -72,7 +72,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/start-skills-health-check/body")]
         public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
         {
-
             logger.LogInformation($"{nameof(StartSkillsHealthCheck)} has been called");
 
             if (await CheckValidSession())
@@ -128,7 +127,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
             if (apiResult.Success)
             {
-                logger.LogInformation($" Created new Skills Document, redirectng");
+                logger.LogInformation($" Created new Skills Document, redirecting");
 
                 var sessionStateDataModel = new SessionDataModel
                 {
@@ -141,7 +140,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
 
-            logger.LogWarning($" Creating new Skills Document wasnt successful");
+            logger.LogWarning($" Creating new Skills Document was not successful");
 
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -236,7 +235,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -266,7 +265,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
@@ -317,7 +316,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             try
             {
-                var speakToAnAdviser= await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
                 viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
             catch (Exception e)

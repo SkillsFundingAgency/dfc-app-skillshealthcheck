@@ -38,8 +38,6 @@ namespace DFC.App.SkillsHealthCheck
     [ExcludeFromCodeCoverage]
     public class Startup
     {
-        private const string CosmosDbSharedContentConfigAppSettings = "Configuration:CosmosDbConnections:SharedContent";
-        private const string CosmosDbSessionStateConfigAppSettings = "Configuration:CosmosDbConnections:SessionState";
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
         private readonly IConfiguration configuration;
@@ -84,12 +82,12 @@ namespace DFC.App.SkillsHealthCheck
             services.AddStackExchangeRedisCache(options => { options.Configuration = configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>(); });
 
             services.AddHttpClient();
-            var GraphQLConnection = configuration["Cms:GraphApiUrl"];
+            var graphQLConnection = configuration["Cms:GraphApiUrl"];
             services.AddSingleton<IGraphQLClient>(s =>
             {
                 var option = new GraphQLHttpClientOptions()
                 {
-                    EndPoint = new Uri(GraphQLConnection),
+                    EndPoint = new Uri(graphQLConnection ?? throw new ArgumentNullException()),
                     HttpMessageHandler = new CmsRequestHandler(s.GetService<IHttpClientFactory>(), s.GetService<IConfiguration>(), s.GetService<IHttpContextAccessor>()),
                 };
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
@@ -99,11 +97,6 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
-            var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
-            //var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
-            var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
-            //services.AddDocumentServices<SharedContentItemModel>(cosmosDbConnectionSharedContent, env.IsDevelopment(), cosmosRetryOptions);
-            services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
 
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
@@ -119,9 +112,7 @@ namespace DFC.App.SkillsHealthCheck
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            })
-                .AddNewtonsoftJson()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            }).AddNewtonsoftJson();
         }
 
         private void RegisterSkillsHealthCheckServices(IServiceCollection services)

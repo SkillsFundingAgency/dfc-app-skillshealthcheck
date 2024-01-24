@@ -13,6 +13,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         {
             CurrentQuestion = 1;
         }
+
         /// <summary>
         /// Gets or sets the current question.
         /// </summary>

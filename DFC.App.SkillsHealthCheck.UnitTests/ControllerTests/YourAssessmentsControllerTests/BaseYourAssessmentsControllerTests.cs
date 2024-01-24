@@ -18,21 +18,21 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
         protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
 
-        protected ISharedContentRedisInterface _sharedContentRedisInterface;
+        protected ISharedContentRedisInterface sharedContentRedisInterface;
 
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
 
-        protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
+        protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected YourAssessmentsController BuildHomeController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
-            _sharedContentRedisInterface= A.Fake<ISharedContentRedisInterface>();
+            sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new YourAssessmentsController(Logger, SessionStateService, SessionStateOptions, _sharedContentRedisInterface, FakeYourAssessmentsService)
+            var controller = new YourAssessmentsController(Logger, SessionStateService, SessionStateOptions, sharedContentRedisInterface, FakeYourAssessmentsService)
             {
                 ControllerContext = new ControllerContext()
                 {

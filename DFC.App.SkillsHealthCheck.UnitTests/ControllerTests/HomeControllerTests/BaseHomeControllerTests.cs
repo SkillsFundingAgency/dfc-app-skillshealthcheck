@@ -23,22 +23,21 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
-        private ISharedContentRedisInterface _sharedContentRedisInterface;
+        private ISharedContentRedisInterface SharedContentRedisInterface { get; } = A.Fake<ISharedContentRedisInterface>();
 
         protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
 
-        protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
+        protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected HomeController BuildHomeController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
-            _sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
 
-            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, _sharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
+            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, SharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
             {
                 ControllerContext = new ControllerContext()
                 {

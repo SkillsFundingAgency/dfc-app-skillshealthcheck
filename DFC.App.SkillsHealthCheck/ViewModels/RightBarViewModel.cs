@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+
 namespace DFC.App.SkillsHealthCheck.ViewModels
 {
     [ExcludeFromCodeCoverage]
