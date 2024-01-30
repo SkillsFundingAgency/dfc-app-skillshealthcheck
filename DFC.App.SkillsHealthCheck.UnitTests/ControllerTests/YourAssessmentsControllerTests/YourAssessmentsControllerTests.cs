@@ -180,6 +180,5 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
                         ActivityAssessment = true,
                     },
                 };
-
     }
 }

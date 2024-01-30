@@ -6,11 +6,7 @@
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="ControllerTests\WebhooksControllerRouteTests.cs" />
-  </ItemGroup>
-
+	
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>

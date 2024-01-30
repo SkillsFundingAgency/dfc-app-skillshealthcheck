@@ -14,6 +14,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 {
     public abstract class BaseYourAssessmentsControllerTests
     {
+        protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
+
         protected ILogger<YourAssessmentsController> Logger { get; } = A.Fake<ILogger<YourAssessmentsController>>();
 
         protected ISessionStateService<SessionDataModel> SessionStateService { get; } = A.Fake<ISessionStateService<SessionDataModel>>();
@@ -23,8 +25,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
-
-        protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected YourAssessmentsController BuildHomeController(string mediaTypeName)
         {

@@ -8,19 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ControllerTests\PagesControllerTests\BasePagesControllerTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyFooterTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTopTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBreadcrumbTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerDocumentTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHeroBannerTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHtmlHeadTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerIndexTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerRouteTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -46,10 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck\DFC.App.SkillsHealthCheck.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\PagesControllerTests\" />
   </ItemGroup>
 
 </Project>
