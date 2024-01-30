@@ -1,11 +1,9 @@
 ﻿using DFC.App.SkillsHealthCheck.Controllers;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using FakeItEasy;
 
@@ -25,15 +23,13 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected IOptions<SessionStateOptions> SessionStateOptions { get; } = Options.Create(new SessionStateOptions());
 
-        protected IDocumentService<SharedContentItemModel> FakeSharedContentItemDocumentService { get; } = A.Fake<IDocumentService<SharedContentItemModel>>();
-
-        protected CmsApiClientOptions CmsApiClientOptions { get; } = new CmsApiClientOptions() { ContentIds = testContentId };
-
         protected ISkillsHealthCheckService FakeSkillsHealthCheckService { get; } = A.Fake<ISkillsHealthCheckService>();
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
 
-        protected const string testContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
+        protected ISharedContentRedisInterface SharedContentRedisInterface { get; } = A.Fake<ISharedContentRedisInterface>();
+
+        protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected HomeController BuildHomeController(string mediaTypeName)
         {
@@ -41,7 +37,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, FakeSharedContentItemDocumentService, CmsApiClientOptions, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
+            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, SharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
             {
                 ControllerContext = new ControllerContext()
                 {

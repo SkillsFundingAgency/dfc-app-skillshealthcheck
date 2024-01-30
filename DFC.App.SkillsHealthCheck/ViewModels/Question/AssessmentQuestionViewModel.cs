@@ -21,7 +21,8 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 
         // Used to pass the error messages to the client-side validation script skillsHealthCheck.js
         public SkillsHealthCheckValidationErrors? ValidationErrors { get; set; }
-        //Used to store the content from the sitefinity content block when fetched the title "Speak to an Adviser".
+
+        //Used to store the content from the Sitefinity content block when fetched the title "Speak to an Adviser".
         //which is passed to the view to render the page . On the right hand side of the page
         //Speak to an Adviser is displayed.
 

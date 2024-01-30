@@ -217,7 +217,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 Success = true,
                 SkillsDocument = new SkillsDocument
                 {
-                    CreatedAt = new System.DateTime(2021,1,1),
+                    CreatedAt = new System.DateTime(2021, 1, 1),
                     DocumentId = documentId,
                     SkillsDocumentTitle = "Skills Health Check",
                     SkillsDocumentDataValues = new List<SkillsDocumentDataValue>

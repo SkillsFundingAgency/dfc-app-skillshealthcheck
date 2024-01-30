@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral
+﻿namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral
 {
     public class Constants
     {

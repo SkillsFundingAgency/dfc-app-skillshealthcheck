@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using DFC.App.SkillsHealthCheck.ViewModels;
-using DFC.App.SkillsHealthCheck.ViewModels.Question;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
