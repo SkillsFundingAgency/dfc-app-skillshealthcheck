@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -70,6 +71,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 HomePageUrl = HomeURL,
             });
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/session-timeout/extend")]
+        public async Task<IActionResult> Extend()
+        {
+            var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+            await SetSessionStateAsync(sessionStateModel);
+            return Ok();
         }
     }
 }
