@@ -78,6 +78,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpPost]
         [Route("skills-health-check/session-timeout/extend")]
+        [Route("skills-health-check/session-timeout/extend/body")]
         public async Task<IActionResult> Extend()
         {
             var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
