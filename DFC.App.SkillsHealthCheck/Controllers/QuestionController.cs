@@ -76,6 +76,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/htmlhead")]
         [Route("skills-health-check/question/answer-feedback-question/htmlhead")]
         [Route("skills-health-check/question/answer-checking-question/htmlhead")]
+        [Route("skills-health-check/question/extend-session/htmlhead")]
         public IActionResult HtmlHead(string assessmentType)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
@@ -93,6 +94,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/breadcrumb")]
         [Route("skills-health-check/question/answer-feedback-question/breadcrumb")]
         [Route("skills-health-check/question/answer-checking-question/breadcrumb")]
+        [Route("skills-health-check/question/extend-session/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -347,11 +349,24 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
         }
 
+        [HttpPost]
+        [Route("skills-health-check/question/extend-session")]
+        [Route("skills-health-check/question/extend-session/body")]
+        public async Task<IActionResult> ExtendSession()
+        {
+            var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+            await SetSessionStateAsync(sessionStateModel);
+            return Redirect("/skills-health-check/question?assessmentType=SkillAreas");
+
+        }
+
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
         {
             if (model.QuestionNumber != model.ActualTotalQuestions)
             {
+
                 var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel)model).FeedbackQuestion.AssessmentType : model.Question.AssessmentType;
+                var foo = $"{QuestionURL}?assessmentType={assessmenttype}";
                 return Redirect($"{QuestionURL}?assessmentType={assessmenttype}");
             }
 

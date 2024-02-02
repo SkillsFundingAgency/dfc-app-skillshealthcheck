@@ -44,7 +44,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/session-timeout/htmlhead")]
-        [Route("skills-health-check/session-timeout/extend/htmlhead")]
         public IActionResult HtmlHead()
         {
             var viewModel = GetHtmlHeadViewModel(PageTitle);
@@ -55,7 +54,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         }
 
         [Route("skills-health-check/session-timeout/breadcrumb")]
-        [Route("skills-health-check/session-timeout/extend/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -67,23 +65,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/session-timeout/body")]
-        [Route("skills-health-check/session-timeout/extend/body")]
         public IActionResult Body()
         {
             return this.NegotiateContentResult(new BodyViewModel
             {
                 HomePageUrl = HomeURL,
             });
-        }
-
-        [HttpPost]
-        [Route("skills-health-check/session-timeout/extend")]
-        [Route("skills-health-check/session-timeout/extend/body")]
-        public async Task<IActionResult> Extend()
-        {
-            var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-            await SetSessionStateAsync(sessionStateModel);
-            return Ok();
         }
     }
 }
