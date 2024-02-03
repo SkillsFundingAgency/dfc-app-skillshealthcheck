@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
@@ -352,21 +353,21 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpPost]
         [Route("skills-health-check/question/extend-session")]
         [Route("skills-health-check/question/extend-session/body")]
-        public async Task<IActionResult> ExtendSession()
+        public async Task<IActionResult> ExtendSession(string? assessmentType)
         {
             var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
             await SetSessionStateAsync(sessionStateModel);
-            return Redirect("/skills-health-check/question?assessmentType=SkillAreas");
 
+            return Redirect(string.IsNullOrEmpty(assessmentType)
+            ? $"{HomeURL}"
+                : $"{QuestionURL}?assessmentType={assessmentType}");
         }
 
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
         {
             if (model.QuestionNumber != model.ActualTotalQuestions)
             {
-
                 var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel)model).FeedbackQuestion.AssessmentType : model.Question.AssessmentType;
-                var foo = $"{QuestionURL}?assessmentType={assessmenttype}";
                 return Redirect($"{QuestionURL}?assessmentType={assessmenttype}");
             }
 
