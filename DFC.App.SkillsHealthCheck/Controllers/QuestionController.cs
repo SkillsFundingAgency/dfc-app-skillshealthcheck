@@ -22,7 +22,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
@@ -78,6 +77,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-feedback-question/htmlhead")]
         [Route("skills-health-check/question/answer-checking-question/htmlhead")]
         [Route("skills-health-check/question/extend-session/htmlhead")]
+        [Route("skills-health-check/question/end-session/htmlhead")]
         public IActionResult HtmlHead(string assessmentType)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
@@ -96,6 +96,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-feedback-question/breadcrumb")]
         [Route("skills-health-check/question/answer-checking-question/breadcrumb")]
         [Route("skills-health-check/question/extend-session/breadcrumb")]
+        [Route("skills-health-check/question/end-session/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -361,6 +362,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return Redirect(string.IsNullOrEmpty(assessmentType)
             ? $"{HomeURL}"
                 : $"{QuestionURL}?assessmentType={assessmentType}");
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/question/end-session")]
+        [Route("skills-health-check/question/end-session/body")]
+        public async Task<IActionResult> EndSession()
+        {
+            await DeleteSessionStateAsync();
+            return Redirect($"{HomeURL}");
         }
 
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
