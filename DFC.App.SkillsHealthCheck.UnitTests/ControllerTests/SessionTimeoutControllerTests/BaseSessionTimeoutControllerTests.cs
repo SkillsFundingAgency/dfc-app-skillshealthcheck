@@ -3,7 +3,6 @@ using DFC.App.SkillsHealthCheck.Models;
 using DFC.Compui.Sessionstate;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -31,7 +30,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SessionTimeoutCont
                 {
                     HttpContext = httpContext,
                 },
-                TempData = new TempDataDictionary(httpContext, A.Fake<ITempDataProvider>()),
             };
 
             return controller;
