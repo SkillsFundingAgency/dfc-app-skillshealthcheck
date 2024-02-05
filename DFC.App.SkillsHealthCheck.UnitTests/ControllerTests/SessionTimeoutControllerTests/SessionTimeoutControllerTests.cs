@@ -3,7 +3,6 @@ using DFC.App.SkillsHealthCheck.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
-using System.Threading.Tasks;
 using Xunit;
 using DFC.App.SkillsHealthCheck.ViewModels.SessionTimout;
 
@@ -41,7 +40,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SessionTimeoutCont
 
         [Theory]
         [InlineData("/skills-health-check/home")]
-        public async Task BodyGetRequestReturnsSuccessAndCorrectReturnLink(string expectedReturnLink)
+        public void BodyGetRequestReturnsSuccessAndCorrectReturnLink(string expectedReturnLink)
         {
             using var controller = BuildController(MediaTypeNames.Text.Html);
 
