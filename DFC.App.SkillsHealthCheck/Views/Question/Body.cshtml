@@ -21,7 +21,7 @@
         <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />
     </div>
 
-    <div class="session-timeout">
+    <div class="session-timeout" tabindex="0">
         <div id="popup1" class="overlay">
             <div class="popup" aria-describedby="headerpopup">
                 <div class="govuk-grid-row">
@@ -32,7 +32,7 @@
                     </div>
                     <form action="/skills-health-check/question/extend-session" method="post" class="formRefresh">
                         @Html.Hidden("AssessmentType", assessmentType)
-                        <button class="govuk-button ncs-button__primary govuk-button--s popup-button" tabindex="0" data-module="govuk-button" type="submit" value="refreshpage">
+                        <button class="govuk-button ncs-button__primary govuk-button--s popup-button" data-module="govuk-button" type="submit" value="refreshpage">
                             Extend my session
                         </button>
                     </form>
