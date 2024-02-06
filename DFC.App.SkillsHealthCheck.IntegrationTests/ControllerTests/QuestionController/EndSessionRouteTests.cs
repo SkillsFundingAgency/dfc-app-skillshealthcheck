@@ -53,6 +53,6 @@ public class EndSessionRouteTests : IClassFixture<CustomWebApplicationFactory<St
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-        response.Headers.Location!.ToString().Should().Contain("skills-health-check/home");
+        response.Headers.Location!.ToString().Should().Contain("/skills-health-check/session-timeout");
     }
 }

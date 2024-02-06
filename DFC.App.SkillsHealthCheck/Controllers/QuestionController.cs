@@ -370,7 +370,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> EndSession()
         {
             await DeleteSessionStateAsync();
-            return Redirect($"{HomeURL}");
+            return Redirect($"{SessionTimeoutURL}");
         }
 
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
