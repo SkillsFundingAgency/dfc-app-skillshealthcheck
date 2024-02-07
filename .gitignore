@@ -263,3 +263,12 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/DFC.App.SkillsHealthCheck.Data/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Data.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.IntegrationTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.CacheContentService/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.GovNotify/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.SkillsCentral/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.UnitTests/Properties/launchSettings.json
