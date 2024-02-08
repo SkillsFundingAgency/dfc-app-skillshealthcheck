@@ -16,14 +16,14 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class YourAssessmentsService : IYourAssessmentsService
     {
-        private ISkillsHealthCheckService _skillsHealthCheckService;
+        private ISkillsHealthCheckService skillsHealthCheckService;
 
         public YourAssessmentsService(
             ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService)
         {
-            _questionService = questionService;
-            _skillsHealthCheckService = skillsHealthCheckService;
+            this.questionService = questionService;
+            this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public DocumentFormatter GetFormatter(DownloadType downloadType)
@@ -49,7 +49,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         {
             var documentId = sessionDataModel.DocumentId;
 
-            var skillsDocumentResponse = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
+            var skillsDocumentResponse = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
             {
                 DocumentId = documentId,
             });
@@ -69,7 +69,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         private async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, GetSkillsDocumentResponse documentResponse, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
         {
-            var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse {Success = true};
+            var saveQuestionAnswerResponse = new SaveQuestionAnswerResponse { Success = true };
             var skillsDocument = documentResponse.SkillsDocument;
 
             if (selectedJobs.Any())
@@ -85,7 +85,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     skillsDocument = skillsDocument.UpdateJobFamilyDataValue(jobNumber++, selectedJob);
                 }
 
-                saveQuestionAnswerResponse = _skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
+                saveQuestionAnswerResponse = skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
                 {
                     DocumentId = sessionDataModel.DocumentId,
                     SkillsDocument = skillsDocument,
@@ -94,12 +94,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (saveQuestionAnswerResponse.Success)
             {
-                var result = await _skillsHealthCheckService.RequestDownloadAsync(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
+                var result = await skillsHealthCheckService.RequestDownloadAsync(skillsDocument.DocumentId, formatter.FormatterName, skillsDocument.CreatedBy);
 
-                while (new[] {DocumentStatus.Pending, DocumentStatus.Creating}.Any(ds => ds == result))
+                while (new[] { DocumentStatus.Pending, DocumentStatus.Creating }.Any(ds => ds == result))
                 {
                     Task.WaitAll(Task.Delay(1000));
-                    result = await _skillsHealthCheckService.QueryDownloadStatusAsync(skillsDocument.DocumentId, formatter.FormatterName);
+                    result = await skillsHealthCheckService.QueryDownloadStatusAsync(skillsDocument.DocumentId, formatter.FormatterName);
                 }
 
                 if (result.Equals(DocumentStatus.Created))
@@ -110,7 +110,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                         Formatter = formatter.FormatterName,
                     };
 
-                    var downloadResponse = _skillsHealthCheckService.DownloadDocument(downloadRequest);
+                    var downloadResponse = skillsHealthCheckService.DownloadDocument(downloadRequest);
 
                     if (downloadResponse.Success)
                     {
@@ -148,7 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Services
             }
 
             saveQuestionAnswerResponse =
-                _skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
+                skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
                 {
                     DocumentId = skillsDocument.DocumentId,
                     SkillsDocument = skillsDocument,
@@ -172,7 +172,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         };
 
         // TODO: can we avoid having this service here?
-        private IQuestionService _questionService;
+        private IQuestionService questionService;
 
         private void CheckAssessmentTypeDataValueAndCorrect(SessionDataModel sessionDataModel, SkillsDocument skillsDocument, AssessmentType assessmentType, string assessmentCompleteTitle)
         {
@@ -180,7 +180,7 @@ namespace DFC.App.SkillsHealthCheck.Services
             if (answersDataValue != null)
             {
                 var completedAnswers = answersDataValue.Value.Split(',').ToList();
-                var assessmentOverview = _questionService.GetAssessmentQuestionsOverview(sessionDataModel, Level.Level1, Accessibility.Full, assessmentType, skillsDocument);
+                var assessmentOverview = questionService.GetAssessmentQuestionsOverview(sessionDataModel, Level.Level1, Accessibility.Full, assessmentType, skillsDocument);
                 int expectedAnswerCount;
                 switch (assessmentType)
                 {
@@ -206,27 +206,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
                 if (expectedAnswerCount < completedAnswers.Count)
                 {
-                    //Log.Writer.Write(
-                    //  $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-                    //  new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-                    //  1, TraceEventType.Error);
-
                     var updatedList = completedAnswers.Take(expectedAnswerCount);
 
                     answersDataValue.Value = string.Join(",", updatedList);
-
-                    //Log.Writer.Write(
-                    //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-                    //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-                    //    1, TraceEventType.Error);
                 }
                 else if (expectedAnswerCount > completedAnswers.Count)
                 {
-                    //Log.Writer.Write(
-                    //    $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Although marked as completed, Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-                    //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-                    //    1, TraceEventType.Error);
-
                     var titleDataValue =
                         skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
                             docValue =>
@@ -260,8 +245,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                         var howEnjoyableDocValue =
                             skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
                                 docValue =>
-                                    docValue.Title.Equals($"{assessmentType}.Enjoyment",
-                                        StringComparison.OrdinalIgnoreCase));
+                                    docValue.Title.Equals($"{assessmentType}.Enjoyment", StringComparison.OrdinalIgnoreCase));
 
                         if (howEnjoyableDocValue != null)
                         {
@@ -269,12 +253,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                         }
 
                         // Done - Reset Survey Questions
-
                         titleDataValue.Value = bool.FalseString;
-                        //Log.Writer.Write(
-                        //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment from 'Complete = True' to 'Complete = {titleDataValue.Value}', reset additional surver questions",
-                        //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-                        //    1, TraceEventType.Error);
                     }
                 }
             }
@@ -303,7 +282,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 JobFamilyList = new JobFamilyList { SelectedJobs = selectedJobs ?? new List<string>() },
             };
 
-            var apiResult = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
+            var apiResult = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
             {
                 DocumentId = documentId,
             });
@@ -322,7 +301,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                         var jobFamilyDocValue =
                             apiResult.SkillsDocument.SkillsDocumentDataValues.FirstOrDefault(
                                 docValue =>
-                                    docValue.Title.Equals(string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, i1),
+                                    docValue.Title.Equals(
+                                        string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, i1),
                                         StringComparison.OrdinalIgnoreCase));
 
                         if (!string.IsNullOrWhiteSpace(jobFamilyDocValue?.Value))
@@ -499,7 +479,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<bool> GetSkillsDocumentIDByReferenceAndStore(SessionDataModel sessionDataModel, string referenceId)
         {
-            var response = _skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
+            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(referenceId);
             if (response.Success && response.DocumentId > 0)
             {
                 sessionDataModel.DocumentId = response.DocumentId;

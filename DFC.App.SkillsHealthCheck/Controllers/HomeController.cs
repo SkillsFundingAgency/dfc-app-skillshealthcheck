@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
@@ -15,9 +14,9 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,9 +27,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
+        private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<HomeController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
 
@@ -38,17 +37,15 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ILogger<HomeController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions,
+            ISharedContentRedisInterface sharedContentRedis,
             ISkillsHealthCheckService skillsHealthCheckService,
-            IYourAssessmentsService yourAssesmentsService)
+            IYourAssessmentsService yourAssessmentsService)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this.cmsApiClientOptions = cmsApiClientOptions;
+            this.sharedContentRedis = sharedContentRedis;
             this.skillsHealthCheckService = skillsHealthCheckService;
-            this.yourAssessmentsService = yourAssesmentsService;
+            this.yourAssessmentsService = yourAssessmentsService;
         }
 
         [HttpGet]
@@ -75,7 +72,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/start-skills-health-check/body")]
         public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
         {
-
             logger.LogInformation($"{nameof(StartSkillsHealthCheck)} has been called");
 
             if (await CheckValidSession())
@@ -131,7 +127,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
             if (apiResult.Success)
             {
-                logger.LogInformation($" Created new Skills Document, redirectng");
+                logger.LogInformation($" Created new Skills Document, redirecting");
 
                 var sessionStateDataModel = new SessionDataModel
                 {
@@ -144,7 +140,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
 
-            logger.LogWarning($" Creating new Skills Document wasnt successful");
+            logger.LogWarning($" Creating new Skills Document was not successful");
 
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -239,7 +235,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -269,7 +265,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
@@ -318,16 +314,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
             }
 
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            try
             {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
-
-            if (speakToAnAdviser != null)
+            catch (Exception e)
             {
-                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+                viewModel.RightBarViewModel.SpeakToAnAdviser = "<h1> Error Retrieving Data from Redis<h1><p>" + e.ToString() + "</p>";
             }
 
             return viewModel;
