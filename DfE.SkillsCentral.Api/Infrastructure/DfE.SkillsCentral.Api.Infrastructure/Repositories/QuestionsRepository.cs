@@ -6,30 +6,30 @@ using System.Data;
 
 namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
 {
-    public class AssessmentsRepository : IAssessmentsRepositiry
+    public class QuestionsRepository : IQuestionsRepository
     {
 
         private readonly DatabaseContext dbContext;
-        public AssessmentsRepository(DatabaseContext dbContext)
+        public QuestionsRepository(DatabaseContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        public async Task<IReadOnlyList<Assessment>> GetAllAsync()
+        public async Task<IReadOnlyList<Question>> GetAllByAssessmentIdAsync(int assessmentId)
         {
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.QueryAsync<Assessment>(AssessmentsQueries.AllAssessments);
+                var result = await connection.QueryAsync<Question>(QuestionsQueries.AllQuestionsByAssessmentId);
                 return result.ToList();
             }
         }
 
-        public async Task<Assessment> GetByIdAsync(int assessmentId)
+        public async Task<Question> GetByIdAsync(int questionId)
         {
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.QuerySingleOrDefaultAsync<Assessment>(AssessmentsQueries.AssessmentById, new { AssessmentId = assessmentId});
+                var result = await connection.QuerySingleOrDefaultAsync<Question>(QuestionsQueries.QuestionById, new { QuestionId = questionId});
                 return result;
             }
         }

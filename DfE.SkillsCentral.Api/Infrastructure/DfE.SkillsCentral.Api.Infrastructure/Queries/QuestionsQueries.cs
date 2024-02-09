@@ -1,11 +1,11 @@
 ﻿
 namespace DFC.SkillsCentral.Api.Infrastructure.Queries
 {
-    public static class AssessmentsQueries
+    public static class QuestionsQueries
     {
-        public static string AllAssessments => "SELECT * FROM [Assessments] (NOLOCK)";
+        public static string AllQuestionsByAssessmentId => "SELECT * FROM [Questions] (NOLOCK) WHERE [AssessmentId] = @AssessmentId";
 
-        public static string AssessmentById => "SELECT * FROM [Assessments] (NOLOCK) WHERE [AssessmentId] = @AssessmentId";
+        public static string QuestionById => "SELECT * FROM [Questions] (NOLOCK) WHERE [QuestionId] = @QuestionId";
     }
 }
 
