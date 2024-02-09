@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
-    public interface ISkillsDocumentRepositiry :IRepository<SkillsDocument>
+    public interface ISkillsDocumentsRepositiry :IRepository<SkillsDocument>
     {
         Task<string> AddAsync(SkillsDocument skillsDocument);
         Task<string> UpdateAsync(SkillsDocument skillsDocument);
         Task<string> DeleteAsync(int id);
+        Task<SkillsDocument> GetByReferenceCodeAsync(string referenceCode);
     }
 }
