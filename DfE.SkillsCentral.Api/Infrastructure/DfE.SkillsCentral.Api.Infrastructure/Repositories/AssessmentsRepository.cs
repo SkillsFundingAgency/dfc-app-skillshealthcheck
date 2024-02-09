@@ -6,7 +6,7 @@ using System.Data;
 
 namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
 {
-    public class AssessmentsRepository : IAssessmentsRepositiry
+    public class AssessmentsRepository : IAssessmentsRepository
     {
 
         private readonly DatabaseContext dbContext;
