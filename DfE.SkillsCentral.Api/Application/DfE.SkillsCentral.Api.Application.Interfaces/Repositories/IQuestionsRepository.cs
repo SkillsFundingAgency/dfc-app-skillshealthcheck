@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
-    public interface IQuestionRepositiry :IRepository<Question>
+    public interface IQuestionsRepositiry :IRepository<Question>
     {
         Task<IReadOnlyList<Question>> GetAllAsync(int assessmentId);
     }
