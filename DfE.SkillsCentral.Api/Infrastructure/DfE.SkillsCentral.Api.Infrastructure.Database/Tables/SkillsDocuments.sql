@@ -11,5 +11,6 @@
 	[ExpiresTimespan] INT,
 	[ExpiresType] INT, /* ??? */
 	[XMLValueKeys] TEXT, /* ??? */
-	[LastAccessed] DATETIME
+	[LastAccessed] DATETIME, 
+    [ReferenceCode] NVARCHAR(MAX) NULL
 )
