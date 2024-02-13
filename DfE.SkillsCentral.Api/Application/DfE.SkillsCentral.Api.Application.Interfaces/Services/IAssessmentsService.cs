@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
-    internal class IAssessmentsService
+    public class IAssessmentsService
     {
+        public void SaveQuestionAnswer();
+
+        public void GetAssessmentQuestion();
     }
 }
