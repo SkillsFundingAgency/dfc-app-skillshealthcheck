@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
-    public interface ISkillsDocumentsRepositiry :IRepository<SkillsDocument>
+    public interface ISkillsDocumentsRepository :IRepository<SkillsDocument>
     {
         Task<string> AddAsync(SkillsDocument skillsDocument);
         Task<string> UpdateAsync(SkillsDocument skillsDocument);
