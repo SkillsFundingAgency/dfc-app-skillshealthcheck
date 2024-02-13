@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[tblAssessment]
+﻿CREATE TABLE [dbo].[Assessments]
 (
 	[AssessmentId] INT NOT NULL PRIMARY KEY,
 	[AssessmentType] TEXT NOT NULL, /* what is this? */
