@@ -1,23 +1,20 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 
-namespace DFC.SkillsCentral.Api.Infrastructure
+namespace DFC.SkillsCentral.Api.Infrastructure;
+
+public class DatabaseContext : IDatabaseContext
 {
-    public class DatabaseContext
+    private readonly string connectionString;
+
+
+    public DatabaseContext(string connectionString)
     {
-        private readonly IConfiguration _configuration;
+        this.connectionString = connectionString;
+    }
 
-        public DatabaseContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-        public IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("DBConnection"));
+    public IDbConnection CreateConnection()
+    {
+        return new SqlConnection(connectionString);
     }
 }

@@ -9,8 +9,8 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
     public class AssessmentsRepository : IAssessmentsRepository
     {
 
-        private readonly DatabaseContext dbContext;
-        public AssessmentsRepository(DatabaseContext dbContext)
+        private readonly IDatabaseContext dbContext;
+        public AssessmentsRepository(IDatabaseContext dbContext)
         {
             this.dbContext = dbContext;
         }

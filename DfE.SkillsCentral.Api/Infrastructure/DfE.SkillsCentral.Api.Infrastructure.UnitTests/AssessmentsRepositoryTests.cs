@@ -1,42 +1,59 @@
-using Dapper;
-using DFC.SkillsCentral.Api.Application.Interfaces.Repositories;
-using DFC.SkillsCentral.Api.Infrastructure;
-using DFC.SkillsCentral.Api.Infrastructure.Repositories;
-using Microsoft.Data.Sqlite;
-using Moq;
 using System.Data;
+using Dapper;
+using DFC.SkillsCentral.Api.Domain.Models;
+using DFC.SkillsCentral.Api.Infrastructure;
+using DFC.SkillsCentral.Api.Infrastructure.Queries;
+using DFC.SkillsCentral.Api.Infrastructure.Repositories;
+using Moq;
+using Moq.Dapper;
+using Xunit.Sdk;
 
-namespace DfE.SkillsCentral.Api.Infrastructure.UnitTests
+namespace DfE.SkillsCentral.Api.Infrastructure.UnitTests;
+
+public class AssessmentsRepositoryTests
 {
-    public class AssessmentsRepositoryTests
+    private readonly AssessmentsRepository assessmentsRepository;
+    private readonly Mock<IDbConnection> mockConnection = new();
+    private readonly Mock<IDatabaseContext> mockContext = new();
+
+    public AssessmentsRepositoryTests()
     {
-        private readonly IDbConnection _connection;
-        private readonly AssessmentsRepository _assessmentsRepository;
-        private readonly Mock<DatabaseContext> _dbContext = new Mock<DatabaseContext>(); 
-        public AssessmentsRepositoryTests() 
-        {
+        var expectedAssessment = new Assessment { AssessmentId = 2 };
+        var mockDbConnection = new Mock<IDbConnection>();
+        mockContext.Setup(x => x.CreateConnection()).Returns(mockConnection.Object);
+        assessmentsRepository = new AssessmentsRepository(mockContext.Object);
+    }
 
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
+    [Fact]
+    public async Task GetByIdAsync_ShouldReturnAssessment_WhenAssessmentExists()
+    {
+        // Arrange
+        var expectedAssessment = new Assessment { AssessmentId = 2 };
+        mockConnection
+            .SetupDapperAsync(x =>
+                x.QuerySingleOrDefaultAsync<Assessment>(It.IsAny<string>(), It.IsAny<object>(),
+                    null, null, null)).ReturnsAsync(expectedAssessment);
 
+        // Act
+        var assessment = await assessmentsRepository.GetByIdAsync(expectedAssessment.AssessmentId);
 
-            _connection = new SqliteConnection("Data Source=:memory:");
-            _connection.Open();
-            _connection.Execute("CREATE TABLE Assessments (AssessmentId INTEGER PRIMARY KEY, AssessmentType TEXT, AssessmentTitle TEXT, AssessmentSubtitle TEXT, AssessmentIntroduction TEXT, QualificationLevelNumber INTEGER, AccessibilityLevelNumber INTEGER)");
-            _connection.Execute("INSERT INTO Assessments (AssessmentId, AssessmentType, AssessmentTitle, AssessmentSubtitle, AssessmentIntroduction, QualificationLevelNumber, AccessibilityLevelNumbe) VALUES (2, 'Checking', 'test', 'test', 'test', 1, 1)");
+        // Assert
+        Assert.Equal(expectedAssessment.AssessmentId, assessment.AssessmentId);
+    }
 
-            _dbContext.Setup(x => x.CreateConnection()).Returns(_connection);
-            _assessmentsRepository = new AssessmentsRepository(_dbContext.Object);
-        }
+    [Fact]
+    public async Task GetByIdAsync_WithInValidAssessment_ReturnsNull()
+    {
+        // Arrange
+        mockConnection
+            .SetupDapperAsync(x =>
+                x.QuerySingleOrDefaultAsync<Assessment>(It.IsAny<string>(), It.IsAny<object>(),
+                    null, null, null)).ReturnsAsync((Assessment?)null);
 
-        [Fact]
-        public async Task GetByIdAsync_ShouldReturnAssessment_WhenAssessmentExists()
-        {
-            var assessmentId = 2;
-            
-            var assessment = await _assessmentsRepository.GetByIdAsync(assessmentId);
+        // Act
+        var assessment = await assessmentsRepository.GetByIdAsync(123);
 
-            Assert.NotNull(assessment);
-            Assert.Equal("test", assessment.AssessmentTitle);
-        }
+        // Assert
+        Assert.Null(assessment);
     }
 }
