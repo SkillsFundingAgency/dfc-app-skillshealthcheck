@@ -8,7 +8,9 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class SkillsDocument
     {
-        public int SkillsDocumentId { get; set; }
+        public int? SkillsDocumentId { get; set; }
+
+        public int SkillsDocumentTypeSysId { get; set; }
 
         public string SkillsDocumentTitle { get; set; }
 
@@ -31,6 +33,8 @@ namespace DFC.SkillsCentral.Api.Domain.Models
         public string XMLValueKeys { get; set; }
 
         public DateTime LastAccessed { get; set; }
+
+        public string ReferenceCode { get; set; }
 
 
 

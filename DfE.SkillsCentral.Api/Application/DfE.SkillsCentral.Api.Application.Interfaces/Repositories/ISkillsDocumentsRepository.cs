@@ -9,9 +9,8 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
     public interface ISkillsDocumentsRepository :IRepository<SkillsDocument>
     {
-        Task<string> AddAsync(SkillsDocument skillsDocument);
-        Task<string> UpdateAsync(SkillsDocument skillsDocument);
-        Task<string> DeleteAsync(int id);
+        Task AddAsync(SkillsDocument skillsDocument);
+        Task UpdateAsync(SkillsDocument skillsDocument);
         Task<SkillsDocument> GetByReferenceCodeAsync(string referenceCode);
     }
 }

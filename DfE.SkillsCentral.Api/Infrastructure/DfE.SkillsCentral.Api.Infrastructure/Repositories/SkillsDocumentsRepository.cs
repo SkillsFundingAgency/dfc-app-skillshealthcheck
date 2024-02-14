@@ -14,15 +14,18 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task<string> AddAsync(SkillsDocument skillsDocument)
+        public async Task AddAsync(SkillsDocument skillsDocument)
         {
-            throw new NotImplementedException();
+            using (var connection = dbContext.CreateConnection())
+            {
+                connection.Open();
+                await connection.QueryAsync(SkillsDocumentsQueries.InsertSkillsDocumentAsync, new { skillsDocument.SkillsDocumentTypeSysId, skillsDocument.SkillsDocumentTitle, skillsDocument.CreatedAt, 
+                    skillsDocument.CreatedBy, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.XMLValueKeys, skillsDocument.LastAccessed, skillsDocument.ReferenceCode});
+                
+            }
         }
 
-        public Task<string> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<SkillsDocument> GetByIdAsync(int skillsDocumentId)
         {
@@ -44,13 +47,18 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             }
         }
 
-        public Task<string> UpdateAsync(SkillsDocument skillsDocument)
+        public async Task UpdateAsync(SkillsDocument skillsDocument)
         {
-            throw new NotImplementedException();
+            using (var connection = dbContext.CreateConnection())
+            {
+                connection.Open();
+                _=await connection.QueryAsync(SkillsDocumentsQueries.UpdateSkillsDocument, new { skillsDocument.SkillsDocumentTitle, skillsDocument.UpdatedAt, skillsDocument.UpdatedBy, 
+                    skillsDocument.XMLValueKeys, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.LastAccessed, skillsDocument.SkillsDocumentId });
+                
+            }
         }
 
-        // AddSkillsDocument
-        // UpdateSkillsDocumment
+        
 
 
     }
