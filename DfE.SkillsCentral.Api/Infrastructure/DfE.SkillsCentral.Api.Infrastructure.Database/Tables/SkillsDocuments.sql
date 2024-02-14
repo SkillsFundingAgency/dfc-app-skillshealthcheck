@@ -12,5 +12,6 @@
 	[ExpiresType] INT, /* ??? */
 	[XMLValueKeys] TEXT, /* ??? */
 	[LastAccessed] DATETIME, 
-    [ReferenceCode] NVARCHAR(MAX) NULL
+    [ReferenceCode] NVARCHAR(MAX) NULL, 
+    [SkillsDocumentTypeSysId] INT NULL
 )
