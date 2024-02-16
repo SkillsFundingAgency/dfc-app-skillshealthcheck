@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{34419df5-6a8e-4a1c-9625-ceea80fd81bc}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -60,8 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Answers.sql" />
-    <Build Include="Tables\Assessment.sql" />
+    <Build Include="Tables\Assessments.sql" />
     <Build Include="Tables\Questions.sql" />
     <Build Include="Tables\SkillsDocuments.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DfE.SkillsCentral.Api.Infrastructure.Database.refactorlog" />
   </ItemGroup>
 </Project>

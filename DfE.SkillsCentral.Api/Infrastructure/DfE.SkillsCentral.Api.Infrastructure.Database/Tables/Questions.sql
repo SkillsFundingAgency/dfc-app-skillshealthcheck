@@ -1,12 +1,12 @@
-﻿CREATE TABLE [dbo].[tblQuestions]
+﻿CREATE TABLE [dbo].[Questions]
 (
-	[QuestionId] INT NOT NULL PRIMARY KEY,
+	[Id] INT NOT NULL PRIMARY KEY,
 	[AssessmentId] INT NOT NULL,
-	[QuestionTitle] TEXT,
-	[QuestionNumber] INT,
-	[QuestionText] TEXT,
-	[QuestionDataHTML] TEXT,
-	[ImageTitle] TEXT,
-	[ImageCaption] TEXT,
-	[ImageURL] TEXT
+	[Number] INT NOT NULL,
+	[Text] NVARCHAR(MAX),
+	[DataHTML] NVARCHAR(MAX),
+	[ImageTitle] NVARCHAR(MAX),
+	[ImageCaption] NVARCHAR(MAX),
+	[ImageURL] NVARCHAR(MAX), 
+    CONSTRAINT [FK_Questions_Assessments] FOREIGN KEY ([AssessmentId]) REFERENCES [Assessments]([Id])
 )

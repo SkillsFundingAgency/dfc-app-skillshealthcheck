@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="80240327-6673-4182-beed-b30897dbd398" ChangeDateTime="02/16/2024 15:11:26">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[AssessmentType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Type" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e0d09612-4e63-4507-9c2f-2f59acadf60d" ChangeDateTime="02/16/2024 15:11:32">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[AssessmentTitle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c00417b1-35fa-44af-9cfa-b8ae64f07d66" ChangeDateTime="02/16/2024 15:11:34">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[AssessmentSubtitle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Subtitle" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6c3269a8-d18d-400c-b79c-4bc790fd805c" ChangeDateTime="02/16/2024 15:11:47">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[AssessmentIntroduction]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IntroductionText" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5b167f8a-e91f-424b-80ff-c6386d9e45d0" ChangeDateTime="02/16/2024 15:12:48">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[QualificationLevelNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LevelNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9c77effa-546e-4990-b50e-68ceaff21e4b" ChangeDateTime="02/16/2024 15:13:19">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[LevelNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Level" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="51f34b9d-967a-4f38-9eaf-708a82cfd58b" ChangeDateTime="02/16/2024 15:13:29">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[AccessibilityLevelNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Accessibility" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b399da02-70f8-4125-9e76-8ec75fad0b42" ChangeDateTime="02/16/2024 15:14:11">
+    <Property Name="ElementName" Value="[dbo].[Assessments].[IntroductionText]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assessments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Introduction" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6994aed2-9858-4867-8a95-4ff85337fb53" ChangeDateTime="02/16/2024 15:27:40">
+    <Property Name="ElementName" Value="[dbo].[Questions].[QuestionTitle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Questions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="db380c06-96aa-4439-881c-9eae9bf3f00f" ChangeDateTime="02/16/2024 15:35:24">
+    <Property Name="ElementName" Value="[dbo].[Questions].[QuestionNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Questions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Number" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1d7bcef1-beef-49fa-9c93-2393ea738b21" ChangeDateTime="02/16/2024 15:35:29">
+    <Property Name="ElementName" Value="[dbo].[Questions].[QuestionText]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Questions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Text" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="843552c4-7c1b-4a22-ad65-0f01c85f6eda" ChangeDateTime="02/16/2024 15:35:36">
+    <Property Name="ElementName" Value="[dbo].[Questions].[QuestionDataHTML]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Questions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DataHTML" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2b3e5b8f-db40-4e32-aed8-1cfc71c96c6d" ChangeDateTime="02/16/2024 15:54:52">
+    <Property Name="ElementName" Value="[dbo].[tblSkillsDocument].[XMLValueKeys]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[tblSkillsDocument]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DataValueKeys" />
+  </Operation>
+</Operations>
