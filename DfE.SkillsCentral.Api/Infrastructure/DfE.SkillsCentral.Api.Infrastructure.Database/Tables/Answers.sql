@@ -7,6 +7,7 @@
 	[ImageTitle] NVARCHAR(MAX),
 	[ImageCaption] NVARCHAR(MAX),
 	[ImageURL] NVARCHAR(MAX),  
-	CONSTRAINT [FK_Answers_Questions] FOREIGN KEY ([QuestionId]) REFERENCES [Questions]([Id])
+	[IsCorrect] INT NULL, 
+    CONSTRAINT [FK_Answers_Questions] FOREIGN KEY ([QuestionId]) REFERENCES [Questions]([Id])
 
 )

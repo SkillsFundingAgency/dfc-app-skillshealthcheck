@@ -57,12 +57,14 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Answers.sql" />
     <Build Include="Tables\Assessments.sql" />
     <Build Include="Tables\Questions.sql" />
     <Build Include="Tables\SkillsDocuments.sql" />
+    <Build Include="Scripts\Script.PostDeploy.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="DfE.SkillsCentral.Api.Infrastructure.Database.refactorlog" />
