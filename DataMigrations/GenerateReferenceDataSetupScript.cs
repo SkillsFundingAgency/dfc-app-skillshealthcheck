@@ -57,23 +57,21 @@ internal class GenerateReferenceDataSetupScript
                             string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
-                                //if assessment type is 4, 8, or 17, read and write to appropriate columns to normalise data
-                                if (escapedStrings[1] == "4" || escapedStrings[1] == "8"|| escapedStrings[1] == "17")
-                                {
-                                    questionWriter.WriteLine(questionWriterPrefix +
-                                        $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, '{escapedStrings[3]}', '{escapedStrings[12]}'), '{escapedStrings[6]}'), '{escapedStrings[7]}'), '{escapedStrings[8]}')");
+                                int questionTextIndex = 5;
+                                int answerTextIndex = 12;
+                                string[] strangeAssessmentTypes = ["4", "8", "17"];
 
-                                    answerWriter.WriteLine(answerWriterPrefix +
-                                        $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[15]}', '', '', '{escapedStrings[13]}')");
-                                }
-                                else //for other 7 assessment types, read and write to the expected columns
+                                //if assessment type is in the list of strange assessment types, move data into correct/expeted columns
+                                if (strangeAssessmentTypes.Contains(escapedStrings[1]))
                                 {
-                                    questionWriter.WriteLine(questionWriterPrefix +
-                                        $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, '{escapedStrings[3]}', '{escapedStrings[5]}'), '{escapedStrings[6]}'), '{escapedStrings[7]}'), '{escapedStrings[8]}')");
-
-                                    answerWriter.WriteLine(answerWriterPrefix +
-                                        $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[12]}', '', '', '{escapedStrings[13]}')");
+                                    questionTextIndex = 12;
+                                    answerTextIndex = 15;
                                 }
+                                questionWriter.WriteLine(questionWriterPrefix +
+                                    $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, '{escapedStrings[3]}', '{escapedStrings[questionTextIndex]}'), '{escapedStrings[6]}'), '{escapedStrings[7]}'), '{escapedStrings[8]}')");
+
+                                answerWriter.WriteLine(answerWriterPrefix +
+                                    $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[answerTextIndex]}', '', '', '{escapedStrings[13]}')");
                             }
                         }
                         break;
