@@ -47,27 +47,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Intrastructure", "Intrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D110D53E-B202-426B-B8D3-D6D4179D1B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Application.Services", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Services\DfE.SkillsCentral.Api.Application.Services.csproj", "{DD5428FE-95AD-4418-A141-861388AD46B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Application.Services", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Services\DfE.SkillsCentral.Api.Application.Services.csproj", "{DD5428FE-95AD-4418-A141-861388AD46B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Application.Interfaces", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj", "{ABA67E69-A096-4ACF-918E-22C5677E2BAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Application.Interfaces", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj", "{ABA67E69-A096-4ACF-918E-22C5677E2BAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Application.Services.UnitTests", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Services.UnitTests\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj", "{69DFDD5C-3598-43F2-8314-30F1F3B3831E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Application.Services.UnitTests", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Services.UnitTests\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj", "{69DFDD5C-3598-43F2-8314-30F1F3B3831E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Application.Services.IntegrationTests", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.Services.IntegrationTests\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj", "{46CF4DB5-0FEC-4FFF-B04B-04C98F5CC5ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Domain", "DfE.SkillsCentral.Api\Domain\DfE.SkillsCentral.Api.Domain\DfE.SkillsCentral.Api.Domain.csproj", "{08426812-D638-40DE-92B7-847CE6333845}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Domain", "DfE.SkillsCentral.Api\Domain\DfE.SkillsCentral.Api.Domain\DfE.SkillsCentral.Api.Domain.csproj", "{08426812-D638-40DE-92B7-847CE6333845}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Domain.UnitTests", "DfE.SkillsCentral.Api\Domain\DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj", "{148A14DF-1234-4A4A-BFA3-7C50138B2020}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Domain.UnitTests", "DfE.SkillsCentral.Api\Domain\DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj", "{148A14DF-1234-4A4A-BFA3-7C50138B2020}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Presentation.WebApi", "DfE.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi\DfE.SkillsCentral.Api.Presentation.WebApi.csproj", "{A98F8DEA-92CE-4A95-8374-CEFA4416CBB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Presentation.WebApi", "DfE.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi\DfE.SkillsCentral.Api.Presentation.WebApi.csproj", "{A98F8DEA-92CE-4A95-8374-CEFA4416CBB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests", "DfE.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests.csproj", "{C442A34D-997F-4862-90A2-C73E8ACC4E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Infrastructure", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure\DfE.SkillsCentral.Api.Infrastructure.csproj", "{3D7F4E9D-27F0-4D74-BB37-D95713CB6FCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Infrastructure", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure\DfE.SkillsCentral.Api.Infrastructure.csproj", "{3D7F4E9D-27F0-4D74-BB37-D95713CB6FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfE.SkillsCentral.Api.Infrastructure.UnitTests", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.UnitTests\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj", "{FBC1FDD9-6AE0-40A7-8429-EC29FB816A51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Infrastructure.UnitTests", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.UnitTests\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj", "{FBC1FDD9-6AE0-40A7-8429-EC29FB816A51}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DfE.SkillsCentral.Api.Infrastructure.Database", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.sqlproj", "{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{1BAEF60D-AAC6-4211-8F94-CD3BC1AACAAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMigrations", "DataMigrations\DataMigrations.csproj", "{94629EA0-24FB-4672-82E5-4AD951F7437F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +149,10 @@ Global
 		{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{94629EA0-24FB-4672-82E5-4AD951F7437F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94629EA0-24FB-4672-82E5-4AD951F7437F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94629EA0-24FB-4672-82E5-4AD951F7437F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94629EA0-24FB-4672-82E5-4AD951F7437F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +182,7 @@ Global
 		{3D7F4E9D-27F0-4D74-BB37-D95713CB6FCF} = {76D8C62E-E9F3-464F-B922-E18F28445603}
 		{FBC1FDD9-6AE0-40A7-8429-EC29FB816A51} = {76D8C62E-E9F3-464F-B922-E18F28445603}
 		{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC} = {76D8C62E-E9F3-464F-B922-E18F28445603}
+		{94629EA0-24FB-4672-82E5-4AD951F7437F} = {1BAEF60D-AAC6-4211-8F94-CD3BC1AACAAD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {042BE92B-75BC-4D9D-A8A0-1547EC76E1C8}
