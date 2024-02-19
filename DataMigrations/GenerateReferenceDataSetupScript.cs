@@ -67,11 +67,12 @@ internal class GenerateReferenceDataSetupScript
                                     questionTextIndex = 12;
                                     answerTextIndex = 15;
                                 }
+
                                 questionWriter.WriteLine(questionWriterPrefix +
                                     $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, '{escapedStrings[3]}', '{escapedStrings[questionTextIndex]}'), '{escapedStrings[6]}'), '{escapedStrings[7]}'), '{escapedStrings[8]}')");
 
                                 answerWriter.WriteLine(answerWriterPrefix +
-                                    $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[answerTextIndex]}', '', '', '{escapedStrings[13]}')");
+                                    $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[answerTextIndex]}', NULL, NULL, '{escapedStrings[13]}')");
                             }
                         }
                         break;
