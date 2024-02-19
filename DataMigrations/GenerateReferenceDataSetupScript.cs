@@ -17,7 +17,7 @@ internal class GenerateReferenceDataSetupScript
         CreateSQLScript(questionsanswers);
     }
 
-    //replace null values consistently
+    //replace null values on strings consistently: not to be used on integer values
     public static string N(string input)
     {
         if (string.IsNullOrEmpty(input) || input.ToUpper().Contains("NULL"))
@@ -31,7 +31,7 @@ internal class GenerateReferenceDataSetupScript
     {
         try
         {
-            //read .csv file from \dfc-app-skillshealthcheck\DataMigrations\bin\Debug\net8.0\ and write an insert script into file
+            //read .csv file from {repo location}\dfc-app-skillshealthcheck\DataMigrations\bin\Debug\net8.0\ and write an insert script into file
             string path = $"{System.Environment.CurrentDirectory}\\{input}.csv";
             using (TextFieldParser parser = new TextFieldParser(path))
             {
@@ -55,7 +55,6 @@ internal class GenerateReferenceDataSetupScript
                         break;
 
                     case questionsanswers:
-
                         const string questionWriterPrefix = "(AssessmentId, Number, Text, DataHTML, ImageTitle, ImageCaption, ImageURL) ";
                         const string answerWriterPrefix = "(QuestionId, Value, IsCorrect, Text, ImageTitle, ImageCaption, ImageURL) ";
 
@@ -69,9 +68,9 @@ internal class GenerateReferenceDataSetupScript
                             {
                                 int questionTextIndex = 5;
                                 int answerTextIndex = 12;
-                                string[] strangeAssessmentTypes = ["4", "8", "17"];
 
                                 //if assessment type is in the list of strange assessment types, move data into correct/expeted columns
+                                string[] strangeAssessmentTypes = ["4", "8", "17"]
                                 if (strangeAssessmentTypes.Contains(escapedStrings[1]))
                                 {
                                     questionTextIndex = 12;
