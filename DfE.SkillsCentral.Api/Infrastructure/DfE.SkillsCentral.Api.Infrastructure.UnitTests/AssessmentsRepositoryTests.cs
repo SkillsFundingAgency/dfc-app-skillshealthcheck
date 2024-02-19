@@ -16,7 +16,7 @@ namespace DfE.SkillsCentral.Api.Infrastructure.UnitTests
         public AssessmentsRepositoryTests() 
         {
 
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
+            //SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_e_sqlite3());
 
 
             _connection = new SqliteConnection("Data Source=:memory:");
