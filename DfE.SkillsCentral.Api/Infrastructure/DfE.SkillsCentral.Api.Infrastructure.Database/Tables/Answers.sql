@@ -1,9 +1,12 @@
-﻿CREATE TABLE [dbo].[tblAnswers]
+﻿CREATE TABLE [dbo].[Answers]
 (
-	[AnswerId] INT NOT NULL PRIMARY KEY,
-	[QuestionID] INT NULL,
-	[AnswerValue] TEXT, /* is this how we know the correct answer? if not, what is? */
-	[AnswerText] TEXT,
-	[ImageSource] TEXT, 
-    [AssessmentId] INT NULL
+	[Id] INT NOT NULL PRIMARY KEY,
+	[QuestionID] INT NOT NULL,
+	[Value] NVARCHAR(MAX),
+	[Text] NVARCHAR(MAX),
+	[ImageTitle] NVARCHAR(MAX),
+	[ImageCaption] NVARCHAR(MAX),
+	[ImageURL] NVARCHAR(MAX),  
+	CONSTRAINT [FK_Answers_Questions] FOREIGN KEY ([QuestionId]) REFERENCES [Questions]([Id])
+
 )

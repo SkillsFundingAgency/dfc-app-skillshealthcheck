@@ -12,8 +12,8 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Queries
             "VALUES (@SkillsDocumentTypeSysId, @SkillsDocumentTitle, @CreatedAtDate, @CreatedBy, @ExpiresTimespan, @ExpiresType, @XMLValueKeys, @LastAccess, @ReferenceCode)";
 
         public static string UpdateSkillsDocument =>
-            "UPDATE [SkillsDocuments] SET SkillsDocumentTitle = @SkillsDocumentTitle, UpdatedAtDate = @UpdatedAtDate, UpdatedBy = @UpdatedBy, XMLValueKeys = @XMLValueKeys, " +
-            "ExpiresTimespan = @ExpiresTimespan, ExpiresType = @ExpiresType, LastAccess	= @LastAccess WHERE [SkillsDocumentId] = @SkillsDocumentId";
+            "UPDATE [SkillsDocuments] SET SkillsDocumentTitle = @SkillsDocumentTitle, UpdatedAt = @UpdatedAt, UpdatedBy = @UpdatedBy, XMLValueKeys = @XMLValueKeys, " +
+            "ExpiresTimespan = @ExpiresTimespan, ExpiresType = @ExpiresType, LastAccessed	= @LastAccessed WHERE [SkillsDocumentId] = @SkillsDocumentId";
 
     }
 }

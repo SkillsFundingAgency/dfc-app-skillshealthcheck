@@ -1,16 +1,10 @@
-﻿CREATE TABLE [dbo].[tblSkillsDocument]
+﻿CREATE TABLE [dbo].[SkillsDocuments]
 (
-	[SkillsDocumentId] INT NOT NULL PRIMARY KEY,
-	[SkillsDocumentTitle] TEXT,
+	[Id] INT NOT NULL PRIMARY KEY,
 	[CreatedAt] DATETIME,
-	[CreatedBy] TEXT,
+	[CreatedBy] NVARCHAR(MAX),
 	[UpdatedAt] DATETIME,
-	[UpdatedBy] TEXT,
-	[DeletedAt] DATETIME,
-	[DeletedBy] TEXT,
-	[ExpiresTimespan] INT,
-	[ExpiresType] INT, /* ??? */
-	[XMLValueKeys] TEXT, /* ??? */
-	[LastAccessed] DATETIME, 
-    [ReferenceCode] NVARCHAR(MAX) NULL
+	[UpdatedBy] NVARCHAR(MAX),
+	[DataValueKeys] XML, 
+    [ReferenceCode] NVARCHAR(MAX) NOT NULL, 
 )
