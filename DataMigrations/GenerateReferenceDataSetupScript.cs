@@ -11,11 +11,21 @@ internal class GenerateReferenceDataSetupScript
     public const string assessments = "assessments";
     public const string questionsanswers = "questionsanswers";
 
-    private static void Main(string[] args)
-    {
+    public static void Main(string[] args)
+    {   
         CreateSQLScript(assessments);
         CreateSQLScript(questionsanswers);
     }
+
+    //replace null values consistently
+    public static string N(string input)
+    {
+        if (string.IsNullOrEmpty(input) || input.ToUpper().Contains("NULL"))
+        { return "NULL"; }
+        else
+        { return $"'{input}'"; }
+    }
+
     //generates sql snippet which is inserted into the post deployment script
     public static void CreateSQLScript(string input)
     {
@@ -39,7 +49,7 @@ internal class GenerateReferenceDataSetupScript
                             string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
-                                writer.WriteLine($"(Type, Title, Subtitle, Introduction) VALUES ('{escapedStrings[1]}', '{escapedStrings[4]}', '{escapedStrings[5]}', '{escapedStrings[6]}')");
+                                writer.WriteLine($"(Type, Title, Subtitle, Introduction) VALUES ({N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])})");
                             }
                         }
                         break;
@@ -69,10 +79,10 @@ internal class GenerateReferenceDataSetupScript
                                 }
 
                                 questionWriter.WriteLine(questionWriterPrefix +
-                                    $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, '{escapedStrings[3]}', '{escapedStrings[questionTextIndex]}'), '{escapedStrings[6]}'), '{escapedStrings[7]}'), '{escapedStrings[8]}')");
+                                    $"VALUES ({escapedStrings[1]}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])})");
 
                                 answerWriter.WriteLine(answerWriterPrefix +
-                                    $"VALUES ('{escapedStrings[10]}', '{escapedStrings[11]}', {999}, '{escapedStrings[answerTextIndex]}', NULL, NULL, '{escapedStrings[13]}')");
+                                    $"VALUES ({escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())})");
                             }
                         }
                         break;
