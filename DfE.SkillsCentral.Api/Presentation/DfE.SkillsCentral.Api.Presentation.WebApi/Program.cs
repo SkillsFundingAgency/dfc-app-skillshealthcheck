@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ILogger, ILogger>();
+// builder.Services.AddScoped<ILogger, Logger>();
 builder.Services.AddScoped<IAssessmentsRepository, AssessmentsRepository>();
 builder.Services.AddSingleton<DatabaseContext>();
 
