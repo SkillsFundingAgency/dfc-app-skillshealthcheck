@@ -69,8 +69,8 @@ internal class GenerateReferenceDataSetupScript
                                 int questionTextIndex = 5;
                                 int answerTextIndex = 12;
 
-                                //if assessment type is in the list of strange assessment types, move data into correct/expeted columns
-                                string[] strangeAssessmentTypes = ["4", "8", "17"]
+                                    //if assessment type is in the list of strange assessment types, move data into correct/expeted columns
+                                    string[] strangeAssessmentTypes = ["4", "8", "17"];
                                 if (strangeAssessmentTypes.Contains(escapedStrings[1]))
                                 {
                                     questionTextIndex = 12;
