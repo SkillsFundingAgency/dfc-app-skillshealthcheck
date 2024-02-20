@@ -33,14 +33,14 @@ namespace DfE.SkillsCentral.Api.Domain.Models
 
     public class DataValues
     {
+        public SkillAreas SkillAreas { get; set; }
+        public Assessment Interest { get; set; }
+        public Assessment Personal { get; set; }
+        public Assessment Motivation { get; set; }
         public AssessmentWithEaseTiming Numeric { get; set; }
         public AssessmentWithEaseTiming Verbal { get; set; }
-        public Assessment Motivation { get; set; }
-        public Assessment Personal { get; set; }
-        public SkillAreas SkillAreas { get; set; }
-        public AssessmentWithEaseTimingAndEnjoyment Mechanical { get; set; }
         public AssessmentWithEaseTimingAndEnjoyment Checking { get; set; }
-        public Assessment Interest { get; set; }
+        public AssessmentWithEaseTimingAndEnjoyment Mechanical { get; set; }
         public AssessmentWithEaseTimingAndEnjoyment Spatial { get; set; }
         public AssessmentWithEaseTimingAndEnjoyment Abstract { get; set; }
     }

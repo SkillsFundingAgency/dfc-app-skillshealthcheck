@@ -20,7 +20,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             {
                 connection.Open();
                 await connection.QueryAsync(SkillsDocumentsQueries.InsertSkillsDocumentAsync, new { skillsDocument.SkillsDocumentTypeSysId, skillsDocument.SkillsDocumentTitle, skillsDocument.CreatedAt, 
-                    skillsDocument.CreatedBy, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.XMLValueKeys, skillsDocument.LastAccessed, skillsDocument.ReferenceCode});
+                    skillsDocument.CreatedBy, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.DataValues, skillsDocument.LastAccessed, skillsDocument.ReferenceCode});
                 
             }
         }
@@ -53,7 +53,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             {
                 connection.Open();
                 _=await connection.QueryAsync(SkillsDocumentsQueries.UpdateSkillsDocument, new { skillsDocument.SkillsDocumentTitle, skillsDocument.UpdatedAt, skillsDocument.UpdatedBy, 
-                    skillsDocument.XMLValueKeys, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.LastAccessed, skillsDocument.SkillsDocumentId });
+                    skillsDocument.DataValues, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.LastAccessed, skillsDocument.SkillsDocumentId });
                 
             }
         }
