@@ -4,12 +4,15 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class GenerateReferenceDataSetupScript
 {
     //input filename(s) must match the strings below
     public const string assessments = "assessments";
     public const string questionsanswers = "questionsanswers";
+
+    public static int globalNewAnswerId = 0;
 
     public static void Main(string[] args)
     {   
@@ -27,13 +30,19 @@ internal class GenerateReferenceDataSetupScript
         { return $"'{input}'"; }
     }
 
-    public static string M(string input)
+    //maps historic assessment IDs to the new values 1 to 10
+    public static string MapAssessmentId(string input)
     {
+        string[] historicAssessmentIds = ["20", "4", "17", "8", "11", "22", "3", "7", "21", "1"];
+        int newAssessmentId = 1 + Array.FindIndex(historicAssessmentIds, x => x.Contains(input));
+        return newAssessmentId.ToString();
+    }
 
-        if (input == "20")
-        { return "NULL"; }
-        else
-        { return $"'{input}'"; }
+    //generates new sequential answer ID
+    public static string GenerateNewAnswerId()
+    {
+        globalNewAnswerId++;
+        return globalNewAnswerId.ToString();
     }
 
     //generates sql snippets which are to be inserted into the post deployment script
@@ -60,7 +69,7 @@ internal class GenerateReferenceDataSetupScript
                                 string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
-                                    writer.WriteLine($"({M(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
+                                    writer.WriteLine($"({MapAssessmentId(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
                             }
                         }
                         break;
@@ -89,9 +98,9 @@ internal class GenerateReferenceDataSetupScript
                                     answerTextIndex = 15;       //i.e. read from answerheadings table
                                 }
                                     
-                                questionWriter.WriteLine($"(, {escapedStrings[1]}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
 
-                                answerWriter.WriteLine($"(, {escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
                                 //ImageTitle and ImageCaption are always null as the fields do not (historically) exist on the answers table, they are added for future accessibility
                                 //Placeholder 999 to be replaced once values are determined
