@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DfE.SkillsCentral.Api.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 
         public int ExpiresType { get; set; }
 
-        public string XMLValueKeys { get; set; }
+        public DataValues DataValues { get; set; }
 
         public DateTime LastAccessed { get; set; }
 
