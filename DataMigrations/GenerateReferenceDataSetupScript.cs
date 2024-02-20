@@ -27,6 +27,15 @@ internal class GenerateReferenceDataSetupScript
         { return $"'{input}'"; }
     }
 
+    public static string M(string input)
+    {
+
+        if (input == "20")
+        { return "NULL"; }
+        else
+        { return $"'{input}'"; }
+    }
+
     //generates sql snippets which are to be inserted into the post deployment script
     public static void CreateSQLScript(string input)
     {
@@ -47,10 +56,11 @@ internal class GenerateReferenceDataSetupScript
                         using (StreamWriter writer = new StreamWriter($"INSERT_{input}.sql"))
                         while (!parser.EndOfData)
                         {
-                            string[] fields = parser.ReadFields();
+                                int id = 1;
+                                string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
-                                writer.WriteLine($"({N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
+                                    writer.WriteLine($"({M(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
                             }
                         }
                         break;
@@ -78,10 +88,10 @@ internal class GenerateReferenceDataSetupScript
                                     questionTextIndex = 12;     //i.e. read from answers table
                                     answerTextIndex = 15;       //i.e. read from answerheadings table
                                 }
+                                    
+                                questionWriter.WriteLine($"(, {escapedStrings[1]}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
 
-                                questionWriter.WriteLine($"({escapedStrings[1]}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
-
-                                answerWriter.WriteLine($"({escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                answerWriter.WriteLine($"(, {escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
                                 //ImageTitle and ImageCaption are always null as the fields do not (historically) exist on the answers table, they are added for future accessibility
                                 //Placeholder 999 to be replaced once values are determined
