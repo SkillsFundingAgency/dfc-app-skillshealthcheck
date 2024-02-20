@@ -46,6 +46,51 @@ internal class GenerateReferenceDataSetupScript
         return globalNewAnswerId.ToString();
     }
 
+    //set IsCorrect values is the answer reference data using their historic ID
+    public static int SetIsCorrectValues(string input)
+    {
+        string[] correctHistoricAnswerIds = ["1443", "1447", "1455", "1458", "1465", "1466", "1471", "1478", "1484", "1487", //numeric
+            "1301", "1304", "1308", "1310", "1315", "1316", "1320", "1324", "1326", "1329", //verbal (part 1 of 2)
+            "1333", "1335", "1339", "1342", "1343", "1346", "1349", "1352", "1357", "1360", //verbal (part 2 of 2)
+
+            //checking
+            //bitwise operators:
+            /*
+             * 1  A
+             * 2  B
+             * 4  C
+             * 8  D
+             * 16 E
+             * === === ===
+             * 1  = A
+             * 2  = B
+             * 3  = A, B
+             * 4  = C
+             * 5  = A, C
+             * 6  = B, C
+             * 7  = A, B, C
+             * 8  = D
+             * 9  = A, D
+             * 10 = B, D
+             * 11 = A, B, D
+             * 12 = C, D
+             * 13 = A, C, D
+             * 14 = B, C, D
+             * 15 = A, B, C, D
+             * 16 = E
+            */
+
+            //suggest we have a function for the above that can be reused here but also when calculating results
+
+
+            //mechanical
+            //spatial
+            "1362", "1368", "1375", "1378", "1383", "1389", "1391", "1399", "1402", "1406", "1412", "1420", "1421", "1426", "1435", "1439"]; // abstract
+        if (correctHistoricAnswerIds.Contains(input))
+        { return 1; } //true
+        return 0; //false
+    }
+
     //generates sql snippets which are to be inserted into the post deployment script
     public static void CreateSQLScript(string input)
     {
@@ -66,8 +111,8 @@ internal class GenerateReferenceDataSetupScript
                         using (StreamWriter writer = new StreamWriter($"INSERT_{input}.sql"))
                         while (!parser.EndOfData)
                         {
-                                int id = 1;
-                                string[] fields = parser.ReadFields();
+                            int id = 1;
+                            string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
                                     writer.WriteLine($"({MapAssessmentId(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
@@ -76,7 +121,7 @@ internal class GenerateReferenceDataSetupScript
                         break;
 
                     case questionsanswers:
-                       
+
                         //create two streamwriters to support writing data found in the single questions/answers (and answer headings) file to two separate files 
                         using (StreamWriter questionWriter = new StreamWriter($"INSERT_questions.sql"))
                         using (StreamWriter answerWriter = new StreamWriter($"INSERT_answers.sql"))
@@ -103,10 +148,9 @@ internal class GenerateReferenceDataSetupScript
                                 { questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),"); }
                                 globalHistoricQuestionIds.Add(escapedStrings[10]);
 
-                                answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
                                 //ImageTitle and ImageCaption are always null as the fields do not (historically) exist on the answers table, they are added for future accessibility
-                                //Placeholder 999 to be replaced once values are determined
                             }
                         }
                         break;
