@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[SkillsDocuments]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[CreatedAt] DATETIME,
 	[CreatedBy] NVARCHAR(MAX),
 	[UpdatedAt] DATETIME,
