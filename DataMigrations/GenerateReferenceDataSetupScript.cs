@@ -17,7 +17,8 @@ internal class GenerateReferenceDataSetupScript
         CreateSQLScript(questionsanswers);
     }
 
-    //replace null values on strings consistently: not to be used on integer values
+    //replaces null, empty, or similar strings consistently: not to be used on integer values
+    //method name N short for NullCheck, improves readability when called on strings
     public static string N(string input)
     {
         if (string.IsNullOrEmpty(input) || input.ToUpper().Contains("NULL"))
@@ -26,7 +27,7 @@ internal class GenerateReferenceDataSetupScript
         { return $"'{input}'"; }
     }
 
-    //generates sql snippet which is inserted into the post deployment script
+    //generates sql snippets which are to be inserted into the post deployment script
     public static void CreateSQLScript(string input)
     {
         try
@@ -58,6 +59,7 @@ internal class GenerateReferenceDataSetupScript
                         const string questionWriterPrefix = "(AssessmentId, Number, Text, DataHTML, ImageTitle, ImageCaption, ImageURL) ";
                         const string answerWriterPrefix = "(QuestionId, Value, IsCorrect, Text, ImageTitle, ImageCaption, ImageURL) ";
 
+                        //create two streamwriters to support writing data found in the single questions/answers (and answer headings) file to two separate files 
                         using (StreamWriter questionWriter = new StreamWriter($"INSERT_questions.sql"))
                         using (StreamWriter answerWriter = new StreamWriter($"INSERT_answers.sql"))
 
@@ -66,15 +68,17 @@ internal class GenerateReferenceDataSetupScript
                             string[] fields = parser.ReadFields();
                             string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                             {
+                                //expected locations of question and answer text values
                                 int questionTextIndex = 5;
                                 int answerTextIndex = 12;
 
-                                    //if assessment type is in the list of strange assessment types, move data into correct/expeted columns
-                                    string[] strangeAssessmentTypes = ["4", "8", "17"];
+                                //if assessment type is in the list of 'strange' assessment types, move data into correct/expeted columns
+                                //these assessment types (historically) have question and answer data in unexpected columns/tables
+                                string[] strangeAssessmentTypes = ["4", "8", "17"];
                                 if (strangeAssessmentTypes.Contains(escapedStrings[1]))
                                 {
-                                    questionTextIndex = 12;
-                                    answerTextIndex = 15;
+                                    questionTextIndex = 12;     //i.e. read from answers table
+                                    answerTextIndex = 15;       //i.e. read from answerheadings table
                                 }
 
                                 questionWriter.WriteLine(questionWriterPrefix +
@@ -82,12 +86,15 @@ internal class GenerateReferenceDataSetupScript
 
                                 answerWriter.WriteLine(answerWriterPrefix +
                                     $"VALUES ({escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())})");
+
+                                //ImageTitle and ImageCaption are always null as the fields do not (historically) exist on the answers table, they are added for future accessibility
+                                //Placeholder 999 to be replaced once values are determined
                             }
                         }
                         break;
 
                     default:
-                        Console.WriteLine("Default case, input filename(s) do not match expected range");
+                        Console.WriteLine("Default case reached, input filename(s) do not match expected range or values - reference data generation cannot proceed.");
                     break;
                 }
             }
