@@ -34,7 +34,7 @@ internal class GenerateReferenceDataSetupScript
     public static string MapAssessmentId(string input)
     {
         string[] historicAssessmentIds = ["20", "4", "17", "8", "11", "22", "3", "7", "21", "1"];
-        int newAssessmentId = 1 + Array.FindIndex(historicAssessmentIds, x => x.Contains(input));
+        int newAssessmentId = 1 + Array.IndexOf(historicAssessmentIds, input);
         return newAssessmentId.ToString();
     }
 
