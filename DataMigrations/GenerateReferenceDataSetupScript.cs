@@ -13,6 +13,7 @@ internal class GenerateReferenceDataSetupScript
     public const string questionsanswers = "questionsanswers";
 
     public static int globalNewAnswerId = 0;
+    public static List<string> globalHistoricQuestionIds = new List<string>();
 
     public static void Main(string[] args)
     {   
@@ -97,8 +98,10 @@ internal class GenerateReferenceDataSetupScript
                                     questionTextIndex = 12;     //i.e. read from answers table
                                     answerTextIndex = 15;       //i.e. read from answerheadings table
                                 }
-                                    
-                                questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+
+                                if (!globalHistoricQuestionIds.Contains(escapedStrings[10])) 
+                                { questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),"); }
+                                globalHistoricQuestionIds.Add(escapedStrings[10]);
 
                                 answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {999}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
