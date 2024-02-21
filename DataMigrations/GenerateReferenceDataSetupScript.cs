@@ -87,7 +87,7 @@ internal class GenerateReferenceDataSetupScript
              * 16 = E
             */
 
-            //suggest we have a function for the above that can be reused here but also when calculating results
+            //suggest we have a function for the above that can be used when both saving answers and calculating results
 
             "967", "970", "974", "976", "981", "982", "987", "988", "993", "996", "997", //mechanical
             "1231", "1237", "1241", "1248", "1252", "1256", "1263", "1267", "1274", "1280", "1283", "1289", "1295", "1299", //spatial
