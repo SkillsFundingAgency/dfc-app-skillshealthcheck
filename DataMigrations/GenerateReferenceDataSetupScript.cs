@@ -21,84 +21,6 @@ internal class GenerateReferenceDataSetupScript
         CreateSQLScript(questionsanswers);
     }
 
-    //replaces null, empty, or similar strings consistently: not to be used on integer values
-    //method name N short for NullCheck, improves readability when called on strings
-    public static string N(string input)
-    {
-        if (string.IsNullOrEmpty(input) || input.ToUpper().Contains("NULL"))
-        { return "NULL"; }
-        else
-        { return $"'{input}'"; }
-    }
-
-    //maps historic assessment IDs to the new values 1 to 10
-    public static string MapAssessmentId(string input)
-    {
-        string[] historicAssessmentIds = ["20", "4", "17", "8", "11", "22", "3", "7", "21", "1"];
-        int newAssessmentId = 1 + Array.IndexOf(historicAssessmentIds, input);
-        return newAssessmentId.ToString();
-    }
-
-    //generates new sequential answer ID
-    public static string GenerateNewAnswerId()
-    {
-        globalNewAnswerId++;
-        return globalNewAnswerId.ToString();
-    }
-
-    //set IsCorrect values is the answer reference data using their historic ID
-    public static string SetIsCorrectValues(string input)
-    {
-        string[] correctHistoricAnswerIds = 
-            ["1443", "1447", "1455", "1458", "1465", "1466", "1471", "1478", "1484", "1487", //numeric
-
-            "1301", "1304", "1308", "1310", "1315", "1316", "1320", "1324", "1326", "1329",
-            "1333", "1335", "1339", "1342", "1343", "1346", "1349", "1352", "1357", "1360", //verbal
-
-            "1", "3", "10", "11", "12", "13", "16", "25", "26", "32", "33", "38", "39", "41", "42", "43", "44", "50",
-            "52", "60", "62", "67", "69", "75", "76", "81", "90", "91", "94", "97", "101", "103", "108", "109", "115",
-            "118", "125", "127", "128", "135", "136", "142", "144", "150", "155", "156", "165", "166", "168", "175", "178", 
-            "182", "184", "186", "188", "189", "193", "194", "200", //checking (multiple choice)
-
-            //checking
-            //bitwise operators:
-            /*
-             * 1  A
-             * 2  B
-             * 4  C
-             * 8  D
-             * 16 E
-             * === === ===
-             * 1  = A
-             * 2  = B
-             * 3  = A, B
-             * 4  = C
-             * 5  = A, C
-             * 6  = B, C
-             * 7  = A, B, C
-             * 8  = D
-             * 9  = A, D
-             * 10 = B, D
-             * 11 = A, B, D
-             * 12 = C, D
-             * 13 = A, C, D
-             * 14 = B, C, D
-             * 15 = A, B, C, D
-             * 16 = E
-            */
-
-            //suggest we have a function for the above that can be used when both saving answers and calculating results
-
-            "967", "970", "974", "976", "981", "982", "987", "988", "993", "996", "997", //mechanical
-            "1231", "1237", "1241", "1248", "1252", "1256", "1263", "1267", "1274", "1280", "1283", "1289", "1295", "1299", //spatial
-
-            "1362", "1368", "1375", "1378", "1383", "1389", "1391", "1399", "1402", "1406", "1412", "1420", "1421", "1426", "1435", "1439"]; // abstract
-
-        if (correctHistoricAnswerIds.Contains(input))
-        { return 1.ToString(); } //true
-        return 0.ToString(); //false
-    }
-
     //generates sql snippets which are to be inserted into the post deployment script
     public static void CreateSQLScript(string input)
     {
@@ -175,7 +97,78 @@ internal class GenerateReferenceDataSetupScript
         } 
     }
 
+    //replaces null, empty, or similar strings consistently: not to be used on integer values
+    //method name N short for NullCheck, improves readability when called on strings
+    public static string N(string input)
+    {
+        if (string.IsNullOrEmpty(input) || input.ToUpper().Contains("NULL"))
+        { return "NULL"; }
+        else
+        { return $"'{input}'"; }
+    }
 
+    //maps historic assessment IDs to the new values 1 to 10
+    public static string MapAssessmentId(string input)
+    {
+        string[] historicAssessmentIds = ["20", "4", "17", "8", "11", "22", "3", "7", "21", "1"];
+        int newAssessmentId = 1 + Array.IndexOf(historicAssessmentIds, input);
+        return newAssessmentId.ToString();
+    }
 
+    //generates new sequential answer ID
+    public static string GenerateNewAnswerId()
+    {
+        globalNewAnswerId++;
+        return globalNewAnswerId.ToString();
+    }
 
+    //set IsCorrect values is the answer reference data using their historic ID
+    public static string SetIsCorrectValues(string input)
+    {
+        string[] correctHistoricAnswerIds = 
+            ["1443", "1447", "1455", "1458", "1465", "1466", "1471", "1478", "1484", "1487", //numeric
+            "1301", "1304", "1308", "1310", "1315", "1316", "1320", "1324", "1326", "1329",
+            "1333", "1335", "1339", "1342", "1343", "1346", "1349", "1352", "1357", "1360", //verbal
+            "1", "3", "10", "11", "12", "13", "16", "25", "26", "32", "33", "38", "39", "41", "42", "43", "44", "50",
+            "52", "60", "62", "67", "69", "75", "76", "81", "90", "91", "94", "97", "101", "103", "108", "109", "115",
+            "118", "125", "127", "128", "135", "136", "142", "144", "150", "155", "156", "165", "166", "168", "175", "178", 
+            "182", "184", "186", "188", "189", "193", "194", "200", //checking (multiple choice)
+
+            //checking
+            //bitwise operators:
+            /*
+             * 1  A
+             * 2  B
+             * 4  C
+             * 8  D
+             * 16 E
+             * === === ===
+             * 1  = A
+             * 2  = B
+             * 3  = A, B
+             * 4  = C
+             * 5  = A, C
+             * 6  = B, C
+             * 7  = A, B, C
+             * 8  = D
+             * 9  = A, D
+             * 10 = B, D
+             * 11 = A, B, D
+             * 12 = C, D
+             * 13 = A, C, D
+             * 14 = B, C, D
+             * 15 = A, B, C, D
+             * 16 = E
+            */
+
+            //suggest we have a function for the above that can be used when both saving answers and calculating results
+
+            "967", "970", "974", "976", "981", "982", "987", "988", "993", "996", "997", //mechanical
+            "1231", "1237", "1241", "1248", "1252", "1256", "1263", "1267", "1274", "1280", "1283", "1289", "1295", "1299", //spatial
+            "1362", "1368", "1375", "1378", "1383", "1389", "1391", "1399", "1402", "1406", "1412", "1420", "1421", "1426", "1435", "1439"]; // abstract
+
+        if (correctHistoricAnswerIds.Contains(input))
+        { return 1.ToString(); } //true
+        return 0.ToString(); //false
+    }
 }
