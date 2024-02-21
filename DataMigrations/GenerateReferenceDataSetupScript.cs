@@ -47,11 +47,18 @@ internal class GenerateReferenceDataSetupScript
     }
 
     //set IsCorrect values is the answer reference data using their historic ID
-    public static int SetIsCorrectValues(string input)
+    public static string SetIsCorrectValues(string input)
     {
-        string[] correctHistoricAnswerIds = ["1443", "1447", "1455", "1458", "1465", "1466", "1471", "1478", "1484", "1487", //numeric
-            "1301", "1304", "1308", "1310", "1315", "1316", "1320", "1324", "1326", "1329", //verbal (part 1 of 2)
-            "1333", "1335", "1339", "1342", "1343", "1346", "1349", "1352", "1357", "1360", //verbal (part 2 of 2)
+        string[] correctHistoricAnswerIds = 
+            ["1443", "1447", "1455", "1458", "1465", "1466", "1471", "1478", "1484", "1487", //numeric
+
+            "1301", "1304", "1308", "1310", "1315", "1316", "1320", "1324", "1326", "1329",
+            "1333", "1335", "1339", "1342", "1343", "1346", "1349", "1352", "1357", "1360", //verbal
+
+            "1", "3", "10", "11", "12", "13", "16", "25", "26", "32", "33", "38", "39", "41", "42", "43", "44", "50",
+            "52", "60", "62", "67", "69", "75", "76", "81", "90", "91", "94", "97", "101", "103", "108", "109", "115",
+            "118", "125", "127", "128", "135", "136", "142", "144", "150", "155", "156", "165", "166", "168", "175", "178", 
+            "182", "184", "186", "188", "189", "193", "194", "200", //checking (multiple choice)
 
             //checking
             //bitwise operators:
@@ -82,13 +89,14 @@ internal class GenerateReferenceDataSetupScript
 
             //suggest we have a function for the above that can be reused here but also when calculating results
 
+            "967", "970", "974", "976", "981", "982", "987", "988", "993", "996", "997", //mechanical
+            "1231", "1237", "1241", "1248", "1252", "1256", "1263", "1267", "1274", "1280", "1283", "1289", "1295", "1299", //spatial
 
-            //mechanical
-            //spatial
             "1362", "1368", "1375", "1378", "1383", "1389", "1391", "1399", "1402", "1406", "1412", "1420", "1421", "1426", "1435", "1439"]; // abstract
+
         if (correctHistoricAnswerIds.Contains(input))
-        { return 1; } //true
-        return 0; //false
+        { return 1.ToString(); } //true
+        return 0.ToString(); //false
     }
 
     //generates sql snippets which are to be inserted into the post deployment script
