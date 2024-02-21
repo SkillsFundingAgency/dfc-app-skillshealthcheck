@@ -8,7 +8,6 @@ namespace DfE.SkillsCentral.Api.Domain.Models
 {
     public class Assessment
     {
-        public string Type { get; set; }
         public string Answers { get; set; }
         public bool Complete { get; set; }
     }
