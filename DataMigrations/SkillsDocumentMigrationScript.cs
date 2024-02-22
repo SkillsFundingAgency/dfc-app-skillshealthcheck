@@ -15,6 +15,8 @@ internal class GenerateReferenceDataSetupScript
     public static int globalNewAnswerId = 0;
     public static int globalNewQuestionId = 4;
     public static int globalNewAnswerValue = 0;
+    public static int globalNewAnswerValueForSkillsAssessment = 0;
+
     public static List<string> globalHistoricQuestionIds = new List<string>();
     public static List<string> globalHistoricAnswerText = new List<string>();
 
@@ -69,6 +71,8 @@ internal class GenerateReferenceDataSetupScript
                                 int questionTextIndex = 5;
                                 int answerTextIndex = 12;
                                 string[] mechanicalAssessment = ["7"];
+                                string[] skillsAssessment = ["20"];
+
                                 var newQuestionIdForMechanical = int.Parse(escapedStrings[10]) +10;
                                 //if assessment type is in the list of 'strange' assessment types, move data into correct/expeted columns
                                 //these assessment types (historically) have question and answer data in unexpected columns/tables
@@ -85,7 +89,7 @@ internal class GenerateReferenceDataSetupScript
                                             questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
                                             globalHistoricAnswerText.Add(escapedStrings[questionTextIndex]);
                                         }
-                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {GenerateNewAnswerValue()}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(GenerateNewAnswerValue())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
                                     }
                                     else
@@ -103,17 +107,32 @@ internal class GenerateReferenceDataSetupScript
                                             }
                                         }
                                         globalHistoricQuestionIds.Add(escapedStrings[10]);
+
+                                        if (mechanicalAssessment.Contains(escapedStrings[1]))
+                                        {
+                                            answerWriter.WriteLine($"({GenerateNewAnswerId()}, {newQuestionIdForMechanical}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                        }
+                                        else
+                                        {
+                                            if(skillsAssessment.Contains(escapedStrings[1]))
+                                            { 
+                                                if (!globalHistoricAnswerText.Contains(escapedStrings[answerTextIndex]))
+                                                {
+                                                    answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(GenerateNewAnswerValueForSkillsAssessment())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                                    globalHistoricAnswerText.Add(escapedStrings[answerTextIndex]);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                            }
+                                        }
+                                        //ImageTitle and ImageCaption are always null as the fields do not(historically) exist on the answers table, they are added for future accessibility
+
+
                                     }
 
-                                    if (mechanicalAssessment.Contains(escapedStrings[1]))
-                                    {
-                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {newQuestionIdForMechanical}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                    }
-                                    else
-                                    {
-                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                    }
-                                    //ImageTitle and ImageCaption are always null as the fields do not(historically) exist on the answers table, they are added for future accessibility
+
                                 }
                         }
                         break;
@@ -164,6 +183,15 @@ internal class GenerateReferenceDataSetupScript
     public static string GenerateNewAnswerValue()
     {
         if (Enumerable.Range(1, 4).Contains(globalNewAnswerValue))
+        { globalNewAnswerValue++; }
+        else
+        { globalNewAnswerValue =1; }
+        return globalNewAnswerValue.ToString();
+    }
+
+    public static string GenerateNewAnswerValueForSkillsAssessment()
+    {
+        if (Enumerable.Range(1, 2).Contains(globalNewAnswerValue))
         { globalNewAnswerValue++; }
         else
         { globalNewAnswerValue =1; }
