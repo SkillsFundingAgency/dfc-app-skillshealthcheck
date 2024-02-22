@@ -14,6 +14,7 @@ internal class GenerateReferenceDataSetupScript
 
     public static int globalNewAnswerId = 0;
     public static int globalNewQuestionId = 4;
+    public static int globalNewAnswerValue = 0;
     public static List<string> globalHistoricQuestionIds = new List<string>();
     public static List<string> globalHistoricAnswerText = new List<string>();
 
@@ -76,41 +77,43 @@ internal class GenerateReferenceDataSetupScript
                                     {
                                         questionTextIndex = 12;     //i.e. read from answers table
                                         answerTextIndex = 15;       //i.e. read from answerheadings table
-                                        var newQuestionId = GenerateNewQuestionId();
+                                        
 
                                         if (!globalHistoricAnswerText.Contains(escapedStrings[questionTextIndex]))
                                         {
-                                            questionWriter.WriteLine($"({newQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                            GenerateNewQuestionId();
+                                            questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
                                             globalHistoricAnswerText.Add(escapedStrings[questionTextIndex]);
                                         }
-                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {newQuestionId}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {GenerateNewAnswerValue()}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
                                     }
-                                    //else
-                                    //{
-                                    //    if (!globalHistoricQuestionIds.Contains(escapedStrings[10]))
-                                    //    {
+                                    else
+                                    {
+                                        if (!globalHistoricQuestionIds.Contains(escapedStrings[10]))
+                                        {
 
-                                    //        if (mechanicalAssessment.Contains(escapedStrings[1]))
-                                    //        {
-                                    //            questionWriter.WriteLine($"({newQuestionIdForMechanical}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
-                                    //        } else
-                                    //        {
-                                    //            questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
-                                    //        }
-                                    //    }
-                                    //    globalHistoricQuestionIds.Add(escapedStrings[10]);
-                                    //}
+                                            if (mechanicalAssessment.Contains(escapedStrings[1]))
+                                            {
+                                                questionWriter.WriteLine($"({newQuestionIdForMechanical}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                            }
+                                            else
+                                            {
+                                                questionWriter.WriteLine($"({escapedStrings[10]}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                            }
+                                        }
+                                        globalHistoricQuestionIds.Add(escapedStrings[10]);
+                                    }
 
-                                    //if (mechanicalAssessment.Contains(escapedStrings[1]))
-                                    //{
-                                    //    answerWriter.WriteLine($"({GenerateNewAnswerId()}, {newQuestionIdForMechanical}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                    //}
-                                    //else
-                                    //{
-                                    //    answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                    //}
-                                    //ImageTitle and ImageCaption are always null as the fields do not (historically) exist on the answers table, they are added for future accessibility
+                                    if (mechanicalAssessment.Contains(escapedStrings[1]))
+                                    {
+                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {newQuestionIdForMechanical}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                    }
+                                    else
+                                    {
+                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {escapedStrings[10]}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                    }
+                                    //ImageTitle and ImageCaption are always null as the fields do not(historically) exist on the answers table, they are added for future accessibility
                                 }
                         }
                         break;
@@ -157,6 +160,14 @@ internal class GenerateReferenceDataSetupScript
     {
         globalNewQuestionId++;
         return globalNewQuestionId.ToString();
+    }
+    public static string GenerateNewAnswerValue()
+    {
+        if (Enumerable.Range(1, 4).Contains(globalNewAnswerValue))
+        { globalNewAnswerValue++; }
+        else
+        { globalNewAnswerValue =1; }
+        return globalNewAnswerValue.ToString();
     }
 
     //set IsCorrect values is the answer reference data using their historic ID
