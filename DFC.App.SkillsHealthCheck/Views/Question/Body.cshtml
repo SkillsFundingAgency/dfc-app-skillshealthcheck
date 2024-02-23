@@ -1,8 +1,8 @@
 ﻿@using DFC.App.SkillsHealthCheck.ViewModels.Question
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.BodyViewModel
-
 @{
     var assessmentQuestionViewModel = Model.AssessmentQuestionViewModel;
+    var assessmentType = Model.AssessmentQuestionViewModel.Question?.AssessmentType;
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -20,6 +20,28 @@
         }
         <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />
     </div>
+
+    <div class="session-timeout" id="session-timeout" aria-haspopup="true">
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <div class="govuk-grid-row">
+                    <div class="text-styling">
+                        <h2 class="heading-medium">Your current session is about to end due to 25 minutes of inactivity</h2>
+                        <p>Select <strong>'extend my session'</strong> if you want to continue or click <strong>'end my session'</strong> to leave.</p>
+                        <p>This message will show for 5 minutes. If there is no further activity, your session will automatically end.</p>
+                    </div>
+                    <form action="/skills-health-check/question/extend-session" method="post" class="formRefresh">
+                        @Html.Hidden("AssessmentType", assessmentType)
+                        <button class="govuk-button ncs-button__primary govuk-button--s popup-button" data-module="govuk-button" type="submit" value="refreshpage">
+                            Extend my session
+                        </button>
+                    </form>
+                    <a class="govuk-link popup-link" href="/skills-health-check/question/end-session" rel="external">End my session</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="govuk-grid-column-one-third">
         <partial name="_RightBar" model="@Model.RightBarViewModel" />
     </div>

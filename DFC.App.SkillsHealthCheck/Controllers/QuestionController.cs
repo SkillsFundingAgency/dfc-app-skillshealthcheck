@@ -76,6 +76,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/htmlhead")]
         [Route("skills-health-check/question/answer-feedback-question/htmlhead")]
         [Route("skills-health-check/question/answer-checking-question/htmlhead")]
+        [Route("skills-health-check/question/extend-session/htmlhead")]
+        [Route("skills-health-check/question/end-session/htmlhead")]
         public IActionResult HtmlHead(string assessmentType)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
@@ -93,6 +95,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/breadcrumb")]
         [Route("skills-health-check/question/answer-feedback-question/breadcrumb")]
         [Route("skills-health-check/question/answer-checking-question/breadcrumb")]
+        [Route("skills-health-check/question/extend-session/breadcrumb")]
+        [Route("skills-health-check/question/end-session/breadcrumb")]
         public IActionResult Breadcrumb()
         {
             var viewModel = BuildBreadcrumb();
@@ -345,6 +349,28 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
+        }
+
+        [HttpPost]
+        [Route("skills-health-check/question/extend-session")]
+        [Route("skills-health-check/question/extend-session/body")]
+        public async Task<IActionResult> ExtendSession(string? assessmentType)
+        {
+            var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+            await SetSessionStateAsync(sessionStateModel);
+
+            return Redirect(string.IsNullOrEmpty(assessmentType)
+            ? $"{HomeURL}"
+                : $"{QuestionURL}?assessmentType={assessmentType}");
+        }
+
+        [HttpGet]
+        [Route("skills-health-check/question/end-session")]
+        [Route("skills-health-check/question/end-session/body")]
+        public async Task<IActionResult> EndSession()
+        {
+            await DeleteSessionStateAsync();
+            return Redirect($"{SessionTimeoutURL}");
         }
 
         private IActionResult RedirectToNextAction(AssessmentQuestionViewModel model)
