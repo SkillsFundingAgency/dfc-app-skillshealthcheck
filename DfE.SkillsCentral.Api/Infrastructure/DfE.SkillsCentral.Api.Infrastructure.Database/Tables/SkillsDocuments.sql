@@ -5,6 +5,6 @@
 	[CreatedBy] NVARCHAR(MAX),
 	[UpdatedAt] DATETIME,
 	[UpdatedBy] NVARCHAR(MAX),
-	[DataValueKeys] XML, 
+	[DataValueKeys] NVARCHAR(MAX) NOT NULL, 
     [ReferenceCode] NVARCHAR(MAX) NOT NULL, 
 )
