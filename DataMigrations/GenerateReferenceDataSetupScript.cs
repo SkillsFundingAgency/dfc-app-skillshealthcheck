@@ -12,14 +12,14 @@ internal class GenerateReferenceDataSetupScript
     public const string assessments = "assessments";
     public const string questionsanswers = "questionsanswers";
 
-    public static int globalNewAnswerId = 0;
-    public static int globalNewQuestionId = 0;
-    public static int globalNewAnswerValue = 0;
-    public static int globalNewAnswerValueForSkillsAssessment = 0;
+    public static int globalNewAnswerId = 0;                        //used for sequential ID generation
+    public static int globalNewQuestionId = 0;                      //used for sequential ID generation
+   
+    public static int globalNewAnswerValueForSkillsAssessment = 0;          //used as value 1-2 for ranked questions
+    public static int globalNewAnswerValueForOtherPersonalAssessments = 0;  //used as value 1-5 for ranked questions
 
     public static List<string> globalHistoricQuestionIds = new List<string>();
     public static List<string> globalHistoricAnswerText = new List<string>();
-
 
     public static void Main(string[] args)
     {   
@@ -41,95 +41,94 @@ internal class GenerateReferenceDataSetupScript
                 //skips first row/line of column names
                 parser.ReadLine();
 
-                    switch (input)
+                switch (input)
+                {
+                case assessments:
+                    using (StreamWriter writer = new StreamWriter($"INSERT_{input}.sql"))
+                    while (!parser.EndOfData)
                     {
-                    case assessments:
-                        using (StreamWriter writer = new StreamWriter($"INSERT_{input}.sql"))
-                        while (!parser.EndOfData)
+                        int id = 1;
+                        string[] fields = parser.ReadFields();
+                        string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                         {
-                            int id = 1;
-                            string[] fields = parser.ReadFields();
-                            string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
-                            {
-                                    writer.WriteLine($"({MapAssessmentId(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
-                            }
+                                writer.WriteLine($"({MapAssessmentId(escapedStrings[0])}, {N(escapedStrings[1])}, {N(escapedStrings[4])}, {N(escapedStrings[5])}, {N(escapedStrings[6])}),");
                         }
-                        break;
+                    }
+                    break;
 
-                    case questionsanswers:
+                case questionsanswers:
 
-                        //create two streamwriters to support writing data found in the single questions/answers (and answer headings) file to two separate files 
-                        using (StreamWriter questionWriter = new StreamWriter($"INSERT_questions.sql"))
-                        using (StreamWriter answerWriter = new StreamWriter($"INSERT_answers.sql"))
+                    //create two streamwriters to support writing data found in the single questions/answers (and answer headings) file to two separate files 
+                    using (StreamWriter questionWriter = new StreamWriter($"INSERT_questions.sql"))
+                    using (StreamWriter answerWriter = new StreamWriter($"INSERT_answers.sql"))
 
-                        while (!parser.EndOfData)
+                    while (!parser.EndOfData)
+                    {
+                        string[] fields = parser.ReadFields();
+                        string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
                         {
-                            string[] fields = parser.ReadFields();
-                            string[] escapedStrings = fields.Select(str => str.Replace("'", "''")).ToArray();
-                            {
-                                //expected locations of question and answer text values
-                                int questionTextIndex = 5;
-                                int answerTextIndex = 12;
-                                string[] skillsAssessment = ["20"];
-
-                                var newQuestionIdForMechanical = int.Parse(escapedStrings[10]) +10;
-                                //if assessment type is in the list of 'strange' assessment types, move data into correct/expeted columns
-                                //these assessment types (historically) have question and answer data in unexpected columns/tables
-                                string[] strangeAssessmentTypes = ["4", "8", "17"];
+                            //expected locations of question and answer text values
+                            int questionTextIndex = 5;
+                            int answerTextIndex = 12;
                                 
+                            //if assessment type is a personal assessment type, move data into correct/expeted columns
+                            //these assessment types (historically) have question and answer data in unexpected columns/tables
+                            string[] otherPersonalAssessmentTypes = ["4", "8", "17"];
+                            string[] skillsAssessment = ["20"]; //split from personal assessments (now 'other' personal assessments)
 
-                                    if (strangeAssessmentTypes.Contains(escapedStrings[1]))
+                                // check this row is associated with one of the personal assessments
+                                if (otherPersonalAssessmentTypes.Contains(escapedStrings[1]))
+                                {
+                                    questionTextIndex = 12;     //i.e. read from answers table
+                                    answerTextIndex = 15;       //i.e. read from answerheadings table
+                                    
+                                    //write new question to file only if it that not been done already (removes duplicates in original data based on question text)
+                                    if (!globalHistoricAnswerText.Contains(escapedStrings[questionTextIndex]))
                                     {
-                                        questionTextIndex = 12;     //i.e. read from answers table
-                                        answerTextIndex = 15;       //i.e. read from answerheadings table
-                                        
+                                        GenerateNewQuestionId();
+                                        questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                        globalHistoricAnswerText.Add(escapedStrings[questionTextIndex]);
+                                    }
+                                    answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(GenerateNewAnswerValueForOtherPersonalAssessments())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
 
-                                        if (!globalHistoricAnswerText.Contains(escapedStrings[questionTextIndex]))
+                                }
+                                else //all work based assessments and the personal skills assessment
+                                {
+                                    //write new question to file only if it that not been done already (removes duplicates in original data based on question ID)
+                                    if (!globalHistoricQuestionIds.Contains(escapedStrings[10]))
+                                    {
+                                        GenerateNewQuestionId();
+                                        questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
+                                    }
+                                    globalHistoricQuestionIds.Add(escapedStrings[10]);
+
+                                    //write skills assessment answers including generated answer values
+                                    if(skillsAssessment.Contains(escapedStrings[1]))
+                                    { 
+                                        //removes duplicate answers based on answer text (resulting from join with answer heading table)
+                                        if (!globalHistoricAnswerText.Contains(escapedStrings[answerTextIndex]))
                                         {
-                                            GenerateNewQuestionId();
-                                            questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
-                                            globalHistoricAnswerText.Add(escapedStrings[questionTextIndex]);
+                                            answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(GenerateNewAnswerValueForSkillsAssessment())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
+                                            globalHistoricAnswerText.Add(escapedStrings[answerTextIndex]);
                                         }
-                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(GenerateNewAnswerValue())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-
                                     }
                                     else
                                     {
-                                        if (!globalHistoricQuestionIds.Contains(escapedStrings[10]))
-                                        {
-                                            GenerateNewQuestionId();
-                                            questionWriter.WriteLine($"({globalNewQuestionId}, {MapAssessmentId(escapedStrings[1])}, {escapedStrings[4]}, {N(escapedStrings[3])}, {N(escapedStrings[questionTextIndex])}, {N(escapedStrings[6])}, {N(escapedStrings[7])}, {N(escapedStrings[8])}),");
-                                        }
-                                        globalHistoricQuestionIds.Add(escapedStrings[10]);
-
-                                        
-                                        if(skillsAssessment.Contains(escapedStrings[1]))
-                                        { 
-                                            if (!globalHistoricAnswerText.Contains(escapedStrings[answerTextIndex]))
-                                            {
-                                                answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(GenerateNewAnswerValueForSkillsAssessment())}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                                globalHistoricAnswerText.Add(escapedStrings[answerTextIndex]);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
-                                        }
-                                        
-                                        //ImageTitle and ImageCaption are always null as the fields do not(historically) exist on the answers table, they are added for future accessibility
-
-
+                                        //write answers for skills assessment and all work based assessments
+                                        answerWriter.WriteLine($"({GenerateNewAnswerId()}, {globalNewQuestionId}, {N(escapedStrings[11])}, {SetIsCorrectValues(escapedStrings[9])}, {N(escapedStrings[answerTextIndex])}, NULL, NULL, {N(escapedStrings[13].ToString())}),");
                                     }
-
+                                        
+                                    //Note: ImageTitle and ImageCaption are always null as the fields do not(historically) exist on the answers table, they are added for future accessibility
 
                                 }
-                        }
-                        break;
-
-                    default:
-                        Console.WriteLine("Default case reached, input filename(s) do not match expected range or values - reference data generation cannot proceed.");
+                            }
+                    }
                     break;
-                }
+
+                default:
+                    Console.WriteLine("Default case reached, input filename(s) do not match expected range or values - reference data generation cannot proceed.");
+                break;
+            }
             }
         }
         catch (Exception e)
@@ -156,35 +155,38 @@ internal class GenerateReferenceDataSetupScript
         return newAssessmentId.ToString();
     }
 
-    //generates new sequential answer ID
+    //generates new sequential answer IDs
     public static string GenerateNewAnswerId()
     {
         globalNewAnswerId++;
         return globalNewAnswerId.ToString();
     }
 
-    //generates new sequential answer ID
+    //generates new sequential question IDs
     public static string GenerateNewQuestionId()
     {
         globalNewQuestionId++;
         return globalNewQuestionId.ToString();
     }
-    public static string GenerateNewAnswerValue()
-    {
-        if (Enumerable.Range(1, 4).Contains(globalNewAnswerValue))
-        { globalNewAnswerValue++; }
-        else
-        { globalNewAnswerValue =1; }
-        return globalNewAnswerValue.ToString();
-    }
 
+    //iterates through values 1-2 for ranked questions
     public static string GenerateNewAnswerValueForSkillsAssessment()
     {
-        if (Enumerable.Range(1, 2).Contains(globalNewAnswerValue))
-        { globalNewAnswerValue++; }
+        if (Enumerable.Range(1, 2).Contains(globalNewAnswerValueForOtherPersonalAssessments))
+        { globalNewAnswerValueForOtherPersonalAssessments++; }
         else
-        { globalNewAnswerValue =1; }
-        return globalNewAnswerValue.ToString();
+        { globalNewAnswerValueForOtherPersonalAssessments =1; }
+        return globalNewAnswerValueForOtherPersonalAssessments.ToString();
+    }
+
+    //iterates through values 1-5 for ranked questions
+    public static string GenerateNewAnswerValueForOtherPersonalAssessments()
+    {
+        if (Enumerable.Range(1, 4).Contains(globalNewAnswerValueForOtherPersonalAssessments))
+        { globalNewAnswerValueForOtherPersonalAssessments++; }
+        else
+        { globalNewAnswerValueForOtherPersonalAssessments = 1; }
+        return globalNewAnswerValueForOtherPersonalAssessments.ToString();
     }
 
     //set IsCorrect values is the answer reference data using their historic ID
