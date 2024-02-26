@@ -8,6 +8,7 @@ internal class SkillsDocumentMigrationScript
 {
     //input filename(s) must match the strings below
     public const string SkillsDocuments = "SkillsDocuments";
+    public const string CreatedBy = "MigrationTool";
 
 
 
@@ -42,7 +43,7 @@ internal class SkillsDocumentMigrationScript
 
                         string sortedResultJson = SortJsonToMatchOrderAsDisplayedOnWebsite(transformedJson);
 
-                        writer.WriteLine($"({(fields[0])}, {N(fields[1])}, {N(fields[2])}, {N(fields[3])}, {N(fields[4])}, {N(sortedResultJson)}, {N(fields[6])}),");
+                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(sortedResultJson)}, {N(fields[6])}),");
 
                     }
 
@@ -56,9 +57,18 @@ internal class SkillsDocumentMigrationScript
 
     //replaces null, empty, or similar strings consistently: not to be used on integer values
     //method name N short for NullCheck, improves readability when called on strings
-    public static string N(string input)
+
+    public static string SurroundWithCastAsDatetime(string input)
     {
-        if (string.IsNullOrEmpty(input))
+        if (string.IsNullOrEmpty(input) || input == "NULL")
+         return "NULL"; 
+        else
+         return $"CAST(N'{input}' AS DateTime)";
+    }
+
+        public static string N(string input)
+    {
+        if (string.IsNullOrEmpty(input)|| input == "NULL") 
         { return "NULL"; }
         else
         { return $"'{input}'"; }
