@@ -42,7 +42,7 @@ internal class SkillsDocumentMigrationScript
                         string transformedJson = TransformJsonToMatchNewAssessmentDataValuesModel(jsonDataValues);
 
                         string sortedResultJson = SortJsonToMatchOrderAsDisplayedOnWebsite(transformedJson);
-
+                        Console.WriteLine(parser.LineNumber);
                         writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(sortedResultJson)}, {N(fields[6])}),");
 
                     }
@@ -76,13 +76,26 @@ internal class SkillsDocumentMigrationScript
 
     public static string ConvertXmlIntoJson(string input)
     {
-        XmlDocument xmlDataValues = new XmlDocument();
-        xmlDataValues.LoadXml(input);
-        return JsonConvert.SerializeXmlNode(xmlDataValues, Formatting.Indented);
+        try
+        {
+            if (input == "NULL")
+                return input;
+            XmlDocument xmlDataValues = new XmlDocument();
+            xmlDataValues.LoadXml(input);
+            return JsonConvert.SerializeXmlNode(xmlDataValues/*, Formatting.Indented*/);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
     }
 
     public static string TransformJsonToMatchNewAssessmentDataValuesModel(string input)
     {
+
+        if (input == "NULL")
+            return input;
         JObject obj = JObject.Parse(input);
 
         // Create a new JObject to store the modified structure
@@ -137,11 +150,13 @@ internal class SkillsDocumentMigrationScript
         JObject result = new JObject();
         result["DataValues"] = newDataValues;
 
-        return JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
+        return JsonConvert.SerializeObject(result/*, Formatting.Indented*/);
     }
 
     public static string SortJsonToMatchOrderAsDisplayedOnWebsite(string input)
     {
+        if (input == "NULL")
+            return input;
         // Parse JSON string to JObject
         JObject resultObj = JObject.Parse(input);
 
@@ -170,7 +185,7 @@ internal class SkillsDocumentMigrationScript
         sortedResult["DataValues"] = newSortedDataValues;
 
         // Serialize JObject to JSON string
-        return JsonConvert.SerializeObject(sortedResult, Formatting.Indented);
+        return JsonConvert.SerializeObject(sortedResult/*, Formatting.Indented*/);
     }
 }
 
