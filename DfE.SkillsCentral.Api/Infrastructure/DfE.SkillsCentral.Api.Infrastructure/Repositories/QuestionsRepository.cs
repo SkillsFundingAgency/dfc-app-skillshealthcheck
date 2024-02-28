@@ -31,12 +31,12 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
         }
 
 
-        public async Task<Question> GetByIdAsync(int questionId)
+        public async Task<Question> GetByIdAsync(int id)
         {
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.QuerySingleOrDefaultAsync<Question>(QuestionsQueries.QuestionById, new { QuestionId = questionId});
+                var result = await connection.QuerySingleOrDefaultAsync<Question>(QuestionsQueries.QuestionById, new { Id = id});
                 return result;
             }
         }
