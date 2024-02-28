@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
-    public interface IDocumentsService
+    public interface ISkillsDocumentsService
     {
         
 
