@@ -13,10 +13,10 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 
 
         //Saves user's given answer to the current question
-        public void SaveQuestionAnswer(string questionId, string usersAnswerId);
+        public void SaveQuestionAnswer(int questionId, int usersAnswerId);
 
         //Gets all questions in a given assessment
-        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(string assessmentId);
+        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(int assessmentId);
 
     }
 }
