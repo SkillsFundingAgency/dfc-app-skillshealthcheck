@@ -16,15 +16,6 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
         }
         
 
-        public async Task<IReadOnlyList<Answer>> GetAllByAssessmentIdAsync(int assessmentId)
-        {
-            using (var connection = dbContext.CreateConnection())
-            {
-                connection.Open();
-                var result = await connection.QueryAsync<Answer>(AnswersQueries.AllAnswersByAssessmentId, new { AssessmentId = assessmentId});
-                return result.ToList();
-            }
-        }
 
         public async Task<IReadOnlyList<Answer>> GetAllByQuestionIdAsync(int questionId)
         {

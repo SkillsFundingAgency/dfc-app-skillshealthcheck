@@ -9,7 +9,7 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
     public interface IAnswersRepository :IRepository<Answer>
     {
-        Task<IReadOnlyList<Answer>> GetAllByAssessmentIdAsync(int assessmentId);
+
 
         Task<IReadOnlyList<Answer>> GetAllByQuestionIdAsync(int questionId);
 
