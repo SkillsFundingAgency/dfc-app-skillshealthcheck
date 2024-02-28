@@ -10,6 +10,5 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
     public interface IAssessmentsRepository :IRepository<Assessment>
     {
         Task<IReadOnlyList<Assessment>> GetAllAsync();
-        Task<IReadOnlyList<Question>> GetAllByAssessmentIdAsync(string assessmentId);
     }
 }

@@ -14,6 +14,12 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
         {
             this.dbContext = dbContext;
         }
+
+        public Task<IReadOnlyList<Question>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IReadOnlyList<Question>> GetAllByAssessmentIdAsync(int assessmentId)
         {
             using (var connection = dbContext.CreateConnection())
@@ -23,6 +29,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
                 return result.ToList();
             }
         }
+
 
         public async Task<Question> GetByIdAsync(int questionId)
         {
