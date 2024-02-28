@@ -19,20 +19,20 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                await connection.QueryAsync(SkillsDocumentsQueries.InsertSkillsDocumentAsync, new { skillsDocument.SkillsDocumentTypeSysId, skillsDocument.SkillsDocumentTitle, skillsDocument.CreatedAt, 
-                    skillsDocument.CreatedBy, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.DataValues, skillsDocument.LastAccessed, skillsDocument.ReferenceCode});
+                await connection.QueryAsync(SkillsDocumentsQueries.InsertSkillsDocumentAsync, new { skillsDocument.CreatedAt, 
+                    skillsDocument.CreatedBy,  skillsDocument.DataValueKeys,  skillsDocument.ReferenceCode});
                 
             }
         }
 
 
 
-        public async Task<SkillsDocument> GetByIdAsync(int skillsDocumentId)
+        public async Task<SkillsDocument> GetByIdAsync(int id)
         {
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.QuerySingleOrDefaultAsync<SkillsDocument>(SkillsDocumentsQueries.GetSkillsDocumentByIdAsync, new { SkillsDocumentId = skillsDocumentId });
+                var result = await connection.QuerySingleOrDefaultAsync<SkillsDocument>(SkillsDocumentsQueries.GetSkillsDocumentByIdAsync, new { Id = id });
                 return result;
             }
         }
@@ -52,8 +52,8 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                _=await connection.QueryAsync(SkillsDocumentsQueries.UpdateSkillsDocument, new { skillsDocument.SkillsDocumentTitle, skillsDocument.UpdatedAt, skillsDocument.UpdatedBy, 
-                    skillsDocument.DataValues, skillsDocument.ExpiresTimespan, skillsDocument.ExpiresType, skillsDocument.LastAccessed, skillsDocument.SkillsDocumentId });
+                _=await connection.QueryAsync(SkillsDocumentsQueries.UpdateSkillsDocument, new { skillsDocument.UpdatedAt, skillsDocument.UpdatedBy, 
+                    skillsDocument.DataValueKeys, skillsDocument.Id });
                 
             }
         }
