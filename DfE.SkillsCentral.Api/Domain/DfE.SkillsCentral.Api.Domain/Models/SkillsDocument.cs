@@ -9,31 +9,17 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class SkillsDocument
     {
-        public int? SkillsDocumentId { get; set; }
-
-        public int SkillsDocumentTypeSysId { get; set; }
-
-        public string SkillsDocumentTitle { get; set; }
+        public int Id { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public string CreatedBy { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
-        public DateTime DeletedAt { get; set; }
-
-        public string DeletedBy { get; set; }
-
-        public int ExpiresTimespan { get; set; }
-
-        public int ExpiresType { get; set; }
-
-        public DataValues DataValues { get; set; }
-
-        public DateTime LastAccessed { get; set; }
+        public DataValues? DataValueKeyss { get; set; }
 
         public string ReferenceCode { get; set; }
 
