@@ -18,14 +18,14 @@ namespace DfE.SkillsCentral.Api.Application.Services
             this.questionRepository = questionRepository;
         }
 
-        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(string assessmentId)
+        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(int assessmentId)
         {
             if (assessmentId == null) { throw new ArgumentNullException(nameof(assessmentId)); }
              
             return this.questionRepository.GetAllByAssessmentIdAsync(assessmentId);
         }
 
-        public void SaveQuestionAnswer(string questionId, string usersAnswerId)
+        public void SaveQuestionAnswer(int questionId, int usersAnswerId)
         {
             if (questionId == null) { throw new ArgumentNullException(nameof(questionId)); }
             if (usersAnswerId == null) { throw new ArgumentNullException(nameof(usersAnswerId)); }
