@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
-    internal interface IDocumentsService
+    public interface IDocumentsService
     {
-
+        
 
     }
 }
