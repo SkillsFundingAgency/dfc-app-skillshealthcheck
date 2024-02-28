@@ -8,15 +8,21 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class Answer
     {
-        public int AnswerId { get; }
+        public int Id { get; }
         public int QuestionID { get; }
 
-        public string AnswerValue { get; }
+        public string? Value { get; }
 
-        public string AnswerText { get; }
+        public int? IsCorrect { get; }
 
-        public string ImageSource { get; }
+        public string? Text { get; }
 
-        public int AssessmentId { get; }
+        public string? ImageTitle { get; }
+
+        public string? ImageCaption { get; }
+
+        public string? ImageURL { get; }
+
+
     }
 }
