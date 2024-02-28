@@ -8,25 +8,25 @@ namespace DfE.SkillsCentral.Api.Domain.Models
 {
     public class Assessment
     {
-        public string Answers { get; set; }
-        public bool Complete { get; set; }
+        public string? Answers { get; set; }
+        public bool? Complete { get; set; }
     }
 
     public class AssessmentWithEaseTiming : Assessment
     {
-        public int Ease { get; set; }
-        public int Timing { get; set; }
+        public int? Ease { get; set; }
+        public int? Timing { get; set; }
     }
 
     public class AssessmentWithEaseTimingAndEnjoyment : AssessmentWithEaseTiming
     {
-        public int Enjoyment { get; set; }
+        public int? Enjoyment { get; set; }
 
     }
 
     public class SkillAreas : Assessment
     {
-        public List<string> ExcludedJobFamilies { get; set; }
+        public List<string>? ExcludedJobFamilies { get; set; }
 
     }
 
