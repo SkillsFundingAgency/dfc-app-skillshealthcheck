@@ -8,18 +8,16 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class Assessment
     {
-        public int AssessmentId { get; }
-        public string AssessmentType { get; }
+        public int Id { get; }
+        public string? Type { get; }
 
-        public string AssessmentTitle { get; }
+        public string? Title { get; }
 
-        public string AssessmentSubtitle { get;}
+        public string? Subtitle { get;}
 
-        public string AssessmentIntroduction { get; }
+        public string? Introduction { get; }
 
-        public int QualificationLevelNumber { get; }
-
-        public int AccessibilityLevelNumber { get; }
+       
     }
 
 }
