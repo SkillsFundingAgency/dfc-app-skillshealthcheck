@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[InterestAreas]
+(
+    Id INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(255) UNIQUE
+)
