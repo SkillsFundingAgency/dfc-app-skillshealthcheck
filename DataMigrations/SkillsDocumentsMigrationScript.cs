@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using System.Xml;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -42,8 +43,11 @@ internal class SkillsDocumentMigrationScript
                         string transformedJson = TransformJsonToMatchNewAssessmentDataValuesModel(jsonDataValues);
 
                         string sortedResultJson = SortJsonToMatchOrderAsDisplayedOnWebsite(transformedJson);
+
+                        string result = ConvertValuesIntoCorrectDataTypes(sortedResultJson);
+
                         Console.WriteLine(parser.LineNumber);
-                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(sortedResultJson)}, {N(fields[6])}),");
+                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])}),");
 
                     }
 
@@ -72,6 +76,62 @@ internal class SkillsDocumentMigrationScript
         { return "NULL"; }
         else
         { return $"'{input}'"; }
+    }
+    public static string ConvertValuesIntoCorrectDataTypes(string input)
+    {
+        if (input == "NULL")
+            return input;
+        JObject data = JObject.Parse(input);
+
+        foreach (JProperty property in data["DataValues"].Children())
+        {
+            JObject section = (JObject)property.Value;
+
+            // Convert "Complete" to boolean
+            if (section["Complete"] != null && !string.IsNullOrEmpty(section["Complete"].ToString()))
+            {
+                section["Complete"] = (bool)section["Complete"];
+            }
+
+            // Convert "Answers" to JArray for specific sections
+            if (property.Name == "Verbal" || property.Name == "Numeric" || property.Name == "Mechanical" || property.Name == "Spatial" || property.Name == "Abstract")
+            {
+                if (section["Answers"] != null)
+                {
+                    string answersString = section["Answers"].ToString();
+                    section["Answers"] = !string.IsNullOrEmpty(answersString) ? new JArray(answersString.Split(',')) : new JArray();
+                }
+                else
+                {
+                    section["Answers"] = new JArray();
+                }
+            }
+            // Convert "Answers" to integer array for specific sections
+            else if (property.Name == "Checking" || property.Name == "Motivation" || property.Name == "Personal" || property.Name == "Interest" || property.Name == "SkillAreas")
+            {
+                if (section["Answers"] != null)
+                {
+                    string answersString = section["Answers"].ToString();
+                    section["Answers"] = !string.IsNullOrEmpty(answersString) ? new JArray(Array.ConvertAll(answersString.Split(','), int.Parse)) : new JArray();
+                }
+                else
+                {
+                    section["Answers"] = new JArray();
+                }
+            }
+
+            // Convert "Ease", "Timing", and "Enjoyment" to integers
+            if (section["Ease"] != null && !string.IsNullOrEmpty(section["Ease"].ToString()))
+                section["Ease"] = int.Parse(section["Ease"].ToString());
+            if (section["Timing"] != null && !string.IsNullOrEmpty(section["Timing"].ToString()))
+                section["Timing"] = int.Parse(section["Timing"].ToString());
+            if (section["Enjoyment"] != null && !string.IsNullOrEmpty(section["Enjoyment"].ToString()))
+            {
+                section["Enjoyment"] = int.Parse(section["Enjoyment"].ToString());
+            }
+        }
+
+        return JsonConvert.SerializeObject(data/*, Formatting.Indented*/);
     }
 
     public static string ConvertXmlIntoJson(string input)
@@ -132,10 +192,16 @@ internal class SkillsDocumentMigrationScript
                     {
                         // Add non-null values to the array
                         JObject excludedJobFamily = new JObject();
-                        excludedJobFamily["ExcludedJobFamily"] = property.Value;
-                        ((JArray)newDataValues[topLevelName]["ExcludedJobFamilies"]).Add(excludedJobFamily);
+                        ((JArray)newDataValues[topLevelName]["ExcludedJobFamilies"]).Add(property.Value);
                     }
                 }
+                //else if (subNodeName.StartsWith("Answers"))
+                //{
+                //    if (newDataValues[topLevelName]["Answers"] == null)
+                //    {
+                //        newDataValues[topLevelName]["Answers"] = new JArray();
+                //    }
+                //}
                 else
                 {
                     // Add or overwrite sub-node
