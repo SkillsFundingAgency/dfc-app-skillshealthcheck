@@ -9,26 +9,73 @@ using System.Threading.Tasks;
 
 namespace DfE.SkillsCentral.Api.Application.Services
 {
-    public class AsessmentsService : IAssessmentsService
+    public class AsessmentsService
     {
-        private readonly IQuestionsRepository questionRepository;
+        private readonly IAssessmentsRepository assessmentsRepository;
+        private readonly IQuestionsRepository questionsRepository;
+        private readonly IAnswersRepository answersRepository;
+        private readonly ISkillsDocumentsRepository skillsDocumentsRepository;
 
-        public AsessmentsService(IQuestionsRepository questionRepository)
+        public AsessmentsService(IAssessmentsRepository assessmentsRepository, IQuestionsRepository questionsRepository, 
+            IAnswersRepository answersRepository, ISkillsDocumentsRepository skillsDocumentsRepository)
         {
-            this.questionRepository = questionRepository;
+            this.assessmentsRepository = assessmentsRepository;
+            this.questionsRepository = questionsRepository;
+            this.answersRepository = answersRepository;
+            this.skillsDocumentsRepository = skillsDocumentsRepository;
         }
 
-        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(int assessmentId)
+        //Reading Assessments:
+
+        public Task<IReadOnlyList<Assessment>> GetAllAssessments()
         {
-            if (assessmentId == null) { throw new ArgumentNullException(nameof(assessmentId)); }
-             
-            return this.questionRepository.GetAllByAssessmentIdAsync(assessmentId);
+            return this.assessmentsRepository.GetAllAsync();
         }
 
-        public void SaveQuestionAnswer(int questionId, int usersAnswerId)
+        public Task<Assessment> GetAssessmentById(int assessmentId)
         {
-            if (questionId == null) { throw new ArgumentNullException(nameof(questionId)); }
-            if (usersAnswerId == null) { throw new ArgumentNullException(nameof(usersAnswerId)); }
+            return this.assessmentsRepository.GetByIdAsync(assessmentId);
+        }
+
+        //Reading Questions:
+
+        public Task<IReadOnlyList<Question>> GetAllQuestions()
+        {
+            return this.questionsRepository.GetAllAsync();
+        }
+
+        public Task<IReadOnlyList<Question>> GetQuestionsForAssessmentById(int assessmentId)
+        {    
+            return this.questionsRepository.GetAllByAssessmentIdAsync(assessmentId);
+        }
+
+        public Task<Question> GetQuestionById(int questionId)
+        {
+            return this.questionsRepository.GetByIdAsync(questionId);
+        }
+
+        //Reading Answers:
+
+        public Task<IReadOnlyList<Answer>> GetAnswersForAssessmentById(int assessmentId)
+        {
+            return this.answersRepository.GetAllByAssessmentIdAsync(assessmentId);
+        }
+
+        public Task<IReadOnlyList<Answer>> GetAnswersForQuestionById(int questionId)
+        {
+            return this.answersRepository.GetAllByQuestionIdAsync(questionId);
+        }
+
+        public Task<Answer> GetAnswerById(int answerId)
+        {
+            return this.answersRepository.GetByIdAsync(answerId);
+        }
+
+        //Writing Answers: 
+
+        public void SaveQuestionAnswer(int skillsDocumentId, int assessmentId, int questionId, string answerValue)
+        {
+            if (answerValue == null) { throw new ArgumentNullException(nameof(answerValue)); }
             
             //nothing in repository to call?
             throw new NotImplementedException();
