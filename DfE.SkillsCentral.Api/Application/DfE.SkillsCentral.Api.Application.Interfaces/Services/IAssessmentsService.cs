@@ -1,9 +1,11 @@
-﻿using DFC.SkillsCentral.Api.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DFC.SkillsCentral.Api.Domain.Models;
+using DfE.SkillsCentral.Api.Application.Interfaces.Models;
+
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
@@ -13,10 +15,10 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 
 
         //Saves user's given answer to the current question
-        public void SaveQuestionAnswer(int questionId, int usersAnswerId);
+        Task SaveSkillsDocument(SkillsDocument skillsDocument);
 
         //Gets all questions in a given assessment
-        public Task<IReadOnlyList<Question>> GetAssessmentQuestions(int assessmentId);
+        Task<AssessmentQuestions> GetAssessmentQuestions(string assessmentType);
 
     }
 }
