@@ -25,6 +25,7 @@ internal class GenerateReferenceDataSetupScript
     public static void Main(string[] args)
     {   
         JobFamiliesDataSetupScript.Execute($"{Environment.CurrentDirectory}\\JobFamilies.xml", $"JobFamilies.sql");
+        JobFamiliesInterestAreasDataSetupScript.Execute($"{Environment.CurrentDirectory}\\JobFamilies.xml", $"JobFamiliesInterestAreas.sql");
         CreateSQLScript(assessments);
         CreateSQLScript(questionsanswers);
     }
