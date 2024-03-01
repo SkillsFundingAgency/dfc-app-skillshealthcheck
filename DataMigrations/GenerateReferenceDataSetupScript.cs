@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using ReferenceDataMigrations;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class GenerateReferenceDataSetupScript
@@ -23,6 +24,7 @@ internal class GenerateReferenceDataSetupScript
 
     public static void Main(string[] args)
     {   
+        JobFamiliesDataSetupScript.Execute($"{Environment.CurrentDirectory}\\JobFamilies.xml", $"JobFamilies.sql");
         CreateSQLScript(assessments);
         CreateSQLScript(questionsanswers);
     }
