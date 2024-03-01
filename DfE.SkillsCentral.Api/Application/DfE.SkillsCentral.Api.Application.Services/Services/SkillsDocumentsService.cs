@@ -19,6 +19,16 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
             return await _skillsDocumentsRepository.GetByReferenceCodeAsync(skillsDocument.ReferenceCode);
         }
 
+        public void CalculateResults()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DownloadDocument()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<SkillsDocument?> GetSkillsDocument(int id)
         {
 
