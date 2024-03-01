@@ -30,7 +30,6 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             }
         }
 
-
         public async Task<Question> GetByIdAsync(int id)
         {
             using (var connection = dbContext.CreateConnection())

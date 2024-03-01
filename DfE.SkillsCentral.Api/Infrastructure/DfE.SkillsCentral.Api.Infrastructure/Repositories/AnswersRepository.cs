@@ -14,8 +14,11 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
         {
             this.dbContext = dbContext;
         }
-        
 
+        public Task<IReadOnlyList<Answer>> GetAllByAssessmentIdAsync(int assessmentId)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<IReadOnlyList<Answer>> GetAllByQuestionIdAsync(int questionId)
         {
