@@ -2707,3 +2707,45 @@ WHEN NOT matched THEN
         DELETE;
 
 SET IDENTITY_INSERT JobFamilies ON;
+
+
+DECLARE @JobFamiliesInterstAreas TABLE (
+    JobFamilyId INT,
+    Name NVARCHAR(255)
+)
+
+INSERT INTO @JobFamiliesInterstAreas (JobFamilyId , Name) VALUES
+(3, 'Organising'),
+(25, 'Caring'),
+(10, 'Scientific'),
+(23, 'Creative'),
+(14, 'Leisure'),
+(11, 'Engineering'),
+(27, 'Caring'),
+(18, 'Scientific'),
+(1, 'Data'),
+(4, 'Data'),
+(21, 'Organising'),
+(9, 'Engineering'),
+(15, 'Organising'),
+(13, 'Engineering'),
+(16, 'Influencing'),
+(17, 'Scientific'),
+(28, 'Caring'),
+(22, 'Creative'),
+(22, 'Verbal'),
+(24, 'Verbal'),
+(31, 'Influencing'),
+(19, 'Scientific'),
+(30, 'Command and Control'),
+(34, 'Caring'),
+(29, 'Leisure'),
+(6, 'Storage'),
+(12, 'Storage')
+
+MERGE JobFamiliesInterestAreas AS target using (SELECT * FROM @JobFamiliesInterstAreas) AS source
+ON source.JobFamilyId = target.JobFamilyId AND source.Name = target.Name
+WHEN NOT matched THEN
+    INSERT (JobFamilyId, Name) VALUES (source.JobFamilyId, source.Name)
+WHEN NOT matched BY source THEN
+    DELETE;
