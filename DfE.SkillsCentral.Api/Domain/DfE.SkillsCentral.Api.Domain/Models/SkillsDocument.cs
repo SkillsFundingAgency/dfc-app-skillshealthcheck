@@ -9,11 +9,11 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class SkillsDocument
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
@@ -22,9 +22,5 @@ namespace DFC.SkillsCentral.Api.Domain.Models
         public DataValues? DataValueKeys { get; set; }
 
         public string ReferenceCode { get; set; }
-
-
-
-
     }
 }

@@ -10,7 +10,7 @@ namespace DfE.SkillsCentral.Api.Application.Interfaces.Models
     public class AssessmentQuestions
     {
         public Assessment Assessment { get; set; }
-        public List<QuestionAnswers> Questions { get; set; }
+        public List<QuestionAnswers> Questions { get; set; } = new List<QuestionAnswers>();
 
     }
 }
