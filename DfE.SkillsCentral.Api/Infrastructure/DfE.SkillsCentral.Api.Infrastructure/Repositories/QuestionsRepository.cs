@@ -15,12 +15,12 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task<IReadOnlyList<Question>> GetAllAsync()
+        public Task<IReadOnlyList<Question>?> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IReadOnlyList<Question>> GetAllByAssessmentIdAsync(int assessmentId)
+        public async Task<IReadOnlyList<Question>?> GetAllByAssessmentIdAsync(int assessmentId)
         {
             using (var connection = dbContext.CreateConnection())
             {
@@ -30,7 +30,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             }
         }
 
-        public async Task<Question> GetByIdAsync(int id)
+        public async Task<Question?> GetByIdAsync(int id)
         {
             using (var connection = dbContext.CreateConnection())
             {

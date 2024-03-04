@@ -12,6 +12,6 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
         //TODO:
         //Task<IReadOnlyList<Assessment>> GetAllAsync();
 
-        Task<Assessment> GetByTypeAsync(string type);
+        Task<Assessment?> GetByTypeAsync(string type);
     }
 }

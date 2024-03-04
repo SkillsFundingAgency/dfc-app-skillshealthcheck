@@ -27,7 +27,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
 
 
 
-        public async Task<SkillsDocument> GetByIdAsync(int id)
+        public async Task<SkillsDocument?> GetByIdAsync(int id)
         {
             using (var connection = dbContext.CreateConnection())
             {
@@ -37,7 +37,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             }
         }
 
-        public async Task<SkillsDocument> GetByReferenceCodeAsync(string referenceCode)
+        public async Task<SkillsDocument?> GetByReferenceCodeAsync(string referenceCode)
         {
             using (var connection = dbContext.CreateConnection())
             {
