@@ -18,7 +18,7 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
         Task SaveSkillsDocument(SkillsDocument skillsDocument);
 
         //Gets all questions in a given assessment
-        Task<AssessmentQuestions> GetAssessmentQuestions(string assessmentType);
+        Task<AssessmentQuestions?> GetAssessmentQuestions(string assessmentType);
 
     }
 }
