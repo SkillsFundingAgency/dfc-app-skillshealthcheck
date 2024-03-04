@@ -34,7 +34,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
         //    }
         //}
 
-        public async Task<Assessment> GetByTypeAsync(string type)
+        public async Task<Assessment?> GetByTypeAsync(string type)
         {
             using (var connection = dbContext.CreateConnection())
             {

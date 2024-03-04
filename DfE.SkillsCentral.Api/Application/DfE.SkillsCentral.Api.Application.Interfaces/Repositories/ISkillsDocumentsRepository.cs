@@ -11,6 +11,6 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
     {
         Task AddAsync(SkillsDocument skillsDocument);
         Task UpdateAsync(SkillsDocument skillsDocument);
-        Task<SkillsDocument> GetByReferenceCodeAsync(string referenceCode);
+        Task<SkillsDocument?> GetByReferenceCodeAsync(string referenceCode);
     }
 }
