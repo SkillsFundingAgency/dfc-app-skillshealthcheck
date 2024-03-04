@@ -31,6 +31,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.ServiceModel;
+using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace DFC.App.SkillsHealthCheck
 {
@@ -40,13 +42,17 @@ namespace DFC.App.SkillsHealthCheck
         private const string CosmosDbSessionStateConfigAppSettings = "Configuration:CosmosDbConnections:SessionState";
         private const string RedisCacheConnectionStringAppSettings = "Cms:RedisCacheConnectionString";
         private const string GraphApiUrlAppSettings = "Cms:GraphApiUrl";
+        private const string WorkerThreadsConfigAppSettings = "ThreadSettings:WorkerThreads";
+        private const string IocpThreadsConfigAppSettings = "ThreadSettings:IocpThreads";
         private IConfiguration configuration;
         private IWebHostEnvironment env;
+        private readonly ILogger<Startup> logger;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             this.configuration = configuration;
             this.env = env;
+            this.logger = logger;
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper)
@@ -76,6 +82,7 @@ namespace DFC.App.SkillsHealthCheck
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureMinimumThreads();
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
             services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
@@ -132,5 +139,25 @@ namespace DFC.App.SkillsHealthCheck
             services.AddTransient<IGovNotifyService, GovNotifyService>();
             services.AddScoped<SessionStateFilter>();
         }
+
+        private void ConfigureMinimumThreads()
+        {
+            var workerThreads = Convert.ToInt32(configuration[WorkerThreadsConfigAppSettings]);
+
+            var iocpThreads = Convert.ToInt32(configuration[IocpThreadsConfigAppSettings]);
+
+            if (ThreadPool.SetMinThreads(workerThreads, iocpThreads))
+            {
+                logger.LogInformation(
+                    "ConfigureMinimumThreads: Minimum configuration value set. IOCP = {0} and WORKER threads = {1}",
+                    iocpThreads,
+                    workerThreads);
+            }
+            else
+            {
+                logger.LogWarning("ConfigureMinimumThreads: The minimum number of threads was not changed");
+            }
+        }
+
     }
 }
