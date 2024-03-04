@@ -19,11 +19,6 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
             return await _skillsDocumentsRepository.GetByReferenceCodeAsync(skillsDocument.ReferenceCode);
         }
 
-        public void CalculateResults()
-        {
-            throw new NotImplementedException();
-        }
-
         public string DownloadDocument()
         {
             throw new NotImplementedException();
@@ -33,16 +28,16 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
         {
 
             var skillsDocument =  await _skillsDocumentsRepository.GetByIdAsync(id);
-            if (skillsDocument == null)
-                return default;
+            //if (skillsDocument == null)
+            //    return default;
             return skillsDocument;
         }
 
         public async Task<SkillsDocument?> GetSkillsDocumentByReferenceCode(string referenceCode)
         {
             var skillsDocument = await _skillsDocumentsRepository.GetByReferenceCodeAsync(referenceCode);
-            if (skillsDocument == null)
-                return default;
+            //if (skillsDocument == null)
+            //    return default;
             return skillsDocument;
         }
     }
