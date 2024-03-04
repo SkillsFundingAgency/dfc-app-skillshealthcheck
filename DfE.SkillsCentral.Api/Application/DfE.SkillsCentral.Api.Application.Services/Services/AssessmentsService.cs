@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DfE.SkillsCentral.Api.Application.Services.Services
 {
-    public class AsessmentsService : IAssessmentsService
+    public class AssessmentsService : IAssessmentsService
     {
         private readonly IAssessmentsRepository _assessmentsRepository;
         private readonly IQuestionsRepository _questionsRepository;
@@ -18,7 +18,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
         private readonly ISkillsDocumentsRepository _skillsDocumentsRepository;
 
 
-        public AsessmentsService(IAssessmentsRepository assessmentsRepository, IQuestionsRepository questionsRepository, IAnswersRepository answersRepository, ISkillsDocumentsRepository skillsDocumentsRepository)
+        public AssessmentsService(IAssessmentsRepository assessmentsRepository, IQuestionsRepository questionsRepository, IAnswersRepository answersRepository, ISkillsDocumentsRepository skillsDocumentsRepository)
         {
             _assessmentsRepository = assessmentsRepository;
             _questionsRepository = questionsRepository;
