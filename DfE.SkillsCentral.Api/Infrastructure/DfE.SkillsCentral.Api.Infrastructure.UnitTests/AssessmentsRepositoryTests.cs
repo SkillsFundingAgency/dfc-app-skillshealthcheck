@@ -36,7 +36,7 @@ namespace DfE.SkillsCentral.Api.Infrastructure.UnitTests
             var assessment = await _assessmentsRepository.GetByIdAsync(assessmentId);
 
             Assert.NotNull(assessment);
-            Assert.Equal("test", assessment.AssessmentTitle);
+            Assert.Equal("test", assessment.Title);
         }
     }
 }

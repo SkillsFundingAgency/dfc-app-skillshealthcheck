@@ -19,14 +19,11 @@ public class JobFamiliesRepository : IJobFamiliesRepository
         var query = @"
             SELECT 
                 jf.*, 
-                ia.Id AS InterestAreaId, 
                 ia.Name AS InterestAreaName 
             FROM 
                 JobFamilies jf
             LEFT JOIN 
-                JobFamiliesInterestAreas jfia ON jf.Id = jfia.JobFamilyId
-            LEFT JOIN 
-                InterestAreas ia ON jfia.InterestAreaId = ia.Id";
+                JobFamiliesInterestAreas jfia ON jf.Id = jfia.JobFamilyId";
 
         using var connection = dbContext.CreateConnection();
         var jobFamilies = (await connection.QueryAsync<JobFamily, InterestArea, JobFamily>(
@@ -36,7 +33,7 @@ public class JobFamiliesRepository : IJobFamiliesRepository
                     jobFamily.InterestAreas.Add(interestArea);
                     return jobFamily;
                 },
-                splitOn: "InterestAreaId")
+                splitOn: "InterestAreaName")
             )
             .Distinct()
             .ToList();

@@ -2546,3 +2546,206 @@ WHEN NOT MATCHED BY SOURCE
 	THEN DELETE;
 
 
+
+SET IDENTITY_INSERT JobFamilies ON;
+
+DECLARE @JobFamilies TABLE (
+	        Id INT,
+            Code NVARCHAR(50),
+            Title NVARCHAR(255),
+            KeySkillsStatement1 NVARCHAR(MAX),
+            KeySkillsStatement2 NVARCHAR(MAX),
+            KeySkillsStatement3 NVARCHAR(MAX),
+            TakingResponsibility FLOAT,
+            WorkingWithOthers FLOAT,
+            PersuadingAndSpeaking FLOAT,
+            ThinkingCritically FLOAT,
+            CreationAndInnovation FLOAT,
+            PlanningAndOrganising FLOAT,
+            HandlingChangeAndPressure FLOAT,
+            AchievingResults FLOAT,
+            LearningAndTechnology FLOAT,
+            Verbal BIT,
+            Numerical BIT,
+            Checking BIT,
+            Spatial BIT,
+            Abstract BIT,
+            Mechanical BIT,
+            RelevantTasksCompletedText NVARCHAR(MAX),
+            RelevantTasksNotCompletedText NVARCHAR(MAX)
+        )
+
+
+INSERT INTO @JobFamilies (  Id,
+                            Code, 
+                            Title, 
+                            KeySkillsStatement1, 
+                            KeySkillsStatement2, 
+                            KeySkillsStatement3, 
+                            TakingResponsibility, 
+                            WorkingWithOthers, 
+                            PersuadingAndSpeaking,
+                            ThinkingCritically,
+                            CreationAndInnovation,
+                            PlanningAndOrganising,
+                            HandlingChangeAndPressure,
+                            AchievingResults,
+                            LearningAndTechnology,
+                            Verbal,
+                            Numerical,
+                            Checking,
+                            Spatial,
+                            Abstract,
+                            Mechanical,
+                            RelevantTasksCompletedText,
+                            RelevantTasksNotCompletedText) VALUES
+(3, 'F10001', 'Administrative and Clerical', 'coming up with new ideas', 'taking responsibility and leading others' ,'gathering information and spotting problems', 5.64150943396226, 4.49056603773585, 3.22641509433962, 5.26415094339623, 7.64150943396226, 5.09433962264151, 4.52830188679245, 4.56603773584906, 4.54716981132075, 0, 0, 1, 0, 0, 0, 'One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.'),
+(25, 'F10002', 'Alternative Therapies', 'gathering information and spotting problems', 'showing energy and drive' ,'planning tasks effectively', 4.35714285714286, 1, 3, 5.92857142857143, 3, 4.71428571428571, 2.92857142857143, 5.14285714285714, 4.64285714285714, 0, 0, 0, 0, 0, 0, '', ''),
+(10, 'F10003', 'Animals, Plants and Land', 'working well with others', 'showing energy and drive' ,'being clear in communication and convincing others', 3.72, 6.8, 5.68, 4.16, 3.24, 4.58, 4.7, 6.3, 5.1, 0, 0, 0, 1, 0, 0, 'One activity that is sometimes part of this kind of job is making judgements about space. Refer to the working with shapes activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is making judgements about space. You may be interested in trying the working with shapes activity which is available in the tasks area.'),
+(23, 'F10004', 'Arts, Crafts and Design', 'working well with others', 'being clear in communication and convincing others' ,'learning new information and using technology', 4.22058823529412, 6.26470588235294, 6.17647058823529, 5.41176470588235, 1.89705882352941, 4.86764705882353, 5.07352941176471, 3.83823529411765, 5.66176470588235, 0, 0, 0, 1, 0, 0, 'One activity that is sometimes part of this kind of job is making judgements about space. Refer to the working with shapes activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is making judgements about space. You may be interested in trying the working with shapes activity which is available in the tasks area.'),
+(14, 'F10005', 'Catering Services', 'showing energy and drive', 'learning new information and using technology' ,'gathering information and spotting problems', 3.35294117647059, 3.70588235294118, 5.05882352941176, 5.35294117647059, 4.82352941176471, 5.05882352941176, 5, 6.52941176470588, 6.11764705882353, 0, 0, 1, 0, 0, 0, 'One activity that is sometimes part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.'),
+(11, 'F10006', 'Construction', 'working well with others', 'being clear in communication and convincing others' ,'gathering information and spotting problems', 3.94871794871795, 6.30769230769231, 6.14102564102564, 5.33333333333333, 4.87179487179487, 3.20512820512821, 4.6025641025641, 4.30769230769231, 5.33333333333333, 0, 0, 0, 1, 0, 1, 'Activities often seen in this job include working with mechanical problems and making judgements about space. Refer to the solving mechanical problems and working with shapes activity skills areas of this report to remind yourself how you found these.', 'Activities often seen in this job include working with mechanical problems and making judgements about space. You may be interested in trying the solving mechanical problems and working with shapes activities which are available in the tasks area.'),
+(27, 'F10007', 'Education and Training', 'planning tasks effectively', 'gathering information and spotting problems' ,'showing energy and drive', 4.10416666666667, 1.95833333333333, 4.02083333333333, 6.35416666666667, 4.375, 7.85416666666667, 5.625, 5.8125, 4.89583333333333, 1, 0, 0, 0, 0, 0, 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(18, 'F10008', 'Environmental Sciences', 'working well with others', 'adapting to change and challenges' ,'being clear in communication and convincing others', 4.27272727272727, 7.06060606060606, 5.54545454545455, 3.21212121212121, 4.45454545454545, 4.33333333333333, 5.66666666666667, 4.93939393939394, 4.42424242424242, 0, 1, 0, 0, 0, 0, 'One activity that is often part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.'),
+(1, 'F10009', 'Financial Services', 'coming up with new ideas', 'taking responsibility and leading others' ,'planning tasks effectively', 5.97297297297297, 5.54054054054054, 3.43243243243243, 2.43243243243243, 7.86486486486487, 5.83783783783784, 5.7027027027027, 3.05405405405405, 4.16216216216216, 0, 1, 0, 0, 0, 0, 'One activity that is often part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.'),
+(8, 'F10010', 'General and Personal Services', 'showing energy and drive', 'learning new information and using technology' ,'gathering information and spotting problems', 4.94594594594595, 3.10810810810811, 4.02702702702703, 5.78378378378378, 5.54054054054054, 4.27027027027027, 4.24324324324324, 7.13513513513514, 5.94594594594595, 0, 0, 0, 0, 0, 0, '', ''),
+(4, 'F10011', 'Information Technology and Information Management', 'adapting to change and challenges', 'working well with others' ,'being clear in communication and convincing others', 5.1, 6.2, 6, 4.1, 4.4, 5.16666666666667, 7.06666666666667, 3.46666666666667, 3.5, 0, 0, 0, 0, 1, 0, 'One activity that is often part of this kind of job is using fairly abstract information. Refer to the solving abstract problems activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is using fairly abstract information. You may be interested in trying the solving abstract problems activity which is available in the tasks area.'),
+(21, 'F10012', 'Legal Services', 'coming up with new ideas', 'taking responsibility and leading others' ,'working well with others', 6.66666666666667, 5.81481481481481, 3, 4.74074074074074, 7.74074074074074, 5.48148148148148, 3.14814814814815, 4.92592592592593, 3.48148148148148, 1, 0, 0, 0, 0, 0, 'One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(9, 'F10013', 'Maintenance, Service and Repair', 'working well with others', 'being clear in communication and convincing others' ,'adapting to change and challenges', 5.22058823529412, 6.54411764705882, 6.54411764705882, 4.54411764705882, 4.60294117647059, 2.94117647058824, 5.30882352941176, 4.55882352941176, 4.72058823529412, 0, 0, 0, 0, 0, 1, 'One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.'),
+(15, 'F10014', 'Management and Planning', 'working well with others', 'planning tasks effectively' ,'coming up with new ideas', 3.74683544303797, 6.20253164556962, 4.40506329113924, 4.81012658227848, 5.29113924050633, 5.51898734177215, 4.48101265822785, 4.46835443037975, 5.15189873417722, 0, 1, 0, 0, 0, 0, 'One activity that is sometimes part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.'),
+(13, 'F10015', 'Manufacturing and Engineering', 'working well with others', 'being clear in communication and convincing others' ,'adapting to change and challenges', 4.76086956521739, 6.84782608695652, 6.61594202898551, 4.45652173913043, 4.18115942028986, 3.47826086956522, 5.47826086956522, 3.34057971014493, 5.31884057971014, 0, 0, 0, 0, 0, 1, 'One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.'),
+(16, 'F10016', 'Marketing, Selling and Advertising', 'planning tasks effectively', 'working well with others' ,'gathering information and spotting problems', 5.15789473684211, 6.28947368421053, 3.39473684210526, 5.42105263157895, 4.5, 6.68421052631579, 4.21052631578947, 4.23684210526316, 5.10526315789474, 1, 0, 0, 0, 0, 0, 'One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(17, 'F10017', 'Medical Technology', 'coming up with new ideas', 'adapting to change and challenges' ,'taking responsibility and leading others', 5.47619047619048, 3.80952380952381, 5.23809523809524, 4.61904761904762, 6.47619047619048, 3.23809523809524, 5.90476190476191, 5.28571428571429, 3.23809523809524, 0, 1, 0, 0, 0, 0, 'One activity that is sometimes part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.'),
+(28, 'F10018', 'Medicine and Nursing', 'coming up with new ideas', 'taking responsibility and leading others' ,'gathering information and spotting problems', 6.47887323943662, 1.85915492957746, 4.85915492957747, 5.59154929577465, 6.61971830985916, 4.64788732394366, 5.22535211267606, 5.47887323943662, 4.23943661971831, 0, 0, 0, 0, 1, 0, 'One activity that is often part of this kind of job is using fairly abstract information. Refer to the solving abstract problems activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is using fairly abstract information. You may be interested in trying the solving abstract problems activity which is available in the tasks area.'),
+(22, 'F10019', 'Performing Arts, Broadcast and Media', 'planning tasks effectively', 'working well with others' ,'learning new information and using technology', 4.17307692307692, 6.03846153846154, 5.65384615384615, 5.69230769230769, 2.13461538461538, 6.21153846153846, 4.92307692307692, 4.26923076923077, 5.90384615384615, 1, 0, 0, 0, 0, 0, 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(24, 'F10020', 'Publishing and Journalism', 'working well with others', 'planning tasks effectively' ,'adapting to change and challenges', 4.73913043478261, 6.56521739130435, 4, 4.95652173913043, 3.47826086956522, 5.56521739130435, 5.17391304347826, 3.8695652173913, 5.08695652173913, 1, 0, 0, 0, 0, 0, 'One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(31, 'F10021', 'Retail Sales and Customer Service', 'showing energy and drive', 'coming up with new ideas' ,'gathering information and spotting problems', 5.22448979591837, 3.28571428571429, 3.59183673469388, 5.77551020408163, 6.02040816326531, 5.44897959183673, 4.26530612244898, 6.18367346938776, 5.20408163265306, 0, 0, 1, 0, 0, 0, 'One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.'),
+(19, 'F10022', 'Science and Research', 'working well with others', 'being clear in communication and convincing others' ,'adapting to change and challenges', 5.40425531914894, 7.57446808510638, 6.02127659574468, 2.40425531914894, 3.36170212765957, 5.34042553191489, 5.8936170212766, 4.48936170212766, 3.74468085106383, 0, 1, 0, 0, 0, 0, 'Activities often seen in this job include using numerical information and thinking about abstract issues. Refer to the working with numbers and solving abstract problems activity skills areas of this report to remind yourself how you found these.', 'Activities often seen in this job include using numerical information and thinking about abstract issues. You may be interested in trying the working with numbers and solving abstract problems tasks which are available in the tasks area.'),
+(30, 'F10023', 'Security and Uniformed Services', 'coming up with new ideas', 'showing energy and drive' ,'gathering information and spotting problems', 4.46428571428571, 4.32142857142857, 3.64285714285714, 5.35714285714286, 6.10714285714286, 4.75, 3.60714285714286, 5.46428571428571, 4.71428571428571, 0, 0, 0, 0, 0, 0, '', ''),
+(34, 'F10024', 'Social Services', 'gathering information and spotting problems', 'planning tasks effectively' ,'coming up with new ideas', 5.27450980392157, 1.98039215686275, 3.19607843137255, 6.80392156862745, 5.82352941176471, 6.15686274509804, 3.74509803921569, 5.6078431372549, 5.70588235294118, 1, 0, 0, 0, 0, 0, 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.'),
+(29, 'F10025', 'Sport, Leisure and Tourism', 'showing energy and drive', 'gathering information and spotting problems' ,'planning tasks effectively', 4.7, 2.66, 4.26, 6.3, 4.82, 5.98, 3.78, 6.7, 5.08, 0, 0, 1, 0, 0, 0, 'One activity that is sometimes part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.', 'One activity that is sometimes part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.'),
+(6, 'F10026', 'Storage, Dispatching and Delivery', 'learning new information and using technology', 'showing energy and drive' ,'gathering information and spotting problems', 4.85714285714286, 5, 4.52380952380952, 5.42857142857143, 5.19047619047619, 3.66666666666667, 4.42857142857143, 5.71428571428571, 6.19047619047619, 0, 0, 1, 0, 0, 0, 'One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.'),
+(12, 'F10027', 'Transport', 'learning new information and using technology', 'showing energy and drive' ,'coming up with new ideas', 5.0625, 4.28125, 4.40625, 4.4375, 5.875, 3.53125, 4.9375, 5.96875, 6.5, 0, 0, 0, 0, 0, 1, 'One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.', 'One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.')
+
+MERGE JobFamilies AS target using (SELECT * FROM   @JobFamilies) AS source
+ON source.id = target.Id
+WHEN matched THEN
+    UPDATE SET target.Code = source.Code,
+             target.Title = source.Title,
+             target.KeySkillsStatement1 = source.KeySkillsStatement1,
+             target.KeySkillsStatement2 = source.KeySkillsStatement2,
+             target.KeySkillsStatement3 = source.KeySkillsStatement3,
+             target.TakingResponsibility = source.TakingResponsibility,
+             target.WorkingWithOthers = source.WorkingWithOthers,
+             target.PersuadingAndSpeaking = source.PersuadingAndSpeaking,
+             target.ThinkingCritically = source.ThinkingCritically,
+             target.CreationAndInnovation = source.CreationAndInnovation,
+             target.PlanningAndOrganising = source.PlanningAndOrganising,
+             target.HandlingChangeAndPressure =
+             source.HandlingChangeAndPressure,
+             target.AchievingResults =
+             source.AchievingResults,
+             target.LearningAndTechnology = source.LearningAndTechnology,
+             target.Verbal = source.Verbal,
+             target.Numerical = source.Numerical,
+             target.Checking = source.Checking,
+             target.Spatial = source.Spatial,
+             target.Abstract = source.Abstract,
+             target.Mechanical = source.Mechanical,
+             target.RelevantTasksCompletedText =
+             source.RelevantTasksCompletedText,
+             target.RelevantTasksNotCompletedText =
+             source.RelevantTasksNotCompletedText
+WHEN NOT matched THEN
+    INSERT ( Id,
+           Code,
+           Title,
+           KeySkillsStatement1,
+           KeySkillsStatement2,
+           KeySkillsStatement3,
+           TakingResponsibility,
+           WorkingWithOthers,
+           PersuadingAndSpeaking,
+           ThinkingCritically,
+           CreationAndInnovation,
+           PlanningAndOrganising,
+           HandlingChangeAndPressure,
+           AchievingResults,
+           LearningAndTechnology,
+           Verbal,
+           Numerical,
+           Checking,
+           Spatial,
+           Abstract,
+           Mechanical,
+           RelevantTasksCompletedText,
+           RelevantTasksNotCompletedText )
+    VALUES ( source.Id,
+           source.Code,
+           source.Title,
+           source.KeySkillsStatement1,
+           source.KeySkillsStatement2,
+           source.KeySkillsStatement3,
+           source.TakingResponsibility,
+           source.WorkingWithOthers,
+           source.PersuadingAndSpeaking,
+           source.ThinkingCritically,
+           source.CreationAndInnovation,
+           source.PlanningAndOrganising,
+           source.HandlingChangeAndPressure,
+           source.AchievingResults,
+           source.LearningAndTechnology,
+           source.Verbal,
+           source.Numerical,
+           source.Checking,
+           source.Spatial,
+           source.Abstract,
+           source.Mechanical,
+           source.RelevantTasksCompletedText,
+           source.RelevantTasksNotCompletedText )
+    WHEN NOT matched BY source THEN
+        DELETE;
+
+SET IDENTITY_INSERT JobFamilies ON;
+
+
+DECLARE @JobFamiliesInterstAreas TABLE (
+    JobFamilyId INT,
+    Name NVARCHAR(255)
+)
+
+INSERT INTO @JobFamiliesInterstAreas (JobFamilyId , Name) VALUES
+(3, 'Organising'),
+(25, 'Caring'),
+(10, 'Scientific'),
+(23, 'Creative'),
+(14, 'Leisure'),
+(11, 'Engineering'),
+(27, 'Caring'),
+(18, 'Scientific'),
+(1, 'Data'),
+(4, 'Data'),
+(21, 'Organising'),
+(9, 'Engineering'),
+(15, 'Organising'),
+(13, 'Engineering'),
+(16, 'Influencing'),
+(17, 'Scientific'),
+(28, 'Caring'),
+(22, 'Creative'),
+(22, 'Verbal'),
+(24, 'Verbal'),
+(31, 'Influencing'),
+(19, 'Scientific'),
+(30, 'Command and Control'),
+(34, 'Caring'),
+(29, 'Leisure'),
+(6, 'Storage'),
+(12, 'Storage')
+
+MERGE JobFamiliesInterestAreas AS target using (SELECT * FROM @JobFamiliesInterstAreas) AS source
+ON source.JobFamilyId = target.JobFamilyId AND source.Name = target.Name
+WHEN NOT matched THEN
+    INSERT (JobFamilyId, Name) VALUES (source.JobFamilyId, source.Name)
+WHEN NOT matched BY source THEN
+    DELETE;

@@ -15,4 +15,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DfE.SkillsCentral.Api\Domain\DfE.SkillsCentral.Api.Domain\DfE.SkillsCentral.Api.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JobFamilies.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
