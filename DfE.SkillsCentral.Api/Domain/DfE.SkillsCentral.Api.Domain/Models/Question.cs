@@ -10,7 +10,7 @@ namespace DFC.SkillsCentral.Api.Domain.Models
     {
         public int Id { get; }
 
-        public int AssessmentId { get; }
+        public int? AssessmentId { get; }
 
         public string? Title { get; }
 
