@@ -158,6 +158,15 @@
     },
     "ContentMode": {
       "value": "__ContentMode__"
+        },
+        "SqlElasticPoolName": {
+            "value": "__elasticPoolName__"
+        },
+        "SqlServerName": {
+            "value": "__sharedSqlServerName__"
+        },
+        "SqlResourceGroupName": {
+            "value": "__SharedResourceGroupName__"
     }
   }
 }
