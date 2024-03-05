@@ -14,6 +14,7 @@ parameters:
   AppSharedResourceGroup: ""
   appSharedCosmosDBName: ""
   AppServiceName: ""
+  ApiAppServiceName: ""
   SharedResourceGroupName: ""
   ApimServiceName: ""
   ApimProductInstanceName: ""
@@ -21,6 +22,7 @@ parameters:
   ApiId: ""
   APIMPolicyPath: ""
   ApimImportScript: ""
+  PSScriptPath: ""
   SpecificationPath: ""
   PageRegistrationPath: ""
   PageRegistrationFile: ""
@@ -49,6 +51,7 @@ jobs:
                 ArmTemplateFolder: "${{ parameters.ArmTemplateFolder }}"
                 AppSharedResourceGroup: "${{ parameters.AppSharedResourceGroup }}"
                 appSharedCosmosDBName: "${{ parameters.appSharedCosmosDBName }}"
+                PSScriptPath: "${{ parameters.PSScriptPath }}"
 
   - deployment: DeployApplication
     displayName: "Deploy Application"
@@ -75,10 +78,28 @@ jobs:
                 ApimImportScript: "${{ parameters.ApimImportScript }}"
                 SpecificationPath: "${{ parameters.SpecificationPath }}"
 
+  - deployment: DeployApiApplication
+    displayName: "Deploy Api Application"
+    environment: ${{ parameters.EnvironmentName }}
+    dependsOn:
+      - DeployApplication
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - template: ../StepTemplates/deploy-azure-api-app-service.yml
+              parameters:
+                WebAppName: "${{ parameters.ApiAppServiceName }}"
+                AzureSubscription: "${{ parameters.AzureSubscription }}"
+                DfCDevopsPath: "${{ parameters.DfCDevopsPath }}"
+                PackageFile: "${{ parameters.PackageFile }}"
+                ResourceGroup: "${{ parameters.ResourceGroup }}"
+                SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
+
   - deployment: DeployRegistration
     displayName: "Deploy page registration"
     environment: ${{ parameters.EnvironmentName }}
-    dependsOn: DeployApplication
+    dependsOn: DeployApiApplication
     strategy:
       runOnce:
         deploy:

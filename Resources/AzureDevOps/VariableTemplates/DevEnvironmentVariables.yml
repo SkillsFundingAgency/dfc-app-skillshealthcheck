@@ -3,8 +3,12 @@ variables:
     value: dev
   - name: AppServiceName
     value: $(WebAppPrefix)-as
+  - name: ApiAppServiceName
+    value: $(ApiAppPrefix)-api-as
   - name: cosmosDBCollectionName
     value: shared-content
+  - name: SqlDatabaseName
+    value: dfc-dev-app-skillscentral-db
   - name: ResourceGroup
     value: $(WebAppPrefix)-rg
   - name: WebAppProjectName
@@ -27,6 +31,8 @@ variables:
     value: https://$(AppServiceName).$(appServiceDomain)
   - name: WebAppPrefix
     value: dfc-dev-app-skillshealthcheck
+  - name: ApiAppPrefix
+    value: dfc-dev-app-skillscentral
   - name: SubscriptionSettingsFilterIncludeEventTypes3
     value:
   - name: SubscriptionSettingsFilterIncludeEventTypes4

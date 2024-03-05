@@ -121,6 +121,15 @@
         },
         "workspaceResourceGroup": {
             "value": "aResourceGroup"
+        },
+        "SqlElasticPoolName": {
+            "value": "an-elastic-pool"
+        },
+        "SqlServerName": {
+            "value": "a-sql-server"
+        },
+        "SqlResourceGroupName": {
+            "value": "dfc-dev-shared-rg"
         }
     }
 }

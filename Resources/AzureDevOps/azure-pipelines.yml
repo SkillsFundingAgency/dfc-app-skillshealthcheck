@@ -1,6 +1,7 @@
 variables:
   ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
   SolutionBaseName: "DFC.App.SkillsHealthCheck"
+  SolutionBaseNameApi: "DFC.SkillsCentral.Api"
   BuildPlatform: "any cpu"
   BuildConfiguration: "release"
 
@@ -10,7 +11,7 @@ resources:
     - repository: dfc-devops
       type: github
       name: SkillsFundingAgency/dfc-devops
-      ref: refs/tags/v1.14.0
+      ref: refs/tags/v1.16.0
       endpoint: "GitHub (ESFA)"
 
 pool:
@@ -56,7 +57,7 @@ stages:
               artifactName: ${{ variables.SolutionBaseName }}.OpenAPIDocs
 
           - task: PublishPipelineArtifact@1
-            displayName: Publish API import script to Pipeline Artifact
+            displayName: Publish Powershell scripts to Pipeline Artifact
             inputs:
               targetPath: "$(System.DefaultWorkingDirectory)/Resources/Scripts"
               artifactName: ${{ variables.SolutionBaseName }}.Scripts
@@ -73,6 +74,18 @@ stages:
           - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-unit-integration-sonar.yml@dfc-devops
             parameters:
               SolutionBaseName: $(SolutionBaseName)
+              BuildPlatform: $(BuildPlatform)
+              BuildConfiguration: $(BuildConfiguration)
+              PublishWebApp: true
+              TestSuffix: UnitTests
+              IntegrationTestSuffix: IntegrationTests
+
+      - job: BuildDotNetCoreApi
+        displayName: Build-DotNetCore-Api
+        steps:
+          - template: AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build.yml@dfc-devops
+            parameters:
+              SolutionBaseName: $(SolutionBaseNameApi)
               BuildPlatform: $(BuildPlatform)
               BuildConfiguration: $(BuildConfiguration)
               PublishWebApp: true
@@ -103,11 +116,13 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: LAB_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -117,6 +132,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -148,11 +164,13 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: DEV_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -192,11 +210,13 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: SIT_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -237,11 +257,13 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PP_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -281,11 +303,13 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PRD_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
