@@ -37,7 +37,7 @@ steps:
     ResourceGroupName: '${{ parameters.ResourceGroup }}'
     SlotName: staging
 
-- task: AzurePowerShell@4
+- task: AzurePowerShell@5
   displayName: 'Perform smoke test'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
@@ -45,6 +45,8 @@ steps:
     ScriptArguments: |
      -ResourceGroup ${{ parameters.ResourceGroup }} -AppName ${{ parameters.WebAppName }} -Path '/health/ping' -Slot staging -TimeoutInSecs 20 -Verbose
     FailOnStandardError: true
+    ScriptType: FilePath
+    pwsh: true
     azurePowerShellVersion: LatestVersion
 
 - task: AzureAppServiceManage@0
@@ -71,7 +73,7 @@ steps:
     SourcePath: '${{ parameters.SpecificationPath }}'
     TargetFileNames: 'WebhookReceiver.txt'
 
-- task: AzurePowerShell@4	
+- task: AzurePowerShell@5
   displayName: 'Import OpenAPI specification'	
   inputs:	
     azureSubscription: '${{ parameters.AzureSubscription }}'	
@@ -79,6 +81,9 @@ steps:
     ScriptArguments: "-ApimResourceGroup '${{ parameters.SharedResourceGroupName }}' -InstanceName '${{ parameters.ApimServiceName }}' -ApiName '${{ parameters.ApimProductInstanceName }}-${{ parameters.ApiName }}' -OpenApiSpecificationFile '${{ parameters.SpecificationPath }}/WebhookReceiver.txt' -ApiPath '${{ parameters.ApimProductInstanceName }}/${{ parameters.ApiName }}'"	
     azurePowerShellVersion: LatestVersion
     FailOnStandardError: true
+    ScriptType: FilePath
+    pwsh: true
+
 
 - task: esfadevops.Tokenization.custom-build-task.Tokenization@0
   displayName: 'Tokenization: Transform EventGrid APIM Policy File'
@@ -94,3 +99,6 @@ steps:
     ScriptArguments: '-PolicyScope operation -ApimResourceGroup ${{ parameters.SharedResourceGroupName }} -ApimServiceName ${{ parameters.ApimServiceName }} -PolicyFilePath "$(Agent.BuildDirectory)/dfc.app.skillshealthcheck.apimpolicies/ApimPolicy-IsolatedAppServiceAsEventGridWebhookEndpoint.xml" -ApiId ${{ parameters.ApiId }} -OperationId post-api-webhook-receiveevents'
     azurePowerShellVersion: LatestVersion
     FailOnStandardError: true
+    ScriptType: FilePath
+    pwsh: true
+

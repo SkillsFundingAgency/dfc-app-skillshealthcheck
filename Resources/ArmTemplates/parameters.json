@@ -130,6 +130,15 @@
         },
         "workspaceResourceGroup": {
             "value": "__sharedLogAnalyticsResourceGroup__"
+        },
+        "SqlElasticPoolName": {
+            "value": "__elasticPoolName__"
+        },
+        "SqlServerName": {
+            "value": "__sharedSqlServerName__"
+        },
+        "SqlResourceGroupName": {
+            "value": "__SharedResourceGroupName__"
         }
     }
 }
