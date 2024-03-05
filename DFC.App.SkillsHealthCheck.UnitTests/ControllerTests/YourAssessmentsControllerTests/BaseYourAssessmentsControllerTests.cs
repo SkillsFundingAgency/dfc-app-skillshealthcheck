@@ -6,6 +6,7 @@ using DFC.Compui.Sessionstate;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -26,13 +27,15 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
 
         protected IYourAssessmentsService FakeYourAssessmentsService { get; } = A.Fake<IYourAssessmentsService>();
 
+        protected IConfiguration fakeConfiguration { get; } = A.Fake<IConfiguration>();
+
         protected YourAssessmentsController BuildHomeController(string mediaTypeName)
         {
             var httpContext = new DefaultHttpContext();
             sharedContentRedisInterface = A.Fake<ISharedContentRedisInterface>();
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new YourAssessmentsController(Logger, SessionStateService, SessionStateOptions, sharedContentRedisInterface, FakeYourAssessmentsService)
+            var controller = new YourAssessmentsController(Logger, SessionStateService, SessionStateOptions, sharedContentRedisInterface, FakeYourAssessmentsService, fakeConfiguration)
             {
                 ControllerContext = new ControllerContext()
                 {

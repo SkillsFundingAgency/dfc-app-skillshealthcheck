@@ -80,7 +80,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
                 Html = "test"
             };
             this.factory.MockSharedContentRedis.Setup(
-                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>()))
+                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>(), "PUBLISHED"))
             .ReturnsAsync(htmlString);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
@@ -108,7 +108,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
                 Html = "test"
             };
             this.factory.MockSharedContentRedis.Setup(
-                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>()))
+                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>(), "PUBLISHED"))
             .ReturnsAsync(htmlString);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));

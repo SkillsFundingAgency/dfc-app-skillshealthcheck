@@ -18,6 +18,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -32,18 +33,22 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<QuestionController> logger;
         private readonly IQuestionService questionService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
+        private string status;
 
         public QuestionController(
             ILogger<QuestionController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
             ISharedContentRedisInterface sharedContentRedis,
-            IQuestionService questionService)
+            IQuestionService questionService,
+            IConfiguration configuration)
             : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentRedis = sharedContentRedis;
             this.questionService = questionService;
+            status = configuration.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
@@ -129,7 +134,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<RightBarViewModel> GetRightBarViewModel(AssessmentType assessmentType)
         {
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId, status);
 
             var rightBarViewModel = new RightBarViewModel
             {

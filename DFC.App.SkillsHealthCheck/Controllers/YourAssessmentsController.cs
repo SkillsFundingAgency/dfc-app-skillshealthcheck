@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -29,18 +31,22 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ILogger<YourAssessmentsController> logger;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
+        private string status;
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
             ISharedContentRedisInterface sharedContentRedis,
-            IYourAssessmentsService yourAssessmentsService)
+            IYourAssessmentsService yourAssessmentsService,
+            IConfiguration configuration)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
             this.sharedContentRedis = sharedContentRedis;
             this.yourAssessmentsService = yourAssessmentsService;
+            status = configuration.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
@@ -105,7 +111,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<RightBarViewModel> GetRightBarViewModel()
         {
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId);
+            if (string.IsNullOrEmpty(status))
+            {
+                status = "PUBLISHED";
+            }
+
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId, status);
 
             var rightBarViewModel = new RightBarViewModel
             {

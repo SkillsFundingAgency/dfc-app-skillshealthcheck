@@ -136,6 +136,9 @@
     },
     "CmsRedisCacheConnectionString": {
       "value": "clientsecret"
+    },
+    "ContentMode": {
+      "value": "PUBLISHED"
     }
   }
 }

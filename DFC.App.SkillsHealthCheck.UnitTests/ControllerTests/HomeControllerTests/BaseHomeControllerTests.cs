@@ -9,6 +9,7 @@ using FakeItEasy;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -29,6 +30,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
         protected ISharedContentRedisInterface SharedContentRedisInterface { get; } = A.Fake<ISharedContentRedisInterface>();
 
+        protected IConfiguration fakeConfiguration { get; } = A.Fake<IConfiguration>();
+
         protected const string TestContentId = "87dfb08e-13ec-42ff-9405-5bbde048827a";
 
         protected HomeController BuildHomeController(string mediaTypeName)
@@ -37,7 +40,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTest
 
             httpContext.Request.Headers[HeaderNames.Accept] = mediaTypeName;
 
-            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, SharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService)
+            var controller = new HomeController(Logger, SessionStateService, SessionStateOptions, SharedContentRedisInterface, FakeSkillsHealthCheckService, FakeYourAssessmentsService, fakeConfiguration)
             {
                 ControllerContext = new ControllerContext()
                 {
