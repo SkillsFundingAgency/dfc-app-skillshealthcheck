@@ -5,6 +5,7 @@ using DFC.SkillsCentral.Api.Infrastructure.Repositories;
 using DfE.SkillsCentral.Api.Application.Interfaces.Models;
 using DfE.SkillsCentral.Api.Application.Services.Services;
 using Moq;
+using System.Data.Common;
 
 namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
 {
@@ -22,6 +23,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
         IReadOnlyList<Answer> answers1 = new List<Answer>() { new Answer(), new Answer() };
         IReadOnlyList<Answer> answers2 = new List<Answer>() { new Answer(), new Answer() };
         SkillsDocument skillsDocument = new SkillsDocument();
+        Task task = Task.CompletedTask;
 
         public AssessmentsServiceTests() 
         {
@@ -35,7 +37,6 @@ namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
             _answersRepository.Setup(x => x.GetAllByQuestionIdAsync(questions[0].Id)).ReturnsAsync(answers1);
             _answersRepository.Setup(x => x.GetAllByQuestionIdAsync(questions[1].Id)).ReturnsAsync(answers2);
 
-            //_skillsDocumentsRepository.Setup(x => x.UpdateAsync(skillsDocument)).ThrowsAsync(new InvalidOperationException());
 
             _assessmentsService = new AssessmentsService(_assessmentsRepository.Object, _questionsRepository.Object, _answersRepository.Object, _skillsDocumentsRepository.Object);
         }
@@ -64,12 +65,15 @@ namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
         }
 
 
-        //[Fact]
-        //public async Task SaveSkillsDocument_ShouldUpdateSkillsDocument_WhenGivenValidDocument()
-        //{
-        //    await _assessmentsService.SaveSkillsDocument(skillsDocument);
-        //    Assert.Throws<InvalidOperationException>();
-        //}
+        [Fact]
+        public async Task SaveSkillsDocument_ShouldUpdateSkillsDocument_WhenGivenValidDocument()
+        {
+            _skillsDocumentsRepository.Setup(x => x.UpdateAsync(skillsDocument)).Returns(Task.CompletedTask).Verifiable();
+
+            await _assessmentsService.SaveSkillsDocument(skillsDocument);
+
+            _skillsDocumentsRepository.Verify(x=>x.UpdateAsync(skillsDocument), Times.Once);
+        }
 
     }
 }
