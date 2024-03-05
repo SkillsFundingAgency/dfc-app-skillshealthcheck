@@ -149,6 +149,9 @@
     },
     "workspaceResourceGroup": {
       "value": "__sharedLogAnalyticsResourceGroup__"
+    },
+    "ContentMode": {
+      "value": "__ContentMode__"
     }
   }
 }
