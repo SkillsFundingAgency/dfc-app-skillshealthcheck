@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using DfE.SkillsCentral.Api.Domain.Models;
+using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -46,8 +47,17 @@ internal class SkillsDocumentMigrationScript
 
                         string result = ConvertValuesIntoCorrectDataTypes(sortedResultJson);
 
+                        string resultFinal = RemoveTopLevelDataValues(result);
+
+
+
+
+
+
+
+
                         Console.WriteLine(parser.LineNumber);
-                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])}),");
+                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(resultFinal)}, {N(fields[6])}),");
 
                     }
 
@@ -77,7 +87,29 @@ internal class SkillsDocumentMigrationScript
         else
         { return $"'{input}'"; }
     }
-    public static string ConvertValuesIntoCorrectDataTypes(string input)
+
+    public static string RemoveTopLevelDataValues(string input)
+    {
+        if (input == "NULL")
+            return input;
+        JObject jsonObject = JObject.Parse(input);
+        JObject dataValues = (JObject)jsonObject["DataValues"];
+
+        // Remove the "DataValues" key from the parent object
+        jsonObject.Remove("DataValues");
+
+        // Add the contents of "DataValues" directly to the parent object
+        foreach (var property in dataValues.Properties())
+        {
+            jsonObject.Add(property.Name, property.Value);
+        }
+
+        // Convert the result back to JSON
+        return jsonObject.ToString();
+
+    }
+
+        public static string ConvertValuesIntoCorrectDataTypes(string input)
     {
         if (input == "NULL")
             return input;
@@ -106,19 +138,19 @@ internal class SkillsDocumentMigrationScript
                     section["Answers"] = new JArray();
                 }
             }
-            // Convert "Answers" to integer array for specific sections
-            else if (property.Name == "Checking" || property.Name == "Motivation" || property.Name == "Personal" || property.Name == "Interest" || property.Name == "SkillAreas")
-            {
-                if (section["Answers"] != null)
-                {
-                    string answersString = section["Answers"].ToString();
-                    section["Answers"] = !string.IsNullOrEmpty(answersString) ? new JArray(Array.ConvertAll(answersString.Split(','), int.Parse)) : new JArray();
-                }
-                else
-                {
-                    section["Answers"] = new JArray();
-                }
-            }
+            //// Convert "Answers" to integer array for specific sections
+            //else if (property.Name == "Checking" || property.Name == "Motivation" || property.Name == "Personal" || property.Name == "Interest" || property.Name == "SkillAreas")
+            //{
+            //    if (section["Answers"] != null)
+            //    {
+            //        string answersString = section["Answers"].ToString();
+            //        section["Answers"] = !string.IsNullOrEmpty(answersString) ? new JArray(Array.ConvertAll(answersString.Split(','), int.Parse)) : new JArray();
+            //    }
+            //    else
+            //    {
+            //        section["Answers"] = new JArray();
+            //    }
+            //}
 
             // Convert "Ease", "Timing", and "Enjoyment" to integers
             if (section["Ease"] != null && !string.IsNullOrEmpty(section["Ease"].ToString()))
@@ -131,7 +163,7 @@ internal class SkillsDocumentMigrationScript
             }
         }
 
-        return JsonConvert.SerializeObject(data/*, Formatting.Indented*/);
+        return JsonConvert.SerializeObject(data, Formatting.Indented);
     }
 
     public static string ConvertXmlIntoJson(string input)
@@ -195,13 +227,7 @@ internal class SkillsDocumentMigrationScript
                         ((JArray)newDataValues[topLevelName]["ExcludedJobFamilies"]).Add(property.Value);
                     }
                 }
-                //else if (subNodeName.StartsWith("Answers"))
-                //{
-                //    if (newDataValues[topLevelName]["Answers"] == null)
-                //    {
-                //        newDataValues[topLevelName]["Answers"] = new JArray();
-                //    }
-                //}
+              
                 else
                 {
                     // Add or overwrite sub-node
