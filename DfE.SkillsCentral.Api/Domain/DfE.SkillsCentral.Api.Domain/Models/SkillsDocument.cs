@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Domain.Models
 {
+
     public class SkillsDocument
     {
+        public SkillsDocument()
+        {
+            this.DataValueKeys = new DataValues();
+        }
         public int? Id { get; set; }
 
         public DateTime? CreatedAt { get; set; }
@@ -23,4 +28,6 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 
         public string ReferenceCode { get; set; }
     }
+
+    
 }
