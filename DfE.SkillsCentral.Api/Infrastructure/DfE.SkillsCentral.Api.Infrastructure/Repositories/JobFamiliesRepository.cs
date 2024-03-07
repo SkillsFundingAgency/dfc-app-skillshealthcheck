@@ -19,7 +19,7 @@ public class JobFamiliesRepository : IJobFamiliesRepository
         var query = @"
             SELECT 
                 jf.*, 
-                ia.Name AS InterestAreaName 
+                jfia.Name AS InterestAreaName 
             FROM 
                 JobFamilies jf
             LEFT JOIN 
