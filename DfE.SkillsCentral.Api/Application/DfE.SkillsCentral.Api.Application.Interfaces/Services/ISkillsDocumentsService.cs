@@ -9,16 +9,10 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
     public interface ISkillsDocumentsService
     {
-
         Task<SkillsDocument?> GetSkillsDocument(int id);
 
         Task<SkillsDocument?> GetSkillsDocumentByReferenceCode(string referenceCode);
 
         Task<SkillsDocument> CreateSkillsDocument(SkillsDocument skillsDocument);
-
-
-        string DownloadDocument();
-
-
     }
 }

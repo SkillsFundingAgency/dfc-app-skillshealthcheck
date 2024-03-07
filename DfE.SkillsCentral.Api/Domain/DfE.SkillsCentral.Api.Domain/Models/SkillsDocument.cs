@@ -10,10 +10,6 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 
     public class SkillsDocument
     {
-        public SkillsDocument()
-        {
-            this.DataValueKeys = new DataValues();
-        }
         public int? Id { get; set; }
 
         public DateTime? CreatedAt { get; set; }
@@ -24,9 +20,9 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 
         public string? UpdatedBy { get; set; }
 
-        public DataValues? DataValueKeys { get; set; }
+        public DataValues? DataValueKeys { get; set; } = new();
 
-        public string ReferenceCode { get; set; }
+        public string? ReferenceCode { get; set; }
     }
 
     
