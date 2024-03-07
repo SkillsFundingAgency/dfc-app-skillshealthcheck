@@ -126,22 +126,23 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
         {
             XmlDocument doc = null;
 
-            foreach (SkillsDocumentDataValue dv in document.DataValueKeys)
-            {
-                try
-                {
-                    XmlDocument escapeDocItems = new XmlDocument();
-                    escapeDocItems.LoadXml(dv.Value);
-                    EscapeSpecialCharacters(escapeDocItems.ChildNodes);
-                    dv.Value = escapeDocItems.OuterXml;
-                }
-                catch (Exception ex)
-                {
-                    string Val = SecurityElement.Escape(dv.Value);
+            // TODO: Need update to GenerateXML from SkillsDocument for Word generation 
+            //foreach (var dv in document.DataValueKeys)
+            //{
+            //    try
+            //    {
+            //        XmlDocument escapeDocItems = new XmlDocument();
+            //        escapeDocItems.LoadXml(dv.Value);
+            //        EscapeSpecialCharacters(escapeDocItems.ChildNodes);
+            //        dv.Value = escapeDocItems.OuterXml;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        string Val = SecurityElement.Escape(dv.Value);
 
-                    dv.Value = Val.Replace("\n", "</w:t><w:br/><w:t>");
-                }
-            }
+            //        dv.Value = Val.Replace("\n", "</w:t><w:br/><w:t>");
+            //    }
+            //}
 
             System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(document.GetType());
             StringBuilder builder = new StringBuilder();
