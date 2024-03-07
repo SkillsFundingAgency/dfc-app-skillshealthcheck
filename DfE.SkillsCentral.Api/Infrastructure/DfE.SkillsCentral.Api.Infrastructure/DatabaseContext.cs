@@ -18,6 +18,6 @@ namespace DFC.SkillsCentral.Api.Infrastructure
             _configuration = configuration;
         }
 
-        public IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("DBConnection"));
+        public IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
     }
 }
