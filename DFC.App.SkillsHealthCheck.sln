@@ -75,6 +75,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsDataMigrations", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceDataMigrations", "DataMigrations\ReferenceDataMigrations.csproj", "{0316919A-7AE0-435C-B1AE-851E4F8D4696}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C7D93DD3-01C5-439C-9291-2112B895E2FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfe.SkillsCentral.Api.Tests.Fixtures", "DfE.SkillsCentral.Api\Tests\Dfe.SkillsCentral.Api.Tests.Fixtures\Dfe.SkillsCentral.Api.Tests.Fixtures.csproj", "{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +163,10 @@ Global
 		{0316919A-7AE0-435C-B1AE-851E4F8D4696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0316919A-7AE0-435C-B1AE-851E4F8D4696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0316919A-7AE0-435C-B1AE-851E4F8D4696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +198,8 @@ Global
 		{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC} = {76D8C62E-E9F3-464F-B922-E18F28445603}
 		{9EF08E5F-DBFD-4FBE-8D41-870FFA86BD0F} = {1BAEF60D-AAC6-4211-8F94-CD3BC1AACAAD}
 		{0316919A-7AE0-435C-B1AE-851E4F8D4696} = {1BAEF60D-AAC6-4211-8F94-CD3BC1AACAAD}
+		{C7D93DD3-01C5-439C-9291-2112B895E2FE} = {A213DA57-B2BC-4BAF-9D3F-B0990A839C95}
+		{837B7DC1-B47C-4CE1-BE82-8DF08FF06B95} = {C7D93DD3-01C5-439C-9291-2112B895E2FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {042BE92B-75BC-4D9D-A8A0-1547EC76E1C8}
