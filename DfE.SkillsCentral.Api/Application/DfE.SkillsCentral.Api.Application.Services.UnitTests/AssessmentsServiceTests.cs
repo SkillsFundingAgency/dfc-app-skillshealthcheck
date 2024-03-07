@@ -31,8 +31,8 @@ namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
 
             Assessment assessment = new Assessment();
 
-            _assessmentsRepository.Setup(x => x.GetByTypeAsync(validAssessment)).ReturnsAsync(assessment);
-            _assessmentsRepository.Setup(x => x.GetByTypeAsync(invalidAssessment)).ReturnsAsync(default(Assessment));
+            //_assessmentsRepository.Setup(x => x.GetByTypeAsync(validAssessment)).ReturnsAsync(assessment);
+            //_assessmentsRepository.Setup(x => x.GetByTypeAsync(invalidAssessment)).ReturnsAsync(default(Assessment));
             _questionsRepository.Setup(x => x.GetAllByAssessmentIdAsync(assessment.Id)).ReturnsAsync(questions);
             _answersRepository.Setup(x => x.GetAllByQuestionIdAsync(questions[0].Id)).ReturnsAsync(answers1);
             _answersRepository.Setup(x => x.GetAllByQuestionIdAsync(questions[1].Id)).ReturnsAsync(answers2);
