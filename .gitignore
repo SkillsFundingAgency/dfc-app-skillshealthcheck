@@ -272,3 +272,4 @@ __pycache__/
 /DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests/Properties/launchSettings.json
 /DFC.App.SkillsHealthCheck.Services.SkillsCentral/Properties/launchSettings.json
 /DFC.App.SkillsHealthCheck.UnitTests/Properties/launchSettings.json
+/DfE.SkillsCentral.Api/Tests/Integration/DfE.SkillsCentral.Api.Application.Services.IntegrationTests/appsettings.json
