@@ -6,32 +6,27 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
 {
     public class SkillsDocumentsService : ISkillsDocumentsService
     {
-        private readonly ISkillsDocumentsRepository _skillsDocumentsRepository;
+        private readonly ISkillsDocumentsRepository skillsDocumentsRepository;
 
         public SkillsDocumentsService(ISkillsDocumentsRepository skillsDocumentsRepository)
         {
-            _skillsDocumentsRepository = skillsDocumentsRepository;
+            this.skillsDocumentsRepository = skillsDocumentsRepository;
         }
         public async Task<SkillsDocument> CreateSkillsDocument(SkillsDocument skillsDocument)
         {
-            await _skillsDocumentsRepository.AddAsync(skillsDocument);
-            return await _skillsDocumentsRepository.GetByReferenceCodeAsync(skillsDocument.ReferenceCode);
-        }
-
-        public string DownloadDocument()
-        {
-            throw new NotImplementedException();
+            await skillsDocumentsRepository.AddAsync(skillsDocument);
+            return await skillsDocumentsRepository.GetByReferenceCodeAsync(skillsDocument.ReferenceCode);
         }
 
         public async Task<SkillsDocument?> GetSkillsDocument(int id)
         {
-            var skillsDocument =  await _skillsDocumentsRepository.GetByIdAsync(id);
+            var skillsDocument =  await skillsDocumentsRepository.GetByIdAsync(id);
             return skillsDocument;
         }
 
         public async Task<SkillsDocument?> GetSkillsDocumentByReferenceCode(string referenceCode)
         {
-            var skillsDocument = await _skillsDocumentsRepository.GetByReferenceCodeAsync(referenceCode);
+            var skillsDocument = await skillsDocumentsRepository.GetByReferenceCodeAsync(referenceCode);
             return skillsDocument;
         }
     }
