@@ -48,6 +48,7 @@ public class SkillsDocumentServiceTests
     {
         // Arrange
         var baselineDateTime = DateTime.Now;
+        Thread.Sleep(1000);
         var document = CreateNewSkillsDocument();
 
         // Act

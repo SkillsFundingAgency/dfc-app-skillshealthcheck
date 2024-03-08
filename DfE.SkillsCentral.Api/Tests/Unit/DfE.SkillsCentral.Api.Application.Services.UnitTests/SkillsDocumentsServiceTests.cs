@@ -26,7 +26,6 @@ public class SkillsDocumentsServiceTests
         Assert.True(document!.Equals(expectedSkillsDocument));
     }
 
-
     [Fact]
     public async Task GetSkillsDocument_ShouldReturnDefault_WhenInvalidIdProvided()
     {
@@ -61,7 +60,6 @@ public class SkillsDocumentsServiceTests
         // Assert
         Assert.True(document!.Equals(expectedSkillsDocument));
     }
-
 
     [Fact]
     public async Task GetSkillsDocumentByReferenceCode_ShouldReturnDefault_WhenInvalidReferenceCodeProvided()
