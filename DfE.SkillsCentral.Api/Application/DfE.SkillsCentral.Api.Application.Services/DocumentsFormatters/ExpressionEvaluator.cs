@@ -12,6 +12,7 @@
     /// </summary>
     public class ExpressionEvaluator
     {
+        /*
         /// <summary>
         /// Evaluates the expression passed in.
         /// Accepts the following operators +, -, *, /, %, >, >=, =, and , or        
@@ -64,5 +65,6 @@
 
             return keys;
         }
+        */
     }
 }

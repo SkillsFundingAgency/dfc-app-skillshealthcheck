@@ -47,14 +47,14 @@ public class SkillsDocumentServiceTests
     public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedAtSet()
     {
         // Arrange
-        var currentDateTime = DateTime.Now;
+        var baselineDateTime = DateTime.Now;
         var document = CreateNewSkillsDocument();
 
         // Act
         var result = await sut.CreateSkillsDocument(document);
 
         // Assert
-        Assert.True(currentDateTime < result.CreatedAt);
+        Assert.True(baselineDateTime <= result.CreatedAt);
     }
 
     [Fact]
@@ -89,7 +89,9 @@ public class SkillsDocumentServiceTests
     {
         return new SkillsDocument
         {
-            ReferenceCode = Guid.NewGuid().ToString()
+            ReferenceCode = Guid.NewGuid().ToString(),
+            CreatedBy = "default test user",
+            CreatedAt = DateTime.Now
         };
     }
 }

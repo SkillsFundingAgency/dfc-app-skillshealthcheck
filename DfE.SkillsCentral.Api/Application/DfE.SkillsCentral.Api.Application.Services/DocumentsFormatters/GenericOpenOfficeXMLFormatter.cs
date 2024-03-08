@@ -13,6 +13,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
 
     public static class GenericOpenOfficeXMLFormatter
     {
+        /*
         public static byte[] FormatDocumentWithATemplate(SkillsDocument document, string xsltTemplateName)
         {
             XmlDocument documentXml = GetSkillsDocumentXml(document);
@@ -171,5 +172,6 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
                 }
             }
         }
+        */
     }
 }

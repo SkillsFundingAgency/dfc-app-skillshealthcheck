@@ -16,6 +16,7 @@
 
     internal static class OpenXMLDocumentBuilder
     {
+        /*
         public const string CommandNameConditionalInclude = "ConditionalInclude";
 
         public const string CommandNameSubstituteContent = "SubstituteContent";
@@ -638,6 +639,7 @@
 
             return string.Empty;
         }
-
+        */
     }
+
 }
