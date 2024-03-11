@@ -32,7 +32,21 @@ public class SkillsDocumentsServiceTests
     }
 
     [Fact]
-    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedBySet()
+    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedBySetWhenProvided()
+    {
+        // Arrange
+        string createdBy = "test_user";
+        var document = CreateNewSkillsDocument(createdBy);
+
+        // Act
+        var result = await sut.CreateSkillsDocument(document);
+
+        // Assert
+        Assert.Equal(result.CreatedBy, createdBy);
+    }
+
+    [Fact]
+    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedBySetWhenNotProvided()
     {
         // Arrange
         var document = CreateNewSkillsDocument();
@@ -41,11 +55,11 @@ public class SkillsDocumentsServiceTests
         var result = await sut.CreateSkillsDocument(document);
 
         // Assert
-        Assert.NotNull(result.CreatedBy);
+        Assert.Equal(result.CreatedBy, "Anonymous");
     }
 
     [Fact]
-    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedAtSet()
+    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedAtSetWhenNotProvided()
     {
         // Arrange
         var baselineDateTime = DateTime.Now;
@@ -57,6 +71,7 @@ public class SkillsDocumentsServiceTests
         // Assert
         Assert.Equal(baselineDateTime.ToString(CultureInfo.InvariantCulture), result.CreatedAt?.ToString(CultureInfo.InvariantCulture));
     }
+
 
     [Fact]
     public async Task SkillsDocumentService_GetValidDocumentById_ReturnsDocument()
@@ -86,11 +101,12 @@ public class SkillsDocumentsServiceTests
         Assert.NotNull(result);
     }
 
-    private SkillsDocument CreateNewSkillsDocument()
+    private SkillsDocument CreateNewSkillsDocument(String createdBy = null)
     {
         return new SkillsDocument
         {
             ReferenceCode = Guid.NewGuid().ToString(),
+            CreatedBy = createdBy
         };
     }
 }

@@ -27,6 +27,9 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             try
             {
                 //TODO: Validate before sending to service
+                if (assessmentType == null)
+                { return StatusCode(500, $"No Assessment Type was provided"); }
+
                 var result = await assessmentsService.GetAssessmentQuestions(assessmentType);
                 return Ok(result);
             }
@@ -43,6 +46,8 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             try
             {
                 //TODO: Validate before passing to service
+                if (document == null)
+                { return StatusCode(500, $"No Skills Document was provided"); }
 
                 //TODO: Review do we want to return the document on Save also, similar to create?
                 await assessmentsService.SaveSkillsDocument(document);
