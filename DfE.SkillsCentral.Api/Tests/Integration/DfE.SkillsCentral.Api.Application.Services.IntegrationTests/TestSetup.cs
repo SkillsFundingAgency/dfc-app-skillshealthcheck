@@ -23,8 +23,14 @@ namespace DfE.SkillsCentral.Api.Application.Services.IntegrationTests
             SqlMapper.AddTypeHandler(new DataValuesTypeHandler());
             services.AddSingleton<IConfiguration>(config);
             services.AddScoped<DatabaseContext>();
+
+            services.AddScoped<IAssessmentsRepository, AssessmentsRepository>();
+            services.AddScoped<IQuestionsRepository, QuestionsRepository>();
+            services.AddScoped<IAnswersRepository, AnswersRepository>();
             services.AddScoped<ISkillsDocumentsRepository, SkillsDocumentsRepository>();
-            services.AddScoped<ISkillsDocumentsService, SkillsDocumentsService>();
+
+            services.AddScoped<IAssessmentsService, AssessmentsService>();
+            services.AddScoped<ISkillsDocumentsService, SkillsDocumentsService>();        
         }
     }
 }
