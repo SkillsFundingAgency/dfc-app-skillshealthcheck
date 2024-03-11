@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DfE.SkillsCentral.Api.Application.Services.IntegrationTests;
 
-public class SkillsDocumentServiceTests
+public class SkillsDocumentsServiceTests
 {
     private readonly ISkillsDocumentsService sut;
 
-    public SkillsDocumentServiceTests()
+    public SkillsDocumentsServiceTests()
     {
         var services = new ServiceCollection();
         TestSetup.ConfigureServices(services);
