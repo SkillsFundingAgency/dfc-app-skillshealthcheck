@@ -59,7 +59,7 @@ public class SkillsDocumentsServiceTests
     }
 
     [Fact]
-    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedAtSetWhenNotProvided()
+    public async Task SkillsDocumentService_CreateNewSkillsDocument_CreatedAtSet()
     {
         // Arrange
         var baselineDateTime = DateTime.Now;
