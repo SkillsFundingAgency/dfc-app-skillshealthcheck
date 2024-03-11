@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 using DFC.SkillsCentral.Api.Domain.Models;
 using DfE.SkillsCentral.Api.Application.Interfaces.Models;
 
-
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
     public interface IAssessmentsService
     {
-
-
 
         //Saves user's given answer to the current question
         Task SaveSkillsDocument(SkillsDocument skillsDocument);
