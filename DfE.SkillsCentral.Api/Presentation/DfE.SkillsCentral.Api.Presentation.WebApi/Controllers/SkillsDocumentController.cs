@@ -26,6 +26,9 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             try
             {
                 //TODO: Validate before passing to service
+                bool isValid = Guid.TryParse(referenceCode, out _);
+                if (isValid == false)
+                { return StatusCode(500, $"An invalid Reference Code was provided"); }
 
                 var result = await skillsDocumentsService.GetSkillsDocumentByReferenceCode(referenceCode);
                 return Ok(result);
@@ -44,6 +47,8 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             try
             {
                 //TODO: Validate before passing to service
+                if (document == null)
+                { return StatusCode(500, $"No Skills Document was provided"); }
 
                 var result = await skillsDocumentsService.CreateSkillsDocument(document);
                 return Ok(result);
