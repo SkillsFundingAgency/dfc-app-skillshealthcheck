@@ -9,6 +9,9 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests" />
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj" />
