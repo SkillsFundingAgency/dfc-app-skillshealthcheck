@@ -2,6 +2,8 @@ using DFC.SkillsCentral.Api.Infrastructure.Repositories;
 using DFC.SkillsCentral.Api.Infrastructure;
 using DFC.SkillsCentral.Api.Application.Interfaces.Repositories;
 using Dapper;
+using DfE.SkillsCentral.Api.Application.Services;
+using DfE.SkillsCentral.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // builder.Services.AddScoped<ILogger, Logger>();
-builder.Services.AddScoped<IAssessmentsRepository, AssessmentsRepository>();
-builder.Services.AddScoped<ISkillsDocumentsRepository, SkillsDocumentsRepository>();
-builder.Services.AddScoped<IQuestionsRepository, QuestionsRepository>();
-builder.Services.AddScoped<IAnswersRepository, AnswersRepository>();
-SqlMapper.AddTypeHandler(new DataValuesTypeHandler());
-
-builder.Services.AddSingleton<DatabaseContext>();
+builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
