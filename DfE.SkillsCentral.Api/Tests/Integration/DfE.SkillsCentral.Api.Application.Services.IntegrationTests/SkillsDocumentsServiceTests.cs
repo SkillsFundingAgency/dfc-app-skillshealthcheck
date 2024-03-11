@@ -91,8 +91,6 @@ public class SkillsDocumentsServiceTests
         return new SkillsDocument
         {
             ReferenceCode = Guid.NewGuid().ToString(),
-            CreatedBy = "default test user",
-            CreatedAt = DateTime.Now
         };
     }
 }
