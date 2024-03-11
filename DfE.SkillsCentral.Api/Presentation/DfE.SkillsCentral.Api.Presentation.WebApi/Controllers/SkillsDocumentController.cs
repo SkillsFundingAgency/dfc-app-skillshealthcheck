@@ -61,7 +61,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPatch]
         public async Task<ActionResult> SaveSkillsDocument([FromBody] SkillsDocument document)
         {
             try
@@ -71,7 +71,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 { return StatusCode(500, $"No Skills Document was provided"); }
 
                 //TODO: Review do we want to return the document on Save also, similar to create?
-                await assessmentsService.SaveSkillsDocument(document);
+                await skillsDocumentsService.SaveSkillsDocument(document);
                 return Ok();
             }
             catch (Exception e)

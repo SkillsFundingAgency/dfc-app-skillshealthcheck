@@ -48,11 +48,6 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
 
             return assessmentQuestions;
         }
-
-        public async Task SaveSkillsDocument(SkillsDocument skillsDocument)
-        {
-            await _skillsDocumentsRepository.UpdateAsync(skillsDocument);   
-        }
     }
 
     

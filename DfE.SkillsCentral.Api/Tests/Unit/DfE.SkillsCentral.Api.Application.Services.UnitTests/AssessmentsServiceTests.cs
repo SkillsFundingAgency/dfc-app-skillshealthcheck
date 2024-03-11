@@ -70,24 +70,22 @@ namespace DfE.SkillsCentral.Api.Application.Services.UnitTests
         public async Task SaveSkillsDocument_ShouldUpdateSkillsDocument_WhenGivenValidDocument()
         {
             //Arrange
-            Mock<IAssessmentsRepository> _assessmentsRepository = new Mock<IAssessmentsRepository>();
-            Mock<IQuestionsRepository> _questionsRepository = new Mock<IQuestionsRepository>();
-            Mock<IAnswersRepository> _answersRepository = new Mock<IAnswersRepository>();
-            Mock<ISkillsDocumentsRepository> _skillsDocumentsRepository = new Mock<ISkillsDocumentsRepository>();
+            var questionsRepository = new Mock<IQuestionsRepository>();
+            var skillsDocumentsRepository = new Mock<ISkillsDocumentsRepository>();
 
-            SkillsDocument skillsDocument = new SkillsDocument();
-            Assessment assessment = new Assessment();
-            IReadOnlyList<Question> questions = new List<Question>() { new Question(), new Question() };
+            var skillsDocument = new SkillsDocument();
+            var assessment = new Assessment();
+            IReadOnlyList<Question> questions = new List<Question>() { new(), new() };
 
-            _skillsDocumentsRepository.Setup(x => x.UpdateAsync(skillsDocument)).Returns(Task.CompletedTask).Verifiable();
-            _questionsRepository.Setup(x => x.GetAllByAssessmentIdAsync(assessment.Id)).ReturnsAsync(questions);
-            var _assessmentsService = new AssessmentsService(_assessmentsRepository.Object, _questionsRepository.Object, _answersRepository.Object, _skillsDocumentsRepository.Object);
+            skillsDocumentsRepository.Setup(x => x.UpdateAsync(skillsDocument)).Returns(Task.CompletedTask).Verifiable();
+            questionsRepository.Setup(x => x.GetAllByAssessmentIdAsync(assessment.Id)).ReturnsAsync(questions);
+            var skillsDocumentService = new SkillsDocumentsService(skillsDocumentsRepository.Object);
 
             //Act
-            await _assessmentsService.SaveSkillsDocument(skillsDocument);
+            await skillsDocumentService.SaveSkillsDocument(skillsDocument);
 
             //Assert
-            _skillsDocumentsRepository.Verify(x => x.UpdateAsync(skillsDocument), Times.Once);
+            skillsDocumentsRepository.Verify(x => x.UpdateAsync(skillsDocument), Times.Once);
         }
     }
 }

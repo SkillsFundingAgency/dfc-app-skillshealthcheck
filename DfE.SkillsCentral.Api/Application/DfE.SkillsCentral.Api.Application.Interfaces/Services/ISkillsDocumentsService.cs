@@ -14,5 +14,7 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
         Task<SkillsDocument?> GetSkillsDocumentByReferenceCode(string referenceCode);
 
         Task<SkillsDocument> CreateSkillsDocument(SkillsDocument skillsDocument);
+
+        Task SaveSkillsDocument(SkillsDocument skillsDocument);
     }
 }
