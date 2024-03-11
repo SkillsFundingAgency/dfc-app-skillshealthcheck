@@ -1,3 +1,4 @@
+using System.Globalization;
 using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,14 +49,13 @@ public class SkillsDocumentServiceTests
     {
         // Arrange
         var baselineDateTime = DateTime.Now;
-        Thread.Sleep(1000);
         var document = CreateNewSkillsDocument();
 
         // Act
         var result = await sut.CreateSkillsDocument(document);
 
         // Assert
-        Assert.True(baselineDateTime <= result.CreatedAt);
+        Assert.Equal(baselineDateTime.ToString(CultureInfo.InvariantCulture), result.CreatedAt?.ToString(CultureInfo.InvariantCulture));
     }
 
     [Fact]
