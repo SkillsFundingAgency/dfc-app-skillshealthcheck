@@ -8,16 +8,15 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class Assessment
     {
-        public int Id { get; }
-        public string? Type { get; }
+        public int Id { get; set; }
+        public string? Type { get; set; }
 
-        public string? Title { get; }
+        public string? Title { get; set; }
 
-        public string? Subtitle { get;}
+        public string? Subtitle { get; set; }
 
-        public string? Introduction { get; }
+        public string? Introduction { get; set; }
 
-       
     }
 
 }

@@ -1,7 +1,9 @@
 ﻿using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
+using DfE.SkillsCentral.Api.Application.Interfaces.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Assessment = DfE.SkillsCentral.Api.Domain.Models.Assessment;
 
 namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
@@ -22,7 +24,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
         }
 
         [HttpGet("{assessmentType}")]
-        public async Task<ActionResult<Assessment>> GetAssessment(string assessmentType)
+        public async Task<ActionResult<AssessmentQuestions>> GetAssessment(string assessmentType)
         {
             try
             {
@@ -31,7 +33,12 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 { return StatusCode(500, $"No Assessment Type was provided"); }
 
                 var result = await assessmentsService.GetAssessmentQuestions(assessmentType);
-                return Ok(result);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                return Ok(JsonConvert.SerializeObject(result));
             }
             catch (Exception e)
             {
