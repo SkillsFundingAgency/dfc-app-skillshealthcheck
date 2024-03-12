@@ -25,7 +25,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             using (var connection = dbContext.CreateConnection())
             {
                 connection.Open();
-                var result = await connection.QueryAsync<Question>(QuestionsQueries.AllQuestionsByAssessmentId);
+                var result = await connection.QueryAsync<Question>(QuestionsQueries.AllQuestionsByAssessmentId, new { AssessmentId = assessmentId });
                 return result.ToList();
             }
         }
