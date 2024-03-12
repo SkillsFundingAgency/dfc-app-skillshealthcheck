@@ -11,6 +11,5 @@ namespace DfE.SkillsCentral.Api.Application.Interfaces.Models
     {
         public Assessment Assessment { get; set; }
         public List<QuestionAnswers> Questions { get; set; } = new List<QuestionAnswers>();
-
     }
 }
