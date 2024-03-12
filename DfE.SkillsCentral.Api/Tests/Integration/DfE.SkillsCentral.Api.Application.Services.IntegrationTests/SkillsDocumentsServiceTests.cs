@@ -101,7 +101,7 @@ public class SkillsDocumentsServiceTests
         Assert.NotNull(result);
     }
 
-    private SkillsDocument CreateNewSkillsDocument(String createdBy = null)
+    private SkillsDocument CreateNewSkillsDocument(string createdBy = null)
     {
         return new SkillsDocument
         {

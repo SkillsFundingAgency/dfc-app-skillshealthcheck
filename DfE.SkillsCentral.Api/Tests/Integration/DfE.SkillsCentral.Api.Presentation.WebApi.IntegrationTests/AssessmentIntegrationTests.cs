@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Mail;
 using DfE.SkillsCentral.Api.Application.Interfaces.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
@@ -7,11 +6,11 @@ using Xunit;
 
 namespace DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests;
 
-public class AssessmentIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+public class AssessmentIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient client;
 
-    public AssessmentIntegrationTest(WebApplicationFactory<Program> factory)
+    public AssessmentIntegrationTests(WebApplicationFactory<Program> factory)
     {
         client = factory.CreateClient();
     }

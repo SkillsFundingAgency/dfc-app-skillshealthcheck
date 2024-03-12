@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\DfE.SkillsCentral.Api.Presentation.UnitTests\DfE.SkillsCentral.Api.Presentation.UnitTests.csproj" />
     <ProjectReference Include="..\..\..\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi\DfE.SkillsCentral.Api.Presentation.WebApi.csproj" />
   </ItemGroup>
 

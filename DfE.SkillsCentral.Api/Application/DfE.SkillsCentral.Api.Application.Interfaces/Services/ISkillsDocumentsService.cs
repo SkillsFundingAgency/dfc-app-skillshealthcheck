@@ -15,6 +15,6 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 
         Task<SkillsDocument> CreateSkillsDocument(SkillsDocument skillsDocument);
 
-        Task SaveSkillsDocument(SkillsDocument skillsDocument);
+        Task<SkillsDocument> SaveSkillsDocument(SkillsDocument skillsDocument);
     }
 }
