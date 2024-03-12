@@ -22,13 +22,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AppConstants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
-        private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<HomeController> logger;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IYourAssessmentsService yourAssessmentsService;
@@ -327,7 +327,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     status = "PUBLISHED";
                 }
 
-                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>("SharedContent/" + SharedContentStaxId, status);
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.ContactusSharedContent, status);
                 viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
             catch (Exception e)
