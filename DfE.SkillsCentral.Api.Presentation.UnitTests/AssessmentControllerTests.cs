@@ -39,12 +39,14 @@ namespace DfE.SkillsCentral.Api.Presentation.UnitTests
             //Act
             var sut = new AssessmentController(_skillsDocumentService, _assessmentsService, logger);
             var result = await sut.GetAssessment(null);
+            var response = result.Result as ObjectResult;
 
             //Assert
-            var response = Assert.IsType<Microsoft.AspNetCore.Http.HttpResponse>(result);
-            Assert.Equal(response.StatusCode, 500);
+            Assert.Equal(500, response?.StatusCode);
 
         }
+
+        [Fact]
         public async Task GetAssessmentQuestions_WithIdProvided()
         {
             //Arrange
@@ -69,8 +71,8 @@ namespace DfE.SkillsCentral.Api.Presentation.UnitTests
             var result = await sut.GetAssessment("spatial");
 
             //Assert
-            var response = Assert.IsType<Microsoft.AspNetCore.Http.HttpResponse>(result);
-            Assert.Equal(response.StatusCode, 200);
+            var response = result.Result as ObjectResult;
+            Assert.Equal(200, response?.StatusCode);
         }
     }
 }
