@@ -13,7 +13,7 @@ namespace DfE.SkillsCentral.Api.Presentation.UnitTests
         private readonly ILogger<AssessmentController> logger;
 
         [Fact]
-        public async Task GetAssessmentQuestions_NoIdProvided()
+        public async Task GetAssessmentQuestions_NoTypeProvided()
         {
             //Arrange
             Mock<IAssessmentsRepository> _assessmentsRepository = new Mock<IAssessmentsRepository>();
@@ -38,11 +38,11 @@ namespace DfE.SkillsCentral.Api.Presentation.UnitTests
             var response = result.Result as ObjectResult;
 
             //Assert
-            Assert.Equal(500, response?.StatusCode);
+            Assert.Equal(400, response?.StatusCode);
         }
 
         [Fact]
-        public async Task GetAssessmentQuestions_WithIdProvided()
+        public async Task GetAssessmentQuestions_WithTypeProvided()
         {
             //Arrange
             Mock<IAssessmentsRepository> _assessmentsRepository = new Mock<IAssessmentsRepository>();
@@ -50,20 +50,20 @@ namespace DfE.SkillsCentral.Api.Presentation.UnitTests
             Mock<IAnswersRepository> _answersRepository = new Mock<IAnswersRepository>();
             Mock<ISkillsDocumentsRepository> _skillsDocumentsRepository = new Mock<ISkillsDocumentsRepository>();
 
-            var validAssessment = "test_assessment";
+            var validAssessmentType = "test_assessment";
             Assessment assessment = new Assessment();
             IReadOnlyList<Question> questions = new List<Question>() { new Question(), new Question() };
             IReadOnlyList<Answer> answers1 = new List<Answer>() { new Answer(), new Answer() };
             IReadOnlyList<Answer> answers2 = new List<Answer>() { new Answer(), new Answer() };
 
             _questionsRepository.Setup(x => x.GetAllByAssessmentIdAsync(assessment.Id)).ReturnsAsync(questions);
-            _assessmentsRepository.Setup(x => x.GetByTypeAsync(validAssessment)).ReturnsAsync(assessment);
+            _assessmentsRepository.Setup(x => x.GetByTypeAsync(validAssessmentType)).ReturnsAsync(assessment);
             var _assessmentsService = new AssessmentsService(_assessmentsRepository.Object, _questionsRepository.Object, _answersRepository.Object, _skillsDocumentsRepository.Object);
             var _skillsDocumentService = new SkillsDocumentsService(_skillsDocumentsRepository.Object);
 
             //Act
             var sut = new AssessmentController(_skillsDocumentService, _assessmentsService, logger);
-            var result = await sut.GetAssessment("spatial");
+            var result = await sut.GetAssessment(validAssessmentType);
 
             //Assert
             var response = result.Result as ObjectResult;

@@ -10,13 +10,11 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
     public class SkillsDocumentController : ControllerBase
     {
         private readonly ISkillsDocumentsService skillsDocumentsService;
-        private readonly IAssessmentsService assessmentsService;
         private readonly ILogger<SkillsDocumentController> logger;
 
-        public SkillsDocumentController(ISkillsDocumentsService skillsDocumentsService, IAssessmentsService assessmentsService, ILogger<SkillsDocumentController> logger)
+        public SkillsDocumentController(ISkillsDocumentsService skillsDocumentsService, ILogger<SkillsDocumentController> logger)
         {
             this.skillsDocumentsService = skillsDocumentsService;
-            this.assessmentsService = assessmentsService;
             this.logger = logger;
         }
 
@@ -25,13 +23,22 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
         {
             try
             {
-                //TODO: Validate before passing to service
                 bool isValid = Guid.TryParse(referenceCode, out _);
                 if (isValid == false)
-                { return StatusCode(500, $"An invalid Reference Code was provided"); }
+                { 
+                    return BadRequest("An invalid Reference Code was provided"); 
+                }
 
                 var result = await skillsDocumentsService.GetSkillsDocumentByReferenceCode(referenceCode);
-                return Ok(result);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return Ok(result);
+                }
             }
             catch (Exception e)
             {
@@ -46,12 +53,21 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
         {
             try
             {
-                //TODO: Validate before passing to service
                 if (document == null)
-                { return StatusCode(500, $"No Skills Document was provided"); }
+                { 
+                    return BadRequest("No Skills Document was provided"); 
+                }
 
                 var result = await skillsDocumentsService.CreateSkillsDocument(document);
-                return Ok(result);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return Ok(result);
+                }
             }
             catch (Exception e)
             {
@@ -66,13 +82,22 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
         {
             try
             {
-                //TODO: Validate before passing to service
                 if (document == null)
-                { return StatusCode(500, $"No Skills Document was provided"); }
+                { 
+                    return BadRequest("No Skills Document was provided"); 
+                }
 
                 //TODO: Review do we want to return the document on Save also, similar to create?
-                await skillsDocumentsService.SaveSkillsDocument(document);
-                return Ok();
+                var result = await skillsDocumentsService.SaveSkillsDocument(document);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return Ok(result);
+                }
             }
             catch (Exception e)
             {

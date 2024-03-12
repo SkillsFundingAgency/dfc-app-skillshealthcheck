@@ -18,9 +18,10 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
             return await skillsDocumentsRepository.GetByReferenceCodeAsync(skillsDocument.ReferenceCode);
         }
 
-        public async Task SaveSkillsDocument(SkillsDocument skillsDocument)
+        public async Task<SkillsDocument?> SaveSkillsDocument(SkillsDocument skillsDocument)
         {
             await skillsDocumentsRepository.UpdateAsync(skillsDocument);
+            return skillsDocument;
         }
 
         public async Task<SkillsDocument?> GetSkillsDocument(int id)

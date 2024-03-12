@@ -28,9 +28,10 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
         {
             try
             {
-                //TODO: Validate before sending to service
                 if (string.IsNullOrEmpty(assessmentType) == true)
-                { return StatusCode(500, $"No Assessment Type was provided"); }
+                { 
+                    return BadRequest("No Assessment Type was provided"); 
+                }
 
                 var result = await assessmentsService.GetAssessmentQuestions(assessmentType);
 
@@ -38,7 +39,10 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 {
                     return NoContent();
                 }
-                return Ok(JsonConvert.SerializeObject(result));
+                else
+                {
+                    return Ok(JsonConvert.SerializeObject(result));
+                }
             }
             catch (Exception e)
             {
