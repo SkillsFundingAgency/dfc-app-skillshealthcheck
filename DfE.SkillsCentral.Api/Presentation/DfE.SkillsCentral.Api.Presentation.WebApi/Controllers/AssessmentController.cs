@@ -27,7 +27,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             try
             {
                 //TODO: Validate before sending to service
-                if (assessmentType == null)
+                if (string.IsNullOrEmpty(assessmentType) == true)
                 { return StatusCode(500, $"No Assessment Type was provided"); }
 
                 var result = await assessmentsService.GetAssessmentQuestions(assessmentType);
