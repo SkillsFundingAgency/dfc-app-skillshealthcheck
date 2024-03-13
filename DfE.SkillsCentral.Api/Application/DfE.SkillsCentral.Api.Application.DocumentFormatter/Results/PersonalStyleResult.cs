@@ -10,8 +10,8 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
 
     /// <summary>
     /// PersonalStyle - Entity to calucate and store the personal style.
@@ -49,7 +49,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             if (categoriesArray.Length != answersArray.Length)
             {
                 throw new ArgumentException(
-                                            string.Format(General.Error_UserAnswerCorrectAnswerMismatch,
+                                            string.Format(Error_UserAnswerCorrectAnswerMismatch,
                                             this.ReportName,
                                             answersArray.Length, 
                                             categoriesArray.Length));
@@ -208,7 +208,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         private List<PersonalStyle> BuildList()
         {
             Dictionary<string, int> calculatedScores = CalculateCategoryScore();
-            List<PersonalStyle> pesrsonalStyles = new List<Entity.PersonalStyle>();
+            List<PersonalStyle> pesrsonalStyles = new List<PersonalStyle>();
             string[] categories = this.Resource.GetString(Constant.PersonalUniqueCategories).Split(Constant.AnswerSeparator);
             string[] rightNames = this.Resource.GetString(Constant.PersonalRightNames).Split(Constant.AnswerSeparator);
 

@@ -36,5 +36,15 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             }
         }
 
+        public async Task<IReadOnlyList<string>?> GetAllCorrectAnswersByAssessmentIdAsync(int assessmentId)
+        {
+            using (var connection = dbContext.CreateConnection())
+            {
+                connection.Open();
+                var result = await connection.QueryAsync<string>(AnswersQueries.CorrectAnswersByAssessment, new { AssessmentId = assessmentId });
+                return result.ToList();
+            }
+        }
+
     }
 }

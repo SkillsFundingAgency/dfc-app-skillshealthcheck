@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
 {
-    public interface IAssessmentsRepository /*: IRepository<Assessment>*/
+    public interface IAssessmentsRepository 
     {
-        //TODO:
-        //Task<IReadOnlyList<Assessment>> GetAllAsync();
+        
 
         Task<Assessment?> GetByTypeAsync(string type);
     }
