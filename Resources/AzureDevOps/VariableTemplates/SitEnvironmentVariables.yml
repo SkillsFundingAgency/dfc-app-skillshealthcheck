@@ -56,4 +56,4 @@ variables:
   - name: LoggingLogLevelDefault
     value: Trace
   - name: SessionStateOptionsTtl
-    value: 1800
+    value: 300
