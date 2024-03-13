@@ -1,6 +1,6 @@
 ﻿
 
-namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
+namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.IO;
@@ -13,7 +13,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
 
     public static class GenericOpenOfficeXMLFormatter
     {
-        /*
+
         public static byte[] FormatDocumentWithATemplate(SkillsDocument document, string xsltTemplateName)
         {
             XmlDocument documentXml = GetSkillsDocumentXml(document);
@@ -115,7 +115,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
 #if DEBUG
                 transformationFile = new XslCompiledTransform(true);
 #else
-                transformationFile = new XslCompiledTransform(false);
+                        transformationFile = new XslCompiledTransform(false);
 #endif
                 transformationFile.Load(r);
             }
@@ -128,22 +128,22 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
             XmlDocument doc = null;
 
             // TODO: Need update to GenerateXML from SkillsDocument for Word generation 
-            //foreach (var dv in document.DataValueKeys)
-            //{
-            //    try
-            //    {
-            //        XmlDocument escapeDocItems = new XmlDocument();
-            //        escapeDocItems.LoadXml(dv.Value);
-            //        EscapeSpecialCharacters(escapeDocItems.ChildNodes);
-            //        dv.Value = escapeDocItems.OuterXml;
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        string Val = SecurityElement.Escape(dv.Value);
+            foreach (var key in document.DataValueKeys.Keys)
+            {
+                try
+                {
+                    XmlDocument escapeDocItems = new XmlDocument();
+                    escapeDocItems.LoadXml(document.DataValueKeys[key]);
+                    EscapeSpecialCharacters(escapeDocItems.ChildNodes);
+                    document.DataValueKeys[key] = escapeDocItems.OuterXml;
+                }
+                catch (Exception ex)
+                {
+                    string Val = SecurityElement.Escape(document.DataValueKeys[key]);
 
-            //        dv.Value = Val.Replace("\n", "</w:t><w:br/><w:t>");
-            //    }
-            //}
+                    document.DataValueKeys[key] = Val.Replace("\n", "</w:t><w:br/><w:t>");
+                }
+            }
 
             System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(document.GetType());
             StringBuilder builder = new StringBuilder();
@@ -172,6 +172,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
                 }
             }
         }
-        */
+
     }
 }
+

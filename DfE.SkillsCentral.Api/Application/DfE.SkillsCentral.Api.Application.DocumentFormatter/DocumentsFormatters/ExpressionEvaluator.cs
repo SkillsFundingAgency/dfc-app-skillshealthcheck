@@ -1,4 +1,4 @@
-﻿namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@
     /// </summary>
     public class ExpressionEvaluator
     {
-        /*
+
         /// <summary>
         /// Evaluates the expression passed in.
         /// Accepts the following operators +, -, *, /, %, >, >=, =, and , or        
@@ -65,6 +65,6 @@
 
             return keys;
         }
-        */
+
     }
 }
