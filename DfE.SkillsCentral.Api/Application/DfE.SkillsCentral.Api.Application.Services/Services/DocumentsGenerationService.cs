@@ -1,15 +1,45 @@
-﻿using DFC.SkillsCentral.Api.Application.Interfaces.Services;
+﻿using DFC.SkillsCentral.Api.Application.Interfaces.Repositories;
+using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
+using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
+using DfE.SkillsCentral.Api.Domain.Models;
 
 namespace DfE.SkillsCentral.Api.Application.Services.Services
 {
+
     public class DocumentsGenerationService : IDocumentsGenerationService
     {
+        private readonly ISkillsDocumentsRepository _skillsDocumentsRepository;
+        private readonly IAnswersRepository _answersRepository;
+        private readonly IJobFamiliesRepository _jobFamiliesRepository;
 
-        public DocumentsGenerationService()
+
+        public DocumentsGenerationService(ISkillsDocumentsRepository skillsDocumentsRepository, IAnswersRepository answersRepository, IJobFamiliesRepository jobFamiliesRepository)
         {
+            _answersRepository = answersRepository;
+            _skillsDocumentsRepository = skillsDocumentsRepository;
+            _jobFamiliesRepository = jobFamiliesRepository;
         }
 
+        public async Task<byte[]> GeneratePDF(int documentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<byte[]> GenerateWordDoc(int documentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<IReadOnlyList<JobFamily>> GetJobFamilies()
+        {
+            return await _jobFamiliesRepository.GetAllAsync();
+        }
+
+        private async Task<IReadOnlyList<string>> GetCorrectAnswers(int assessmentId) 
+        {
+            return await _answersRepository.GetAllCorrectAnswersByAssessmentIdAsync(assessmentId);
+        }
 
     }
 }
