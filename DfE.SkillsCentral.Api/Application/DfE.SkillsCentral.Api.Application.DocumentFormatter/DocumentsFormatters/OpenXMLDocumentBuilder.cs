@@ -1,4 +1,4 @@
-﻿namespace DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,7 @@
 
     internal static class OpenXMLDocumentBuilder
     {
-        /*
+
         public const string CommandNameConditionalInclude = "ConditionalInclude";
 
         public const string CommandNameSubstituteContent = "SubstituteContent";
@@ -639,7 +639,7 @@
 
             return string.Empty;
         }
-        */
+
     }
 
 }
