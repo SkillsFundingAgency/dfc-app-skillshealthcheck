@@ -82,7 +82,7 @@ public class SkillsDocumentsServiceTests
         var savedDocument = await sut.CreateSkillsDocument(document);
 
         // Act
-        var result = sut.GetSkillsDocument(savedDocument.Id.GetValueOrDefault());
+        var result = await sut.GetSkillsDocument(savedDocument.Id.GetValueOrDefault());
 
         Assert.NotNull(result);
     }
@@ -96,7 +96,7 @@ public class SkillsDocumentsServiceTests
         _ = await sut.CreateSkillsDocument(document);
 
         // Act
-        var result = sut.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
+        var result = await sut.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
 
         Assert.NotNull(result);
     }
@@ -106,7 +106,12 @@ public class SkillsDocumentsServiceTests
         return new SkillsDocument
         {
             ReferenceCode = Guid.NewGuid().ToString(),
-            CreatedBy = createdBy
+            CreatedBy = createdBy,
+            DataValueKeys = new Dictionary<string, object>
+            {
+                {"SkillAreas.Answers" , new List<string> {"A", "B", "C"}}
+            }
+            
         };
     }
 }
