@@ -107,9 +107,9 @@ public class SkillsDocumentsServiceTests
         {
             ReferenceCode = Guid.NewGuid().ToString(),
             CreatedBy = createdBy,
-            DataValueKeys = new Dictionary<string, object>
+            DataValueKeys = new Dictionary<string, string>
             {
-                {"SkillAreas.Answers" , new List<string> {"A", "B", "C"}}
+                {"SkillAreas.Answers" ,  "A, B, C" }
             }
             
         };
