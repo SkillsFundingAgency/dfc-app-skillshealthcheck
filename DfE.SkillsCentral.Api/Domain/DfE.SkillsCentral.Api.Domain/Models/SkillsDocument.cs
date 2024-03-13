@@ -20,7 +20,7 @@ namespace DFC.SkillsCentral.Api.Domain.Models
 
         public string? UpdatedBy { get; set; }
 
-        public DataValues? DataValueKeys { get; set; } = new();
+        public Dictionary<string,object>? DataValueKeys { get; set; } = new();
 
         public string? ReferenceCode { get; set; }
     }

@@ -10,7 +10,6 @@ public static class TestSetup
     public static void ConfigureServices(IServiceCollection services)
     {
         var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        SqlMapper.AddTypeHandler(new DataValuesTypeHandler());
         services.AddSingleton<IConfiguration>(config);
 
         services.AddInfrastructureServices();

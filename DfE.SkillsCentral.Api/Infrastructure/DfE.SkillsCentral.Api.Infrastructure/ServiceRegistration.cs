@@ -18,7 +18,7 @@ namespace DfE.SkillsCentral.Api.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            SqlMapper.AddTypeHandler(new DataValuesTypeHandler());
+            SqlMapper.AddTypeHandler(new DictionaryTypeHandler());
             services.AddScoped<DatabaseContext>();
 
             services.AddScoped<IAssessmentsRepository, AssessmentsRepository>();

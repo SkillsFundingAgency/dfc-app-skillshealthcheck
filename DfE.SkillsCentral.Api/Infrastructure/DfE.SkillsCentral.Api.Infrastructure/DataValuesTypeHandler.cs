@@ -5,20 +5,15 @@ using Dapper;
 using System.Text.Json;
 using DfE.SkillsCentral.Api.Domain.Models;
 
-public class DataValuesTypeHandler : SqlMapper.TypeHandler<DataValues>
+public class DictionaryTypeHandler : SqlMapper.TypeHandler<Dictionary<string, object>?>
 {
-    public override void SetValue(IDbDataParameter parameter, DataValues value)
+    public override void SetValue(IDbDataParameter parameter, Dictionary<string, object>? value)
     {
         parameter.Value = (value == null) ? (object)DBNull.Value : JsonSerializer.Serialize(value);
     }
 
-    public override DataValues Parse(object value)
+    public override Dictionary<string,object>? Parse(object value)
     {
-        if (value is DBNull || value == null)
-        {
-            return null;
-        }
-
-        return JsonSerializer.Deserialize<DataValues>((string)value);
+        return value is DBNull ? null : JsonSerializer.Deserialize<Dictionary<string, object>?>((string)value);
     }
 }
