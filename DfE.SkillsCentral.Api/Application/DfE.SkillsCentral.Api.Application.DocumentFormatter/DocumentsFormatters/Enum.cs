@@ -1,205 +1,71 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Enums.cs" company="tesl.com">
-// Trinity Expert Systems
-// </copyright>
-// -----------------------------------------------------------------------
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
-    #region | Enums |
-
-    /// <summary>
-    /// Used for checking type for processing the checking result.
-    /// </summary>   
+    // Used for checking type for processing the checking result.
     public enum CheckingType
     {
-        /// <summary>
-        /// Simple Numbers
-        /// </summary>
-        SimpleNumbers = 2,
-
-        /// <summary>
-        /// Financial Figures
-        /// </summary>
-        FinancialFigures = 4,
-
-        /// <summary>
-        /// Abstract Codes
-        /// </summary>
-        AbstractCodes = 1,
-
-        /// <summary>
-        /// Different Formats
-        /// </summary>
-        DifferentFormats = 8
+        SimpleNumbers       = 2,
+        FinancialFigures    = 4,
+        AbstractCodes       = 1,
+        DifferentFormats    = 8
     }
 
-    /// <summary>
-    /// Used for checking Condition type for processing the checking result.
-    /// </summary>
+    // Used for checking Condition type for processing the checking result.
     public enum CheckingCondType
     {
-        /// <summary>
-        /// when none is true
-        /// </summary>
+        // When none is true
         NoType = 0,
-
-        /// <summary>
-        /// Simple Numbers
-        /// </summary>
+        // Simple Numbers
         Type1 = 1,
-
-        /// <summary>
-        /// Financial Figures
-        /// </summary>
+        // Financial Figures
         Type2 = 2,
-
-        /// <summary>
-        /// Abstract Codes
-        /// </summary>
+        // Abstract Codes
         Type3 = 3,
-
-        /// <summary>
-        /// Different Formats
-        /// </summary>
+        // Different Formats
         Type4 = 4,
-
-        /// <summary>
-        /// SimpleNumbers and FinancialFigures
-        /// </summary>
+        // SimpleNumbers and FinancialFigures
         Type5 = 5,
-
-        /// <summary>
-        /// SimpleNumbers and AbstractCodes
-        /// </summary>
+        // SimpleNumbers and AbstractCodes
         Type6 = 6,
-
-        /// <summary>
-        /// SimpleNumbers and DifferentFormats
-        /// </summary>
+        // SimpleNumbers and DifferentFormats
         Type7 = 7,
-
-        /// <summary>
-        /// FinancialFigures and AbstractCodes
-        /// </summary>
+        // FinancialFigures and AbstractCodes
         Type8 = 8,
-
-        /// <summary>
-        /// FinancialFigures and DifferentFormats
-        /// </summary>
+        // FinancialFigures and DifferentFormats
         Type9 = 9,
-
-        /// <summary>
-        /// AbstractCodes and DifferentFormats
-        /// </summary>
+        // AbstractCodes and DifferentFormats
         Type10 = 10,
-
-        /// <summary>
-        /// If more than two categories
-        /// </summary>
+        // More than two categories
         Type11 = 11
     }
 
-    /// <summary>
-    /// Used define which section to show in Job suggestions.
-    /// </summary>
+    // Used define which section to show in Job suggestions.
     public enum JobSuggestionSummary
     {
-        /// <summary>
-        /// Only skills section
-        /// </summary>
-        OnlySkills = 1,
-
-        /// <summary>
-        /// All interest of little and no interest
-        /// </summary>
-        AllLittelAndNoInterest = 2,
-
-        /// <summary>
-        /// Atleast one interest is very or moderately interested
-        /// </summary>
-        OneVeryorModeratleyInterest = 3,
-
-        /// <summary>
-        /// More than one interest is very or moderately interested
-        /// </summary>
-        MoreVeryorModeratleyInterest = 4
+        OnlySkills                      = 1,
+        AllLittelAndNoInterest          = 2,
+        OneVeryorModeratleyInterest     = 3,
+        MoreVeryorModeratleyInterest    = 4
     }
 
-    /// <summary>
-    /// Used define which template to show in Job suggestions.
-    /// </summary>
+    // Used define which template to show in Job suggestions.
     public enum JobSuggestionBody
     {        
-        /// <summary>
-        /// Skills and Interest Template
-        /// </summary>
-        SkillsAndInterests = 1,
-
-        /// <summary>
-        /// Skills Template
-        /// </summary>
-        OnlySkills = 2
+        SkillsAndInterests  = 1,
+        OnlySkills          = 2
     }
 
-    /// <summary>
-    /// Enum to define available section in skilss health check report
-    /// </summary>
+    // Enum to define available section in skilss health check report
     public enum SHCReportSection
     {
-        /// <summary>
-        /// Skill Areas section
-        /// </summary>
         SkillAreas,
-
-        /// <summary>
-        /// Interest section
-        /// </summary>
         Interests,
-
-        /// <summary>
-        /// Personal style section
-        /// </summary>
         PersonalStyle,
-
-        /// <summary>
-        /// Motivation section
-        /// </summary>
         Motivation,
-
-        /// <summary>
-        /// Working with Numbers section
-        /// </summary>
-        Numbers,
-
-        /// <summary>
-        /// Working with Written information section
-        /// </summary>
         Verbal,
-
-        /// <summary>
-        /// Checking information section
-        /// </summary>
         Checking,
-
-        /// <summary>
-        /// Solving Mechanical problems
-        /// </summary>
         Mechanical,
-
-        /// <summary>
-        /// Working with shapes
-        /// </summary>
         Shapes,
-
-        /// <summary>
-        /// Solving abstract problems
-        /// </summary>
         Abstract,
-
-        /// <summary>
-        /// Job sugesstion
-        /// </summary>
         JobSugession
     }
-    #endregion
 }
