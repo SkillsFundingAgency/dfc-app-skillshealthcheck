@@ -1,8 +1,6 @@
 ﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
-    /// <summary>
-    /// Defines the document conversion format
-    /// </summary>
+    // Defines the document conversion format
     public enum DocxTargetFormat
     {
         PDF     = 1,
