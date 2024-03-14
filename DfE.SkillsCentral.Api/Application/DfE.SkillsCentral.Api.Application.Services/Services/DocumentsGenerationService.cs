@@ -34,7 +34,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
         public async Task<byte[]> GeneratePDF(int documentId)
         {
             //generate word document as normal, then convert it
-            var docxContent = GenerateWordDoc(documentId);
+            var docxContent = await GenerateWordDoc(documentId);
             return DocxConverter.ConvertDocx(docxContent, DocxTargetFormat.PDF);
         }
 
