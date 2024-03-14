@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<License>
+  <Data>
+    <LicensedTo>Capgemini UK </LicensedTo>
+    <LicenseType>Developer OEM</LicenseType>
+    <LicenseNote>Limited to 2 developers.</LicenseNote>
+    <OrderID>111209033052</OrderID>
+    <OEM>This is a redistributable license</OEM>
+    <Products>
+      <Product>Aspose.Words for .NET</Product>
+    </Products>
+    <EditionType>Enterprise</EditionType>
+    <SerialNumber>98966391-db2d-4572-81b7-19453df7467d</SerialNumber>
+    <SubscriptionExpiry>20121229</SubscriptionExpiry>
+    <LicenseVersion>2.2</LicenseVersion>
+  </Data>
+  <Signature>WRSPLhFhrx2vP1N/i9nWj2rbq7bg/nytI6TC+syohAjywmUKO0EQUVq38sGfHptaAFV2OQ1LE43Dyr9joEXSzjjS5SRJ6eCmJQ6vEDLKk4XFzon+6OnUZZVRIuvODV9wytUV+EfD3rbAU4v/D01aJ3CbCxS2LjHQVDJ8i9eILpg=</Signature>
+</License>
