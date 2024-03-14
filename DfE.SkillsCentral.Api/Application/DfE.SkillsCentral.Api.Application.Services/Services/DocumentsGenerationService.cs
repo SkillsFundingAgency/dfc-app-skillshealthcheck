@@ -1,6 +1,7 @@
 ﻿using DFC.SkillsCentral.Api.Application.Interfaces.Repositories;
 using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
+using DfE.SkillsCentral.Api.Application.DocumentsFormatters;
 using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
 using DfE.SkillsCentral.Api.Domain.Models;
 using DfE.SkillsCentral.Api.Application.DocumentsFormatters;
@@ -32,7 +33,9 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
         
         public async Task<byte[]> GeneratePDF(int documentId)
         {
-            throw new NotImplementedException();
+            //generate word document as normal, then convert it
+            var docxContent = GenerateWordDoc(documentId);
+            return DocxConverter.ConvertDocx(docxContent, DocxTargetFormat.PDF);
         }
 
         
