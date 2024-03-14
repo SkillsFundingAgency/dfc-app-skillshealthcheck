@@ -12,14 +12,17 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.Linq;
     using System.Resources;
     using System.Xml;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;   
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;   
 
     /// <summary>
     /// SHCResultBase - base class provides common functionality for different SHC assessement
     /// </summary>
     public abstract class SHCResultBase
     {
+       internal const string Error_ParameterEmpty = "[{0}] - {1} paramters does not have a value specified.";
+       internal const string Error_UserAnswerCorrectAnswerMismatch = "[{0}] - The number of user answers ({1}) does not match the number of correct answers ({2}) stored in system";
+
         /// <summary>
         /// Initializes a new instance of the SHCResultBase class
         /// </summary>
@@ -76,14 +79,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 {
                     resource = Level1.ResourceManager;
                 }
-                else if (qualification == 2)
-                {
-                    resource = Level2.ResourceManager;
-                }
-                else if (qualification >= 3 && qualification <= 8)
-                {
-                    resource = Level3.ResourceManager;
-                }
+                
                 else
                 {
                     //default to level 1                    
@@ -146,7 +142,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 else
                 {
                     throw new ArgumentException(
-                                                string.Format(General.Error_UserAnswerCorrectAnswerMismatch,
+                                                string.Format(Error_UserAnswerCorrectAnswerMismatch,
                                                 this.ReportName, 
                                                 userAnswersArray.Length, 
                                                 correctAnswersArray.Length));
@@ -156,7 +152,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             {
                 throw new ArgumentException(
                                             string.Format(
-                                                           General.Error_ParameterEmpty,
+                                                           Error_ParameterEmpty,
                                                            this.ReportName, 
                                                            (string.IsNullOrEmpty(this.Answers) ? "User answer" : "Correct answer stored in system")));
             }

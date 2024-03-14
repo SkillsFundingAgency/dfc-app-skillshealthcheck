@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\DfE.SkillsCentral.Api.Domain\DfE.SkillsCentral.Api.Domain.csproj" />
+    <ProjectReference Include="..\DfE.SkillsCentral.Api.Application.DocumentFormatter\DfE.SkillsCentral.Api.Application.DocumentFormatter.csproj" />
     <ProjectReference Include="..\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj" />
   </ItemGroup>
 

@@ -3,6 +3,8 @@ using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
 using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
 using DfE.SkillsCentral.Api.Domain.Models;
+using DfE.SkillsCentral.Api.Application.DocumentsFormatters;
+
 
 namespace DfE.SkillsCentral.Api.Application.Services.Services
 {
@@ -21,15 +23,19 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
             _jobFamiliesRepository = jobFamiliesRepository;
         }
 
+        public async Task<byte[]> GenerateWordDoc(int documentId)
+        {
+            var document = await _skillsDocumentsRepository.GetByIdAsync(documentId);
+            var formattedDoc = GenericOpenOfficeXMLFormatter.FormatDocumentWithATemplate(document,"name");
+            return formattedDoc;
+        }
+        
         public async Task<byte[]> GeneratePDF(int documentId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<byte[]> GenerateWordDoc(int documentId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private async Task<IReadOnlyList<JobFamily>> GetJobFamilies()
         {
