@@ -4,7 +4,7 @@
                 >
   <xsl:template match="/">
     <InterpretedSkillsDocument>
-      <xsl:variable name ="SHCResult" select ="tesl:GetSHCReportResult(SkillsDocument/DataValues)"/>
+      <xsl:variable name ="SHCResult" select ="tesl:GetSHCReportResult(SkillsDocument/DataValueKeys)"/>
       <xsl:variable name="lcletters">abcdefghijklmnopqrstuvwxyz</xsl:variable>
       <xsl:variable name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
       <xsl:variable name="CandidateFullName" select ="SkillsDocument/DataValues/SkillsDocumentDataValue[Title='CandidateFullName']/Value" />

@@ -10,6 +10,8 @@ namespace DfE.SkillsCentral.Api.Application.Services
         {
             services.AddScoped<IAssessmentsService, AssessmentsService>();
             services.AddScoped<ISkillsDocumentsService, SkillsDocumentsService>();
+            services.AddScoped<IDocumentsGenerationService, DocumentsGenerationService>();
+
         }
     }
 }

@@ -127,13 +127,13 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         {
             XmlDocument doc = null;
 
-            // TODO: Need update to GenerateXML from SkillsDocument for Word generation 
             foreach (var key in document.DataValueKeys.Keys)
             {
                 try
                 {
                     XmlDocument escapeDocItems = new XmlDocument();
-                    escapeDocItems.LoadXml(document.DataValueKeys[key]);
+                    var ourString = $"<{key}>{document.DataValueKeys[key]}</{key}>";
+                    escapeDocItems.LoadXml(ourString);
                     EscapeSpecialCharacters(escapeDocItems.ChildNodes);
                     document.DataValueKeys[key] = escapeDocItems.OuterXml;
                 }
