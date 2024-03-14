@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Application\DfE.SkillsCentral.Api.Application.DocumentFormatter\DfE.SkillsCentral.Api.Application.DocumentFormatter.csproj" />
     <ProjectReference Include="..\..\..\Application\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj" />
     <ProjectReference Include="..\..\..\Application\DfE.SkillsCentral.Api.Application.Services\DfE.SkillsCentral.Api.Application.Services.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\DfE.SkillsCentral.Api.Infrastructure\DfE.SkillsCentral.Api.Infrastructure.csproj" />
