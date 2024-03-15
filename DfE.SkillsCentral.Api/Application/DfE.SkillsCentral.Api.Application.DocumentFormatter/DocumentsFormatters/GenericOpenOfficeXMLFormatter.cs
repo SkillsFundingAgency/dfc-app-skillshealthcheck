@@ -12,14 +12,15 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using DfE.SkillsCentral.Api.Application.Interfaces.Models;
     using System.Xml.Linq;
     using System.Runtime.Serialization;
+    using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
 
     public static class GenericOpenOfficeXMLFormatter
     {
 
-        public static byte[] FormatDocumentWithATemplate(SkillsDocument document, string xsltTemplateName)
+        public static byte[] FormatDocumentWithATemplate(SkillsDocument document, string xsltTemplateName, IJobFamiliesRepository jobFamiliesRepository)
         {
             XmlDocument documentXml = GetSkillsDocumentXml(document);
-            XslTransformation xslt = GetXslTransformationObjects(xsltTemplateName);
+            XslTransformation xslt = GetXslTransformationObjects(xsltTemplateName, jobFamiliesRepository);
 
             XmlDocument processedDoc = OpenXMLDocumentBuilder.InterpretSkillsDocument(documentXml, xslt);
 
@@ -54,7 +55,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return result;
         }
 
-        private static XslTransformation GetXslTransformationObjects(string xsltTemplateName)
+        private static XslTransformation GetXslTransformationObjects(string xsltTemplateName, IJobFamiliesRepository jobFamiliesRepository)
         {
             XslTransformation result = new XslTransformation();
             if (Directory.Exists("Templates"))
@@ -66,7 +67,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 {
                     result.TransformationFile = GetTransformationFileObjectFromByteArr(File.ReadAllBytes(filePath));
                     var xsltArgs = new XsltArgumentList();
-                    xsltArgs.AddExtensionObject("urn:https://nationalcareers.service.gov.uk", new SkillsReportXsltExtension());
+                    xsltArgs.AddExtensionObject("urn:https://nationalcareers.service.gov.uk", new SkillsReportXsltExtension(jobFamiliesRepository));
                     result.TransformationArgumentList = xsltArgs;
                 }
                 else
@@ -82,30 +83,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return result;
         }
 
-        private static XsltArgumentList GetTransformationArgumentList(string typeNames)
-        {
-            XsltArgumentList result = new XsltArgumentList();
-
-            if (!string.IsNullOrEmpty(typeNames))
-            {
-                string[] typeNamesArray = typeNames.Split(new string[] { ";#" }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string typeName in typeNamesArray)
-                {
-                    Type typeSpecified = Type.GetType(typeName);
-                    if (typeSpecified != null)
-                    {
-                        object extensionObject = Activator.CreateInstance(typeSpecified);
-                        result.AddExtensionObject(string.Format("{2}{0}#{1}", typeSpecified.Module.Name, typeSpecified.Name, "DocumentsFormatters"), extensionObject);
-                    }
-                    else
-                    {
-                        throw new ArgumentException(string.Format("Unable to load specified extension type: {0}", typeSpecified));
-                    }
-                }
-            }
-
-            return result;
-        }
+        
 
         private static XslCompiledTransform GetTransformationFileObjectFromByteArr(byte[] byteArray)
         {

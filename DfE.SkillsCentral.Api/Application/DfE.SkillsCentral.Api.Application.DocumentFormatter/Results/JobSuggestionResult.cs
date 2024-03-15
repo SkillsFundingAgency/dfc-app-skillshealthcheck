@@ -6,6 +6,7 @@
 
 namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
+    using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -19,15 +20,17 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     /// </summary>
     public class JobSuggestionResult : SHCResultBase
     {
+        private IJobFamiliesRepository _jobFamiliesRepository;
         /// <summary>
         /// Initializes a new instance of the JobSuggestionResult class
         /// </summary>
         /// <param name="jobFamiliyExclude1">string holding job family 1 exclusion</param>
         /// <param name="jobFamilyExclude2">string holding job family 2 exclusion</param>
         /// <param name="jobFamilExclude3">string holding job family 3 exclusion</param>
-        public JobSuggestionResult(string qualificationLevel, string jobFamilyExclude1, string jobFamilyExclude2, string jobFamilyExclude3)
+        public JobSuggestionResult(string qualificationLevel, string jobFamilyExclude1, string jobFamilyExclude2, string jobFamilyExclude3, IJobFamiliesRepository jobFamiliesRepository)
             : base(SHCReportSection.JobSugession.ToString(), qualificationLevel, string.Empty, string.Empty, string.Empty)
         {
+            _jobFamiliesRepository = jobFamiliesRepository;
             JobFamilyExclude = new List<string>();
             if (!string.IsNullOrEmpty(jobFamilyExclude1))
             {
@@ -107,7 +110,8 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
         private List<JobFamilyProfile> GetJobFamilies()
         {
-            JobProfileManager jpm = new JobProfileManager();
+           var jobFamilyProfiles =  _jobFamiliesRepository.GetAllAsync().Result;
+            JobProfileManager jpm = new JobProfileManager(jobFamilyProfiles);
             List<JobFamilyProfile> jobFamilies = new List<JobFamilyProfile>();
             float takingResponsibilityRank = 0,
                   workingWithOthersRank = 0,

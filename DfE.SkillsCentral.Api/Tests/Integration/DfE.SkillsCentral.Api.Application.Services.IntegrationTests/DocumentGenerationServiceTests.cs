@@ -50,6 +50,11 @@ public class DocumentGenerationServiceTests
             CreatedBy = createdBy,
             DataValueKeys = new Dictionary<string, string>
             {
+                {"SkillAreas.ExcludedJobFamilies3", "F10014" },
+                {"SkillAreas.ExcludedJobFamilies2", "F10013" },
+                {"SkillAreas.ExcludedJobFamilies1", "F10012" },
+                {"SkillAreas.Complete", "True" },
+                {"SkillAreas.Answers", "1,2,0,1,2,0,2,1,0,1,2,0,0,2,1,2,1,0,1,2,0,0,2,1,1,2,0,2,1,0,1,2,0,1,2,0,1,2,0,0,2,1,0,2,1,1,2,0,1,2,0,0,2,1,1,2,0,0,2,1,1,2,0,1,0,2,1,2,0,1,2,0,1,2,0,2,1,0,2,1,0,2,1,0" },
                 {"Spatial.Answers" ,  "C,A,B,B,B,B,B,B,B,B,B,B,B,B" },
                 {"Spatial.Complete", "True" },
                 {"Spatial.Enjoyment", "2" },

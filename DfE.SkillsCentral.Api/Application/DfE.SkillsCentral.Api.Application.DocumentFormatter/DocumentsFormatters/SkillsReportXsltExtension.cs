@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
+using System;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -11,6 +12,11 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     public class SkillsReportXsltExtension
     {
+        private IJobFamiliesRepository jobFamiliesRepository;
+        public SkillsReportXsltExtension(IJobFamiliesRepository jobFamiliesRepository)
+        {
+            jobFamiliesRepository = jobFamiliesRepository;
+        }
         const string SHCFullReportCurrentDateTag = "<CurrentDate>{0}</CurrentDate>";
         const string SHCFullReportDatetimeFormat = "dddd, MMMM dd, yyyy";
         public XPathNavigator GetSHCReportResult(XPathNodeIterator iterator)
@@ -90,7 +96,8 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             JobSuggestionResult jobSuggestions = new JobSuggestionResult(qualificationLevel,
                                                                GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies1),
                                                                GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies2),
-                                                               GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies3));
+                                                               GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies3),
+                                                               jobFamiliesRepository);
 
             StringBuilder resultXML = new StringBuilder();
             resultXML.Append(Constant.RootStart);
