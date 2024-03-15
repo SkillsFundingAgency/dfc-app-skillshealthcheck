@@ -10,6 +10,8 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.Security;
     using DFC.SkillsCentral.Api.Domain.Models;
     using DfE.SkillsCentral.Api.Application.Interfaces.Models;
+    using System.Xml.Linq;
+    using System.Runtime.Serialization;
 
     public static class GenericOpenOfficeXMLFormatter
     {
@@ -63,7 +65,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 if (File.Exists(filePath) && File.Exists(extensionObjectConfigurationFilePath))
                 {
                     result.TransformationFile = GetTransformationFileObjectFromByteArr(File.ReadAllBytes(filePath));
-                    result.TransformationArgumentList = GetTransformationArgumentList(File.ReadAllText(extensionObjectConfigurationFilePath));
+                    var xsltArgs = new XsltArgumentList();
+                    xsltArgs.AddExtensionObject("urn:https://nationalcareers.service.gov.uk", new SkillsReportXsltExtension());
+                    result.TransformationArgumentList = xsltArgs;
                 }
                 else
                 {
@@ -125,14 +129,14 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
         private static XmlDocument GetSkillsDocumentXml(SkillsDocument document)
         {
-            XmlDocument doc = null;
-
+            string xmlString;
+            XmlDocument doc = new XmlDocument();
             foreach (var key in document.DataValueKeys.Keys)
             {
                 try
                 {
                     XmlDocument escapeDocItems = new XmlDocument();
-                    var ourString = $"<{key}>{document.DataValueKeys[key]}</{key}>";
+                    var ourString = $"{document.DataValueKeys[key]}";
                     escapeDocItems.LoadXml(ourString);
                     EscapeSpecialCharacters(escapeDocItems.ChildNodes);
                     document.DataValueKeys[key] = escapeDocItems.OuterXml;
@@ -145,14 +149,22 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 }
             }
 
-            System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(document.GetType());
-            StringBuilder builder = new StringBuilder();
-            using (TextWriter writer = new StringWriter(builder))
+            System.Runtime.Serialization.DataContractSerializer x = new System.Runtime.Serialization.DataContractSerializer(document.GetType());
+            StringWriter sw = new StringWriter();
+            using (XmlTextWriter writer = new XmlTextWriter(sw))
             {
-                x.Serialize(writer, document);
-                doc = new XmlDocument();
-                doc.LoadXml(builder.ToString());
+                x.WriteObject(writer, document);
+                writer.Flush();
+                xmlString = sw.ToString();
             }
+
+            xmlString = xmlString.Replace("d2p1:Key", "Title");
+            xmlString = xmlString.Replace("TitleValueOfstringstring", "SkillsDocumentDataValue");
+            xmlString = xmlString.Replace("d2p1:Value", "Value");
+            xmlString = xmlString.Replace(" xmlns:d2p1=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\"", "");
+
+            doc.LoadXml(xmlString);
+          
 
             return doc;
         }
