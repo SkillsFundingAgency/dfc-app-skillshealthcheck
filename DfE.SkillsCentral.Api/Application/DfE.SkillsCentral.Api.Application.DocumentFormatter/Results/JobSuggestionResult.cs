@@ -19,7 +19,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     /// </summary>
     public class JobSuggestionResult : SHCResultBase
     {
-        #region | Constructor |
         /// <summary>
         /// Initializes a new instance of the JobSuggestionResult class
         /// </summary>
@@ -45,10 +44,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 this.JobFamilyExclude.Add(jobFamilyExclude3);
             }
         }
-        #endregion
-
-        #region | Properties |
-
         /// <summary>
         /// Get / Set 1st job family exclusion
         /// </summary>
@@ -110,10 +105,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         /// </summary>
         private string InterestBandName { get; set; }
 
-        #endregion
-
-        #region | Private Methods |
-
         private List<JobFamilyProfile> GetJobFamilies()
         {
             JobProfileManager jpm = new JobProfileManager();
@@ -128,7 +119,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                   achievingResultsRank = 0,
                   learningAndTechnologyRank = 0;
 
-            string educationLevel = GetQualificationLevel();
+            //string educationLevel = GetQualificationLevel();
 
             for (int i = 1; i <= this.RankedSkillsCategories.Count; i++)
             {
@@ -214,7 +205,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                     {
                         // get job families for skills + interests
                         jobFamilies = jpm.GetJobFamiliesSkillsAndInterests(JobFamilyExclude.ToArray(),
-                                                                           educationLevel,
+                                                                           "1",
                                                                            interests.ToArray(),
                                                                            interestRows,
                                                                            interestAndSkilsRows - interestRows,
@@ -243,7 +234,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                     {
                         //// Get the job families for skills only as they have no interest matches                        
                         jobFamilies = jpm.GetSkillJobFamilies(JobFamilyExclude.ToArray(),
-                                                                educationLevel,
+                                                                "1",
                                                                 skillsRows,
                                                                 takingResponsibilityRank,
                                                                 workingWithOthersRank,
@@ -265,7 +256,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             {
                 // if intrest is not completed then get the job recommendations only for skills
                 jobFamilies = jpm.GetSkillJobFamilies(JobFamilyExclude.ToArray(),
-                                                       educationLevel,
+                                                       "1",
                                                        skillsRows,
                                                        takingResponsibilityRank,
                                                        workingWithOthersRank,
@@ -384,9 +375,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        #endregion
-
-        #region | Public Methods |
         public override string GetResult()
         {
             if (!this.IsComplete)
@@ -498,6 +486,5 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 return returnXML;
             }
         }
-        #endregion
     }
 }

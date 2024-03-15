@@ -8,7 +8,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
 
     /// <summary>
     ///  MechanicalResult- Entity to store final result for mechanical assessment

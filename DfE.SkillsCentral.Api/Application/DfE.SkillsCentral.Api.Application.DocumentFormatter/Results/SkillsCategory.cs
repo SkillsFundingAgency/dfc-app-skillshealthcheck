@@ -8,7 +8,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Resources;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
 
     /// <summary>
     ///  SkillsCategory - Entity to store personal interest category information

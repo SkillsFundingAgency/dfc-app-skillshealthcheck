@@ -11,8 +11,8 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
 
     /// <summary>
     /// MechanicalResult- Entity to store final result for motivation assessment
@@ -49,7 +49,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             if (categoriesArray.Length != answersArray.Length)
             {
                 throw new ArgumentException(
-                                            string.Format(General.Error_UserAnswerCorrectAnswerMismatch,
+                                            string.Format(Error_UserAnswerCorrectAnswerMismatch,
                                             this.ReportName, 
                                             answersArray.Length, 
                                             categoriesArray.Length));

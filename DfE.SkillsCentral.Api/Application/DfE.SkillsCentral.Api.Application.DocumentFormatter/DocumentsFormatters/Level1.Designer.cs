@@ -40,7 +40,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources.Level1", typeof(Level1).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DfE.SkillsCentral.Api.Application.DocumentFormatter.DocumentsFormatters.Level1", typeof(Level1).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -5,6 +5,7 @@ using DFC.SkillsCentral.Api.Application.Interfaces.Services;
 using DFC.SkillsCentral.Api.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using DfE.SkillsCentral.Api.Application.Services.Services;
+using System.Collections;
 
 namespace DfE.SkillsCentral.Api.Application.Services.IntegrationTests;
 
@@ -35,6 +36,8 @@ public class DocumentGenerationServiceTests
         // Act
         var result = await sut.GenerateWordDoc(skillsDoc.Id.Value);
 
+        File.WriteAllBytes("C:\\Git\\quack.docx", result);
+
         Assert.NotNull(result);
     }
 
@@ -53,7 +56,8 @@ public class DocumentGenerationServiceTests
                 {"Spatial.Timing", "2" },
                 {"Spatial.Ease", "2" },
                 {"Personal.Complete", "False" },
-                {"Personal.Answers", "2,2,2,2,-1" }
+                {"Personal.Answers", "2,2,2,2,-1" },
+                {"UpdatedAt", "2024-03-15T14:10:14.697" }
 
             }
 
