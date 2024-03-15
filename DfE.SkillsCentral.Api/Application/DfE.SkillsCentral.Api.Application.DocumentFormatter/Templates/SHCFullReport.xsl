@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:tesl="urn:http://www.tesl.com/IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.dll#SkillsReportXsltExtension"
+                xmlns:dfe="urn:https://nationalcareers.service.gov.uk"
                 >
   <xsl:template match="/">
     <InterpretedSkillsDocument>
-      <xsl:variable name ="SHCResult" select ="tesl:GetSHCReportResult(SkillsDocument/DataValueKeys)"/>
+      <xsl:variable name ="SHCResult" select ="dfe:GetSHCReportResult(SkillsDocument/DataValueKeys)"/>
       <xsl:variable name="lcletters">abcdefghijklmnopqrstuvwxyz</xsl:variable>
       <xsl:variable name="ucletters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
-      <xsl:variable name="CandidateFullName" select ="SkillsDocument/DataValues/SkillsDocumentDataValue[Title='CandidateFullName']/Value" />
+      <xsl:variable name="CandidateFullName" select ="SkillsDocument/DataValueKeys/SkillsDocumentDataValue[Title='CandidateFullName']/Value" />
       <WordTemplateName>
         SHCFullReport.docx
       </WordTemplateName>
@@ -60,8 +60,8 @@
       </Currentdate>
       <Level>
         <xsl:choose>
-          <xsl:when test="SkillsDocument/DataValues/SkillsDocumentDataValue[Title='Qualification.Level']/Value != ''">
-            <xsl:value-of select="SkillsDocument/DataValues/SkillsDocumentDataValue[Title='Qualification.Level']/Value"/>
+          <xsl:when test="SkillsDocument/DataValueKeys/SkillsDocumentDataValue[Title='Qualification.Level']/Value != ''">
+            <xsl:value-of select="SkillsDocument/DataValueKeys/SkillsDocumentDataValue[Title='Qualification.Level']/Value"/>
           </xsl:when>
           <xsl:otherwise>
             1
