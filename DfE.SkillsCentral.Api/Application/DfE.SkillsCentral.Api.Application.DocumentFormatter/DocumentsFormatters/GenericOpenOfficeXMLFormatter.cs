@@ -161,6 +161,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             xmlString = xmlString.Replace("d2p1:Key", "Title");
             xmlString = xmlString.Replace("TitleValueOfstringstring", "SkillsDocumentDataValue");
             xmlString = xmlString.Replace("d2p1:Value", "Value");
+            xmlString = xmlString.Replace("xmlns:i", "xmlns:xsd");
+            xmlString = xmlString.Replace("xmlns=", "xmlns:xsi=");
+            xmlString = xmlString.Replace("i:nil", "xsi:nil");
             xmlString = xmlString.Replace(" xmlns:d2p1=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\"", "");
 
             doc.LoadXml(xmlString);

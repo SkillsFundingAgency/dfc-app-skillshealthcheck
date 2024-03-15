@@ -11,16 +11,14 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
 
     /// <summary>
     /// SkillAreasResult - Entity to store final result for skill areas assessment
     /// </summary>
     public class SkillAreasResult : SHCResultBase
     {       
-        #region | Enums |
-
         /// <summary>
         /// enum to store the element names skills category to display in report
         /// </summary>
@@ -72,10 +70,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             CT9
         }
 
-        #endregion
-
-        #region | Constructor |
-
         /// <summary>
         /// Initializes a new instance of the SkillAreasResult class
         /// </summary>
@@ -88,17 +82,11 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         {           
         }
 
-        #endregion
-
-        #region | Properties |
         /// <summary>
         /// Get / Set ranked skill categories 
         /// </summary>
         /// <remarks>This property is used in the job family to retrive the skills category result set for processing within JobSuggessionResult</remarks>
         public List<SkillsCategory> RankedSkillCategories { get; set; } 
-        #endregion
-
-        #region | Private Methods |
         /// <summary>
         /// Calculates the score of a particular answer
         /// </summary>
@@ -144,7 +132,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             //answer validation
             if (categoriesArray.Length != answersArray.Length)
             {
-                throw new ArgumentException(string.Format(General.Error_UserAnswerCorrectAnswerMismatch,
+                throw new ArgumentException(string.Format(Error_UserAnswerCorrectAnswerMismatch,
                                                 this.ReportName, answersArray.Length, categoriesArray.Length));
             }
 
@@ -249,9 +237,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return items.OrderByDescending(o1 => o1.Score).ThenByDescending(o2 => o2.RankOneResponses).ToList(); 
         }
 
-        #endregion
-
-        #region | Public Methods |
         /// <summary>
         /// Runs skill areas assessment
         /// </summary>
@@ -359,6 +344,5 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 return returnXML;
             }
         }
-        #endregion       
     }
 }

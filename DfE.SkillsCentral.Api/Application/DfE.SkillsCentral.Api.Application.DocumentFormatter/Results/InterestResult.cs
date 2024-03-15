@@ -12,10 +12,10 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.Linq;
     using System.Text;
     using System.Xml;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
 
-    /// <summary>
+    ///// <summary>
     /// InterestResult- Entity to store final result for personal interest assessment
     /// </summary>
     public class InterestResult : SHCResultBase
@@ -96,7 +96,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             if (categoriesArray.Length != answersArray.Length)
             {
                 throw new ArgumentException(
-                                            string.Format(General.Error_UserAnswerCorrectAnswerMismatch,
+                                            string.Format(Error_UserAnswerCorrectAnswerMismatch,
                                             this.ReportName, 
                                             answersArray.Length, 
                                             categoriesArray.Length));

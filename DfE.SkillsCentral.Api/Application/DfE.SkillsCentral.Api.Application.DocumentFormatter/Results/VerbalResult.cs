@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
+//using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
 
 namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {

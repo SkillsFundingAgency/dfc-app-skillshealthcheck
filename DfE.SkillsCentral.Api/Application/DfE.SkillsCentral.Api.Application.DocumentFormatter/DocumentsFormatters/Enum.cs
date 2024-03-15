@@ -62,6 +62,7 @@
         PersonalStyle,
         Motivation,
         Verbal,
+        Numbers,
         Checking,
         Mechanical,
         Shapes,
