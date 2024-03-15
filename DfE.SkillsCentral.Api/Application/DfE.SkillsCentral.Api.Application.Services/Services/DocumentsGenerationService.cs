@@ -27,7 +27,7 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
         public async Task<byte[]> GenerateWordDoc(int documentId)
         {
             var document = await _skillsDocumentsRepository.GetByIdAsync(documentId);
-            var formattedDoc = GenericOpenOfficeXMLFormatter.FormatDocumentWithATemplate(document, "SHCFullReport");
+            var formattedDoc = GenericOpenOfficeXMLFormatter.FormatDocumentWithATemplate(document, "SHCFullReport", _jobFamiliesRepository);
             return formattedDoc;
         }
         
