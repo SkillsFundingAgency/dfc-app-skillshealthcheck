@@ -29,15 +29,34 @@ public class DocumentGenerationServiceTests
     {
         // Arrange
         var document = CreateNewSkillsDocument();
-
         _ = await docService.CreateSkillsDocument(document);
         var skillsDoc = await docService.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
+
         // Act
         var result = await sut.GenerateWordDoc(skillsDoc.Id.Value);
-
+        string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         Directory.CreateDirectory("TestOutput");
-        File.WriteAllBytes("/TestOutput/TestReport.docx", result);
+        File.WriteAllBytes($"{currentPath}/TestOutput/TestReport.docx", result);
 
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task GeneratePDF_ReturnsSkillsDocument_WhenAllDataValuesAreProvided()
+    {
+        // Arrange
+        var document = CreateNewSkillsDocument();
+        _ = await docService.CreateSkillsDocument(document);
+        var skillsDoc = await docService.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
+        
+        // Act
+        var result = await sut.GeneratePDF(skillsDoc.Id.Value);
+        string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        Directory.CreateDirectory("TestOutput");
+        File.WriteAllBytes($"{currentPath}/TestOutput/TestReport.pdf", result);
+
+        // Assert
         Assert.NotNull(result);
     }
 

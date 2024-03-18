@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using Aspose.Words;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
@@ -19,7 +20,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         public static byte[] ConvertDocx(byte[] docxContent, DocxTargetFormat format)
         {
             SaveFormat targetFormat = GetTargetFormat(format);
-            string asposeLicKeyFilePath = GetAsposeLicKeyFilePath();
+
+            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string asposeLicKeyFilePath = $"{currentPath}/DocumentsFormatters/Aspose.Words.lic";
 
             byte[] pdfContent = null;
             try
@@ -50,29 +53,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        /// <summary>
-        /// Get the aspose word licence key path
-        /// </summary>
-        /// <returns></returns>
-        private static string GetAsposeLicKeyFilePath()
-        {
-            string asposeLicKeyFilePath = ConfigurationManager.AppSettings[ApsoseLicenseFilePathkey];
-
-            try
-            {
-                if (RoleEnvironment.IsAvailable)
-                {
-                    asposeLicKeyFilePath = Path.Combine(Environment.GetEnvironmentVariable("RoleRoot") + "\\approot\\bin\\", asposeLicKeyFilePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format("Error trying to find the aspose.word.lic path from configuraiton : '{0}'",
-                    ConfigurationManager.AppSettings[ApsoseLicenseFilePathkey]), ex);
-            }
-
-            return asposeLicKeyFilePath;
-        }
         #endregion
 
         #region | Private Method |
