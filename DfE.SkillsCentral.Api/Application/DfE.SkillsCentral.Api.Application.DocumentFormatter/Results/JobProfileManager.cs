@@ -21,10 +21,10 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     /// </summary>
     public class JobProfileManager
     {
-        private IReadOnlyList<JobFamily> jobFamilies;
+        private IReadOnlyList<JobFamily> _jobFamilies;
         public JobProfileManager(IReadOnlyList<JobFamily> jobFamilies)
         {
-            jobFamilies = jobFamilies;
+            _jobFamilies = jobFamilies;
         }
         #region | Private Methods |
         /// <summary>
@@ -41,7 +41,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             try
             {
                 
-                foreach (JobFamily jobFamily in jobFamilies)
+                foreach (JobFamily jobFamily in _jobFamilies)
                 {
                     JobFamilyProfile jfp = new JobFamilyProfile();
                     jfp.Title = jobFamily.Title;
