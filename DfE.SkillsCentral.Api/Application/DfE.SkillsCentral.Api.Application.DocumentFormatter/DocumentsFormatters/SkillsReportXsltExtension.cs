@@ -12,10 +12,10 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     public class SkillsReportXsltExtension
     {
-        private IJobFamiliesRepository jobFamiliesRepository;
+        private IJobFamiliesRepository _jobFamiliesRepository;
         public SkillsReportXsltExtension(IJobFamiliesRepository jobFamiliesRepository)
         {
-            jobFamiliesRepository = jobFamiliesRepository;
+            _jobFamiliesRepository = jobFamiliesRepository;
         }
         const string SHCFullReportCurrentDateTag = "<CurrentDate>{0}</CurrentDate>";
         const string SHCFullReportDatetimeFormat = "dddd, MMMM dd, yyyy";
@@ -25,7 +25,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             iterator.MoveNext();
             XDocument doc = XDocument.Parse(iterator.Current.OuterXml);
 
-            string qualificationLevel = GetElementValue(doc, Constant.QualificationLevel);
+            string qualificationLevel = "1";
 
             SkillAreasResult skills = new SkillAreasResult(qualificationLevel,
                                                            GetElementValue(doc, Constant.SkillAreasType),
@@ -97,7 +97,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                                                                GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies1),
                                                                GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies2),
                                                                GetElementValue(doc, Constant.SkillAreasExcludedJobFamilies3),
-                                                               jobFamiliesRepository);
+                                                               _jobFamiliesRepository);
 
             StringBuilder resultXML = new StringBuilder();
             resultXML.Append(Constant.RootStart);

@@ -133,6 +133,7 @@
 
             for (int j = 0; j < allsdtElements.Count(); j++)
             {
+
                 var element = allsdtElements[j];
 
                 var alias = element.sdtElement.SdtProperties.Descendants<SdtAlias>();
@@ -160,8 +161,11 @@
                                 }
 
                                 bool showElement = false;
-                                object obj = ExpressionEvaluator.Evaluate(finalExpression.ToLower());
-                                bool.TryParse(obj.ToString(), out showElement);
+
+                                    object obj = ExpressionEvaluator.Evaluate(finalExpression.ToLower());
+                                    bool.TryParse(obj.ToString(), out showElement);
+
+
                                 if (!showElement)
                                 {
                                     if (element.sdtElement is SdtBlock)
