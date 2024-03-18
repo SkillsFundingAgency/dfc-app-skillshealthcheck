@@ -11,6 +11,7 @@ namespace DFC.App.SkillsHealthCheck.Models
         /// The description.
         /// </value>
         public string Description { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the assessment.
         /// </summary>
@@ -18,6 +19,7 @@ namespace DFC.App.SkillsHealthCheck.Models
         /// The name of the assessment.
         /// </value>
         public string AssessmentName { get; set; }
+
         /// <summary>
         /// Gets or sets the assessment category.
         /// </summary>
@@ -57,6 +59,7 @@ namespace DFC.App.SkillsHealthCheck.Models
         ///   <c>true</c> if [personal assessment]; otherwise, <c>false</c>.
         /// </value>
         public bool PersonalAssessment { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [activity assessment].
         /// </summary>

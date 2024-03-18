@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+﻿using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages
 {
