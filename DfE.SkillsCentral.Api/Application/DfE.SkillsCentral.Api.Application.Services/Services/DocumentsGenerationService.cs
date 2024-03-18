@@ -40,15 +40,5 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
 
         
 
-        private async Task<IReadOnlyList<JobFamily>> GetJobFamilies()
-        {
-            return await _jobFamiliesRepository.GetAllAsync();
-        }
-
-        private async Task<IReadOnlyList<string>> GetCorrectAnswers(int assessmentId) 
-        {
-            return await _answersRepository.GetAllCorrectAnswersByAssessmentIdAsync(assessmentId);
-        }
-
     }
 }

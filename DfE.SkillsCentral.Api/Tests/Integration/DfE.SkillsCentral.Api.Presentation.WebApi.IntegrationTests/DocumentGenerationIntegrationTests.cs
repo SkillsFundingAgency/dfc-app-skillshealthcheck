@@ -1,70 +1,66 @@
-using System.Globalization;
-using DFC.SkillsCentral.Api.Application.Interfaces.Services;
-//using DFC.SkillsCentral.Api.Application.DocumentFormatter;
-
+using System.Net;
+using System.Net.Http.Json;
 using DFC.SkillsCentral.Api.Domain.Models;
-using Microsoft.Extensions.DependencyInjection;
-using DfE.SkillsCentral.Api.Application.Services.Services;
-using System.Collections;
-using System.Reflection;
+using DfE.SkillsCentral.Api.Application.Interfaces.Models;
+using DocumentFormat.OpenXml.Office2010.Word;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using Xunit;
 
-namespace DfE.SkillsCentral.Api.Application.Services.IntegrationTests;
+namespace DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests;
 
-public class DocumentGenerationServiceTests
+public class DocumentGenerationIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    private readonly IDocumentsGenerationService sut;
-    private readonly ISkillsDocumentsService docService;
+    private readonly HttpClient client;
 
-    public DocumentGenerationServiceTests()
+    public DocumentGenerationIntegrationTests(WebApplicationFactory<Program> factory)
     {
-        var services = new ServiceCollection();
-        TestSetup.ConfigureServices(services);
-        var serviceProvider = services.BuildServiceProvider();
-        sut = serviceProvider.GetRequiredService<IDocumentsGenerationService>();
-        docService = serviceProvider.GetService<ISkillsDocumentsService>();
+        client = factory.CreateClient();
     }
 
     [Fact]
-    public async Task GenerateWordDoc_ReturnsSkillsDocument_WhenAllDataValuesAreProvided()
+    public async Task GenerateWordDoc_WithValidDocumentId_ReturnWordDocFile()
     {
         // Arrange
         var document = CreateNewSkillsDocument();
-        _ = await docService.CreateSkillsDocument(document);
-        var skillsDoc = await docService.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
+        var response = await client.PostAsJsonAsync($"/api/SkillsDocument/", document);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var documentObject = JsonConvert.DeserializeObject<SkillsDocument>(content);
 
         // Act
-        var result = await sut.GenerateWordDoc(skillsDoc.Id.Value);
-        string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        Directory.CreateDirectory("TestOutput");
-        File.WriteAllBytes($"{currentPath}/TestOutput/TestReport.docx", result);
+        var result = await client.GetAsync($"/api/DocumentGeneration/docx/{documentObject.Id}");
 
         // Assert
-        Assert.NotNull(result);
+        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        Assert.Equal("application/vnd.openxmlformats-officedocument.wordprocessingml.document", result.Content.Headers.ContentType.MediaType);
+
     }
 
     [Fact]
-    public async Task GeneratePDF_ReturnsSkillsDocument_WhenAllDataValuesAreProvided()
+    public async Task GeneratePDF_WithValidDocumentId_ReturnPdfFile()
     {
         // Arrange
         var document = CreateNewSkillsDocument();
-        _ = await docService.CreateSkillsDocument(document);
-        var skillsDoc = await docService.GetSkillsDocumentByReferenceCode(document.ReferenceCode!);
-        
+        var response = await client.PostAsJsonAsync($"/api/SkillsDocument/", document);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var documentObject = JsonConvert.DeserializeObject<SkillsDocument>(content);
+
         // Act
-        var result = await sut.GeneratePDF(skillsDoc.Id.Value);
-        string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        Directory.CreateDirectory("TestOutput");
-        File.WriteAllBytes($"{currentPath}/TestOutput/TestReport.pdf", result);
+        var result = await client.GetAsync($"/api/DocumentGeneration/pdf/{documentObject.Id}");
 
         // Assert
-        Assert.NotNull(result);
+        Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        Assert.Equal("application/pdf", result.Content.Headers.ContentType.MediaType);
+
     }
 
     private SkillsDocument CreateNewSkillsDocument(string createdBy = null)
     {
         return new SkillsDocument
         {
-            
+
             ReferenceCode = Guid.NewGuid().ToString(),
             CreatedBy = createdBy,
             DataValueKeys = new Dictionary<string, string>
@@ -93,11 +89,11 @@ public class DocumentGenerationServiceTests
                 {"Checking.Ease","3" },
                 {"Checking.Timing","5" },
                 {"Checking.Enjoyment","1" },
-                {"Mechanical.Answers","Neither,B,A,A,C,Equal,A,C,B,A,B" }, 
+                {"Mechanical.Answers","Neither,B,A,A,C,Equal,A,C,B,A,B" },
                 {"Mechanical.Complete","True" },
                 {"Mechanical.Ease","2" },
                 {"Mechanical.Timing","4" },
-                {"Mechanical.Enjoyment","2" },  
+                {"Mechanical.Enjoyment","2" },
                 {"Spatial.Answers" ,  "C,A,B,B,B,B,B,B,B,B,B,B,B,B" },
                 {"Spatial.Complete", "True" },
                 {"Spatial.Enjoyment", "2" },
