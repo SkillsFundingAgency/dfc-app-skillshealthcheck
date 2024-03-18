@@ -24,11 +24,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        public CheckingResult(string qualificationLevel, string type, string answers, string complete) :
-            base(SHCReportSection.Checking.ToString(), qualificationLevel, type, answers, complete)
-        {            
-        }
-
         public int Ease { get; set; }
 
         public int Timing { get; set; }
