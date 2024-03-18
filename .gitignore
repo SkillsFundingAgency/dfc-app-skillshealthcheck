@@ -273,3 +273,4 @@ __pycache__/
 /DFC.App.SkillsHealthCheck.Services.SkillsCentral/Properties/launchSettings.json
 /DFC.App.SkillsHealthCheck.UnitTests/Properties/launchSettings.json
 /DfE.SkillsCentral.Api/Tests/Integration/DfE.SkillsCentral.Api.Application.Services.IntegrationTests/appsettings.json
+/DfE.SkillsCentral.Api/Application/DfE.SkillsCentral.Api.Application.DocumentFormatter/DocumentsFormatters/Aspose.Words.lic
