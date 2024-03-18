@@ -6,6 +6,7 @@ using DFC.SkillsCentral.Api.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using DfE.SkillsCentral.Api.Application.Services.Services;
 using System.Collections;
+using System.Reflection;
 
 namespace DfE.SkillsCentral.Api.Application.Services.IntegrationTests;
 
@@ -23,8 +24,6 @@ public class DocumentGenerationServiceTests
         docService = serviceProvider.GetService<ISkillsDocumentsService>();
     }
 
-
-
     [Fact]
     public async Task GenerateWordDoc_ReturnsSkillsDocument_WhenAllDataValuesAreProvided()
     {
@@ -36,7 +35,8 @@ public class DocumentGenerationServiceTests
         // Act
         var result = await sut.GenerateWordDoc(skillsDoc.Id.Value);
 
-        File.WriteAllBytes("C:\\Git\\TestReport.docx", result);
+        Directory.CreateDirectory("TestOutput");
+        File.WriteAllBytes("/TestOutput/TestReport.docx", result);
 
         Assert.NotNull(result);
     }
