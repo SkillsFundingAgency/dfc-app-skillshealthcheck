@@ -4,7 +4,6 @@ using DfE.SkillsCentral.Api.Application.Interfaces.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Assessment = DfE.SkillsCentral.Api.Domain.Models.Assessment;
 
 namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
 {

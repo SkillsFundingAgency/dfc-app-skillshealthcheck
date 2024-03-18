@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using DFC.SkillsCentral.Api.Domain.Models;
 using DfE.SkillsCentral.Api.Domain.Models;
-using Assessment = DfE.SkillsCentral.Api.Domain.Models.Assessment;
 using Dapper;
 
 namespace DfE.SkillsCentral.Api.Infrastructure.UnitTests
