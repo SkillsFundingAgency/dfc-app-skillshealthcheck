@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="DocumentsFormatters\appsettings-template.json" />
+    <None Remove="DocumentsFormatters\appsettings.json" />
+  </ItemGroup>
+
 
 
   <ItemGroup>
@@ -22,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DocumentsFormatters\Aspose.Words.lic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Templates\SHCFullReport.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
