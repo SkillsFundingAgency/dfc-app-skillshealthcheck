@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-
 namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     internal class CheckingResult : SHCResultBase
@@ -253,26 +251,5 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        public override string GetSummaryResult()
-        {
-            if (!this.IsComplete)
-            {
-                return GetXML(null, Constant.XmlChkRootElement);
-            }
-            else
-            {
-                string correctAnswers = this.Resource.GetString(Constant.ChkQuestionSetA);
-                int questionsCorrect = this.GetNumberOfQuestionsCorrect(correctAnswers);
-                int questionsAttempted = this.GetNumberOfQuestionsAttempted();
-                int totalQuestions = this.GetQuestionCount(correctAnswers);                
-
-                Dictionary<string, string> items = new Dictionary<string, string>();
-                items.Add(Constant.XmlQuestionsAttemptedElement, questionsAttempted.ToString());
-                items.Add(Constant.XmlTotalQuestionsElement, totalQuestions.ToString());
-                items.Add(Constant.XmlChkQuestionsCorrectElement, questionsCorrect.ToString());            
-
-                return GetXML(items, Constant.XmlChkRootElement);
-            }
-        }
     }
 }
