@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="JobSuggestionResult.cs" company="tesl.com">
-// Trinity Expert Systems
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using DfE.SkillsCentral.Api.Application.Interfaces.Repositories;
     using System;
@@ -15,18 +9,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
 
 
-    /// <summary>
-    /// JobSuggestionResult - Entity to store final result for job suggestions
-    /// </summary>
     public class JobSuggestionResult : SHCResultBase
     {
         private IJobFamiliesRepository _jobFamiliesRepository;
-        /// <summary>
-        /// Initializes a new instance of the JobSuggestionResult class
-        /// </summary>
-        /// <param name="jobFamiliyExclude1">string holding job family 1 exclusion</param>
-        /// <param name="jobFamilyExclude2">string holding job family 2 exclusion</param>
-        /// <param name="jobFamilExclude3">string holding job family 3 exclusion</param>
         public JobSuggestionResult(string qualificationLevel, string jobFamilyExclude1, string jobFamilyExclude2, string jobFamilyExclude3, IJobFamiliesRepository jobFamiliesRepository)
             : base(SHCReportSection.JobSugession.ToString(), qualificationLevel, string.Empty, string.Empty, string.Empty)
         {
@@ -47,65 +32,28 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 this.JobFamilyExclude.Add(jobFamilyExclude3);
             }
         }
-        /// <summary>
-        /// Get / Set 1st job family exclusion
-        /// </summary>
         public List<string> JobFamilyExclude { get; set; }
 
-        /// <summary>
-        /// Get / Set ranked skill categories
-        /// </summary>
         public List<SkillsCategory> RankedSkillsCategories { get; set; }
 
-        /// <summary>
-        /// Get / Set  avaliable interest categories
-        /// </summary>
         public List<InterestCategory> InterestCategories { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of enum to show the summary wording.
-        /// </summary>
         private JobSuggestionSummary Summary { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of enum to show the Job Families wording.
-        /// </summary>
         private JobSuggestionBody Body { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of verbal assessment complete.
-        /// </summary>
         public bool VerbalComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of Numeric assessment complete.
-        /// </summary>
         public bool NumericComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of Checking assessment complete.
-        /// </summary>
         public bool CheckingComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of Spatial assessment complete.
-        /// </summary>
         public bool SpatialComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of Spatial assessment complete.
-        /// </summary>
         public bool AbstractComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set the value of Spatial assessment complete.
-        /// </summary>
         public bool MechanicalComplete { get; set; }
 
-        /// <summary>
-        /// Get / Set Interest Band name, when there is only one ineterest area 
-        /// and all the job families are used by skill match.
-        /// </summary>
         private string InterestBandName { get; set; }
 
         private List<JobFamilyProfile> GetJobFamilies()
@@ -122,8 +70,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                   handlingChangeAndPressureRank = 0,
                   achievingResultsRank = 0,
                   learningAndTechnologyRank = 0;
-
-            //string educationLevel = GetQualificationLevel();
 
             for (int i = 1; i <= this.RankedSkillsCategories.Count; i++)
             {
@@ -167,7 +113,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             int.TryParse(this.Resource.GetString(Constant.Interests_JobFamiliesToDisplay), out interestRows);
             int.TryParse(this.Resource.GetString(Constant.SkillsAndInterestJobFamiliesToDisplay), out interestAndSkilsRows);
 
-            // if interest is completed then get the job recommendations for skills + interests
             if (this.InterestCategories != null && this.InterestCategories.Count > 0)
             {
                 string[] interestBandNamesToGetJobFamilies = this.Resource.GetString(Constant.InterestBandNamesToGetJobFamilies).Split(Constant.AnswerSeparator);
@@ -207,7 +152,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
                     if (interestsCount > 0)
                     {
-                        // get job families for skills + interests
                         jobFamilies = jpm.GetJobFamiliesSkillsAndInterests(JobFamilyExclude.ToArray(),
                                                                            "1",
                                                                            interests.ToArray(),
@@ -224,7 +168,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                                                                            learningAndTechnologyRank);
                         if (interestsCount == 1 && jobFamilies != null && jobFamilies.FindAll(c => c.IsFromInterests == true).Count == 0)
                         {
-                            // All the job families relate to interest ares are used up by skills matches.                            
                             Summary = JobSuggestionSummary.OneVeryorModeratleyInterest;
                             Body = JobSuggestionBody.OnlySkills;
                         }
@@ -236,7 +179,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                     }
                     else
                     {
-                        //// Get the job families for skills only as they have no interest matches                        
                         jobFamilies = jpm.GetSkillJobFamilies(JobFamilyExclude.ToArray(),
                                                                 "1",
                                                                 skillsRows,
@@ -250,7 +192,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                                                                 achievingResultsRank,
                                                                 learningAndTechnologyRank);
 
-                        // all job families are used by skills area                            
                         Summary = JobSuggestionSummary.AllLittelAndNoInterest;
                         Body = JobSuggestionBody.OnlySkills;
                     }
@@ -258,7 +199,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
             else if (this.RankedSkillsCategories != null && this.RankedSkillsCategories.Count > 0)
             {
-                // if intrest is not completed then get the job recommendations only for skills
                 jobFamilies = jpm.GetSkillJobFamilies(JobFamilyExclude.ToArray(),
                                                        "1",
                                                        skillsRows,
@@ -272,7 +212,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                                                        achievingResultsRank,
                                                        learningAndTechnologyRank);
 
-                // all job families are used by skills area                            
                 Summary = JobSuggestionSummary.OnlySkills;
                 Body = JobSuggestionBody.OnlySkills;
             }
@@ -280,10 +219,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return jobFamilies;
         }
 
-        /// <summary>
-        /// Returns qualification level indicator
-        /// </summary>
-        /// <returns>int holding qualification level</returns>
         private string GetQualificationLevel()
         {
             string educationLevel;
@@ -303,10 +238,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return educationLevel;
         }
 
-        /// <summary>
-        /// Returns qualification level indicator
-        /// </summary>
-        /// <returns>int holding qualification level</returns>
         private string GetInterestBandName(int interest)
         {
             string bandName = string.Empty;
@@ -332,11 +263,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return bandName;
         }
 
-        /// <summary>
-        /// builds the job family xml nodes and maps values
-        /// <param name="xml">xml text writer to write the output</param>
-        /// <param name="jsp">JobFamilyProfile to be written to xml</param>
-        /// </summary>
         private void BuildJobFamilyXML(XmlTextWriter xml, JobFamilyProfile jsp)
         {
             xml.WriteElementString(Constant.XmlTitleElement, jsp.Title);
@@ -399,8 +325,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                         xml.WriteElementString(Constant.ShowTagPrefix + Constant.XmlJobSummary, this.Summary.ToString("d"));
                         xml.WriteElementString(Constant.ShowTagPrefix + Constant.XmlJobBody, this.Body.ToString("d"));
 
-                        // when there is only one ineterest area 
-                        // and all the job families are used by skill match.
                         xml.WriteElementString(Constant.XmlJobInterestBandName, this.InterestBandName);
                         if (Body == JobSuggestionBody.SkillsAndInterests)
                         {
@@ -456,39 +380,5 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        public override string GetSummaryResult()
-        {
-            if (!this.IsComplete)
-            {
-                return GetXML(null, Constant.XmlJobSuggestionsRootElement);
-            }
-            else
-            {
-                string returnXML = string.Empty;
-                using (StringWriter sw = new StringWriter())
-                {
-                    using (XmlTextWriter xml = new XmlTextWriter(sw))
-                    {
-                        List<JobFamilyProfile> jfs = new List<JobFamilyProfile>();
-                        jfs = GetJobFamilies();
-                        xml.WriteStartElement(Constant.XmlJobSuggestionsRootElement);
-                        xml.WriteStartElement(Constant.XmlSkillsJobFamilies);
-                        foreach (JobFamilyProfile jsp in jfs)
-                        {
-                            xml.WriteStartElement(Constant.XmlSkillsJobFamily);
-                            xml.WriteElementString(Constant.XmlTitleElement, jsp.Title);
-                            xml.WriteEndElement();
-                        }
-
-                        xml.WriteEndElement();
-                        xml.WriteEndElement();
-                    }
-
-                    returnXML = sw.ToString();
-                }
-
-                return returnXML;
-            }
-        }
     }
 }

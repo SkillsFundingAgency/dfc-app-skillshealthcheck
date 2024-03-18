@@ -1,80 +1,27 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Class1.cs" company="tesl.com">
-// Trinity Expert Systems
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
-    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-
-    /// <summary>
-    ///  MechanicalResult- Entity to store final result for mechanical assessment
-    /// </summary>
     public class MechanicalResult : SHCResultBase
     {
-        #region | Enums |
-        /// <summary>
-        /// Defines mechanical type
-        /// </summary>
         public enum MechanicalType
         {
-            /// <summary>
-            /// Default value
-            /// </summary>
             NoType = 0,
 
-            /// <summary>
-            /// Physical priciple is high
-            /// </summary>
             PPHigh = 1,
 
-            /// <summary>
-            /// movement of object is high
-            /// </summary>
             MOHigh = 2,
 
-            /// <summary>
-            /// structure and weight is high
-            /// </summary>
             SWHigh = 3,
 
-            /// <summary>
-            /// physical principle and movement of objects are equal and high
-            /// </summary>
             PPMOHigh = 4,
 
-            /// <summary>
-            /// structure and weight and physical principle are equal and high
-            /// </summary>
             SWPPHigh = 5,
 
-            /// <summary>
-            /// structure and weight and movement of objects are equal and high
-            /// </summary>
             SWMOHigh = 6,
 
-            /// <summary>
-            /// all are high
-            /// </summary>
             AllEqual = 7,
         }
-        #endregion
-
-        #region | Constructor |
-
-        /// <summary>
-        /// Initializes a new instance of the MechanicalResult class
-        /// </summary>
-        /// <param name="qualificationLevel">stirng holding qualification level</param>
-        /// <param name="ease">string holding ease</param>
-        /// <param name="timing">string holding timing</param>
-        /// <param name="type">string holding type</param>
-        /// <param name="answers">string holding answers</param>
-        /// <param name="complete">string holding complete flag</param>
-        /// <param name="enjoyment">string holding enjoyment flag</param>
         public MechanicalResult(string qualificationLevel, string ease, string timing, string type, string answers, string complete, string enjoyment) :
             base(SHCReportSection.Mechanical.ToString(), qualificationLevel, type, answers, complete)
         {
@@ -94,45 +41,16 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the MechanicalResult class
-        /// </summary>
-        /// <param name="qualificationLevel">stirng holding qualification level</param>
-        /// <param name="type">string holding type</param>
-        /// <param name="answers">string holding answers</param>
-        /// <param name="complete">string holding complete flag</param>
         public MechanicalResult(string qualificationLevel, string type, string answers, string complete) :
             base(SHCReportSection.Mechanical.ToString(), qualificationLevel, type, answers, complete)
         {
         }
-        #endregion
-
-        #region | Properties |
-
-        /// <summary>
-        /// Get / Set ease
-        /// </summary>
         public int Ease { get; set; }
 
-        /// <summary>
-        /// Get / Set timing
-        /// </summary>
         public int Timing { get; set; }
 
-        /// <summary>
-        /// Get / Set enjoyment
-        /// </summary>
         public int Enjoyment { get; set; }
 
-        #endregion
-
-        #region | Private Methods |
-
-        /// <summary>
-        /// Computes style based on questions attempted
-        /// </summary>
-        /// <param name="questionsAttempted">int holding the number of questions attempted</param>
-        /// <returns>int holding the style</returns>
         private int GetStyle(int questionsAttempted)
         {
             int style = 1;
@@ -153,11 +71,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return style;
         }
 
-        /// <summary>
-        /// Computes accuracy based on raw score
-        /// </summary>
-        /// <param name="rawScore">int holding the raw score</param>
-        /// <returns>int holding the accuracy</returns>
         private int GetAccuracy(double rawScore)
         {
             int accuracy = 1;
@@ -182,12 +95,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return accuracy;
         }
 
-        /// <summary>
-        /// Computes question correct band
-        /// </summary>
-        /// <param name="questionsCorrect">int holding total number of correct question</param>
-        /// <param name="totalQuestions">int holding total number of questions</param>
-        /// <returns>question correct band</returns>
         private int GetQuestionCorrectBand(int questionsCorrect, int totalQuestions)
         {
             int questionCorrectBand = 0;
@@ -208,59 +115,44 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return questionCorrectBand;
         }
 
-        /// <summary>
-        /// Returns  mechanical type id 
-        /// </summary>
-        /// <param name="physicalPrinciplesPercent">double holding physical pricipal percentage</param>
-        /// <param name="movementOfObjectsPercent">double holding move of objectpercentage</param>
-        /// <param name="structureAndWeightsPercent">double holding structure and weight percentage</param>
-        /// <returns>enum to construct the report section</returns>
         private string GetMechanicalTypeId(double physicalPrinciplesPercent, double movementOfObjectsPercent, double structureAndWeightsPercent)
         {
             MechanicalType result = MechanicalType.NoType;
 
             if (physicalPrinciplesPercent > 0.4 || movementOfObjectsPercent > 0.4 || structureAndWeightsPercent > 0.4)
             {
-                //if one is higher
                 if (physicalPrinciplesPercent > movementOfObjectsPercent && physicalPrinciplesPercent > structureAndWeightsPercent)
                 {
-                    result = MechanicalType.PPHigh; // physical principle is higher than the other two
+                    result = MechanicalType.PPHigh;         
                 }
                 else if (movementOfObjectsPercent > physicalPrinciplesPercent && movementOfObjectsPercent > structureAndWeightsPercent)
                 {
-                    result = MechanicalType.MOHigh;  // movement of object is higher than the other two
+                    result = MechanicalType.MOHigh;           
                 }
                 else if (structureAndWeightsPercent > physicalPrinciplesPercent && structureAndWeightsPercent > movementOfObjectsPercent)
                 {
-                    result = MechanicalType.SWHigh; // structure and weight is higher than the other two
+                    result = MechanicalType.SWHigh;          
                 }               
                 else if (movementOfObjectsPercent > structureAndWeightsPercent && physicalPrinciplesPercent == movementOfObjectsPercent)
                 {
-                    result = MechanicalType.PPMOHigh; // physical principle and movement of objects are equal and greater than structure and weight
+                    result = MechanicalType.PPMOHigh;               
                 }
                 else if (structureAndWeightsPercent > movementOfObjectsPercent && structureAndWeightsPercent == physicalPrinciplesPercent)
                 {
-                    result = MechanicalType.SWPPHigh; // structure and weight and physical principle are equal and greater than movement of objects
+                    result = MechanicalType.SWPPHigh;               
                 }            
                 else if (structureAndWeightsPercent > physicalPrinciplesPercent && structureAndWeightsPercent == movementOfObjectsPercent)
                 {
-                    result = MechanicalType.SWMOHigh; // structure and weight and movement of objects are equal and greater than physical principle 
+                    result = MechanicalType.SWMOHigh;                
                 }                
                 else if (structureAndWeightsPercent == physicalPrinciplesPercent && physicalPrinciplesPercent == movementOfObjectsPercent)
                 {
-                    result = MechanicalType.AllEqual; // all are high
+                    result = MechanicalType.AllEqual;    
                 }
             }
 
             return ((int)result).ToString();
         }
-        #endregion
-
-        #region | Public Methods |
-        /// <summary>
-        /// Runs mechanical calculation
-        /// </summary>
-        /// <returns>Returns xml string holding the mechanical result set</returns>
         public override string GetResult()
         {
             if (!this.IsComplete)
@@ -299,31 +191,5 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        /// <summary>
-        /// Runs mechanical calculation
-        /// </summary>
-        /// <returns>Returns xml string holding the mechanical result set</returns>
-        public override string GetSummaryResult()
-        {
-            if (!this.IsComplete)
-            {
-                return GetXML(null, Constant.XmlMechanicalRootElement);
-            }
-            else
-            {
-                string correctAnswers = this.Resource.GetString(Constant.MechanicalCorrectAnswer);
-                int questionsCorrect = this.GetNumberOfQuestionsCorrect(correctAnswers);
-                int questionsAttempted = this.GetNumberOfQuestionsAttempted();
-                int totalQuestions = this.GetQuestionCount(correctAnswers);                
-
-                Dictionary<string, string> items = new Dictionary<string, string>();                
-                items.Add(Constant.XmlQuestionsAttemptedElement, questionsAttempted.ToString());
-                items.Add(Constant.XmlTotalQuestionsElement, totalQuestions.ToString());
-                items.Add(Constant.XmlQuestionsCorrectElement, questionsCorrect.ToString());    
-            
-                return GetXML(items, Constant.XmlMechanicalRootElement);
-            }
-        }
-        #endregion
     }
 }

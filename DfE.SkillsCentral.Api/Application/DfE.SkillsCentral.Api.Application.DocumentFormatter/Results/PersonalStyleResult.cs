@@ -1,51 +1,23 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="PersonalStyleResult.cs" company="tesl.com">
-// Trinity Expert Systems
-// </copyright>
-// -----------------------------------------------------------------------
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml;
-    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;
-
-    /// <summary>
-    /// PersonalStyle - Entity to calucate and store the personal style.
-    /// </summary>
     public class PersonalStyleResult : SHCResultBase
     {
-        #region | Constructor |
-
-        /// <summary>
-        /// Initializes a new instance of the PersonalStyleResult class
-        /// </summary>
-        /// <param name="qualificationLevel">stirng holding qualification level</param>
-        /// <param name="type">string holding type</param>
-        /// <param name="answers">string holding answers</param>
-        /// <param name="complete">string holding complete flag</param>
         public PersonalStyleResult(string qualificationLevel, string type, string answers, string complete) :
             base(SHCReportSection.PersonalStyle.ToString(), qualificationLevel, type, answers, complete)
         {
         }
 
-        #endregion
-
-        #region | Private Methods |
-        /// <summary>
-        /// Computes category score for motivation
-        /// </summary>
-        /// <returns>return the dictionary of category and score.</returns>
         private Dictionary<string, int> CalculateCategoryScore()
         {
             string[] categoriesArray = this.Resource.GetString(Constant.PersonalCategories).Split(Constant.AnswerSeparator);
             string[] answersArray = this.Answers.Split(Constant.AnswerSeparator);
             int[] answers = answersArray.Select(x => int.Parse(x)).ToArray();
 
-            //answer validation
             if (categoriesArray.Length != answersArray.Length)
             {
                 throw new ArgumentException(
@@ -70,23 +42,7 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
             return resultByCategory;
         }
-        #endregion
 
-        #region | Public Methods |
-        /// <summary>
-        /// Runs personal style assement and returns result set for summary report
-        /// </summary>
-        /// <returns>return the xml string with all the value to generate report</returns>
-        public override string GetSummaryResult()
-        {
-            //return the normal report output for summary result
-            return this.GetResult();
-        }
-
-        /// <summary>
-        /// Runs personal stryle assesment and returns result set for SHC full report
-        /// </summary>
-        /// <returns>return the xml string with all the value to generate report</returns>
         public override string GetResult()
         {
             if (!this.IsComplete)
@@ -197,14 +153,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        #endregion
-
-        #region | Private Methods |
-
-        /// <summary>
-        /// Build personal style items
-        /// </summary>
-        /// <returns>list of personal style</returns>
         private List<PersonalStyle> BuildList()
         {
             Dictionary<string, int> calculatedScores = CalculateCategoryScore();
@@ -226,7 +174,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
             for (int i = 0; i < categories.Length; i++)
             {
-                // Task Focused - Caring  (A3) and Non Practical-Practical (B1) are not included at all, as are less directly relevant in a job search context
                 if (categories[i] != "A3" && categories[i] != "B1")
                 {
                     PersonalStyle ps = new PersonalStyle();
@@ -242,7 +189,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                     ps.DevelopmentRight = developmentRights[i];
                     int score = (int)calculatedScores[categories[i]];
 
-                    // Transform the score on Relaxed-Tense
                     if (ps.Category == "D1")
                     {
                         score = TransformScore(score);
@@ -251,7 +197,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                     ps.Score = score;
                     pesrsonalStyles.Add(ps);
 
-                    // Reserved-Sociable category.  Here a “Right” preference is both a strength and a challenge. A “Left” Preference is a challenge.
                     if (ps.Category == "A2")
                     {
                         PersonalStyle reversedPS = new PersonalStyle();
@@ -275,11 +220,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return pesrsonalStyles;
         }
 
-        /// <summary>
-        /// Transforms the score according to personal style specification
-        /// </summary>
-        /// <param name="score">int holding the score</param>
-        /// <returns>returns transformed score as integer</returns>
         private int TransformScore(int score)
         {
             string[] relaxedTenseScore = this.Resource.GetString(Constant.PersonalRelaxedTenseScore).Split(Constant.AnswerSeparator);
@@ -291,29 +231,20 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return score;
         }
 
-        /// <summary>
-        /// Orders personal style itmes 
-        /// </summary>
-        /// <param name="pesrsonalStyles"></param>
-        /// <param name="sortDescending"></param>
         private void SortPersonalStyleCareers(List<PersonalStyle> pesrsonalStyles, bool sortDescending)
         {
             if (sortDescending)
             {
-                // sort so as to have the highest score at top
                 pesrsonalStyles.Sort(delegate(PersonalStyle ps1, PersonalStyle ps2)
                 {
-                    //The comparison logic provided by the Skills Funding Agency
                     int comparisonResult = Comparer<int>.Default.Compare(ps2.Score, ps1.Score);
 
-                    // if this can be resolved exclusivly on the basis of the value simply reorder
                     if (comparisonResult != 0)
                     {
                         return comparisonResult;
                     }                    
                     else
                     {
-                        // If we have a tie
                         int tetraryComparisonResult = Comparer<string>.Default.Compare(ps1.RightName, ps2.RightName);
                         return tetraryComparisonResult;
                     }
@@ -321,26 +252,21 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
             else
             {
-                // sort so as to have the lowest score at top
                 pesrsonalStyles.Sort(delegate(PersonalStyle ps1, PersonalStyle ps2)
                 {
-                    //The comparison logic provided by the Skills Funding Agency
                     int comparisonResult = Comparer<int>.Default.Compare(ps1.Score, ps2.Score);
 
-                    // if this can be resolved exclusivly on the basis of the value simply reorder
                     if (comparisonResult != 0)
                     {
                         return comparisonResult;
                     }                   
                     else
                     {
-                        // If we have a tie
                         int tetraryComparisonResult = Comparer<string>.Default.Compare(ps1.RightName, ps2.RightName);
                         return tetraryComparisonResult;
                     }
                 });
             }
         }
-        #endregion
     }
 }

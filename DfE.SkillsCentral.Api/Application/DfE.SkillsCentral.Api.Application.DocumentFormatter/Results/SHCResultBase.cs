@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="SHCResultBase.cs" company="tesl.com">
-// Trinity Expert Systems
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+﻿namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
     using System.Collections.Generic;
@@ -12,24 +6,11 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.Linq;
     using System.Resources;
     using System.Xml;
-    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Common;
-    //using IMS.SkillsCentral.XmlExtensionObjects.SkillsReport.Resources;   
-
-    /// <summary>
-    /// SHCResultBase - base class provides common functionality for different SHC assessement
-    /// </summary>
     public abstract class SHCResultBase
     {
        internal const string Error_ParameterEmpty = "[{0}] - {1} paramters does not have a value specified.";
        internal const string Error_UserAnswerCorrectAnswerMismatch = "[{0}] - The number of user answers ({1}) does not match the number of correct answers ({2}) stored in system";
 
-        /// <summary>
-        /// Initializes a new instance of the SHCResultBase class
-        /// </summary>
-        /// <param name="qualificationLevel"></param>
-        /// <param name="type"></param>
-        /// <param name="answers"></param>
-        /// <param name="complete"></param>
         public SHCResultBase(string reportName, string qualificationLevel, string type, string answers, string complete)
         {
             this.QualificationLevel = qualificationLevel;
@@ -38,36 +19,16 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             this.Complete = complete;
             this.ReportName = reportName;
         }
-        /// <summary>
-        /// Get / Set report name
-        /// </summary>
         public string ReportName { get; set; }
 
-        /// <summary>
-        /// Get / Set candidate qualification leve
-        /// </summary>
         public string QualificationLevel { get; set; }
 
-        /// <summary>
-        /// Get / Set question set type
-        /// </summary>
         public string Type { get; set; }
 
-        /// <summary>
-        /// Get / Set answers
-        /// </summary>
         public string Answers { get; set; }
 
-        /// <summary>
-        /// Get / Set complete flag
-        /// </summary>
         public string Complete { get; set; }
        
-        /// <summary>
-        /// Returns the associated resource manager for the given qualification
-        /// </summary>
-        /// <param name="qualificationLevel">string holding the qualification level</param>
-        /// <returns></returns>
         public ResourceManager Resource
         {
             get
@@ -82,7 +43,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
                 
                 else
                 {
-                    //default to level 1                    
                     resource = Level1.ResourceManager;
                 }
 
@@ -90,9 +50,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        /// <summary>
-        /// Returns boolean flag to check question set is complete
-        /// </summary>
         public bool IsComplete
         {
             get
@@ -103,24 +60,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             }
         }
 
-        /// <summary>
-        /// Implements the specific calculation for the questions set and returns the result
-        /// </summary>
-        /// <returns>Returns xml string</returns>
         public abstract string GetResult();
 
-        /// <summary>
-        /// Implements the specific calculation for the questions set and returns the result for Summary Report
-        /// </summary>
-        /// <returns>Returns xml string</returns>
-        public abstract string GetSummaryResult();
          
-        /// <summary>
-        /// Calculates the number of correct answers
-        /// </summary>
-        /// <param name="userAnswers">The answers provided by the user</param>
-        /// <param name="correctAnswers">Correct answers</param>
-        /// <returns>Number of correct answers</returns>
         protected virtual int GetNumberOfQuestionsCorrect(string correctAnswers)
         {
             int score = 0;
@@ -160,33 +102,16 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return score;
         }
 
-        /// <summary>
-        /// Returns number of questions attempted by the user
-        /// </summary>
-        /// <param name="userAnswers">A coma spearated list of answers provided by the user</param>
-        /// <returns>Number of questions attempted</returns>
-        /// <remarks>Not attempted questions are marked with 'X'</remarks>
         protected virtual int GetNumberOfQuestionsAttempted()
         {
             return this.Answers.Split(Constant.AnswerSeparator).Where(x => x != Constant.AnswerSkippedMarker).Count();
         }
 
-        /// <summary>
-        /// Returns the number of questions in a question set
-        /// </summary>
-        /// <param name="correctAnswers">A coma separated list of answers</param>
-        /// <returns>Number of questions</returns>
         protected virtual int GetQuestionCount(string correctAnswers)
         {
             return correctAnswers.Split(Constant.AnswerSeparator).Length;
         }
 
-        /// <summary>
-        /// Returns correct answer count for a given set of question numbers
-        /// </summary>
-        /// <param name="answerPositions">string holding multiple question number index separated by comma (,)</param>
-        /// <param name="correctAnswers">string holding the correct answers</param>
-        /// <returns>int holding the correct answer count</returns>
         protected virtual double GetRangeCorrectAnswerPercent(string answerPositions, string correctAnswers)
         {
             int correctAnswer = 0;
@@ -196,7 +121,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
             foreach (string item in answerPostitionSplit)
             {
-                //reduce by - 1 as the index number starts from 0 but resource file having question numbers that starts from 1
                 int idx = Convert.ToInt32(item) - 1;
                 if (userAnswers[idx] == correctAnswersSplit[idx])
                 {
@@ -207,12 +131,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
             return (double)correctAnswer / answerPostitionSplit.Length;
         }
 
-        /// <summary>
-        /// Build the result set in xml  eg., (<ShowNumerical>True</ShowNumerical><Numerical>....</Numerical>)
-        /// </summary>
-        /// <param name="items">dictionary collection holding xml element name and value</param>
-        /// <param name="rootTag">string holding the root tag name</param>
-        /// <returns>string holding the xml </returns>
         protected virtual string GetXML(Dictionary<string, string> items, string rootTag)
         {
             string returnXML = string.Empty;
