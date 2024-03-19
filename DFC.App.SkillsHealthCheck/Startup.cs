@@ -14,6 +14,7 @@ using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
@@ -80,6 +81,7 @@ namespace DFC.App.SkillsHealthCheck
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
             services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
+            services.Configure<SkillsCentralSettings>(configuration.GetSection(nameof(SkillsCentralSettings)));
 
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSharedContent = configuration.GetSection(CosmosDbSharedContentConfigAppSettings).Get<CosmosDbConnection>();
