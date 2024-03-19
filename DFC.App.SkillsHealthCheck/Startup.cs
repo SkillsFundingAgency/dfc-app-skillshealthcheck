@@ -30,6 +30,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestSharp;
 
 
 namespace DFC.App.SkillsHealthCheck
@@ -87,6 +88,7 @@ namespace DFC.App.SkillsHealthCheck
             var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
             services.AddDocumentServices<SharedContentItemModel>(cosmosDbConnectionSharedContent, env.IsDevelopment(), cosmosRetryOptions);
             services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
+            services.AddSingleton<RestClient>(new RestClient(new RestClientOptions()));
 
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();

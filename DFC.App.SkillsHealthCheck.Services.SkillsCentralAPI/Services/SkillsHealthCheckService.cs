@@ -14,11 +14,11 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
 {
     public class SkillsHealthCheckService : ISkillsHealthCheckService
     {
-        private readonly IRestClient client;
+        private readonly RestClient client;
         private readonly IOptions<SkillsCentralSettings> skillsCentralSettings;
 
 
-        public SkillsHealthCheckService(IRestClient client, IOptions<SkillsCentralSettings> settings)
+        public SkillsHealthCheckService(RestClient client, IOptions<SkillsCentralSettings> settings)
         {
             this.client = client;
             this.skillsCentralSettings = settings;
@@ -48,7 +48,17 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
         public async Task<SkillsDocument> GetSkillsDocument(int documentId)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/{documentId}");
+                var result = await client.GetAsync<SkillsDocument>(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<SkillsDocument> GetSkillsDocumentByReferenceCode(string referenceCode)
         {
@@ -58,7 +68,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         {
             try
             {
-                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/", Method.Post).AddObjectStatic(document);
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/", Method.Post).AddBody(document);
                 var result = await client.PostAsync<SkillsDocument>(request);
                 return result;
             }
@@ -73,10 +83,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
             return null;
         }
 
-        public GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public GetSkillsDocumentIdResponse GetSkillsDocumentByIdentifier(string Identifier)
         {
@@ -84,11 +91,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
 
         public CreateSkillsDocumentResponse CreateSkillsDocument(CreateSkillsDocumentRequest createSkillsDocumentRequest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GetListTypeFieldsResponse GetListTypeFields(GetListTypeFieldsRequest getListTypeFieldsRequest)
         {
             throw new NotImplementedException();
         }
