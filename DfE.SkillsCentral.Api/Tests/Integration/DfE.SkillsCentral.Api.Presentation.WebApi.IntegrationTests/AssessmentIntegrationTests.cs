@@ -1,5 +1,5 @@
 using System.Net;
-using DfE.SkillsCentral.Api.Application.Interfaces.Models;
+using DFC.SkillsCentral.Api.Domain.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using Xunit;

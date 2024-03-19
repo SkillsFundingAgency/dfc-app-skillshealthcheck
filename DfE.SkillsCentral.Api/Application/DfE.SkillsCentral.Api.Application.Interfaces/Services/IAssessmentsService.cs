@@ -1,4 +1,4 @@
-﻿using DfE.SkillsCentral.Api.Application.Interfaces.Models;
+﻿using DFC.SkillsCentral.Api.Domain.Models;
 
 namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
 {
