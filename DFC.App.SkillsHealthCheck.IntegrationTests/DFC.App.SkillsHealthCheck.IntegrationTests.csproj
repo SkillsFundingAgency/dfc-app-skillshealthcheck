@@ -38,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Data\DFC.App.SkillsHealthCheck.Data.csproj" />
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj" />
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck\DFC.App.SkillsHealthCheck.csproj" />
   </ItemGroup>
 
