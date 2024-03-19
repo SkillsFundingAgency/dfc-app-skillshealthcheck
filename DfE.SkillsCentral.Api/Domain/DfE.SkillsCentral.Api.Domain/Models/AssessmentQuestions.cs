@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DfE.SkillsCentral.Api.Application.Interfaces.Models
+namespace DFC.SkillsCentral.Api.Domain.Models
 {
     public class AssessmentQuestions
     {
