@@ -48,6 +48,32 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
 
         }
 
+        [HttpGet("{documentId}")]
+        public async Task<ActionResult<SkillsDocument>> GetSkillsDocument(int documentId)
+        {
+            try
+            {
+                
+
+                var result = await skillsDocumentsService.GetSkillsDocument(documentId);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"{nameof(GetSkillsDocument)} exception");
+                return StatusCode(500, $"An error has occurred");
+            }
+
+        }
+
         [HttpPost]
         public async Task<ActionResult<SkillsDocument>> CreateSkillsDocument([FromBody] SkillsDocument document)
         {
