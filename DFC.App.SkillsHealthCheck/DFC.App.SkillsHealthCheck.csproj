@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.GovNotify\DFC.App.SkillsHealthCheck.Services.GovNotify.csproj" />
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj" />
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.SkillsCentral\DFC.App.SkillsHealthCheck.Services.SkillsCentral.csproj" />
   </ItemGroup>
 
