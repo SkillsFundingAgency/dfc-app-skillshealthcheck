@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.SkillsCentral.Api.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -71,6 +73,49 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
             return null;
         }
 
-        
+        public GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GetSkillsDocumentIdResponse GetSkillsDocumentByIdentifier(string Identifier)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CreateSkillsDocumentResponse CreateSkillsDocument(CreateSkillsDocumentRequest createSkillsDocumentRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GetListTypeFieldsResponse GetListTypeFields(GetListTypeFieldsRequest getListTypeFieldsRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GetAssessmentQuestionResponse GetAssessmentQuestion(GetAssessmentQuestionRequest getAssessmentQuestionRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SaveQuestionAnswerResponse SaveQuestionAnswer(SaveQuestionAnswerRequest saveQuestionAnswerRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DocumentStatus> QueryDownloadStatusAsync(long documentId, string formatter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DownloadDocumentResponse DownloadDocument(DownloadDocumentRequest downloadDocumentRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

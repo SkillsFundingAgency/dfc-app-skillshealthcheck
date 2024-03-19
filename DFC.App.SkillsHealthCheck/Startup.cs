@@ -13,8 +13,8 @@ using DFC.App.SkillsHealthCheck.Services.CacheContentService;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services;
 using DFC.Compui.Cosmos;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
@@ -31,7 +31,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using SkillsDocumentService;
 
 namespace DFC.App.SkillsHealthCheck
 {
@@ -115,12 +114,6 @@ namespace DFC.App.SkillsHealthCheck
         {
             services.AddTransient<ISharedContentCacheReloadService, SharedContentCacheReloadService>();
             services.AddTransient<IWebhooksService, WebhooksService>();
-            services.AddTransient<ISkillsCentralService>(sp =>
-            {
-                var svc = new SkillsCentralServiceClient();
-                svc.ChannelFactory.Endpoint.Address = new EndpointAddress(configuration.GetValue<string>("SkillsCentralServiceEndpoint"));
-                return svc;
-            });
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
