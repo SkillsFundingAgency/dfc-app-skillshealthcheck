@@ -10,7 +10,7 @@ using RestSharp;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
 {
-    public class SkillsHealthCheckService 
+    public class SkillsHealthCheckService : ISkillsHealthCheckService
     {
         private readonly IRestClient client;
         private readonly IOptions<SkillsCentralSettings> skillsCentralSettings;
@@ -54,7 +54,17 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
         public async Task<SkillsDocument> CreateSkillsDocument([FromBody] SkillsDocument document)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/", Method.Post).AddObjectStatic(document);
+                var result = await client.PostAsync<SkillsDocument>(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document)
         {
