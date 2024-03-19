@@ -27,6 +27,8 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RestSharp;
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
@@ -109,6 +111,8 @@ namespace DFC.App.SkillsHealthCheck
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
             services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
+            services.AddSingleton<RestClient>(new RestClient(new RestClientOptions()));
+
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(Startup).Assembly);
