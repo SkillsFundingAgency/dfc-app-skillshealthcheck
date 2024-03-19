@@ -1,15 +1,18 @@
 ﻿using System;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+//using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+//using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
+//using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
+//using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
 using System.Linq;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Models;
 using System.Collections.Generic;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services;
+using DFC.SkillsCentral.Api.Domain.Models;
+using DFC.App.SkillsHealthCheck.Enums;
 
 namespace DFC.App.SkillsHealthCheck.Services
 {
@@ -22,12 +25,12 @@ namespace DFC.App.SkillsHealthCheck.Services
             _skillsHealthCheckService = skillsHealthCheckService;
         }
 
-        public GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest)
+        public async Task<SkillsDocument> GetSkillsDocument(int documentId)
         {
-            return _skillsHealthCheckService.GetSkillsDocument(getSkillsDocumentRequest);
+            return await _skillsHealthCheckService.GetSkillsDocument(documentId);
         }
 
-        public AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
+        public AssessmentQuestionViewModel GetAssessmentQuestionViewModel(AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var feedbackQuestionNext = false;
 
@@ -38,7 +41,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 return GetAssessmentFeedBackQuestionViewModel(assessmentType, questionNumber, skillsDocument, assessmentQuestionOverview);
             }
 
-            return GetDetailedAssessmentQuestionViewModel(level, accessibility, assessmentType, questionNumber, skillsDocument, assessmentQuestionOverview);
+            return GetDetailedAssessmentQuestionViewModel(assessmentType, questionNumber, skillsDocument, assessmentQuestionOverview);
         }
 
         /// <summary>
@@ -207,20 +210,14 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <param name="skillsDocument">The skills document.</param>
         /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
         /// <returns></returns>
-        private AssessmentQuestionViewModel GetDetailedAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, int questionNumber, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
+        private async Task<AssessmentQuestionViewModel> GetDetailedAssessmentQuestionViewModel(AssessmentType assessmentType, int questionNumber, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var viewModel = new AssessmentQuestionViewModel();
 
-            var apiRequest = new GetAssessmentQuestionRequest
-            {
-                QuestionNumber = questionNumber,
-                Accessibility = accessibility,
-                AsessmentType = assessmentType,
-                Level = level,
-            };
 
-            var apiResponse = _skillsHealthCheckService.GetAssessmentQuestion(apiRequest);
-            if (apiResponse.Success)
+
+            var apiResponse = await _skillsHealthCheckService.GetAssessmentQuestions(assessmentType.ToString());
+            if (apiResponse != null)
             {
                 switch (assessmentType)
                 {
@@ -231,7 +228,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.Verbal:
                         var model = new AssessmentQuestionViewModel
                         {
-                            Question = apiResponse.Question,
+                            Question = apiResponse.Questions[questionNumber].Question,
                             QuestionImages = apiResponse.Question.QuestionData.GetDataImages(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             QuestionNumber = apiResponse.Question.QuestionNumber,

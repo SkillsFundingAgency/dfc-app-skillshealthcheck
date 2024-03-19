@@ -1,4 +1,4 @@
-﻿namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
+﻿namespace DFC.App.SkillsHealthCheck.Models
 {
     public class Image
     {

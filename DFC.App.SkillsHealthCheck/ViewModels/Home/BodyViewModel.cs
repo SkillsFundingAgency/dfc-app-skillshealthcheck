@@ -7,6 +7,6 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Home
     {
         public RightBarViewModel RightBarViewModel { get; set; }
 
-        public string ListTypeFields { get; set; }
+        //public string ListTypeFields { get; set; }
     }
 }

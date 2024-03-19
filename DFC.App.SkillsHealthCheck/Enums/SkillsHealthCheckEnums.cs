@@ -1,9 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
+namespace DFC.App.SkillsHealthCheck.Enums
 {
+    public enum DownloadType
+    {
+        [Display(Name = "PDF")]
+        Pdf,
+        [Display(Name = "Microsoft Word document")]
+        Word
+    }
 
+    /// <summary>
+    /// Accessibility enumeration
+    /// </summary>
+    public enum Accessibility
+    {
+        /// <summary>
+        /// The full
+        /// </summary>
+        Full,
 
+        /// <summary>
+        /// The accessible
+        /// </summary>
+        Accessible
+    }
 
     public enum AssessmentType
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
+namespace DFC.App.SkillsHealthCheck.Models
 {
     [Serializable]
     public class QuestionOverView

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.App.SkillsHealthCheck.Models;
+using DFC.SkillsCentral.Api.Domain.Models;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 {
@@ -11,7 +12,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         [Required(ErrorMessage = "Choose an answer")]
         public string QuestionAnswer { get; set; }
 
-        public Services.SkillsCentral.Models.Question? Question { get; set; }
+        public DFC.SkillsCentral.Api.Domain.Models.Question? Question { get; set; }
 
         public int QuestionNumber { get; set; }
 

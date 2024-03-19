@@ -9,11 +9,11 @@ namespace DFC.App.SkillsHealthCheck.Services.Interfaces
 {
     public interface IQuestionService
     {
-        GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest);
+        SkillsDocument GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest);
 
-        AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview);
+        AssessmentQuestionViewModel GetAssessmentQuestionViewModel(AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview);
 
-        AssessmentQuestionsOverView GetAssessmentQuestionsOverview(SessionDataModel sessionDataModel, Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument activeSkillsDocument);
+        AssessmentQuestionsOverView GetAssessmentQuestionsOverview(SessionDataModel sessionDataModel, AssessmentType assessmentType, SkillsDocument activeSkillsDocument);
 
         Task<SaveQuestionAnswerResponse> SubmitAnswer(SessionDataModel sessionDataModel, AssessmentQuestionViewModel model);
     }

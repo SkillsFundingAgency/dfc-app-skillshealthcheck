@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
+//using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 
-namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
+namespace DFC.App.SkillsHealthCheck.Models
 {
     /// <summary>
     /// Assessment Question Overview Data
@@ -24,7 +24,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
         /// <value>
         /// The type of the assessment.
         /// </value>
-        public AssessmentType AssessmentType { get; set; }
+        public string AssessmentType { get; set; }
 
         /// <summary>
         /// Gets or sets the question over view list.
