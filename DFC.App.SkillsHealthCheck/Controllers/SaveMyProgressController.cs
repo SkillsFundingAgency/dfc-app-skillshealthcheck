@@ -485,10 +485,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<string?> GetDocumentCodeAsync()
         {
             var documentId = await GetDocumentId();
-            var response = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest() { DocumentId = documentId });
-            var code = response?.SkillsDocument?.SkillsDocumentIdentifiers?
-                .FirstOrDefault(d => d.ServiceName == Constants.SkillsHealthCheck.DocumentSystemIdentifierName)?
-                .Value;
+            var response = await skillsHealthCheckService.GetSkillsDocument((int)documentId);
+            var code = response.ReferenceCode;
 
             return code?.ToUpper(System.Globalization.CultureInfo.CurrentCulture) ?? throw new Exception("No document found.");
         }
@@ -496,11 +494,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task AddDocumentDetailsAsync(Document document)
         {
             var documentId = await GetDocumentId();
-            var response = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest() { DocumentId = documentId });
-            if (response.Success)
+            var response = await skillsHealthCheckService.GetSkillsDocument((int)documentId);
+            if (response != null)
             {
-                document.DateAssessmentsCreated = TimeZoneInfo.ConvertTimeFromUtc(response.SkillsDocument.CreatedAt, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
-                document.Code = response.SkillsDocument.SkillsDocumentIdentifiers.FirstOrDefault(d => d.ServiceName == Constants.SkillsHealthCheck.DocumentSystemIdentifierName)?.Value;
+                document.DateAssessmentsCreated = TimeZoneInfo.ConvertTimeFromUtc((DateTime)response.CreatedAt, TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time"));
+                document.Code = response.ReferenceCode;
                 if (string.IsNullOrWhiteSpace(document.Code))
                 {
                     logger.LogError($"Document guid not found for document Id [{documentId}]");

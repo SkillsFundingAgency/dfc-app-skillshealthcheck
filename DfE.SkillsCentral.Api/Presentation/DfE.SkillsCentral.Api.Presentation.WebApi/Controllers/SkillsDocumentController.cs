@@ -18,7 +18,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("{referenceCode}")]
+        [HttpGet("ReferenceCode/{referenceCode}")]
         public async Task<ActionResult<SkillsDocument>> GetSkillsDocumentByReferenceCode(string referenceCode)
         {
             try
@@ -48,7 +48,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
 
         }
 
-        [HttpGet("{documentId}")]
+        [HttpGet("DocumentId/{documentId}")]
         public async Task<ActionResult<SkillsDocument>> GetSkillsDocument(int documentId)
         {
             try

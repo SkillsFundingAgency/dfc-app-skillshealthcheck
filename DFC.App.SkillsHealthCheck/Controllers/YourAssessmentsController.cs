@@ -101,7 +101,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetBodyViewModel(long documentId, IEnumerable<string> selectedJobs = null)
         {
-            var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
+            var bodyViewModel = await yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
             bodyViewModel.RightBarViewModel = await GetRightBarViewModel();
 
             return bodyViewModel;

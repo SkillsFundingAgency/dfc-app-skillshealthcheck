@@ -157,9 +157,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             var sessionDataModel = await GetSessionDataModel();
             long documentId = sessionDataModel.DocumentId;
-            var documentResponse = questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = documentId, });
+            var documentResponse = await questionService.GetSkillsDocument((int)documentId);
 
-            if (!documentResponse.Success)
+            if (documentResponse == null)
             {
                 // TODO: probably an error response on the question page would be better but this is how current system handles this
                 Response.Redirect(HomeURL);
@@ -168,20 +168,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var qnAssessmentType = FromSet<AssessmentType>.Get(assessmentType, AssessmentType.SkillAreas);
             var accessibility = GetDefaultAccessibility(qnAssessmentType);
 
-            if (!documentResponse.SkillsDocument.AssessmentNotCompleted(qnAssessmentType))
+            if (documentResponse.DataValueKeys.ContainsKey(qnAssessmentType + ".Complete") && documentResponse.DataValueKeys[qnAssessmentType + ".Complete"] == bool.TrueString)
             {
                 // TODO: probably an error response on the question page would be better but this is how current system handles this
                 Response.Redirect(HomeURL);
             }
 
-            var assessmentQuestionOverview = questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse.SkillsDocument);
+            var assessmentQuestionOverview = questionService.GetAssessmentQuestionsOverview(sessionDataModel, level, accessibility, qnAssessmentType, documentResponse);
 
             await SetSessionStateAsync(sessionDataModel);
 
-            return GetAssessmentQuestionViewModel(level, accessibility, qnAssessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+            return GetAssessmentQuestionViewModel(level, accessibility, qnAssessmentType, documentResponse, assessmentQuestionOverview);
         }
 
-        private AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView)
+        private AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView)
         {
             var answerVm = questionService.GetAssessmentQuestionViewModel(level, accessibility, assessmentType, skillsDocument, assessmentQuestionsOverView);
 
@@ -212,8 +212,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             ViewData["QuestionAnswerError"] = true;
 
             var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews[string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType)];
-            var documentResponse = questionService.GetSkillsDocument(new GetSkillsDocumentRequest { DocumentId = sessionDataModel.DocumentId, });
-            var assessmentQuestionViewModel = GetAssessmentQuestionViewModel(level, accessibility, assessmentType, documentResponse.SkillsDocument, assessmentQuestionOverview);
+            var documentResponse = await questionService.GetSkillsDocument((int)sessionDataModel.DocumentId);
+            var assessmentQuestionViewModel = GetAssessmentQuestionViewModel(level, accessibility, assessmentType, documentResponse, assessmentQuestionOverview);
 
             var bodyViewModel = new BodyViewModel
             {
@@ -248,14 +248,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse.Success)
+                if (saveAnswerResponse != null)
                 {
                     await SetSessionStateAsync(sessionDataModel);
 
                     return RedirectToNextAction(model);
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror=Could not retrieve skills document");
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
@@ -270,14 +270,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse.Success)
+                if (saveAnswerResponse != null)
                 {
                     await SetSessionStateAsync(sessionDataModel);
 
                     return RedirectToNextAction(model);
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror=Could not retrieve skills document");
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
@@ -292,13 +292,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse.Success)
+                if (saveAnswerResponse != null)
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     return RedirectToNextAction(model);
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror=Could not retrieve skills document");
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
@@ -313,12 +313,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse.Success)
+                if (saveAnswerResponse != null)
                 {
                     return RedirectToNextAction(model);
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+                return Redirect($"{QuestionURL}?assessmentType={model.FeedbackQuestion.AssessmentType}&saveerror=Could not retrieve skills document");
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.FeedbackQuestion.Level, model.FeedbackQuestion.Accessibility, model.FeedbackQuestion.AssessmentType);
@@ -335,13 +335,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse.Success)
+                if (saveAnswerResponse != null)
                 {
                     await SetSessionStateAsync(sessionDataModel);
                     return RedirectToNextAction(model);
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror={saveAnswerResponse.ErrorMessage}");
+                return Redirect($"{QuestionURL}?assessmentType={model.Question.AssessmentType}&saveerror=Could not retrieve skills document");
             }
 
             return await ReturnErrorPostback(sessionDataModel, model.Question.Level, model.Question.Accessibility, model.Question.AssessmentType);
