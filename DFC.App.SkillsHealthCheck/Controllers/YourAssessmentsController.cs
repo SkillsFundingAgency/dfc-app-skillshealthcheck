@@ -142,14 +142,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
                     ? model.JobFamilyList?.SelectedJobs.ToList() ?? new List<string>() : new List<string>();
                 var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
-                if (downloadDocumentResponse.Success)
+                if (downloadDocumentResponse != null)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse, formatter.ContentType, $"Skills Health Check{formatter.FileExtension}");
                 }
             }
 
             ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
-            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList.SelectedJobs);
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList?.SelectedJobs);
             return this.NegotiateContentResult(new DocumentViewModel
             {
                 HtmlHeadViewModel = GetHtmlHeadViewModel(PageTitle),
@@ -180,9 +180,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
                 var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
-                if (downloadDocumentResponse.Success)
+                if (downloadDocumentResponse != null)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse, formatter.ContentType, $"Skills Health Check{formatter.FileExtension}");
                 }
             }
 

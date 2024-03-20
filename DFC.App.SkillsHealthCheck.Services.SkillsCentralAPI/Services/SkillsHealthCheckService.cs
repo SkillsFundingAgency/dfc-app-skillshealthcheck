@@ -41,11 +41,31 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
         public async Task<byte[]> GenerateWordDoc(int documentId)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}DocumentGeneration/docx/{documentId}");
+                var result = await client.DownloadDataAsync(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<byte[]> GeneratePDF(int documentId)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}DocumentGeneration/pdf/{documentId}");
+                var result = await client.DownloadDataAsync(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<SkillsDocument> GetSkillsDocument(int documentId)
         {
@@ -106,25 +126,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
 
 
 
-        public GetSkillsDocumentIdResponse GetSkillsDocumentByIdentifier(string Identifier)
-        {
-            throw new NotImplementedException();
-        }
-
-        public CreateSkillsDocumentResponse CreateSkillsDocument(CreateSkillsDocumentRequest createSkillsDocumentRequest)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public GetAssessmentQuestionResponse GetAssessmentQuestion(GetAssessmentQuestionRequest getAssessmentQuestionRequest)
         {
             throw new NotImplementedException();
         }
 
-        public SaveQuestionAnswerResponse SaveQuestionAnswer(SaveQuestionAnswerRequest saveQuestionAnswerRequest)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy)
         {
