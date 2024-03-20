@@ -12,15 +12,16 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 
         Task<SkillsDocument> GetSkillsDocumentByReferenceCode(string referenceCode);
 
-
         Task<SkillsDocument> CreateSkillsDocument([FromBody] SkillsDocument document);
 
+        GetAssessmentQuestionsResponse GetAssessmentQuestions(GetAssessmentQuestionsRequest getAssessmentQuestionRequest);
 
-        GetAssessmentQuestionResponse GetAssessmentQuestion(GetAssessmentQuestionRequest getAssessmentQuestionRequest);
+        GetSingleQuestionResponse GetSingleQuestion(GetSingleQuestionRequest getSingleQuestionRequest);
 
         Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document);
 
         Task<byte[]> GenerateWordDoc(int documentId);
+
         Task<byte[]> GeneratePDF(int documentId);
 
     }

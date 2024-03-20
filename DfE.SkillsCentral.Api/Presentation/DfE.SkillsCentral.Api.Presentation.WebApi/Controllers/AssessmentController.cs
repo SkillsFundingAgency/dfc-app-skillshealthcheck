@@ -49,5 +49,28 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 return StatusCode(500, $"An error has occurred");
             }
         }
+
+        [HttpGet("QuestiodId/{questionId}")]
+        public async Task<ActionResult<AssessmentQuestions>> GetQuestion(int questionId)
+        {
+            try
+            {
+                var result = await assessmentsService.GetSingleQuestion(questionId);
+
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return Ok(JsonConvert.SerializeObject(result));
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"{nameof(GetQuestion)} exception");
+                return StatusCode(500, $"An error has occurred");
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages
 {
-    public class GetAssessmentQuestionRequest
+    public class GetSingleQuestionRequest
     {
         public int QuestionNumber { get; set; }
 

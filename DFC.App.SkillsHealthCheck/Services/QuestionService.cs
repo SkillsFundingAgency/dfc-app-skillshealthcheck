@@ -211,7 +211,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         {
             var viewModel = new AssessmentQuestionViewModel();
 
-            var apiRequest = new GetAssessmentQuestionRequest
+            var apiRequest = new GetAssessmentQuestionsRequest
             {
                 QuestionNumber = questionNumber,
                 Accessibility = accessibility,
@@ -219,7 +219,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 Level = level,
             };
 
-            var apiResponse = skillsHealthCheckService.GetAssessmentQuestion(apiRequest);
+            var apiResponse = _skillsHealthCheckService.GetAssessmentQuestions(apiRequest);
             if (apiResponse.Success)
             {
                 switch (assessmentType)
@@ -305,8 +305,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <returns></returns>
         private AssessmentQuestionsOverView GetAssessmentQuestionsOverview(Level level, Accessibility accessibility, AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument activeSkillsDocument)
         {
-            var assessmentQuestionOverview = new AssessmentQuestionsOverView { AssessmentType = assessmentType };
-            var apiOverviewRequest = new GetAssessmentQuestionRequest
+            var assessmentQuestionOverview = new AssessmentQuestionsOverView {AssessmentType = assessmentType};
+            var apiOverviewRequest = new GetAssessmentQuestionsRequest
             {
                 QuestionNumber = 1,
                 Accessibility = accessibility,
@@ -314,7 +314,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 Level = level,
             };
 
-            var overViewResponse = skillsHealthCheckService.GetAssessmentQuestion(apiOverviewRequest);
+            var overViewResponse = _skillsHealthCheckService.GetAssessmentQuestions(apiOverviewRequest);
             if (overViewResponse.Success)
             {
                 assessmentQuestionOverview.TotalQuestionsNumber = overViewResponse.Question.TotalQuestionNumber;
@@ -347,7 +347,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
                     for (var i = 2; i <= totalQuestions; i++)
                     {
-                        var questionOverviewReq = new GetAssessmentQuestionRequest
+                        var questionOverviewReq = new GetAssessmentQuestionsRequest
                         {
                             QuestionNumber = i,
                             Accessibility = accessibility,
@@ -355,7 +355,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             Level = level,
                         };
 
-                        overViewResponse = skillsHealthCheckService.GetAssessmentQuestion(questionOverviewReq);
+                        overViewResponse = _skillsHealthCheckService.GetAssessmentQuestions(questionOverviewReq);
                         if (overViewResponse.Success)
                         {
                             assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
