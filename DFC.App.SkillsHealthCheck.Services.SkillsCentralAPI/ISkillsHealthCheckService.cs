@@ -8,9 +8,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 {
     public interface ISkillsHealthCheckService
     {
-        GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest);
+        Task<SkillsDocument> GetSkillsDocument(int documentId);
 
-        GetSkillsDocumentIdResponse GetSkillsDocumentByIdentifier(string Identifier);
+        Task<SkillsDocument> GetSkillsDocumentByReferenceCode(string referenceCode);
 
 
         Task<SkillsDocument> CreateSkillsDocument([FromBody] SkillsDocument document);
@@ -18,7 +18,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 
         GetAssessmentQuestionResponse GetAssessmentQuestion(GetAssessmentQuestionRequest getAssessmentQuestionRequest);
 
-        SaveQuestionAnswerResponse SaveQuestionAnswer(SaveQuestionAnswerRequest saveQuestionAnswerRequest);
+        Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document);
 
         Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy);
 

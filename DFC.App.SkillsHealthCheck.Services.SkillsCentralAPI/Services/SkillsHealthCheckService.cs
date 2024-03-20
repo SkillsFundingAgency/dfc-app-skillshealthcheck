@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
@@ -50,7 +51,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         {
             try
             {
-                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/{documentId}");
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/DocumentId/{documentId}");
                 var result = await client.GetAsync<SkillsDocument>(request);
                 return result;
             }
@@ -62,7 +63,17 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
         public async Task<SkillsDocument> GetSkillsDocumentByReferenceCode(string referenceCode)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/ReferenceCode/{referenceCode}");
+                var result = await client.GetAsync<SkillsDocument>(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<SkillsDocument> CreateSkillsDocument([FromBody] SkillsDocument document)
         {
@@ -80,7 +91,17 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         }
         public async Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document)
         {
-            return null;
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}SkillsDocument/", Method.Patch).AddBody(document);
+                var result = await client.PatchAsync<SkillsDocument>(request);
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 
@@ -119,5 +140,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

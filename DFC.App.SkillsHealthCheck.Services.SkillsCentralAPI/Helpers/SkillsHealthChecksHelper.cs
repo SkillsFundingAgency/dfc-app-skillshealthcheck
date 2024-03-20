@@ -5,6 +5,9 @@ using System.Xml;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.SkillsCentral.Api.Domain.Models;
+using Newtonsoft.Json.Linq;
+using SkillsDocument = DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models.SkillsDocument;
 
 namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
 {
@@ -38,22 +41,22 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="asessmentTypeTotalNumberLessFeedback"></param>
         /// <param name="currentAnsweredQuestionNumber">Current question we are sending</param>
         /// <returns></returns>
-        public static SkillsDocument UpdateDataValues(this SkillsDocument skillsDocument, string answers,
+        public static DFC.SkillsCentral.Api.Domain.Models.SkillsDocument UpdateDataValues(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, string answers,
             bool isCompleted, AssessmentType asessmentType, int asessmentTypeTotalNumberLessFeedback, int currentAnsweredQuestionNumber)
         {
             answers = answers.Trim();
             //make generic
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                {
-                    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
-                }
-                else if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                //if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
+                //}
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
-                        dataValue.Value = answers;
+                        skillsDocument.DataValueKeys[dataValue.Key] = answers;
                     }
                     else
                     {
@@ -61,13 +64,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                         // Safe guard having too many answers supplied
                         if (answeredQuestionsTotal < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestionsTotal == 1)
                         {
-                            dataValue.Value = $"{dataValue.Value},{answers}";
+                            skillsDocument.DataValueKeys[dataValue.Key] = $"{dataValue.Value},{answers}";
                         }
                     }
                 }
-                else if (dataValue.Title.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
+                else if (dataValue.Key.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
                 {
-                    dataValue.Value = isCompleted.ToString();
+                    skillsDocument.DataValueKeys[dataValue.Key] = isCompleted.ToString();
                 }
             }
             return skillsDocument;
@@ -81,18 +84,19 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="jobNumber">The job number.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static SkillsDocument UpdateJobFamilyDataValue(this SkillsDocument skillsDocument, int jobNumber,
+        public static DFC.SkillsCentral.Api.Domain.Models.SkillsDocument UpdateJobFamilyDataValue(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, int jobNumber,
             string value)
         {
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            
+            if (!skillsDocument.DataValueKeys.ContainsKey(string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, jobNumber)))
             {
-                if (dataValue.Title.Equals(string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, jobNumber),
-                    StringComparison.OrdinalIgnoreCase))
-                {
-                    dataValue.Value = value;
-                    break;
-                }
+                skillsDocument.DataValueKeys.Add(string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, jobNumber), value);
             }
+            else
+            {
+                skillsDocument.DataValueKeys[string.Format(Constants.SkillsHealthCheck.JobFamilyTitle, jobNumber)] = value;
+            }
+            
             return skillsDocument;
         }
 
@@ -103,19 +107,20 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="documentValueTitle">The document value title.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static SkillsDocument UpdateSpecificDataValue(this SkillsDocument skillsDocument,
+        public static DFC.SkillsCentral.Api.Domain.Models.SkillsDocument UpdateSpecificDataValue(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             string documentValueTitle,
             string value)
         {
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+
+            if (!skillsDocument.DataValueKeys.ContainsKey(documentValueTitle))
             {
-                if (dataValue.Title.Equals(documentValueTitle,
-                    StringComparison.OrdinalIgnoreCase))
-                {
-                    dataValue.Value = value;
-                    break;
-                }
+                skillsDocument.DataValueKeys.Add(documentValueTitle, value);
             }
+            else
+            {
+                skillsDocument.DataValueKeys[documentValueTitle] = value;
+            }
+
             return skillsDocument;
         }
 
@@ -132,22 +137,22 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="actualAssessmentMaxQuestionsNumber">Set number of questions for assessment</param>
         /// <param name="actualQuestionNumberAnswered">the current displayed question number</param>
         /// <returns></returns>
-        public static SkillsDocument UpdateEliminationDataValues(this SkillsDocument skillsDocument, string answers,
+        public static DFC.SkillsCentral.Api.Domain.Models.SkillsDocument UpdateEliminationDataValues(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, string answers,
             bool isCompleted, AssessmentType asessmentType, int questionNumber, int totalQuestionsNumber, int actualAssessmentMaxQuestionsNumber, int actualQuestionNumberAnswered)
         {
             answers = answers.Trim();
             //make generic
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                {
-                    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
-                }
-                else if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                //if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
+                //}
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
-                        dataValue.Value = $"{answers},-1,-1";
+                        skillsDocument.DataValueKeys[dataValue.Key] = $"{answers},-1,-1";
                     }
                     else
                     {
@@ -193,15 +198,15 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                                 currentAnswersList = $"{answers},-1,-1";
                             }
 
-                            dataValue.Value = !string.IsNullOrWhiteSpace(existingAnswers)
+                            skillsDocument.DataValueKeys[dataValue.Key] = !string.IsNullOrWhiteSpace(existingAnswers)
                                 ? $"{existingAnswers},{currentAnswersList}"
                                 : currentAnswersList;
                         }
                     }
                 }
-                else if (dataValue.Title.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
+                else if (dataValue.Key.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
                 {
-                    dataValue.Value = isCompleted.ToString();
+                    skillsDocument.DataValueKeys[dataValue.Key] = isCompleted.ToString();
                 }
             }
             return skillsDocument;
@@ -220,19 +225,19 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="assessmentQuestionsOverView">The assessment questions over view.</param>
         /// <param name="actualQuestionNumber">Displayed question number and actual in the saved results</param>
         /// <returns></returns>
-        public static SkillsDocument UpdateMultipleAnswerDataValues(this SkillsDocument skillsDocument, string answers,
+        public static DFC.SkillsCentral.Api.Domain.Models.SkillsDocument UpdateMultipleAnswerDataValues(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, string answers,
             bool isCompleted, AssessmentType asessmentType, int currentQuestion, int currentQuestionIndex,
             int numberOfAnswers, AssessmentQuestionsOverView assessmentQuestionsOverView, int actualQuestionNumber)
         {
             answers = answers.Trim();
             //make generic
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                {
-                    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
-                }
-                else if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                //if (dataValue.Key.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    dataValue[].Value = GetDataValueByAssessmentType(asessmentType);
+                //}
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -249,7 +254,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                             answerIndex++;
                         }
 
-                        dataValue.Value = string.Join(",", answersArray);
+                        skillsDocument.DataValueKeys[dataValue.Key] = string.Join(",", answersArray);
                     }
                     else
                     {
@@ -316,15 +321,16 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                                 }
                                 currentAnswersList = string.Join(",", newList);
                             }
-                            dataValue.Value = !string.IsNullOrWhiteSpace(existingAnswers)
+                            
+                            skillsDocument.DataValueKeys[dataValue.Key] = !string.IsNullOrWhiteSpace(existingAnswers)
                                 ? $"{existingAnswers},{currentAnswersList}"
-                                : currentAnswersList;
+                                : currentAnswersList; 
                         }
                     }
                 }
-                else if (dataValue.Title.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
+                else if (dataValue.Key.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
                 {
-                    dataValue.Value = isCompleted.ToString();
+                    skillsDocument.DataValueKeys[dataValue.Key] = isCompleted.ToString();
                 }
             }
             return skillsDocument;
@@ -353,14 +359,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="skillsDocument">The SKLLLS document.</param>
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <returns></returns>
-        public static int GetAssessmentNextEliminationQuestionNumber(this SkillsDocument skillsDocument,
+        public static int GetAssessmentNextEliminationQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
             int nextQuestion = 0;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -387,14 +393,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
         /// <returns></returns>
-        public static int GetAssessmentNextMultipleQuestionNumber(this SkillsDocument skillsDocument,
+        public static int GetAssessmentNextMultipleQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             int nextQuestion = 0;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -433,14 +439,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <param name="currentQuestion">The current question.</param>
         /// <returns></returns>
-        public static int GetAlreadySelectedAnswer(this SkillsDocument skillsDocument, AssessmentType asessmentType,
+        public static int GetAlreadySelectedAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
             int currentQuestion)
         {
             var selectedAnswer = -1;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -470,14 +476,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <param name="currentQuestion">The current question.</param>
         /// <returns></returns>
-        public static int GetCurrentNumberEliminationQuestions(this SkillsDocument skillsDocument,
+        public static int GetCurrentNumberEliminationQuestions(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType, int currentQuestion)
         {
             var selectedAnswer = -1;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -508,14 +514,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="currentQuestion">The current question.</param>
         /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
         /// <returns></returns>
-        public static int GetCurrentSubQuestionAnswer(this SkillsDocument skillsDocument, AssessmentType asessmentType,
+        public static int GetCurrentSubQuestionAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
             int currentQuestion, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var subQuestion = 1;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -557,14 +563,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="skillsDocument">The SKLLLS document.</param>
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <returns></returns>
-        public static int GetCurrentMultipleAnswerQuestionNumber(this SkillsDocument skillsDocument,
+        public static int GetCurrentMultipleAnswerQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
             var currentQuestionNumber = 1;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -587,14 +593,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="skillsDocument">The SKLLLS document.</param>
         /// <param name="asessmentType">Type of the asessment.</param>
         /// <returns></returns>
-        public static int GetAssessmentNextQuestionNumber(this SkillsDocument skillsDocument,
+        public static int GetAssessmentNextQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
             int nextQuestion = 0;
 
-            foreach (var dataValue in skillsDocument.SkillsDocumentDataValues)
+            foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                if (dataValue.Title.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
                     {
@@ -616,34 +622,34 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// </summary>
         /// <param name="assessmentType">Type of the assessment.</param>
         /// <returns></returns>
-        public static string GetDataValueByAssessmentType(AssessmentType assessmentType)
-        {
-            switch (assessmentType)
-            {
-                case AssessmentType.Abstract:
-                    return Constants.SkillsHealthCheck.AbstractAssessmentDataValue;
-                case AssessmentType.Checking:
-                    return Constants.SkillsHealthCheck.CheckingAssessmentDataValue;
-                case AssessmentType.Interest:
-                    return Constants.SkillsHealthCheck.InterestsAssessmentDataValue;
-                case AssessmentType.Mechanical:
-                    return Constants.SkillsHealthCheck.MechanicalAssessmentDataValue;
-                case AssessmentType.Motivation:
-                    return Constants.SkillsHealthCheck.MotivationAssessmentDataValue;
-                case AssessmentType.Numeric:
-                    return Constants.SkillsHealthCheck.NumericAssessmentDataValue;
-                case AssessmentType.Personal:
-                    return Constants.SkillsHealthCheck.PersonalAssessmentDataValue;
-                case AssessmentType.SkillAreas:
-                    return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
-                case AssessmentType.Spatial:
-                    return Constants.SkillsHealthCheck.SpatialAssessmentDataValue;
-                case AssessmentType.Verbal:
-                    return Constants.SkillsHealthCheck.VerbalAssessmentDataValue;
-                default:
-                    return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
-            }
-        }
+        //public static string GetDataValueByAssessmentType(AssessmentType assessmentType)
+        //{
+        //    switch (assessmentType)
+        //    {
+        //        case AssessmentType.Abstract:
+        //            return Constants.SkillsHealthCheck.AbstractAssessmentDataValue;
+        //        case AssessmentType.Checking:
+        //            return Constants.SkillsHealthCheck.CheckingAssessmentDataValue;
+        //        case AssessmentType.Interest:
+        //            return Constants.SkillsHealthCheck.InterestsAssessmentDataValue;
+        //        case AssessmentType.Mechanical:
+        //            return Constants.SkillsHealthCheck.MechanicalAssessmentDataValue;
+        //        case AssessmentType.Motivation:
+        //            return Constants.SkillsHealthCheck.MotivationAssessmentDataValue;
+        //        case AssessmentType.Numeric:
+        //            return Constants.SkillsHealthCheck.NumericAssessmentDataValue;
+        //        case AssessmentType.Personal:
+        //            return Constants.SkillsHealthCheck.PersonalAssessmentDataValue;
+        //        case AssessmentType.SkillAreas:
+        //            return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
+        //        case AssessmentType.Spatial:
+        //            return Constants.SkillsHealthCheck.SpatialAssessmentDataValue;
+        //        case AssessmentType.Verbal:
+        //            return Constants.SkillsHealthCheck.VerbalAssessmentDataValue;
+        //        default:
+        //            return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
+        //    }
+        //}
 
         public static string GetAnswerTotal(IEnumerable<string> modelAnswerSelection)
         {

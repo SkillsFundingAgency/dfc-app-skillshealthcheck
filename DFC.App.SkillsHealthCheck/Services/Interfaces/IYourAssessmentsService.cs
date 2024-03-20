@@ -10,7 +10,7 @@ namespace DFC.App.SkillsHealthCheck.Services.Interfaces
 {
     public interface IYourAssessmentsService
     {
-        BodyViewModel GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs);
+        Task<BodyViewModel> GetAssessmentListViewModel(long documentId, IEnumerable<string> selectedJobs);
 
         DocumentFormatter GetFormatter(DownloadType downloadType);
 
