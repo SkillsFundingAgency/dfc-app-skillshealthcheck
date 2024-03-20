@@ -49,8 +49,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         public async Task GetAssessmentQuestionViewModelSuccess()
         {
             // Arrange
-            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestion(A<GetAssessmentQuestionRequest>.Ignored));
-            aCallToSHCServiceGetAssessmentQuestion.Returns(new GetAssessmentQuestionResponse
+            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestion(A<GetAssessmentQuestionsRequest>.Ignored));
+            aCallToSHCServiceGetAssessmentQuestion.Returns(new GetAssessmentQuestionsResponse
             {
                 Success = true,
                 Question = new Question

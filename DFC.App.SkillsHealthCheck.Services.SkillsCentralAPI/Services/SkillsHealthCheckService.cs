@@ -35,10 +35,24 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
+
+        public async Task<GetSingleQuestionResponse> GetSingleQuestion(int questionNumber)
+        {
+            try
+            {
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}Question/{questionNumber}");
+                var result = await client.GetAsync<QuestionAnswers>(request);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<byte[]> GenerateWordDoc(int documentId)
         {
             try
@@ -123,16 +137,6 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
                 throw;
             }
         }
-
-
-
-       
-        public GetAssessmentQuestionResponse GetAssessmentQuestion(GetAssessmentQuestionRequest getAssessmentQuestionRequest)
-        {
-            throw new NotImplementedException();
-        }
-
-        
 
         public Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy)
         {
