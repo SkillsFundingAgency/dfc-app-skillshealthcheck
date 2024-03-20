@@ -46,7 +46,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 };
         }
 
-        public async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs)
+        public async Task<byte[]> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DocumentFormatter formatter, List<string> selectedJobs)
         {
             var documentId = sessionDataModel.DocumentId;
 
@@ -58,13 +58,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                 return downloadDocumentResponse;
             }
 
-            return new DownloadDocumentResponse
-            {
-                Success = false,
-            };
+            return null;
         }
 
-        private async Task<DownloadDocumentResponse> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
+        private async Task<byte[]> GetDownloadDocumentAsync(SessionDataModel sessionDataModel, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, DocumentFormatter formatter, List<string> selectedJobs,  bool retry = false)
         {
             var response = new DFC.SkillsCentral.Api.Domain.Models.SkillsDocument();
             if (selectedJobs.Any())
@@ -85,44 +82,23 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (response != null)
             {
-                var result = await _skillsHealthCheckService.RequestDownloadAsync((long)skillsDocument.Id, formatter.FormatterName, skillsDocument.CreatedBy);
-
-                //while (new[] {DocumentStatus.Pending, DocumentStatus.Creating}.Any(ds => ds == result))
-                //{
-                //    Task.WaitAll(Task.Delay(1000));
-                //    result = await _skillsHealthCheckService.QueryDownloadStatusAsync((long)skillsDocument.Id, formatter.FormatterName);
-                //}
-
-                if (result.Equals(DocumentStatus.Created))
+                byte[] downloadResponse;
+                if (formatter.Title == "Word")
                 {
-                    var downloadRequest = new DownloadDocumentRequest
-                    {
-                        DocumentId = (long)skillsDocument.Id,
-                        Formatter = formatter.FormatterName,
-                    };
-
-                    var downloadResponse = skillsHealthCheckService.DownloadDocument(downloadRequest);
-
-                    if (downloadResponse.Success)
-                    {
-                        return downloadResponse;
-                    }
+                    downloadResponse = await _skillsHealthCheckService.GenerateWordDoc((int)skillsDocument.Id);
+                }
+                else
+                {
+                    downloadResponse = await _skillsHealthCheckService.GeneratePDF((int)skillsDocument.Id);
                 }
 
-                //if (result.Equals(DocumentStatus.Error) && !retry)
-                //{
-                //    saveQuestionAnswerResponse = UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(sessionDataModel, saveQuestionAnswerResponse, skillsDocument);
-                //    if (saveQuestionAnswerResponse.Success)
-                //    {
-                //        return await GetDownloadDocumentAsync(sessionDataModel, documentResponse, formatter, selectedJobs, true);
-                //    }
-                //}
+                if (downloadResponse != null)
+                {
+                    return downloadResponse;
+                }
             }
 
-            return new DownloadDocumentResponse
-            {
-                Success = false,
-            };
+            return null;
         }
 
         //private SaveQuestionAnswerResponse UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(SessionDataModel sessionDataModel, SaveQuestionAnswerResponse saveQuestionAnswerResponse, SkillsDocument skillsDocument)

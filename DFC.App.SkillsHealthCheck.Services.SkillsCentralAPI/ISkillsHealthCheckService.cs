@@ -20,11 +20,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 
         Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document);
 
-        Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy);
+        Task<byte[]> GenerateWordDoc(int documentId);
+        Task<byte[]> GeneratePDF(int documentId);
 
-        Task<DocumentStatus> QueryDownloadStatusAsync(long documentId, string formatter);
-
-
-        DownloadDocumentResponse DownloadDocument(DownloadDocumentRequest downloadDocumentRequest);
     }
 }
