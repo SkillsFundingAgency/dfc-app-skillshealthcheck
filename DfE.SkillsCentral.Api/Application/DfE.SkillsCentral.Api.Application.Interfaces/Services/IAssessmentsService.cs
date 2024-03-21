@@ -6,6 +6,6 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Services
     {
         Task<AssessmentQuestions?> GetAssessmentQuestions(string assessmentType);
 
-        Task<AssessmentQuestions?> GetSingleQuestion(int questionId);
+        Task<QuestionAnswers> GetSingleQuestion(int questionNumber, string assessmentType);
     }
 }

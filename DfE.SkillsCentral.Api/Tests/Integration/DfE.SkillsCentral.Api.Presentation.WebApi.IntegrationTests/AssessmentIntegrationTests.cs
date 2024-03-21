@@ -37,6 +37,21 @@ public class AssessmentIntegrationTests : IClassFixture<WebApplicationFactory<Pr
         Assert.Equal(assessmentType, result?.Assessment.Type);
     }
 
+    [Theory]
+    [InlineData(1, "Spatial")]
+    [InlineData(3, "Mechanical")]
+    [InlineData(5, "Checking")]
+    public async Task GetSingleQuestion_ReturnExpectedAssessment(int questionNumber, string assessmentType)
+    {
+        // Act
+   var response = await client.GetAsync($"/api/Assessment/{assessmentType}Question/{questionNumber}");
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<QuestionAnswers>(content);
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
     [Fact]
     public async Task GetAssessment_WithInValidAssessmentType_ReturnNoContent()
     {

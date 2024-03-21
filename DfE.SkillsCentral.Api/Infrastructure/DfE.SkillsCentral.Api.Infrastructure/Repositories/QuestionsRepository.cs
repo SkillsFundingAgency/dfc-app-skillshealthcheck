@@ -39,5 +39,14 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
                 return result;
             }
         }
+        public async Task<Question?> GetByNumberAndAssessmentIdAsync(int questionNumber, int assessmentId)
+        {
+            using (var connection = dbContext.CreateConnection())
+            {
+                connection.Open();
+                var result = await connection.QuerySingleOrDefaultAsync<Question>(QuestionsQueries.QuestionByNumberAndAssessmentId, new { Number = questionNumber, AssessmentId = assessmentId });
+                return result;
+            }
+        }
     }
 }
