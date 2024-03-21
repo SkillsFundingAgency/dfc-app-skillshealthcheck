@@ -49,13 +49,13 @@ namespace DfE.SkillsCentral.Api.Application.Services.Services
             return assessmentQuestions;
         }
 
-        public async Task<QuestionAnswers?> GetAssessmentQuestion(string assessmentType, int questionNumber)
+        public async Task<QuestionAnswers?> GetSingleQuestion(int questionNumber, string assessmentType)
         {
 
             Assessment assessment = await _assessmentsRepository.GetByTypeAsync(assessmentType);
             if (assessment == null)
                 return default;
-            var question = await _questionsRepository.GetByNumberAndAssessmentAsync(questionNumber, assessment.Id);
+            var question = await _questionsRepository.GetByNumberAndAssessmentIdAsync(questionNumber, assessment.Id);
             
             var answers = await _answersRepository.GetAllByQuestionIdAsync(question.Id);
             var questionAnswers = new QuestionAnswers()

@@ -39,11 +39,11 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
             }
         }
 
-        public async Task<GetSingleQuestionResponse> GetSingleQuestion(int questionNumber)
+        public async Task<QuestionAnswers> GetSingleQuestion(int questionNumber, string assessmentType)
         {
             try
             {
-                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}Question/{questionNumber}");
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}Asessment/{assessmentType}/{questionNumber}");
                 var result = await client.GetAsync<QuestionAnswers>(request);
                 return result;
             }
@@ -153,6 +153,14 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
             throw new NotImplementedException();
         }
 
-        
+        public GetAssessmentQuestionsResponse GetAssessmentQuestions(GetAssessmentQuestionsRequest getAssessmentQuestionRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QuestionAnswers> GetSingleQuestionResponse(int questionNumber, string assessmentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

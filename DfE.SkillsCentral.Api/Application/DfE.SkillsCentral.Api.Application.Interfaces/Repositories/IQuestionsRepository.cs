@@ -11,5 +11,6 @@ namespace DFC.SkillsCentral.Api.Application.Interfaces.Repositories
     {
         Task<IReadOnlyList<Question>?> GetAllAsync();
         Task<IReadOnlyList<Question>?> GetAllByAssessmentIdAsync(int assessmentId);
+        Task<Question?> GetByNumberAndAssessmentIdAsync(int questionNumber, int assessmentId);
     }
 }

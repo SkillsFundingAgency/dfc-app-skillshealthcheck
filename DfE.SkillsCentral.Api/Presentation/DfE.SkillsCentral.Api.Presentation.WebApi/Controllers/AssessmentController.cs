@@ -50,12 +50,12 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             }
         }
 
-        [HttpGet("QuestiodId/{questionId}")]
-        public async Task<ActionResult<AssessmentQuestions>> GetQuestion(int questionId)
+        [HttpGet("{assessmentType}/{questionNumber}")]
+        public async Task<ActionResult<AssessmentQuestions>> GetSingleQuestion(string assessmentType, int questionNumber)
         {
             try
             {
-                var result = await assessmentsService.GetSingleQuestion(questionId);
+                var result = await assessmentsService.GetSingleQuestion(questionNumber, assessmentType);
 
                 if (result == null)
                 {
@@ -68,7 +68,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError(e, $"{nameof(GetQuestion)} exception");
+                logger.LogError(e, $"{nameof(GetSingleQuestion)} exception");
                 return StatusCode(500, $"An error has occurred");
             }
         }
