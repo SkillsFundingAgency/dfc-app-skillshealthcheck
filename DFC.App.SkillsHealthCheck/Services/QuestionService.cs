@@ -207,7 +207,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <param name="skillsDocument">The skills document.</param>
         /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
         /// <returns></returns>
-        private AssessmentQuestionViewModel GetDetailedAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, int questionNumber, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
+        private async Task<AssessmentQuestionViewModel> GetDetailedAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, int questionNumber, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var viewModel = new AssessmentQuestionViewModel();
 
@@ -219,8 +219,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                 Level = level,
             };
 
-            var apiResponse = _skillsHealthCheckService.GetAssessmentQuestions(apiRequest);
-            if (apiResponse.Success)
+            var apiResponse = await _skillsHealthCheckService.GetSingleQuestion(questionNumber, assessmentType.ToString());
+            if (apiResponse != null)
             {
                 switch (assessmentType)
                 {

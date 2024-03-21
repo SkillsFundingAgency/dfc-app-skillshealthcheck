@@ -14,9 +14,9 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces
 
         Task<SkillsDocument> CreateSkillsDocument([FromBody] SkillsDocument document);
 
-        GetAssessmentQuestionsResponse GetAssessmentQuestions(GetAssessmentQuestionsRequest getAssessmentQuestionRequest);
+        Task<AssessmentQuestions> GetAssessmentQuestions(string assessmentType);
 
-        Task<QuestionAnswers>GetSingleQuestionResponse (int questionNumber, string assessmentId);
+        Task<QuestionAnswers>GetSingleQuestion (int questionNumber, string assessmentType);
 
         Task<SkillsDocument> SaveSkillsDocument([FromBody] SkillsDocument document);
 
