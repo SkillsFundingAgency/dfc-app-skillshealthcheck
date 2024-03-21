@@ -137,30 +137,5 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
                 throw;
             }
         }
-
-        public Task<DocumentStatus> RequestDownloadAsync(long documentId, string formatter, string requestedBy)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<DocumentStatus> QueryDownloadStatusAsync(long documentId, string formatter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DownloadDocumentResponse DownloadDocument(DownloadDocumentRequest downloadDocumentRequest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GetAssessmentQuestionsResponse GetAssessmentQuestions(GetAssessmentQuestionsRequest getAssessmentQuestionRequest)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<QuestionAnswers> GetSingleQuestionResponse(int questionNumber, string assessmentId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
