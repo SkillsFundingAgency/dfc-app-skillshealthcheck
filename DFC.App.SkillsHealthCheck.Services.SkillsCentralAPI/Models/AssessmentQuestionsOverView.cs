@@ -68,5 +68,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models
 
         public string AssessmentTitle { get; set; }
         public string SubTitle { get; set; }
+
+        public string IntroductionText { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 }
                 else
                 {
-                    return Ok(JsonConvert.SerializeObject(result));
+                    return Ok(result);
                 }
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 }
                 else
                 {
-                    return Ok(JsonConvert.SerializeObject(result));
+                    return Ok(result);
                 }
             }
             catch (Exception e)

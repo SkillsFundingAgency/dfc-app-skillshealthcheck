@@ -43,7 +43,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services
         {
             try
             {
-                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}Asessment/{assessmentType}/{questionNumber}");
+                var request = new RestRequest($"{skillsCentralSettings.Value.SkillsCentralApiUrl}Assessment/{assessmentType}/{questionNumber}");
                 var result = await client.GetAsync<QuestionAnswers>(request);
                 return result;
             }

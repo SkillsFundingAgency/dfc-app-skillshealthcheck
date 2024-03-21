@@ -6,7 +6,7 @@
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.EliminationAnswerQuestionViewModel
 
 @{
-    var assessmentType = Model.Question.AssessmentType == AssessmentType.Numeric ? "Numerical" : Model.Question.AssessmentType.ToString();
+    var assessmentType = Model.AssessmentType == AssessmentType.Numerical ? "Numerical" : Model.AssessmentType.ToString();
     var id = string.Empty;
     var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
 }
@@ -20,11 +20,11 @@
     <div class="form-group govuk-!-margin-bottom-5 @errorClass">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-visually-hidden">
-                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
+                @(new HtmlString(Model.QuestionAnswers.Question.DataHTML?.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
             @{ var i = 0;
-                foreach (var posibleResponse in Model.Question.PossibleResponses)
+                foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
                     if (i != Model.AlreadySelected)
                     {
@@ -32,9 +32,10 @@
 
                         <label class="block-label govuk-label" for="@id">
                             @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
-                            @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
+                            @if (!string.IsNullOrEmpty(posibleResponse.ImageURL))
                             {
-                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource}")" alt="Image for @posibleResponse.Text" />}
+                                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageURL}")" alt="Image for @posibleResponse.Text" />
+                            }
                         </label> }
                     i++;
                 } }
@@ -55,10 +56,8 @@
 
     </div>
 
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.QuestionNumber)
-    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
-    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.AssessmentType)
+    @Html.HiddenFor(model => model.QuestionAnswers.Question.Number)
     @Html.HiddenFor(model => model.AlreadySelected)
     @Html.HiddenFor(model => model.QuestionNumber)
     @Html.HiddenFor(model => model.ActualTotalQuestions)

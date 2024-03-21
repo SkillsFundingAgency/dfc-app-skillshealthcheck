@@ -4,10 +4,10 @@
 }
 
 
-@Html.Raw(Model.Question.QuestionText)
+@Html.Raw(Model.QuestionAnswers.Question.Text)
 
 <div class="form-group scroll-x">
-    @Html.Raw(Model.Question.QuestionData)
+    @Html.Raw(Model.QuestionAnswers.Question.DataHTML)
 </div>
 <form method="post" id="skillsCheckingForm" class="form"  action="/skills-health-check/question/answer-checking-question">
 
@@ -60,14 +60,10 @@
     </div>
     
     @Html.HiddenFor(model => model.QuestionAnswer)
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.QuestionNumber)
-    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
-    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.AssessmentType)
+    @Html.HiddenFor(model => model.QuestionAnswers.Question.Number)
     @Html.HiddenFor(model => model.SubQuestions)
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.Level)
-    @Html.HiddenFor(model => model.Question.Accessibility)
+    @Html.HiddenFor(model => model.AssessmentType)
     @Html.HiddenFor(model => model.CurrentQuestion)
     @Html.HiddenFor(model => model.QuestionNumber)
     @Html.HiddenFor(model => model.ActualTotalQuestions)

@@ -105,7 +105,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
         /// <summary>
         /// The interests question set
         /// </summary>
-        Interest,
+        Interests,
 
         /// <summary>
         /// The mechanical question set
@@ -120,7 +120,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
         /// <summary>
         /// The numerical question set
         /// </summary>
-        Numeric,
+        Numerical,
 
         /// <summary>
         /// The personal question set
