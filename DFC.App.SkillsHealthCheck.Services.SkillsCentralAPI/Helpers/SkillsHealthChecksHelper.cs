@@ -630,13 +630,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         //            return Constants.SkillsHealthCheck.AbstractAssessmentDataValue;
         //        case AssessmentType.Checking:
         //            return Constants.SkillsHealthCheck.CheckingAssessmentDataValue;
-        //        case AssessmentType.Interest:
+        //        case AssessmentType.Interests:
         //            return Constants.SkillsHealthCheck.InterestsAssessmentDataValue;
         //        case AssessmentType.Mechanical:
         //            return Constants.SkillsHealthCheck.MechanicalAssessmentDataValue;
         //        case AssessmentType.Motivation:
         //            return Constants.SkillsHealthCheck.MotivationAssessmentDataValue;
-        //        case AssessmentType.Numeric:
+        //        case AssessmentType.Numerical:
         //            return Constants.SkillsHealthCheck.NumericAssessmentDataValue;
         //        case AssessmentType.Personal:
         //            return Constants.SkillsHealthCheck.PersonalAssessmentDataValue;
@@ -695,7 +695,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             try
             {
                 var document = new XmlDocument();
-                var assessmentTypeString = assessmentType == AssessmentType.Numeric
+                var assessmentTypeString = assessmentType == AssessmentType.Numerical
                     ? "Numerical"
                     : assessmentType.ToString();
 
@@ -751,7 +751,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     feedBackQuestion.Question = Constants.SkillsHealthCheck.HowLongToCompleteAssessment;
                     switch (assessmentType)
                     {
-                        case AssessmentType.Interest:
+                        case AssessmentType.Interests:
                         case AssessmentType.Motivation:
                         case AssessmentType.Personal:
                         case AssessmentType.SkillAreas:
@@ -846,7 +846,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                                 }
                             };
                             break;
-                        case AssessmentType.Numeric:
+                        case AssessmentType.Numerical:
                             feedBackQuestion.FeedbackAnswers = new List<FeedbackAnswer>
                             {
                                 new FeedbackAnswer
@@ -938,7 +938,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     feedBackQuestion.Question = Constants.SkillsHealthCheck.HowEasyToCompleteAssessment;
                     switch (assessmentType)
                     {
-                        case AssessmentType.Interest:
+                        case AssessmentType.Interests:
                         case AssessmentType.Motivation:
                         case AssessmentType.Personal:
                         case AssessmentType.SkillAreas:
@@ -946,7 +946,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                         case AssessmentType.Abstract:
                         case AssessmentType.Checking:
                         case AssessmentType.Mechanical:
-                        case AssessmentType.Numeric:
+                        case AssessmentType.Numerical:
                         case AssessmentType.Spatial:
                         case AssessmentType.Verbal:
                             feedBackQuestion.FeedbackAnswers = new List<FeedbackAnswer>
@@ -974,12 +974,12 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     feedBackQuestion.Question = Constants.SkillsHealthCheck.HowEnjoyableToCompleteAssessment;
                     switch (assessmentType)
                     {
-                        case AssessmentType.Interest:
+                        case AssessmentType.Interests:
                         case AssessmentType.Motivation:
                         case AssessmentType.Personal:
                         case AssessmentType.SkillAreas:
                         case AssessmentType.Verbal:
-                        case AssessmentType.Numeric:
+                        case AssessmentType.Numerical:
                             break;
                         case AssessmentType.Abstract:
                         case AssessmentType.Checking:

@@ -12,10 +12,10 @@
         @if (!(assessmentQuestionViewModel is FeedBackQuestionViewModel) && assessmentQuestionViewModel.QuestionNumber == 1)
         {
             <h2 class="heading-large">
-                @assessmentQuestionViewModel.Question.SubTitle
+                @assessmentQuestionViewModel.AssessmentSubtitle
             </h2>
             <p>
-                @Html.Raw(assessmentQuestionViewModel.Question.IntroductionText)
+                @Html.Raw(assessmentQuestionViewModel.IntroductionText)
             </p>
         }
         <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />

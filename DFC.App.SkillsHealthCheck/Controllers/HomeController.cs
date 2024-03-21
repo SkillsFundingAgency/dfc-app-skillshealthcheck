@@ -89,43 +89,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
                var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
                 {
-                    //SkillsDocumentTitle = Constants.SkillsHealthCheck.DefaultDocumentName,
-                    //SkillsDocumentType = Constants.SkillsHealthCheck.DocumentType,
                     CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
                     ReferenceCode = Guid.NewGuid().ToString(),
-                   //SkillsDocumentExpiry = SkillsDocumentExpiry.Physical,
-                   //ExpiresTimespan = new TimeSpan(0, Constants.SkillsHealthCheck.SkillsDocumentExpiryTime, 0, 0),
                };
-
-            //if (!string.IsNullOrWhiteSpace(viewModel?.ListTypeFields))
-            //{
-            //    var fieldList = viewModel.ListTypeFields.Split(',');
-            //    foreach (var field in fieldList.Where(f => !f.Equals(Constants.SkillsHealthCheck.FieldName, StringComparison.InvariantCultureIgnoreCase)))
-            //    {
-            //        var value = string.Empty;
-
-            //        if (field.Equals(Constants.SkillsHealthCheck.QualificationProperty, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            value = "1";
-            //        }
-            //        else if (field.Equals(Constants.SkillsHealthCheck.CandidateFullNameKeyName, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            value = apiRequest.SkillsDocument.CreatedBy;
-            //        }
-
-            //        apiRequest.SkillsDocument.SkillsDocumentDataValues.Add(new SkillsDocumentDataValue
-            //        {
-            //            Title = field,
-            //            Value = value,
-            //        });
-            //    }
-            //}
-
-            //apiRequest.SkillsDocument.SkillsDocumentIdentifiers.Add(new SkillsDocumentIdentifier
-            //{
-            //    ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
-            //    Value = Guid.NewGuid().ToString(),
-            //});
 
             var apiResult = await skillsHealthCheckService.CreateSkillsDocument(skillsDocument);
             if (apiResult != null)

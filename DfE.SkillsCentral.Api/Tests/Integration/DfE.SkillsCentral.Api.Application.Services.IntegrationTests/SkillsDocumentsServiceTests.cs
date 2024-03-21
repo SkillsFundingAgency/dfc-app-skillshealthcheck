@@ -109,7 +109,8 @@ public class SkillsDocumentsServiceTests
             CreatedBy = createdBy,
             DataValueKeys = new Dictionary<string, string>
             {
-                {"SkillAreas.Answers" ,  "A, B, C" }
+                {"SkillAreas.Answers" ,  "A, B, C" },
+                {"Checking.Answers", "" }
             }
             
         };
