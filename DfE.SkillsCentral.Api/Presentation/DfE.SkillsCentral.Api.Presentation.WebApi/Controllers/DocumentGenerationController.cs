@@ -33,8 +33,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi.Controllers
                 }
                 else
                 {
-                    return Ok(result);
-                        //File(result, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                    return File(result, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
                 }
 
 

@@ -39,12 +39,12 @@ public class AssessmentIntegrationTests : IClassFixture<WebApplicationFactory<Pr
 
     [Theory]
     [InlineData(1, "Spatial")]
-    [InlineData(3, "Mechanical")]
-    [InlineData(5, "Checking")]
+    [InlineData(2, "Mechanical")]
+    [InlineData(3, "Checking")]
     public async Task GetSingleQuestion_ReturnExpectedAssessment(int questionNumber, string assessmentType)
     {
         // Act
-   var response = await client.GetAsync($"/api/Assessment/{assessmentType}Question/{questionNumber}");
+        var response = await client.GetAsync($"/api/Assessment/{assessmentType}/{questionNumber}");
         var content = await response.Content.ReadAsStringAsync();
         var result = JsonConvert.DeserializeObject<QuestionAnswers>(content);
 

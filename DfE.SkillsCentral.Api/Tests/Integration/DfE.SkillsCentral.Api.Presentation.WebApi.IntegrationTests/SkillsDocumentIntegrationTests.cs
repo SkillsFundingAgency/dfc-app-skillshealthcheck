@@ -55,7 +55,7 @@ public class SkillsDocumentIntegrationTests : IClassFixture<WebApplicationFactor
 
         _ = await client.PostAsJsonAsync($"/api/SkillsDocument/", skillsDocument);
 
-        var response = await client.GetAsync($"/api/SkillsDocument/{skillsDocument.ReferenceCode}");
+        var response = await client.GetAsync($"/api/SkillsDocument/ReferenceCode/{skillsDocument.ReferenceCode}");
         var content = await response.Content.ReadAsStringAsync();
         var result = JsonConvert.DeserializeObject<AssessmentQuestions>(content);
 
@@ -67,7 +67,7 @@ public class SkillsDocumentIntegrationTests : IClassFixture<WebApplicationFactor
     public async Task GetSkillsDocumentByReferenceCode_ReturnNoContent()
     {
         // Act
-        var response = await client.GetAsync($"/api/SkillsDocument/{Guid.NewGuid()}");
+        var response = await client.GetAsync($"/api/SkillsDocument/ReferenceCode/{Guid.NewGuid()}");
 
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
