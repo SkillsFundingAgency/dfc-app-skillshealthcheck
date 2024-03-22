@@ -23,7 +23,7 @@
     {
         <br />
         <div class="mechanical-images">
-            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.QuestionAnswers.Question.ImageURL}")" title="@Model.QuestionAnswers.Question.ImageTitle" alt="@Model.QuestionAnswers.Question.ImageCaption" />
+            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{Model.QuestionAnswers.Question.ImageURL}")" title="@Model.QuestionAnswers.Question.ImageTitle" alt="@Model.QuestionAnswers.Question.ImageCaption" />
         </div>
     }
 
@@ -34,7 +34,7 @@
         {
             imageNumber++;
             <div class="image_numbers">
-                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
+                    <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
                 @if (imageNumber != Model.QuestionImages.Count())
                 {
                     <span>@imageNumber</span>
@@ -55,7 +55,7 @@ else
     {
         <br />
         <div class="mechanical-images">
-            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.QuestionAnswers.Question.ImageURL}")" @{
+            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{Model.QuestionAnswers.Question.ImageURL}")" @{
                 if (!string.IsNullOrEmpty(Model.QuestionAnswers.Question.ImageTitle))
                 {
                     <text> title="@Model.QuestionAnswers.Question.ImageTitle" </text>
@@ -124,7 +124,7 @@ else
                             @posibleResponse.Text}
                         @if (!string.IsNullOrEmpty(posibleResponse.ImageURL))
                         {
-                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageURL.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />
+                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{posibleResponse.ImageURL.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />
                         }
                     </label> } }
         </fieldset>
