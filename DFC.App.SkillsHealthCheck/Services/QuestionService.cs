@@ -246,7 +246,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             CurrentQuestion =
                                 skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
                                     assessmentQuestionOverview),
-                            ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback / 5,
+                            ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             AssessmentType = assessmentType,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
@@ -261,8 +261,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                             QuestionAnswer = "checking",
                             SubQuestions = 10,
                             CurrentQuestion =
-                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber, assessmentQuestionOverview),
-                            ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback,
+                               skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             AssessmentType = assessmentType,
@@ -323,29 +323,14 @@ namespace DFC.App.SkillsHealthCheck.Services
                 assessmentQuestionOverview.IntroductionText = overViewResponse.Assessment.Introduction;
 
                 var actualQuestionsNumber = 0;
-                if (assessmentType == AssessmentType.Checking)
+                foreach (var questionAnswers in overViewResponse.Questions)
                 {
-                    for (var i = 1; i <= totalQuestions; i++)
+                    assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
                     {
-                        assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
-                        {
-                            QuestionNumber = i,
-                            SubQuestions = 10,
-                        });
-                        actualQuestionsNumber = actualQuestionsNumber + 10;
-                    }
-                }
-                else
-                {
-                    foreach (var questionAnswers in overViewResponse.Questions)
-                    {
-                        assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
-                        {
-                            QuestionNumber = questionAnswers.Question.Number,
-                            SubQuestions = questionAnswers.Answers.Count,
-                        });
-                        actualQuestionsNumber = actualQuestionsNumber + questionAnswers.Answers.Count;
-                    }
+                        QuestionNumber = questionAnswers.Question.Number,
+                        SubQuestions = questionAnswers.Answers.Count,
+                    });
+                    actualQuestionsNumber = actualQuestionsNumber + questionAnswers.Answers.Count;
                 }
 
                 assessmentQuestionOverview.ActualQuestionsNumber = actualQuestionsNumber;
@@ -400,15 +385,18 @@ namespace DFC.App.SkillsHealthCheck.Services
             {
                 var subQuestionAnswer = SkillsHealthChecksHelper.GetAnswerTotal(tabularAnswerQuestionViewModel.AnswerSelection);
                 var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
-                getDocumentResponse = getDocumentResponse.UpdateMultipleAnswerDataValues(
-                    subQuestionAnswer,
-                    tabularAnswerQuestionViewModel.QuestionNumber == tabularAnswerQuestionViewModel.ActualTotalQuestions,
-                    (AssessmentType)model.AssessmentType,
-                    tabularAnswerQuestionViewModel.QuestionAnswers.Question.Number,
-                    tabularAnswerQuestionViewModel.CurrentQuestion - 1,
-                    tabularAnswerQuestionViewModel.SubQuestions,
-                    assessmentQuestionOverview,
-                    tabularAnswerQuestionViewModel.QuestionNumber);
+                model.QuestionAnswer = subQuestionAnswer;
+                getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
+
+                //getDocumentResponse = getDocumentResponse.UpdateMultipleAnswerDataValues(
+                //    subQuestionAnswer,
+                //    tabularAnswerQuestionViewModel.QuestionNumber == tabularAnswerQuestionViewModel.ActualTotalQuestions,
+                //    (AssessmentType)model.AssessmentType,
+                //    tabularAnswerQuestionViewModel.QuestionAnswers.Question.Number,
+                //    tabularAnswerQuestionViewModel.CurrentQuestion - 1,
+                //    tabularAnswerQuestionViewModel.SubQuestions,
+                //    assessmentQuestionOverview,
+                //    tabularAnswerQuestionViewModel.QuestionNumber);
             }
             else
             {
