@@ -61,7 +61,7 @@ namespace DFC.App.SkillsHealthCheck
                 public const string TimeToComplete = "<p class='govuk-body'>This will take around 15 minutes.</p>";
             }
 
-            public static class Numeric
+            public static class Numerical
             {
                 public const string Action = "Start numerical assessment";
 
@@ -216,13 +216,13 @@ namespace DFC.App.SkillsHealthCheck
 
             public const string SkillsAssessmentComplete = "SkillAreas.Complete";
 
-            public const string InterestsAssessmentComplete = "Interest.Complete";
+            public const string InterestsAssessmentComplete = "Interests.Complete";
 
             public const string PersonalAssessmentComplete = "Personal.Complete";
 
             public const string MotivationAssessmentComplete = "Motivation.Complete";
 
-            public const string NumericAssessmentComplete = "Numeric.Complete";
+            public const string NumericAssessmentComplete = "Numerical.Complete";
 
             public const string VerbalAssessmentComplete = "Verbal.Complete";
 
@@ -281,16 +281,16 @@ namespace DFC.App.SkillsHealthCheck
             /// </summary>
             public static Dictionary<string, string> AssessmentTypeTitle = new Dictionary<string, string>()
             {
-                { "Motivation", "What you want from work" },
-                { "SkillAreas", "Learn about your skills" },
-                { "Abstract", "Solving abstract problems" },
-                { "Checking", "Checking information activity" },
-                { "Spatial", "Working with shapes" },
-                { "Verbal", "Verbal reasoning" },
-                { "Numeric", "Working with numbers" },
-                { "Mechanical", "Solving mechanical problems" },
-                { "Interest", "Work you're interested in" },
-                { "Personal", "How you prefer to work" },
+                {"Motivation", "What you want from work"},
+                {"SkillAreas", "Learn about your skills"},
+                {"Abstract", "Solving abstract problems"},
+                {"Checking", "Checking information activity"},
+                {"Spatial", "Working with shapes"},
+                {"Verbal", "Verbal reasoning"},
+                {"Numerical", "Working with numbers"},
+                {"Mechanical", "Solving mechanical problems"},
+                {"Interests", "Work you're interested in"},
+                {"Personal", "How you prefer to work"},
             };
         }
     }

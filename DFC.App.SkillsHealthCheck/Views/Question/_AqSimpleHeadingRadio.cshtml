@@ -27,15 +27,7 @@
 
 <h3 class="heading-medium">
     @{
-        var index = 1;
-        foreach (var posibleResponse in Model.QuestionAnswers.Answers)
-        {
-            if (index == Model.CurrentQuestion)
-            {
-                @posibleResponse.Text
-            }
-            index++;
-        }
+        @Model.QuestionAnswers.Question.DataHTML
     }
 </h3>
 
@@ -50,10 +42,10 @@
                 foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
 
-                    id = string.Format("radio-{0}", posibleResponse);
+                    id = string.Format("radio-{0}", posibleResponse.Text);
 
                     <label class="block-label govuk-label" for="@id">
-                        @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse
+                        @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
                     </label> i++;
 
                 } }

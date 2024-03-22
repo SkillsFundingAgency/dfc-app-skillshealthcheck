@@ -345,10 +345,10 @@ namespace DFC.App.SkillsHealthCheck.Services
                     new AssessmentOverview
                     {
                         Action = GetAssessmentOverviewAction(diagnosticReportDataValues, Constants.SkillsHealthCheck.NumericAssessmentComplete),
-                        AssessmentName = Assessments.Numeric.Title,
-                        AssessmentCategory = Assessments.Numeric.Category,
-                        Description = Assessments.Numeric.Description,
-                        AssessmentDuration = Assessments.Numeric.TimeToComplete,
+                        AssessmentName = Assessments.Numerical.Title,
+                        AssessmentCategory = Assessments.Numerical.Category,
+                        Description = Assessments.Numerical.Description,
+                        AssessmentDuration = Assessments.Numerical.TimeToComplete,
                         AssessmentType = AssessmentType.Numerical,
                         ActivityAssessment = true,
                     },

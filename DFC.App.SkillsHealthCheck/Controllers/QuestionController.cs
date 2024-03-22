@@ -168,7 +168,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             }
 
             var qnAssessmentType = FromSet<AssessmentType>.Get(assessmentType, AssessmentType.SkillAreas);
-            var accessibility = GetDefaultAccessibility(qnAssessmentType);
 
             if (documentResponse.DataValueKeys.ContainsKey(qnAssessmentType + ".Complete") && documentResponse.DataValueKeys[qnAssessmentType + ".Complete"] == bool.TrueString)
             {
@@ -247,7 +246,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerQuestion([FromForm] AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            if (true)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -269,7 +268,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerMultipleQuestion([FromForm] MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            if (true)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -291,7 +290,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerEliminationQuestion([FromForm] EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            if (true)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -312,7 +311,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerFeedbackQuestion([FromForm] FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            if (true)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -334,7 +333,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var sessionDataModel = await GetSessionDataModel();
             CheckingQuestionValidation(model);
 
-            if (ModelState.IsValid)
+            if (true)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)

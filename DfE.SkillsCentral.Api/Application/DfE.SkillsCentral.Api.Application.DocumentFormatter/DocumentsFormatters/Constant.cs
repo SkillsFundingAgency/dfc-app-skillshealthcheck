@@ -91,11 +91,11 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         #endregion
 
         #region | Skills Document Fields |
-        public const string NumericType = "Numeric.Type";
-        public const string NumericAnswers = "Numeric.Answers";
-        public const string NumericComplete = "Numeric.Complete";
-        public const string NumericEase = "Numeric.Ease";
-        public const string NumericTiming = "Numeric.Timing";
+        public const string NumericType = "Numerical.Type";
+        public const string NumericAnswers = "Numerical.Answers";
+        public const string NumericComplete = "Numerical.Complete";
+        public const string NumericEase = "Numerical.Ease";
+        public const string NumericTiming = "Numerical.Timing";
         public const string VerbalType = "Verbal.Type";
         public const string VerbalAnswers = "Verbal.Answers";
         public const string VerbalComplete = "Verbal.Complete";
@@ -126,9 +126,9 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
         public const string CheckingTiming = "Checking.Timing";
         public const string CheckingEnjoyment = "Checking.Enjoyment";
         public const string QualificationLevel = "Qualification.Level";
-        public const string InterestType = "Interest.Type";
-        public const string InterestAnswers = "Interest.Answers";
-        public const string InterestComplete = "Interest.Complete";
+        public const string InterestType = "Interests.Type";
+        public const string InterestAnswers = "Interests.Answers";
+        public const string InterestComplete = "Interests.Complete";
         public const string SpatialType = "Spatial.Type";
         public const string SpatialAnswers = "Spatial.Answers";
         public const string SpatialComplete = "Spatial.Complete";
