@@ -246,7 +246,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             CurrentQuestion =
                                 skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
                                     assessmentQuestionOverview),
-                            ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback,
+                            ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback / 5,
                             AssessmentType = assessmentType,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
@@ -458,15 +458,15 @@ namespace DFC.App.SkillsHealthCheck.Services
                         assessmentQuestionOverview.TotalQuestionsNumber,
                         assessmentQuestionOverview.ActualQuestionsNumber,
                         viewModel.QuestionNumber),
-                MultipleAnswerQuestionViewModel questionViewModel => getDocumentResponse.UpdateMultipleAnswerDataValues(
-                        questionViewModel.QuestionAnswer,
-                        questionViewModel.QuestionNumber == questionViewModel.ActualTotalQuestions,
-                        assessmentQuestionOverview.AssessmentType,
-                        questionViewModel.QuestionAnswers.Question.Number,
-                        questionViewModel.CurrentQuestion - 1,
-                        questionViewModel.SubQuestions,
-                        assessmentQuestionOverview,
-                        questionViewModel.QuestionNumber),
+                //MultipleAnswerQuestionViewModel questionViewModel => getDocumentResponse.UpdateMultipleAnswerDataValues(
+                //        questionViewModel.QuestionAnswer,
+                //        questionViewModel.QuestionNumber == questionViewModel.ActualTotalQuestions,
+                //        assessmentQuestionOverview.AssessmentType,
+                //        questionViewModel.QuestionAnswers.Question.Number,
+                //        questionViewModel.CurrentQuestion - 1,
+                //        questionViewModel.SubQuestions,
+                //        assessmentQuestionOverview,
+                //        questionViewModel.QuestionNumber),
                 _ => getDocumentResponse.UpdateDataValues(
                     model.QuestionAnswer,
                     isComplete,

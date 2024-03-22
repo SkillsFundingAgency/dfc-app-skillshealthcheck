@@ -48,10 +48,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             //make generic
             foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                //if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
-                //}
+                
                 if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
@@ -233,10 +230,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             //make generic
             foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                //if (dataValue.Key.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    dataValue[].Value = GetDataValueByAssessmentType(asessmentType);
-                //}
+                
                 if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
@@ -407,26 +401,26 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                         nextQuestion = 1;
                         break;
                     }
-                    var answers = dataValue.Value.Split(',').ToList();
+                    var answers = dataValue.Value.Split(',').ToList().Where(x=>!x.Equals("-1"));
 
-                    var questionTally = 0;
-                    var currentQuestion = 0;
-                    var answerIndex = 0;
-                    var rangeFromIndex = 0;
-                    foreach (var questionOverview in assessmentQuestionOverview.QuestionOverViewList)
-                    {
-                        currentQuestion = questionOverview.QuestionNumber;
-                        questionTally = questionTally + questionOverview.SubQuestions;
-                        rangeFromIndex = questionOverview.SubQuestions;
-                        if (questionTally == answers.Count)
-                        {
-                            break;
-                        }
-                        answerIndex = questionTally;
-                    }
+                    //var questionTally = 0;
+                    //var currentQuestion = 0;
+                    //var answerIndex = 0;
+                    //var rangeFromIndex = 0;
+                    //foreach (var questionOverview in assessmentQuestionOverview.QuestionOverViewList)
+                    //{
+                    //    currentQuestion = questionOverview.QuestionNumber;
+                    //    questionTally = questionTally + questionOverview.SubQuestions;
+                    //    rangeFromIndex = questionOverview.SubQuestions;
+                    //    if (questionTally == answers.Count)
+                    //    {
+                    //        break;
+                    //    }
+                    //    answerIndex = questionTally;
+                    //}
 
-                    var currentAnswers = answers.GetRange(answerIndex, rangeFromIndex);
-                    return currentAnswers.Exists(x => x.Equals("-1")) ? currentQuestion : currentQuestion + 1;
+                    //var currentAnswers = answers.GetRange(answerIndex, rangeFromIndex);
+                    return answers.Count() +1; /*currentAnswers.Exists(x => x.Equals("-1")) ? currentQuestion : currentQuestion + 1;*/
                 }
             }
             return nextQuestion;
@@ -695,9 +689,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             try
             {
                 var document = new XmlDocument();
-                var assessmentTypeString = assessmentType == AssessmentType.Numerical
-                    ? "Numerical"
-                    : assessmentType.ToString();
+                var assessmentTypeString = assessmentType.ToString();
 
                 document.LoadXml(dataText);
 
