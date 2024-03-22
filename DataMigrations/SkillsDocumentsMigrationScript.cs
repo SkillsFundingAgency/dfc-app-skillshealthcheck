@@ -3,6 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using System.Text.Json.Nodes;
 using System.Xml;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -74,7 +75,7 @@ internal class SkillsDocumentMigrationScript
         // Remove properties with null values
         foreach (var property in propertiesToRemove)
         {
-            property.Remove();
+            property.Value = "";
         }
 
         // Remove properties with names ending with ".Type"
@@ -84,8 +85,30 @@ internal class SkillsDocumentMigrationScript
             {
                 property.Remove();
             }
-            
+
+            if (property.Name=="Interest.Answers" || property.Name=="Interest.Complete")
+            {
+
+                // Add a new property with the name replaced by "Interests"
+                obj[property.Name.Replace("Interest", "Interests", StringComparison.OrdinalIgnoreCase)] = property.Value;
+                // Remove the original property
+                obj.Remove(property.Name);
+            }
+
+            if (property.Name=="Numeric.Answers" || property.Name=="Numeric.Complete"|| property.Name=="Numeric.Ease"|| property.Name=="Numeric.Timing")
+            {
+
+                // Add a new property with the name replaced by "Interests"
+                obj[property.Name.Replace("Numeric", "Numerical", StringComparison.OrdinalIgnoreCase)] = property.Value;
+                // Remove the original property
+                obj.Remove(property.Name);
+            }
+
+
+
         }
+
+        
 
         return obj.ToString();
     }
