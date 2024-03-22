@@ -1,12 +1,14 @@
-﻿@model DFC.App.SkillsHealthCheck.ViewModels.SessionTimout.BodyViewModel
-<div id="sessionEndPopup" class="popup-container">
-   <div class="popup-content">
-      <button class="govuk-button button-start" data-module="govuk-button" href="#popup1">
-         open pop-up
-         </button>
-</div>
+﻿@model DFC.App.SkillsHealthCheck.ViewModels.Question.BodyViewModel
 
-<div id="popup1" class="overlay">
+@{
+    var hidePopup = true;
+    if (Model.SessionTimedOut)
+    {
+        hidePopup = false;
+    }
+}
+
+<div id="popup1" class="overlay" aria-hidden="@hidePopup">
 	<div class="popup">
 		<div class="govuk-grid-row">
          <div class="govuk-grid-column-two-thirds">
@@ -17,8 +19,7 @@
          <button class="govuk-button button-start" data-module="govuk-button" href="#popup1">
          Extend Session
          </button>
-         <a class="govuk-link" href="@Model.HomePageUrl" rel="external">Leave skills health check</a>
+            <a class="govuk-link" href="/skills-health-check/home" rel="external">Leave skills health check</a>
       </div>
    </div>
-	</div>
 </div>
