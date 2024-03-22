@@ -39,8 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{B63A9E8B-479
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.UnitTests", "DFC.App.SkillsHealthCheck.UnitTests\DFC.App.SkillsHealthCheck.UnitTests.csproj", "{F26C09EE-79E3-4EF3-9F79-1F4BC21AF219}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.SkillsCentral", "DFC.App.SkillsHealthCheck.Services.SkillsCentral\DFC.App.SkillsHealthCheck.Services.SkillsCentral.csproj", "{4BC773B1-AA72-492C-B643-1173A396238E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.GovNotify", "DFC.App.SkillsHealthCheck.Services.GovNotify\DFC.App.SkillsHealthCheck.Services.GovNotify.csproj", "{42340438-AB59-4B13-9A41-938A70F07E78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests", "DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests\DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests.csproj", "{354C9FC2-19BA-46D4-8D7A-0543C40482BA}"
@@ -103,7 +101,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Application.DocumentFormatter", "DfE.SkillsCentral.Api\Application\DfE.SkillsCentral.Api.Application.DocumentFormatter\DfE.SkillsCentral.Api.Application.DocumentFormatter.csproj", "{B5B63CF8-E43F-4CE8-9D7B-122FA22557FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI", "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj", "{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI", "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj", "{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,10 +133,6 @@ Global
 		{F26C09EE-79E3-4EF3-9F79-1F4BC21AF219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F26C09EE-79E3-4EF3-9F79-1F4BC21AF219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F26C09EE-79E3-4EF3-9F79-1F4BC21AF219}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BC773B1-AA72-492C-B643-1173A396238E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BC773B1-AA72-492C-B643-1173A396238E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BC773B1-AA72-492C-B643-1173A396238E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BC773B1-AA72-492C-B643-1173A396238E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42340438-AB59-4B13-9A41-938A70F07E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{42340438-AB59-4B13-9A41-938A70F07E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42340438-AB59-4B13-9A41-938A70F07E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -235,7 +229,6 @@ Global
 		{CA2BFF10-F16E-460B-AD8B-26A6057F2DE9} = {9BA7A34A-1C2A-487E-89A1-F1A71DB70429}
 		{B63A9E8B-479F-43A1-919B-4A8FD70E3FF0} = {7F2FB66E-424F-4AA7-819D-9A6C3DA17AA5}
 		{F26C09EE-79E3-4EF3-9F79-1F4BC21AF219} = {B63A9E8B-479F-43A1-919B-4A8FD70E3FF0}
-		{4BC773B1-AA72-492C-B643-1173A396238E} = {A5DD8004-1372-40B1-8235-8B259C0473B5}
 		{42340438-AB59-4B13-9A41-938A70F07E78} = {A5DD8004-1372-40B1-8235-8B259C0473B5}
 		{354C9FC2-19BA-46D4-8D7A-0543C40482BA} = {9BA7A34A-1C2A-487E-89A1-F1A71DB70429}
 		{E5356F33-DDB7-4509-87FE-AEBD2B3D525C} = {8BA314FE-FA03-468D-9AEC-7BDFD5DE1588}
