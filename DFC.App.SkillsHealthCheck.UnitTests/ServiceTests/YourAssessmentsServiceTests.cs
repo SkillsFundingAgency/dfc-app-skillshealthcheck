@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using SkillsDocument = DFC.SkillsCentral.Api.Domain.Models.SkillsDocument;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
 {
@@ -27,7 +28,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             yourAssessmentsService = new YourAssessmentsService(skillsHealthCheckService, questionService);
         }
 
-        /*[Fact]
+        [Fact]
         public void GetFormatterWithPdfDocumentTypeReturnsPdfFormatter()
         {
             // Arrange
@@ -57,76 +58,53 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             Assert.Equal(formatter.FormatterName, DocumentFormatName.ShcFullDocxFormatter);
         }
 
-        [Fact]
-        public async Task GetDownloadDocumentAsyncForReturnSuccess()
-        {
-            // Arrange
-            var formatter = yourAssessmentsService.GetFormatter(DownloadType.Pdf);
-            var sessionDataModel = new SessionDataModel
-            {
-                DocumentId = 123,
-            };
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId));
-            aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument());
-            var aCallToSHCServicevarDownloadDocument = A.CallTo(() => skillsHealthCheckService.GenerateWordDoc((int)sessionDataModel.DocumentId));
-            aCallToSHCServicevarRequestDownloadAsync.Returns(DocumentStatus.Pending);
-            aCallToSHCServicevarQueryDownloadStatusAsync.Returns(DocumentStatus.Creating).Once().Then.Returns(DocumentStatus.Created);
-            aCallToSHCServicevarDownloadDocument.Returns(new DownloadDocumentResponse
-            {
-                Success = true,
-                DocumentBytes = new byte[] { },
-            });
+        //[Fact]
+        //public async Task GetDownloadDocumentAsyncForReturnSuccess()
+        //{
+        //    // Arrange
+        //    var formatter = yourAssessmentsService.GetFormatter(DownloadType.Pdf);
+        //    var sessionDataModel = new SessionDataModel
+        //    {
+        //        DocumentId = 123,
+        //    };
+        //    var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId));
+        //    aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument());
+        //    var aCallToSHCServicevarDownloadDocument = A.CallTo(() => skillsHealthCheckService.GenerateWordDoc((int)sessionDataModel.DocumentId));
+        //    aCallToSHCServicevarDownloadDocument.Returns(new byte[] { });
 
-            // Act
-            //var response = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, new List<string>());
-            var responseTask = Task.FromResult(response);
+        //    // Act
+        //    var response = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, new List<string>());
+        //    var responseTask = Task.FromResult(response);
 
-            // Assert
-            Assert.True(response != null);
-            aCallToSHCServiceGetSkillsDocument.MustHaveHappenedOnceExactly();
-            aCallToSHCServicevarRequestDownloadAsync.MustHaveHappenedOnceExactly();
-            aCallToSHCServicevarQueryDownloadStatusAsync.MustHaveHappenedTwiceExactly();
-            aCallToSHCServicevarDownloadDocument.MustHaveHappenedOnceExactly();
-        }
+        //    // Assert
+        //    Assert.True(response != null);
+        //    aCallToSHCServiceGetSkillsDocument.MustHaveHappenedOnceExactly();
+        //    aCallToSHCServicevarDownloadDocument.MustHaveHappenedOnceExactly();
+        //}
 
-        [Fact]
-        public async Task GetDownloadDocumentAsyncForReturnError()
-        {
-            // Arrange
-            var formatter = yourAssessmentsService.GetFormatter(DownloadType.Pdf);
-            var sessionDataModel = new SessionDataModel
-            {
-                DocumentId = 123,
-            };
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored));
-            aCallToSHCServiceGetSkillsDocument.Returns(new GetSkillsDocumentResponse
-            {
-                Success = true,
-                SkillsDocument = new SkillsDocument
-                {
-                    SkillsDocumentTitle = "Skills Health Check",
-                    SkillsDocumentDataValues = new List<SkillsDocumentDataValue>(),
-                },
-            });
+        //[Fact]
+        //public async Task GetDownloadDocumentAsyncForReturnError()
+        //{
+        //    // Arrange
+        //    var formatter = yourAssessmentsService.GetFormatter(DownloadType.Pdf);
+        //    var sessionDataModel = new SessionDataModel
+        //    {
+        //        DocumentId = 123,
+        //    };
+        //    var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored));
+        //    aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument());
 
-            var aCallToSHCServicevarRequestDownloadAsync = A.CallTo(() => skillsHealthCheckService.RequestDownloadAsync(A<long>.Ignored, A<string>.Ignored, A<string>.Ignored));
-            var aCallToSHCServiceSaveQuestionAnswer = A.CallTo(() => skillsHealthCheckService.SaveQuestionAnswer(A<SaveQuestionAnswerRequest>.Ignored));
-            aCallToSHCServicevarRequestDownloadAsync.Returns(DocumentStatus.Error);
-            aCallToSHCServiceSaveQuestionAnswer.Returns(new SaveQuestionAnswerResponse
-            {
-                Success = true,
-            });
+        //    var aCallToSHCServiceSaveQuestionAnswer = A.CallTo(() => skillsHealthCheckService.SaveSkillsDocument(A<SkillsDocument>.Ignored));
+        //    aCallToSHCServiceSaveQuestionAnswer.Returns(new SkillsDocument());
 
-            // Act
-            var response = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, new List<string>());
+        //    // Act
+        //    var response = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, new List<string>());
 
-            // Assert
-            Assert.False(response.Success);
-            Assert.Equal("Skills Health Check", response.DocumentName);
-            aCallToSHCServiceGetSkillsDocument.MustHaveHappenedOnceExactly();
-            aCallToSHCServicevarRequestDownloadAsync.MustHaveHappenedTwiceExactly();
-            aCallToSHCServiceSaveQuestionAnswer.MustHaveHappenedOnceExactly();
-        }
+        //    // Assert
+        //    Assert.False(response != null);
+        //    aCallToSHCServiceGetSkillsDocument.MustHaveHappenedOnceExactly();
+        //    aCallToSHCServiceSaveQuestionAnswer.MustHaveHappenedOnceExactly();
+        //}
 
         [Fact]
         public async Task GetSkillsDocumentIDByReferenceAndStoreSuccess()
@@ -137,12 +115,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 DocumentId = 123,
             };
 
-            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored));
-            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new GetSkillsDocumentIdResponse
-            {
-                Success = true,
-                DocumentId = 456,
-            });
+            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored));
+            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new SkillsDocument { Id = 456 });
 
             // Act
             var response = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, "abc");
@@ -162,10 +136,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             };
 
             var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored));
-            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new GetSkillsDocumentIdResponse
-            {
-                Success = false,
-            });
+            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns<SkillsDocument>(null);
 
             // Act
             var response = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, "abc");
@@ -184,12 +155,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 DocumentId = 123,
             };
 
-            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored));
-            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new GetSkillsDocumentIdResponse
-            {
-                Success = true,
-                DocumentId = 0,
-            });
+            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored));
+            aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new SkillsDocument());
 
             // Act
             var response = await yourAssessmentsService.GetSkillsDocumentIDByReferenceAndStore(sessionDataModel, "abc");
@@ -200,37 +167,24 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         }
 
         [Fact]
-        public void GetAssessmentListViewModelSkillsAssessmentComplete()
+        public async Task GetAssessmentListViewModelSkillsAssessmentComplete()
         {
             // Arrange
             var documentId = 123;
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored));
-            aCallToSHCServiceGetSkillsDocument.Returns(new GetSkillsDocumentResponse
-            {
-                Success = true,
-                SkillsDocument = new SkillsDocument
+            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored));
+            aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument
                 {
-                    CreatedAt = new System.DateTime(2021,1,1),
-                    DocumentId = documentId,
-                    SkillsDocumentTitle = "Skills Health Check",
-                    SkillsDocumentDataValues = new List<SkillsDocumentDataValue>
+                    CreatedAt = new System.DateTime(2021, 1, 1),
+                    Id = documentId,
+                    DataValueKeys = new Dictionary<string, string>
                     {
-                        new SkillsDocumentDataValue
-                        {
-                            Title = "SkillAreas.Complete",
-                            Value = "true",
-                        },
-                        new SkillsDocumentDataValue
-                        {
-                            Title = "Motivation.Complete",
-                            Value = "false",
-                        },
+                        { "SkillAreas.Complete", "true" },
+                        { "Motivation.Complete", "false"},
                     },
-                },
-            });
+                });
 
             // Act
-            var viewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
+            var viewModel = await yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
 
             // Assert
             Assert.True(viewModel.SkillsAssessmentComplete);
@@ -239,38 +193,31 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             Assert.Equal(1, viewModel.AssessmentsCompleted.Count);
             Assert.Equal(1, viewModel.AssessmentsStarted.Count);
         }
-        /*[Fact]
-        public void GetAssessmentListViewModelSkillsAssessmentNoComplete()
+        [Fact]
+        public async Task GetAssessmentListViewModelSkillsAssessmentNoComplete()
         {
             // Arrange
             var documentId = 123;
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored));
-            aCallToSHCServiceGetSkillsDocument.Returns(new GetSkillsDocumentResponse
-            {
-                Success = true,
-                SkillsDocument = new SkillsDocument
+            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored));
+            aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument
                 {
                     CreatedAt = new System.DateTime(2021, 1, 1),
-                    DocumentId = documentId,
-                    SkillsDocumentTitle = "Skills Health Check",
-                    SkillsDocumentDataValues = new List<SkillsDocumentDataValue>
+                    Id = documentId,
+                    DataValueKeys = new Dictionary<string, string>
                     {
-                        new SkillsDocumentDataValue
                         {
-                            Title = "SkillAreas.Complete",
-                            Value = "false",
+                            "SkillAreas.Complete",
+                            "false"
                         },
-                        new SkillsDocumentDataValue
                         {
-                            Title = "Motivation.Complete",
-                            Value = "false",
+                            "Motivation.Complete",
+                            "false"
                         },
                     },
-                },
-            });
+                });
 
             // Act
-            var viewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
+            var viewModel = await yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
 
             // Assert
             Assert.False(viewModel.SkillsAssessmentComplete);
@@ -278,22 +225,22 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             Assert.Equal(4, viewModel.AssessmentsPersonal.Count);
             Assert.Equal(0, viewModel.AssessmentsCompleted.Count);
             Assert.Equal(2, viewModel.AssessmentsStarted.Count);
-        }*/
+        }
 
-        /*[Fact]
-        public void GetAssessmentListViewModelError()
+        [Fact]
+        public async Task GetAssessmentListViewModelError()
         {
             // Arrange
             var documentId = 123;
             var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(documentId));
-            aCallToSHCServiceGetSkillsDocument.Returns(null);
+            aCallToSHCServiceGetSkillsDocument.Returns<SkillsDocument>(null);
 
             // Act
-            var viewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
+            var viewModel = await yourAssessmentsService.GetAssessmentListViewModel(documentId, new List<string>());
 
             // Assert
             Assert.True(viewModel.InValidDocumentId);
             Assert.True(viewModel.IsAPiError);
-        }*/
+        }
     }
 }
