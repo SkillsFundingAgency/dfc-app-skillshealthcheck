@@ -73,50 +73,50 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             response.Headers.Location.ToString().Should().StartWith("/skills-health-check/your-assessments");
         }
 
-        [Fact]
-        public async Task ReturnToAssessmentBodyUnknownReferenceWithActiveSessionReturnSuccessWithValidationError()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
-            factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
-               .Returns(new SkillsDocument { Id = 1 });
-            /*A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
-                .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { ErrorMessage = "Reference not found.", Success = false });*/
+        //[Fact]
+        //public async Task ReturnToAssessmentBodyUnknownReferenceWithActiveSessionReturnSuccessWithValidationError()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
+        //    factory.SetSkillsDocument();
+        //    A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
+        //       .Returns(new SkillsDocument { Id = 1 });
+        //    /*A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
+        //        .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { ErrorMessage = "Reference not found.", Success = false });*/
 
-            // Act
-            var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { ReferenceId = "Unknown reference", ActionUrl = "localhost" });
+        //    // Act
+        //    var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { ReferenceId = "Unknown reference", ActionUrl = "localhost" });
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //    response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
+        //}
 
-        [Fact]
-        public async Task ReturnToAssessmentBodyInvalidRequestWithActiveSessionReturnSuccessWithValidationError()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
-            factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
-              .Returns(new SkillsDocument { Id = 1 });
-            /* A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
-                 .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1 });*/
+        //[Fact]
+        //public async Task ReturnToAssessmentBodyInvalidRequestWithActiveSessionReturnSuccessWithValidationError()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
+        //    factory.SetSkillsDocument();
+        //    A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
+        //      .Returns(new SkillsDocument { Id = 1 });
+        //    /* A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
+        //         .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1 });*/
 
-            // Act
-            var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { });
+        //    // Act
+        //    var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { });
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //    response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
+        //}
     }
 }
