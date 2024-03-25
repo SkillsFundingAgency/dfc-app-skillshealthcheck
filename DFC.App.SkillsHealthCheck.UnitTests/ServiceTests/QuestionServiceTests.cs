@@ -63,17 +63,21 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                        Id = 1,
                        Title = "Test",
                    },
-                   Answers = new IReadOnlyList<SkillsCentral.Api.Domain.Models.Answer>
+                   Answers = new List<SkillsCentral.Api.Domain.Models.Answer>
                    {
-                       
+                       new SkillsCentral.Api.Domain.Models.Answer
+                       {
+                           Id = 1,
+                           QuestionID = 1,
+                           Value = "Test",
+                       }
                    }
                }
                }
             });
-            var skillsDocument = new SkillsDocument
+            var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
             {
-                DocumentId = 123,
-                SkillsDocumentDataValues = new List<SkillsDocumentDataValue>(),
+                Id = 123,
             };
             var assessmentQuestionOverview = new AssessmentQuestionsOverView
             {
@@ -81,10 +85,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             };
 
             // Act
-            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.Level.Level1, Services.SkillsCentral.Enums.Accessibility.Full, Services.SkillsCentral.Enums.AssessmentType.Abstract, skillsDocument, assessmentQuestionOverview);
+            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.AssessmentType.Personal, skillsDocument, assessmentQuestionOverview);
 
             // Assert
-            Assert.Equal("Fake assessment title", viewModel.AssessmentTitle);
+            Assert.Equal(123, viewModel.Id);
         }
     }
 }
