@@ -3,6 +3,7 @@ using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.SkillsCentral.Api.Domain.Models;
 using FakeItEasy;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,41 +26,49 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         public async Task GetSkillsDocumentSuccess()
         {
             // Arrange
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored));
-            aCallToSHCServiceGetSkillsDocument.Returns(new GetSkillsDocumentResponse
+            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+            .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
             {
-                Success = true,
-                SkillsDocument = new SkillsDocument
-                {
-                    SkillsDocumentTitle = "Skills Health Check",
-                },
+                Id = 1,
             });
 
             // Act
-            var response = questionService.GetSkillsDocument(new GetSkillsDocumentRequest
+            var response = A.CallTo(() => questionService.GetSkillsDocument(A<int>.Ignored))
+                .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
             {
-                DocumentId = 123,
+                Id = 1,
             });
 
             // Assert
-            Assert.True(response.Success);
+            Assert.Equal(aCallToSHCServiceGetSkillsDocument, response);
         }
 
         [Fact]
         public async Task GetAssessmentQuestionViewModelSuccess()
         {
             // Arrange
-            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestion(A<GetAssessmentQuestionsRequest>.Ignored));
-            aCallToSHCServiceGetAssessmentQuestion.Returns(new GetAssessmentQuestionsResponse
+            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestions(A<string>.Ignored));
+            aCallToSHCServiceGetAssessmentQuestion.Returns(new AssessmentQuestions
             {
-                Success = true,
-                Question = new Question
-                {
-                    QuestionTitle = "Fake question",
-                    QuestionNumber = 1,
-                    AssessmentTitle = "Fake assessment title",
-                    QuestionData = string.Empty
-                },
+               Assessment = new Assessment
+               { Id = 1,
+               Type = "testType",
+               Title = "Test"},
+
+               Questions = new List<QuestionAnswers>
+               { new QuestionAnswers
+               {
+                   Question = new()
+                   {
+                       Id = 1,
+                       Title = "Test",
+                   },
+                   Answers = new IReadOnlyList<SkillsCentral.Api.Domain.Models.Answer>
+                   {
+                       
+                   }
+               }
+               }
             });
             var skillsDocument = new SkillsDocument
             {

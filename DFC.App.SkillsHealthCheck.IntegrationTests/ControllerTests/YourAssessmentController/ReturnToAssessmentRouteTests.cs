@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Moq;
 
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
@@ -13,6 +14,7 @@ using Moq;
 using Xunit;
 
 using static DFC.App.SkillsHealthCheck.IntegrationTests.Helper;
+using DFC.SkillsCentral.Api.Domain.Models;
 
 namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessmentController
 {
@@ -53,8 +55,9 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
-                .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1, Success = true });
+            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
+                .Returns(new SkillsDocument { Id = 1 });
+                //.Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1, Success = true });
 
             // Act
             using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
@@ -86,8 +89,10 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
-                .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { ErrorMessage = "Reference not found.", Success = false });
+            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
+               .Returns(new SkillsDocument { Id = 1 });
+            /*A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
+                .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { ErrorMessage = "Reference not found.", Success = false });*/
 
             // Act
             var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { ReferenceId = "Unknown reference", ActionUrl = "localhost" });
@@ -114,8 +119,10 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
-                .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1 });
+            A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored))
+              .Returns(new SkillsDocument { Id = 1 });
+            /* A.CallTo(() => factory.FakeSkillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored))
+                 .Returns(new Services.SkillsCentral.Messages.GetSkillsDocumentIdResponse { DocumentId = 1 });*/
 
             // Act
             var response = await client.PostAsJsonAsync(uri, new ReturnToAssessmentViewModel { });

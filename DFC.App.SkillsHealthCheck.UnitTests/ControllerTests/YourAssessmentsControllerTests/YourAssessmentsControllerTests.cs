@@ -96,7 +96,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
                         AssessmentCategory = Assessments.Interests.Category,
                         Description = Assessments.Interests.Description,
                         AssessmentDuration = Assessments.Interests.TimeToComplete,
-                        AssessmentType = AssessmentType.Interest,
+                        AssessmentType = AssessmentType.Interests,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
@@ -121,13 +121,13 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
                     },
                     new AssessmentOverview
                     {
-                        Action = Assessments.Numeric.Action,
-                        AssessmentName = Assessments.Numeric.Title,
-                        AssessmentCategory = Assessments.Numeric.Category,
-                        Description = Assessments.Numeric.Description,
-                        AssessmentDuration = Assessments.Numeric.TimeToComplete,
-                        AssessmentType = AssessmentType.Numeric,
-                        ActivityAssessment = true,
+                         Action = Assessments.Numerical.Action,
+                         AssessmentName = Assessments.Numerical.Title,
+                         AssessmentCategory = Assessments.Numerical.Category,
+                         Description = Assessments.Numerical.Description,
+                         AssessmentDuration = Assessments.Numerical.TimeToComplete,
+                         AssessmentType = AssessmentType.Numerical,
+                         ActivityAssessment = true,
                     },
                     new AssessmentOverview
                     {

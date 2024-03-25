@@ -58,13 +58,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                 ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
                 Value = Code,
             };
-            var skillsDocument = new SkillsDocument
-            {
-                SkillsDocumentIdentifiers = new List<SkillsDocumentIdentifier> { skillsDocumentIdentifier },
-            };
 
-            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored))
-                .Returns(new GetSkillsDocumentResponse { SkillsDocument = skillsDocument });
+            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+                .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument { Id = 1 });
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", PhoneNumber } });
 
             var result = await controller.SmsFailedBody();
@@ -86,13 +82,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                 ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
                 Value = Code,
             };
-            var skillsDocument = new SkillsDocument
-            {
-                SkillsDocumentIdentifiers = new List<SkillsDocumentIdentifier> { skillsDocumentIdentifier },
-            };
 
-            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored))
-                .Returns(new GetSkillsDocumentResponse { SkillsDocument = skillsDocument });
+            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+               .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument { Id = 1 });
+
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "PhoneNumber", PhoneNumber } });
 
             var result = await controller.SmsFailed();

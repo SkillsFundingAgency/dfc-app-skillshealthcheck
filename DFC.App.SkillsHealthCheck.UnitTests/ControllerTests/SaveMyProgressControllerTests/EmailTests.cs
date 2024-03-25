@@ -6,7 +6,7 @@ using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels.SaveMyProgress;
-
+using DFC.SkillsCentral.Api.Domain.Models;
 using FakeItEasy;
 
 using FluentAssertions;
@@ -139,13 +139,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                 ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
                 Value = Code,
             };
-            var skillsDocument = new SkillsDocument
-            {
-                SkillsDocumentIdentifiers = new List<SkillsDocumentIdentifier> { skillsDocumentIdentifier },
-            };
 
-            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored))
-                .Returns(new GetSkillsDocumentResponse { SkillsDocument = skillsDocument });
+            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+                .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument { Id = 1 });
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", Email } });
 
             var result = await controller.EmailFailedBody();
@@ -167,13 +163,9 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
                 ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
                 Value = Code,
             };
-            var skillsDocument = new SkillsDocument
-            {
-                SkillsDocumentIdentifiers = new List<SkillsDocumentIdentifier> { skillsDocumentIdentifier },
-            };
 
-            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored))
-                .Returns(new GetSkillsDocumentResponse { SkillsDocument = skillsDocument });
+            A.CallTo(() => SkillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+                 .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument { Id = 1 });
             using var controller = BuildController(MediaTypeNames.Text.Html, new Dictionary<string, object> { { "Email", Email } });
 
             var result = await controller.EmailFailed();
