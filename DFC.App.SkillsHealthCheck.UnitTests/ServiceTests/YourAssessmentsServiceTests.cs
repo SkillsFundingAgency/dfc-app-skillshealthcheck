@@ -158,7 +158,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 DocumentId = 123,
             };
 
-            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored));
+            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored));
             aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new GetSkillsDocumentIdResponse
             {
                 Success = false,
