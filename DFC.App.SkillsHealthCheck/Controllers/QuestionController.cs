@@ -246,7 +246,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerQuestion([FromForm] AssessmentQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (true)
+            if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -268,7 +268,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerMultipleQuestion([FromForm] MultipleAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (true)
+            if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -290,7 +290,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerEliminationQuestion([FromForm] EliminationAnswerQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (true)
+            if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -311,7 +311,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         public async Task<IActionResult> AnswerFeedbackQuestion([FromForm] FeedBackQuestionViewModel model)
         {
             var sessionDataModel = await GetSessionDataModel();
-            if (true)
+            if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
@@ -333,7 +333,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var sessionDataModel = await GetSessionDataModel();
             CheckingQuestionValidation(model);
 
-            if (true)
+            if (ModelState.IsValid)
             {
                 var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
                 if (saveAnswerResponse != null)
