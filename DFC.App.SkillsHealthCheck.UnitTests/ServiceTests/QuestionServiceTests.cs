@@ -8,6 +8,7 @@ using FakeItEasy;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using SkillsDocument = DFC.SkillsCentral.Api.Domain.Models.SkillsDocument;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
 {
@@ -25,19 +26,19 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         //[Fact]
         //public async Task GetSkillsDocumentSuccess()
         //{
+
         //    // Arrange
-        //    var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
-        //    .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
+        //    var skillsDoc = new SkillsDocument
         //    {
         //        Id = 1,
-        //    });
+        //    };
+
+        //    var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+        //    .Returns(skillsDoc);
 
         //    // Act
         //    var response = A.CallTo(() => questionService.GetSkillsDocument(A<int>.Ignored))
-        //        .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
-        //    {
-        //        Id = 1,
-        //    });
+        //        .Returns(skillsDoc);
 
         //    // Assert
         //    Assert.Equal(aCallToSHCServiceGetSkillsDocument, response);
