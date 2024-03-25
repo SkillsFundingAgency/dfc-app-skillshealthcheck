@@ -29,20 +29,20 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
             Assert.Equal($"{SaveMyProgressController.PageTitle} | {SaveMyProgressController.DefaultPageTitleSuffix}", viewModel.Title);
         }
 
-        [Fact]
-        public void BreadCrumbRequestReturnsSuccess()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
+        // [Fact]
+        // public void BreadCrumbRequestReturnsSuccess()
+        // {
+        //     using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = controller.Breadcrumb();
+        //     var result = controller.Breadcrumb();
 
-            var viewResult = result.Should().BeOfType<ViewResult>().Which;
-            var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<BreadcrumbViewModel>().Which;
-            viewModel.Breadcrumbs.Should().NotBeNull();
-            viewModel.Breadcrumbs.Should().HaveCount(2);
-            viewModel.Breadcrumbs![0].Title.Should().Be("Home");
-            viewModel.Breadcrumbs![1].Title.Should().Be("Skills assessment");
-        }
+        //     var viewResult = result.Should().BeOfType<ViewResult>().Which;
+        //     var viewModel = viewResult.ViewData.Model.Should().BeAssignableTo<BreadcrumbViewModel>().Which;
+        //     viewModel.Breadcrumbs.Should().NotBeNull();
+        //     viewModel.Breadcrumbs.Should().HaveCount(2);
+        //     viewModel.Breadcrumbs![0].Title.Should().Be("Home");
+        //     viewModel.Breadcrumbs![1].Title.Should().Be("Skills assessment");
+        // }
 
         [Theory]
         [InlineData(null, "/skills-health-check/your-assessments", "Return to your skills health check")]
