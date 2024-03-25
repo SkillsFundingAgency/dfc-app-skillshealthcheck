@@ -45,8 +45,9 @@ internal class SkillsDocumentMigrationScript
                         string modifiedJson = RemovedRedundantSections(jsonDataValues);
 
 
-                        var result = RemoveTopLevelDataValues(modifiedJson);
+                        var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
 
+                        var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
                         Console.WriteLine(parser.LineNumber);
                         writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])}),");
 
@@ -60,6 +61,36 @@ internal class SkillsDocumentMigrationScript
         }
     }
 
+    public static string RemoveMinusOnes(string input)
+    {
+        if (input == "NULL")
+            return input;
+        JObject obj = JObject.Parse(input);
+
+        foreach (var property in obj.Properties())
+        {
+            if (property.Name != "SkillAreas.Answers")
+            {
+                // Exclude SkillAreas.Answers from modification
+                var valueArray = property.Value.ToString().Split(',');
+                for (int i = 0; i < valueArray.Length; i++)
+                {
+                    if (valueArray[i] == "-1")
+                    {
+                        // Replace "-1" with an empty string
+                        valueArray[i] = "";
+                    }
+                }
+                // Remove consecutive commas
+                var newValue = string.Join(",", valueArray).Replace(",,", ",");
+                // Trim leading and trailing commas
+                newValue = newValue.Trim(',');
+                obj[property.Name] = newValue;
+            }
+        }
+
+        return obj.ToString();
+    }
     private static string RemovedRedundantSections(string input)
     {
         if (input == "NULL")
@@ -104,11 +135,13 @@ internal class SkillsDocumentMigrationScript
                 obj.Remove(property.Name);
             }
 
+            if (property.Name=="Interest.Answers" || property.Name=="Interest.Complete" ||property.Name=="Numeric.Answers" || property.Name=="Numeric.Complete"|| property.Name=="Numeric.Ease"|| property.Name=="Numeric.Timing")
+            {
+                property.Remove();
 
+            }
 
         }
-
-        
 
         return obj.ToString();
     }
