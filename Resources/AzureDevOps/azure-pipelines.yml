@@ -1,7 +1,7 @@
 variables:
   ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
   SolutionBaseName: "DFC.App.SkillsHealthCheck"
-  SolutionBaseNameApi: "DFC.SkillsCentral.Api/Presentation/DfE.SkillsCentral.Api.Presentation.WebApi"
+  SolutionBaseNameApi: 'DFC.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi'
   BuildPlatform: "any cpu"
   BuildConfiguration: "release"
 
