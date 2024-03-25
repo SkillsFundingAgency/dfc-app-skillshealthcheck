@@ -66,14 +66,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             {
                 DocumentId = 123,
             };
-            var response = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, new List<string>());
-
-
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId))
-            .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument());
-            var aCallToSHCServicevarDownloadDocument = A.CallTo(() => skillsHealthCheckService.GenerateWordDoc((int)sessionDataModel.DocumentId))
-                .Returns(Task.FromResult(DocumentStatus.Pending));
-            //.Returns(DocumentStatus.Pending);
+            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId));
+            aCallToSHCServiceGetSkillsDocument.Returns(new SkillsDocument());
+            var aCallToSHCServicevarDownloadDocument = A.CallTo(() => skillsHealthCheckService.GenerateWordDoc((int)sessionDataModel.DocumentId));
+            aCallToSHCServicevarRequestDownloadAsync.Returns(DocumentStatus.Pending);
             aCallToSHCServicevarQueryDownloadStatusAsync.Returns(DocumentStatus.Creating).Once().Then.Returns(DocumentStatus.Created);
             aCallToSHCServicevarDownloadDocument.Returns(new DownloadDocumentResponse
             {
@@ -165,7 +161,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 DocumentId = 123,
             };
 
-            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByIdentifier(A<string>.Ignored));
+            var aCallToSHCServiceGetSkillsDocumentByIdentifier = A.CallTo(() => skillsHealthCheckService.GetSkillsDocumentByReferenceCode(A<string>.Ignored));
             aCallToSHCServiceGetSkillsDocumentByIdentifier.Returns(new GetSkillsDocumentIdResponse
             {
                 Success = false,
@@ -243,7 +239,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             Assert.Equal(1, viewModel.AssessmentsCompleted.Count);
             Assert.Equal(1, viewModel.AssessmentsStarted.Count);
         }
-*/
         /*[Fact]
         public void GetAssessmentListViewModelSkillsAssessmentNoComplete()
         {
