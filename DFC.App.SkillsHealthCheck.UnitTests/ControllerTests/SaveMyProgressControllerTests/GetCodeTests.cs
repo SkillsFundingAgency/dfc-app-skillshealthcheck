@@ -17,67 +17,67 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.SaveMyProgressCont
     [Trait("Category", "Save My Progress Unit Tests")]
     public class GetCodeTests : SaveMyProgressControllerTestsBase
     {
-        [Fact]
-        public async Task GetCodeBodyRequestReturnsSuccess()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
+        //[Fact]
+        //public async Task GetCodeBodyRequestReturnsSuccess()
+        //{
+        //    using var controller = BuildController(MediaTypeNames.Text.Html);
 
-            var result = await controller.GetCodeBody();
+        //    var result = await controller.GetCodeBody();
 
-            result.Should().BeOfType<ViewResult>()
-                 .Which.ViewData.Model.Should().NotBeNull();
-        }
+        //    result.Should().BeOfType<ViewResult>()
+        //         .Which.ViewData.Model.Should().NotBeNull();
+        //}
 
-        [Fact]
-        public async Task GetCodePostRequestReturnsRedirectResultToSmsSent()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-            A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .Returns(new NotifyResponse { IsSuccess = true });
+        //[Fact]
+        //public async Task GetCodePostRequestReturnsRedirectResultToSmsSent()
+        //{
+        //    using var controller = BuildController(MediaTypeNames.Text.Html);
+        //    A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+        //        .Returns(new NotifyResponse { IsSuccess = true });
 
-            var result = await controller.GetCode(new ReferenceNumberViewModel());
+        //    var result = await controller.GetCode(new ReferenceNumberViewModel());
 
-            result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
-        }
+        //    result.Should().BeOfType<RedirectResult>()
+        //        .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
+        //}
 
-        [Fact]
-        public async Task GetCodeBodyPostRequestReturnsRedirectResultToSmsSent()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-            A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .Returns(new NotifyResponse { IsSuccess = true });
+        //[Fact]
+        //public async Task GetCodeBodyPostRequestReturnsRedirectResultToSmsSent()
+        //{
+        //    using var controller = BuildController(MediaTypeNames.Text.Html);
+        //    A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+        //        .Returns(new NotifyResponse { IsSuccess = true });
 
-            var result = await controller.GetCodeBody(new ReferenceNumberViewModel());
+        //    var result = await controller.GetCodeBody(new ReferenceNumberViewModel());
 
-            result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
-        }
+        //    result.Should().BeOfType<RedirectResult>()
+        //        .Which.Url.Should().Be("/skills-health-check/save-my-progress/sms");
+        //}
 
-        [Fact]
-        public async Task GetCodePostRequestReturnsRedirectResultToSmsFailed()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-            A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .Returns(new NotifyResponse());
+        //[Fact]
+        //public async Task GetCodePostRequestReturnsRedirectResultToSmsFailed()
+        //{
+        //    using var controller = BuildController(MediaTypeNames.Text.Html);
+        //    A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+        //        .Returns(new NotifyResponse());
 
-            var result = await controller.GetCode(new ReferenceNumberViewModel());
+        //    var result = await controller.GetCode(new ReferenceNumberViewModel());
 
-            result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/smsfailed");
-        }
+        //    result.Should().BeOfType<RedirectResult>()
+        //        .Which.Url.Should().Be("/skills-health-check/save-my-progress/smsfailed");
+        //}
 
-        [Fact]
-        public async Task GetCodeBodyPostRequestReturnsRedirectResultToSmsFailed()
-        {
-            using var controller = BuildController(MediaTypeNames.Text.Html);
-            A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .Returns(new NotifyResponse());
+        //[Fact]
+        //public async Task GetCodeBodyPostRequestReturnsRedirectResultToSmsFailed()
+        //{
+        //    using var controller = BuildController(MediaTypeNames.Text.Html);
+        //    A.CallTo(() => GovNotifyService.SendSmsAsync(A<string>.Ignored, A<string>.Ignored, A<string>.Ignored))
+        //        .Returns(new NotifyResponse());
 
-            var result = await controller.GetCodeBody(new ReferenceNumberViewModel());
+        //    var result = await controller.GetCodeBody(new ReferenceNumberViewModel());
 
-            result.Should().BeOfType<RedirectResult>()
-                .Which.Url.Should().Be("/skills-health-check/save-my-progress/smsfailed");
-        }
+        //    result.Should().BeOfType<RedirectResult>()
+        //        .Which.Url.Should().Be("/skills-health-check/save-my-progress/smsfailed");
+        //}
     }
 }

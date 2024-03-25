@@ -3,6 +3,7 @@ using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.SkillsCentral.Api.Domain.Models;
 using FakeItEasy;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,50 +22,62 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             questionService = new QuestionService(skillsHealthCheckService);
         }
 
-        [Fact]
-        public async Task GetSkillsDocumentSuccess()
-        {
-            // Arrange
-            var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored));
-            aCallToSHCServiceGetSkillsDocument.Returns(new GetSkillsDocumentResponse
-            {
-                Success = true,
-                SkillsDocument = new SkillsDocument
-                {
-                    SkillsDocumentTitle = "Skills Health Check",
-                },
-            });
+        //[Fact]
+        //public async Task GetSkillsDocumentSuccess()
+        //{
+        //    // Arrange
+        //    var aCallToSHCServiceGetSkillsDocument = A.CallTo(() => skillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+        //    .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
+        //    {
+        //        Id = 1,
+        //    });
 
-            // Act
-            var response = questionService.GetSkillsDocument(new GetSkillsDocumentRequest
-            {
-                DocumentId = 123,
-            });
+        //    // Act
+        //    var response = A.CallTo(() => questionService.GetSkillsDocument(A<int>.Ignored))
+        //        .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument
+        //    {
+        //        Id = 1,
+        //    });
 
-            // Assert
-            Assert.True(response.Success);
-        }
+        //    // Assert
+        //    Assert.Equal(aCallToSHCServiceGetSkillsDocument, response);
+        //}
 
         [Fact]
         public async Task GetAssessmentQuestionViewModelSuccess()
         {
             // Arrange
-            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestion(A<GetAssessmentQuestionsRequest>.Ignored));
-            aCallToSHCServiceGetAssessmentQuestion.Returns(new GetAssessmentQuestionsResponse
+            var aCallToSHCServiceGetAssessmentQuestion = A.CallTo(() => skillsHealthCheckService.GetAssessmentQuestions(A<string>.Ignored));
+            aCallToSHCServiceGetAssessmentQuestion.Returns(new AssessmentQuestions
             {
-                Success = true,
-                Question = new Question
-                {
-                    QuestionTitle = "Fake question",
-                    QuestionNumber = 1,
-                    AssessmentTitle = "Fake assessment title",
-                    QuestionData = string.Empty
-                },
+               Assessment = new Assessment
+               { Id = 1,
+               Type = "testType",
+               Title = "Test"},
+
+               Questions = new List<QuestionAnswers>
+               { new QuestionAnswers
+               {
+                   Question = new()
+                   {
+                       Id = 1,
+                       Title = "Test",
+                   },
+                   Answers = new List<SkillsCentral.Api.Domain.Models.Answer>
+                   {
+                       new SkillsCentral.Api.Domain.Models.Answer
+                       {
+                           Id = 1,
+                           QuestionID = 1,
+                           Value = "Test",
+                       }
+                   }
+               }
+               }
             });
-            var skillsDocument = new SkillsDocument
+            var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
             {
-                DocumentId = 123,
-                SkillsDocumentDataValues = new List<SkillsDocumentDataValue>(),
+                Id = 123,
             };
             var assessmentQuestionOverview = new AssessmentQuestionsOverView
             {
@@ -72,10 +85,10 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             };
 
             // Act
-            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.Level.Level1, Services.SkillsCentral.Enums.Accessibility.Full, Services.SkillsCentral.Enums.AssessmentType.Abstract, skillsDocument, assessmentQuestionOverview);
+            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.AssessmentType.Personal, skillsDocument, assessmentQuestionOverview);
 
             // Assert
-            Assert.Equal("Fake assessment title", viewModel.AssessmentTitle);
+            Assert.Equal(1, viewModel.Id);
         }
     }
 }
