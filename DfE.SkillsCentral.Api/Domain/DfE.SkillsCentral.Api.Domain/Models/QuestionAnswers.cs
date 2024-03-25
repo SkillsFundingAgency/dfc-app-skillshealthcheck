@@ -10,7 +10,7 @@ namespace DFC.SkillsCentral.Api.Domain.Models
     public class QuestionAnswers
     {
         public Question Question { get; set; }
-        public IReadOnlyList<Answer> Answers { get; set; }
+        public IReadOnlyList<Answer>? Answers { get; set; }
 
     }
 }
