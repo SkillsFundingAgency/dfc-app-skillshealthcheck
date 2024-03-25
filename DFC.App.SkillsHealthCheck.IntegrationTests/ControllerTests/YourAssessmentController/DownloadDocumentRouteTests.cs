@@ -58,8 +58,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
             factory.SetSkillsDocument();
-            A.CallTo(() => factory.FakeSkillsHealthCheckService.RequestDownloadAsync(A<long>.Ignored, A<string>.Ignored, A<string>.Ignored))
-                .Returns(DocumentStatus.Created);
+            A.CallTo(() => factory.FakeSkillsHealthCheckService.GenerateWordDoc(A<int>.Ignored)
             A.CallTo(() => factory.FakeSkillsHealthCheckService.DownloadDocument(A<DownloadDocumentRequest>.Ignored))
                 .Returns(new DownloadDocumentResponse { Success = true, DocumentName = "test", DocumentBytes = GetFileBytes() });
 
