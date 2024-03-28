@@ -94,7 +94,7 @@ stages:
         - task: NuGetToolInstaller@1
           displayName: 'Install NuGet'
           inputs:
-            versionSpec: ${{ parameters.NuGetVersion }}
+            versionSpec: 6.x
 
         - task: gitversion/setup@0
           displayName: Install GitVersion
