@@ -70,7 +70,7 @@ stages:
 
       - job: BuildDotNetCore
         displayName: Build-DotNetCore
-        steps:
+        steps:          
         - task: PowerShell@2
           name: DownloadTestBranchFeaturesScript
           displayName: 'Download Test-BranchFeatures script'
@@ -84,6 +84,12 @@ stages:
           inputs:
             targetType: 'filePath'
             filePath: '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
+
+        - task: UseDotNet@2
+          displayName: 'Use .NET Core sdk 6.x}'
+          inputs:
+            version: 6.x
+            installationPath: $(Agent.TempDirectory)/dotnet
 
         - task: UseGitVersion@5
           displayName: GitVersion
