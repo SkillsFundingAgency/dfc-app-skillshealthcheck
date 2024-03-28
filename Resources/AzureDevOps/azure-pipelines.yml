@@ -286,6 +286,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -335,6 +336,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -385,6 +387,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -434,6 +437,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
