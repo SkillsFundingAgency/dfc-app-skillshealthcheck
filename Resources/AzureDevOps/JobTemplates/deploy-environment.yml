@@ -92,6 +92,14 @@ jobs:
                 ApimImportScript: "${{ parameters.ApimImportScript }}"
                 SpecificationPath: "${{ parameters.SpecificationPath }}"
 
+            - template: ../StepTemplates/deploy-page-registration.yml
+              parameters:
+                AzureSubscription: "${{ parameters.AzureSubscription }}"
+                PageRegistrationPath: "${{ parameters.PageRegistrationPath }}"
+                PageRegistrationFile: "${{ parameters.PageRegistrationFile }}"
+                AppRegistryApiUrl: "${{ parameters.AppRegistryApiUrl }}"
+                ApimCompositeKey: "${{ parameters.ApimCompositeKey }}"
+
             - template: ../StepTemplates/deploy-azure-api-app-service.yml
               parameters:
                 WebAppName: "${{ parameters.ApiAppServiceName }}"
@@ -101,10 +109,3 @@ jobs:
                 ResourceGroup: "${{ parameters.ResourceGroup }}"
                 SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
 
-            - template: ../StepTemplates/deploy-page-registration.yml
-              parameters:
-                AzureSubscription: "${{ parameters.AzureSubscription }}"
-                PageRegistrationPath: "${{ parameters.PageRegistrationPath }}"
-                PageRegistrationFile: "${{ parameters.PageRegistrationFile }}"
-                AppRegistryApiUrl: "${{ parameters.AppRegistryApiUrl }}"
-                ApimCompositeKey: "${{ parameters.ApimCompositeKey }}"
