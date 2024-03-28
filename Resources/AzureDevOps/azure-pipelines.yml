@@ -71,26 +71,116 @@ stages:
       - job: BuildDotNetCore
         displayName: Build-DotNetCore
         steps:
-          - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-unit-integration-sonar.yml@dfc-devops
-            parameters:
-              SolutionBaseName: $(SolutionBaseName)
-              BuildPlatform: $(BuildPlatform)
-              BuildConfiguration: $(BuildConfiguration)
-              PublishWebApp: true
-              TestSuffix: UnitTests
-              IntegrationTestSuffix: IntegrationTests
+        - task: PowerShell@2
+          name: DownloadTestBranchFeaturesScript
+          displayName: 'Download Test-BranchFeatures script'
+          inputs:
+            targetType: 'inline'
+            script: Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Test-BranchFeatures.ps1' -OutFile '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
 
-      - job: BuildDotNetCoreApi
-        displayName: Build-DotNetCore-Api
-        steps:
-          - template: AzureDevOpsTemplates/Build/StepTemplates/dfc-dotnetcore-build.yml@dfc-devops
-            parameters:
-              SolutionBaseName: $(SolutionBaseNameApi)
-              BuildPlatform: $(BuildPlatform)
-              BuildConfiguration: $(BuildConfiguration)
-              PublishWebApp: true
-              TestSuffix: UnitTests
-              IntegrationTestSuffix: IntegrationTests
+        - task: PowerShell@2
+          name: ExecuteTestBranchFeaturesScript
+          displayName: Test-BranchFeatures
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
+
+        - task: UseGitVersion@5
+          displayName: GitVersion
+          inputs:
+            useConfigFile: true
+            configFilePath: Resources/AzureDevOps/GitVersion.yml
+            versionSpec: '5.3.x'
+
+        - task: SonarCloudPrepare@1
+          displayName: 'Prepare analysis on SonarCloud'
+          condition: and(succeeded(), variables['ShouldRunSonarCloud'], 'True')
+          inputs:
+            SonarCloud: 'DFC-SonarCloud'
+            organization: educationandskillsfundingagency
+            projectKey: 'SonarCloud.SkillsFundingAgency.$(Build.DefinitionName)'
+            projectName: $(Build.DefinitionName)
+
+        - task: DotNetCoreCLI@2
+          displayName: 'restore nuget packages'
+          inputs:
+            command: 'restore'
+            projects: '**\*.csproj'
+            feedsToUse: 'select'
+            vstsFeed: 'NationalCareersService'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet publish'
+          inputs:
+            command: 'publish'
+            projects: '$(SolutionBaseName)\$(SolutionBaseName).csproj'
+            arguments: '-o $(build.artifactstagingdirectory)\Artifact\$(SolutionBaseName)\DeploymentPackages\  -c $(BuildConfiguration)'
+            publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: '$(SolutionBaseName)*UnitTests\$(SolutionBaseName)*UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: '$(SolutionBaseName)*IntegrationTests\$(SolutionBaseName)*IntegrationTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: SonarCloudAnalyze@1
+          displayName: 'Run Code Analysis'
+          condition: and(succeeded(), variables['ShouldRunSonarCloud'], 'True')
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: $(SolutionBaseName)'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\Artifact\$(SolutionBaseName)\DeploymentPackages
+            artifactName: $(SolutionBaseName).DeploymentPackages
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet publish'
+          inputs:
+            command: 'publish'
+            projects: 'DfE.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi\DfE.SkillsCentral.Api.Presentation.WebApi.csproj'
+            arguments: '-o $(build.artifactstagingdirectory)\Artifact\DfE.SkillsCentral.Api.Presentation.WebApi\DeploymentPackages\  -c $(BuildConfiguration)'
+            publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Unit\**\*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Integration\**\*.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Presentation.WebApi'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\Artifact\DfE.SkillsCentral.Api.Presentation.WebApi\DeploymentPackages
+            artifactName: DfE.SkillsCentral.Api.Presentation.WebApi.DeploymentPackages
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Infrastructure.Database: dotnet build'
+          inputs:
+            command: 'build'
+            projects: 'DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.sqlproj'
+            arguments: '-o $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database  -c $(BuildConfiguration)'
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Infrastructure.Database'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database
+            artifactName: DfE.SkillsCentral.Api.Infrastructure.Database.DeploymentPackages
 
   - stage: DeployToLab
     #condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
