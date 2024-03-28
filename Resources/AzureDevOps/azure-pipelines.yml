@@ -89,7 +89,8 @@ stages:
           displayName: 'Use .NET Core sdk 6.x'
           inputs:
             version: 6.x
-            installationPath: $(Agent.TempDirectory)/dotnet
+            IncludePreviewVersions: false
+            installationPath: $(Agent.ToolsDirectory)/dotnet
 
         - task: NuGetToolInstaller@1
           displayName: 'Install NuGet'
