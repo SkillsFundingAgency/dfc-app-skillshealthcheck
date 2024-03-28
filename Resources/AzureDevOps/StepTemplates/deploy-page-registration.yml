@@ -20,7 +20,7 @@ steps:
     inputs:
       azureSubscription: "${{ parameters.AzureSubscription }}"
       targetType: filePath
-      filePath: "./PSCoreScripts/Invoke-AddOrUpdateCompositeRegistrations.ps1"
+      filePath: "$(Pipeline.Workspace)/s/dfc-devops/PSCoreScripts/Invoke-AddOrUpdateCompositeRegistrations.ps1"
       arguments: "-AppRegistryApiUrl ${{ parameters.AppRegistryApiUrl }} -RegistrationFile ${{ parameters.PageRegistrationPath }}/${{ parameters.PageRegistrationFile }} -AppRegistryApiKey ${{ parameters.ApimCompositeKey }} -Verbose"
       workingDirectory: "./PSScripts"
 
