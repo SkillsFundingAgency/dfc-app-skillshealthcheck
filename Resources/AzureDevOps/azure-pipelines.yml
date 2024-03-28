@@ -1,7 +1,8 @@
 variables:
   ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
   SolutionBaseName: "DFC.App.SkillsHealthCheck"
-  SolutionBaseNameApi: "DFC.SkillsCentral.Api"
+  SolutionBaseNameApi: "DfE.SkillsCentral.Api.Presentation.WebApi"
+  SolutionBaseNameDatabase: "DfE.SkillsCentral.Api.Infrastructure.Database"
   BuildPlatform: "any cpu"
   BuildConfiguration: "release"
 
@@ -176,7 +177,7 @@ stages:
           displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Presentation.WebApi'
           inputs:
             targetPath: $(build.artifactstagingdirectory)\Artifact\DfE.SkillsCentral.Api.Presentation.WebApi\DeploymentPackages
-            artifactName: DfE.SkillsCentral.Api.Presentation.WebApi.DeploymentPackages
+            artifactName: $(SolutionBaseNameApi).DeploymentPackages
 
         - task: DotNetCoreCLI@2
           displayName: 'DfE.SkillsCentral.Api.Infrastructure.Database: dotnet build'
@@ -189,7 +190,7 @@ stages:
           displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Infrastructure.Database'
           inputs:
             targetPath: $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database
-            artifactName: DfE.SkillsCentral.Api.Infrastructure.Database.DeploymentPackages
+            artifactName: $(SolutionBaseNameDatabase).DeploymentPackages
 
   - stage: DeployToLab
     #condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
@@ -216,6 +217,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatbase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: LAB_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
@@ -264,6 +266,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatbase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: DEV_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
@@ -310,6 +313,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatbase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: SIT_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
@@ -357,6 +361,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatbase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PP_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
@@ -403,6 +408,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatbase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PRD_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
