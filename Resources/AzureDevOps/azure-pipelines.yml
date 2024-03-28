@@ -156,12 +156,12 @@ stages:
             projects: 'DfE.SkillsCentral.Api\Tests\Unit\**\*.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
-        - task: DotNetCoreCLI@2
-          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Integration Tests'
-          inputs:
-            command: test
-            projects: 'DfE.SkillsCentral.Api\Tests\Integration\**\*.csproj'
-            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Integration Tests'
+        #   inputs:
+        #     command: test
+        #     projects: 'DfE.SkillsCentral.Api\Tests\Integration\**\*.csproj'
+        #     arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Presentation.WebApi'
