@@ -86,17 +86,26 @@ stages:
             filePath: '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
 
         - task: UseDotNet@2
-          displayName: 'Use .NET Core sdk 6.x}'
+          displayName: 'Use .NET Core sdk 6.x'
           inputs:
             version: 6.x
             installationPath: $(Agent.TempDirectory)/dotnet
 
-        - task: UseGitVersion@5
-          displayName: GitVersion
+        - task: NuGetToolInstaller@1
+          displayName: 'Install NuGet'
+          inputs:
+            versionSpec: ${{ parameters.NuGetVersion }}
+
+        - task: gitversion/setup@0
+          displayName: Install GitVersion
+          inputs:
+            versionSpec:  5.11.x
+
+        - task: gitversion/execute@0
+          displayName: Run GitVersion
           inputs:
             useConfigFile: true
-            configFilePath: Resources/AzureDevOps/GitVersion.yml
-            versionSpec: '5.3.x'
+            configFilePath: Resources/AzureDevops/GitVersion.yml
 
         - task: SonarCloudPrepare@1
           displayName: 'Prepare analysis on SonarCloud'
@@ -161,13 +170,6 @@ stages:
             command: test
             projects: 'DfE.SkillsCentral.Api\Tests\Unit\**\*.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
-
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Integration Tests'
-        #   inputs:
-        #     command: test
-        #     projects: 'DfE.SkillsCentral.Api\Tests\Integration\**\*.csproj'
-        #     arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Presentation.WebApi'
