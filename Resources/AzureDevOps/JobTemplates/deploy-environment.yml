@@ -73,6 +73,8 @@ jobs:
                 SqlUsername: '$(sharedSqlServerUsername)'
                 SqlPassword: '$(sharedSqlServerPassword)'
                 DacpacFile: ${{ parameters.DatabasePackageFile }}
+                # This option needs to be uncommented when dropping tables/columns containing data:
+                # AdditionalArguments: /p:BlockOnPossibleDataLoss=false
 
             - template: ../StepTemplates/deploy-azure-app-service-with-apim.yml
               parameters:
