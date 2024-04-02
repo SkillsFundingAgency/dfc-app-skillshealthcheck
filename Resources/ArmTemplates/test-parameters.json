@@ -83,6 +83,9 @@
     "ApiName": {
       "value": "skillshealthcheck"
     },
+        "ApiUrl": {
+            "value": "https://localhost"
+        },
     "ExceptionCountThreshold": {
       "value": "0"
     },

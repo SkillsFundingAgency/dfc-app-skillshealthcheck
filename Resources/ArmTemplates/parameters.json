@@ -111,6 +111,9 @@
     "ApiName": {
       "value": "__ApiName__"
     },
+        "ApiUrl": {
+            "value": "__apiUrl__"
+        },
     "ExceptionCountThreshold": {
       "value": "__ExceptionCountThreshold__"
     },
