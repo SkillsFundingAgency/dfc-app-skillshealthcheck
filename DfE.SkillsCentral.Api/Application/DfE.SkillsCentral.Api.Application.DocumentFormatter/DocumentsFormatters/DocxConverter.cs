@@ -3,7 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using Aspose.Words;
-using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
