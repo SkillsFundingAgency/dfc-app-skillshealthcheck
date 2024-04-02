@@ -29,6 +29,8 @@ variables:
     value: composite-ui-skillshealthcheck
   - name: applicationUrl
     value: https://$(AppServiceName).$(appServiceDomain)
+  - name: apiUrl
+    value: https://$(ApiAppServiceName).$(appServiceDomain)
   - name: WebAppPrefix
     value: dfc-prd-app-skillshealthcheck
   - name: ApiAppPrefix

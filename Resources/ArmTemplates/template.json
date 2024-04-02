@@ -91,6 +91,9 @@
         "ApiName": {
             "type": "string"
         },
+        "ApiUrl": {
+            "type": "string"
+        },
         "ExceptionCountThreshold": {
             "type": "string"
         },
@@ -395,6 +398,10 @@
                             {
                                 "name": "SkillsServiceOptions__ImageUrl",
                                 "value": "[parameters('SkillsServiceOptionsImageUrl')]"
+                            },
+                            {
+                                "name": "SkillsCentralSettings__SkillsCentralApiUrl",
+                                "value": "[concat(parameters('ApiUrl'), '/api')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
