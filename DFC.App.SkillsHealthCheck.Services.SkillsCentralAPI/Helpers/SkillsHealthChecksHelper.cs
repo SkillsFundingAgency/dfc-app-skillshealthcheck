@@ -159,7 +159,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
 
                         var suppliedAnswerCount = answerList.Count(x => !x.Equals("-1"));
                         // Only add to list if are not yet maximum answer list
-                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber && actualQuestionNumberAnswered == expectedQnumber)
+                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber)
                         {
                             string currentAnswersList;
 
@@ -369,7 +369,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                 var lastQuestion = answers.Count / 3;
                 var answerIndex = (lastQuestion - 1) * 3;
                 var currentAnswers = answers.GetRange(answerIndex, 3);
-                return currentAnswers.Exists(x => x.Equals("-1")) ? lastQuestion : lastQuestion + 1;
+                return currentAnswers.Exists(x => x.Equals("-1")) ? answerIndex : answerIndex + 1;
             }
         }
 
@@ -437,7 +437,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="currentQuestion">The current question.</param>
         /// <returns></returns>
         public static int GetAlreadySelectedAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
-            int currentQuestion)
+            int currentQuestion, int questionNumber)
         {
             var selectedAnswer = -1;
 
@@ -449,7 +449,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     {
                         var answers = dataValue.Value.Split(',').ToList();
                         var answerIndex = (currentQuestion - 1) * 3;
-                        if (answers.Count - 1 > answerIndex)
+                        var numberOfAnswers = answers.Count;
+                        if (numberOfAnswers> answerIndex && (questionNumber/2)==currentQuestion)
                         {
                             var currentAnswers = answers.GetRange(answerIndex, 3);
 
@@ -485,7 +486,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
                         var answers = dataValue.Value.Split(',').ToList();
-                        var answerIndex = (currentQuestion - 1) * 3;
+                        
+                        var answerIndex = currentQuestion%2==0 ?(currentQuestion - 2) * 3 : (currentQuestion - 1) * 3;
                         if (answers.Count - 1 > answerIndex)
                         {
                             var currentAnswers = answers.GetRange(answerIndex, 3);
@@ -500,7 +502,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     break;
                 }
             }
-            return selectedAnswer == -1 ? currentQuestion * 2 - 1 : currentQuestion * 2;
+            return selectedAnswer == -1 ? (currentQuestion) * 2 - 1 : currentQuestion;
         }
 
         /// <summary>

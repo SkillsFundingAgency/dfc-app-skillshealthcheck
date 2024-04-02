@@ -27,11 +27,13 @@ namespace DFC.App.SkillsHealthCheck.Services
             return await _skillsHealthCheckService.GetSkillsDocument(documentId);
         }
 
-        public async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
+        public async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview, int questionNumber)
         {
             var feedbackQuestionNext = false;
-
-            var questionNumber = GetQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
+            if (questionNumber == 0)
+            {
+                questionNumber = GetNextQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
+            }
 
             if (feedbackQuestionNext)
             {
@@ -49,7 +51,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <param name="currentSkillsDocument">The current skills document.</param>
         /// <param name="feedbackQuestionNext">if set to <c>true</c> [feedback question next].</param>
         /// <returns></returns>
-        private static int GetQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
+        private static int GetNextQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
         {
             int questionNumber = 1;
             switch (assessmentType)
@@ -90,6 +92,54 @@ namespace DFC.App.SkillsHealthCheck.Services
                 default:
                     questionNumber = currentSkillsDocument
                         .GetAssessmentNextEliminationQuestionNumber(
+                            assessmentType);
+                    break;
+            }
+
+            return questionNumber;
+        }
+
+        private static int GetPreviousQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
+        {
+            int questionNumber = 1;
+            switch (assessmentType)
+            {
+                case AssessmentType.Abstract:
+                case AssessmentType.Mechanical:
+                case AssessmentType.Numerical:
+                case AssessmentType.Spatial:
+                case AssessmentType.Verbal:
+                    questionNumber =
+                        currentSkillsDocument.GetAssessmentPreviousQuestionNumber(assessmentType);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                case AssessmentType.Motivation:
+                case AssessmentType.Interests:
+                case AssessmentType.Personal:
+
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousMultipleQuestionNumber(
+                            assessmentType, assessmentQuestionOverview);
+                    break;
+
+                case AssessmentType.Checking:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousMultipleQuestionNumber(
+                            assessmentType, assessmentQuestionOverview);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                case AssessmentType.SkillAreas:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousEliminationQuestionNumber(
+                            assessmentType);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                default:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousEliminationQuestionNumber(
                             assessmentType);
                     break;
             }
@@ -212,8 +262,8 @@ namespace DFC.App.SkillsHealthCheck.Services
         private async Task<AssessmentQuestionViewModel> GetDetailedAssessmentQuestionViewModel(AssessmentType assessmentType, int questionNumber, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var viewModel = new AssessmentQuestionViewModel();
-
-            var apiResponse = await _skillsHealthCheckService.GetSingleQuestion(questionNumber, assessmentType.ToString());
+            var currentQuestion = assessmentType == AssessmentType.SkillAreas ? questionNumber % 2 == 0 ? questionNumber / 2 : (questionNumber / 2) + 1 : questionNumber;
+            var apiResponse = await _skillsHealthCheckService.GetSingleQuestion(currentQuestion, assessmentType.ToString());
             if (apiResponse != null)
             {
                 switch (assessmentType)
@@ -248,7 +298,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                                     assessmentQuestionOverview),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             AssessmentType = assessmentType,
-                            QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            QuestionNumber = apiResponse.Question.Number,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
                         };
@@ -263,7 +313,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             CurrentQuestion =
                                skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
-                            QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            QuestionNumber = apiResponse.Question.Number,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             AssessmentType = assessmentType,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
@@ -277,12 +327,12 @@ namespace DFC.App.SkillsHealthCheck.Services
                             QuestionAnswers = apiResponse,
                             AlreadySelected =
                                 skillsDocument.GetAlreadySelectedAnswer(
-                                    assessmentType, apiResponse.Question.Number),
+                                    assessmentType, currentQuestion, questionNumber),
                             ActualTotalQuestions =
                                 (assessmentQuestionOverview.TotalQuestionsNumber * 2) +
                                 (assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback -
                                  assessmentQuestionOverview.TotalQuestionsNumber),
-                            QuestionNumber = skillsDocument.GetCurrentNumberEliminationQuestions(assessmentType, apiResponse.Question.Number),
+                            QuestionNumber = questionNumber,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             AssessmentType = assessmentType,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
@@ -387,16 +437,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                 var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
                 model.QuestionAnswer = subQuestionAnswer;
                 getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
-
-                //getDocumentResponse = getDocumentResponse.UpdateMultipleAnswerDataValues(
-                //    subQuestionAnswer,
-                //    tabularAnswerQuestionViewModel.QuestionNumber == tabularAnswerQuestionViewModel.ActualTotalQuestions,
-                //    (AssessmentType)model.AssessmentType,
-                //    tabularAnswerQuestionViewModel.QuestionAnswers.Question.Number,
-                //    tabularAnswerQuestionViewModel.CurrentQuestion - 1,
-                //    tabularAnswerQuestionViewModel.SubQuestions,
-                //    assessmentQuestionOverview,
-                //    tabularAnswerQuestionViewModel.QuestionNumber);
             }
             else
             {
@@ -445,15 +485,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                         assessmentQuestionOverview.TotalQuestionsNumber,
                         assessmentQuestionOverview.ActualQuestionsNumber,
                         viewModel.QuestionNumber),
-                //MultipleAnswerQuestionViewModel questionViewModel => getDocumentResponse.UpdateMultipleAnswerDataValues(
-                //        questionViewModel.QuestionAnswer,
-                //        questionViewModel.QuestionNumber == questionViewModel.ActualTotalQuestions,
-                //        assessmentQuestionOverview.AssessmentType,
-                //        questionViewModel.QuestionAnswers.Question.Number,
-                //        questionViewModel.CurrentQuestion - 1,
-                //        questionViewModel.SubQuestions,
-                //        assessmentQuestionOverview,
-                //        questionViewModel.QuestionNumber),
                 _ => getDocumentResponse.UpdateDataValues(
                     model.QuestionAnswer,
                     isComplete,
