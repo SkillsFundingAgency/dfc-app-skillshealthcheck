@@ -396,6 +396,10 @@
                                 "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
+                                "name": "SkillsCentralSettings__SkillsCentralApiUrl",
+                                "value": "[concat(parameters('ApiUrl'), '/api/')]"
+                            },
+                            {
                                 "name": "Configuration__ApplicationName",
                                 "value": "[parameters('ApplicationName')]"
                             },
