@@ -56,6 +56,6 @@ variables:
   - name: LoggingLogLevelDefault
     value: Warning
   - name: SessionStateOptionsTtl
-    value: 1800
+    value: 7200
   - name: ContentMode
     value: PUBLISHED

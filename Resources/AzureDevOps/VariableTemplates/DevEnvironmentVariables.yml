@@ -56,6 +56,6 @@ variables:
   - name: LoggingLogLevelDefault
     value: Trace
   - name: SessionStateOptionsTtl
-    value: 1800
   - name: ContentMode
     value: PUBLISHED
+    value: 7200
