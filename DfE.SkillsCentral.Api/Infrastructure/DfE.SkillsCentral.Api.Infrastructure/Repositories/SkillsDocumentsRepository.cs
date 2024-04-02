@@ -23,7 +23,7 @@ namespace DFC.SkillsCentral.Api.Infrastructure.Repositories
             //var dataValuesJsonString = JsonConvert.SerializeObject(skillsDocument.DataValueKeys);
             using (var connection = dbContext.CreateConnection())
             {
-                DateTime createdAt = DateTime.UtcNow;
+                DateTime createdAt = DateTime.Now;
                 string createdBy = skillsDocument.CreatedBy != null ? skillsDocument.CreatedBy : "Anonymous";
 
                 connection.Open();
