@@ -401,7 +401,7 @@
                             },
                             {
                                 "name": "SkillsCentralSettings__SkillsCentralApiUrl",
-                                "value": "[concat(parameters('ApiUrl'), '/api')]"
+                                "value": "[concat(parameters('ApiUrl'), '/api/')]"
                             },
                             {
                                 "name": "Configuration__ApplicationName",
