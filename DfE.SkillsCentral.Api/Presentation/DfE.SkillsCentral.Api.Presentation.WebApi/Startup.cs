@@ -14,6 +14,7 @@ namespace DfE.SkillsCentral.Api.Presentation.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
             services.AddControllers();
             services.AddInfrastructureServices();
             services.AddApplicationServices();
