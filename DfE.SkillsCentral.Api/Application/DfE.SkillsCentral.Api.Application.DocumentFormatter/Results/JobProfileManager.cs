@@ -14,7 +14,6 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
     using System.Xml.Linq;
     using DfE.SkillsCentral.Api.Domain.Models;
     using DocumentFormat.OpenXml.Office.CustomUI;
-    using Microsoft.WindowsAzure.ServiceRuntime;
     /// <summary>
     /// JobProfileManager - This class is used to retrieve job family suggestions from sharepoint based on
     /// skills and or interest 
