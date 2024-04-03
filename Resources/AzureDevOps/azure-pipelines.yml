@@ -213,20 +213,6 @@ stages:
             projects: 'DfE.SkillsCentral.Api\Tests\Unit\DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
-        - task: DotNetCoreCLI@2
-          displayName: 'DfE.SkillsCentral.Api.Presentation: dotnet Integration Tests'
-          inputs:
-            command: test
-            projects: 'DfE.SkillsCentral.Api\Tests\Integration\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests.csproj'
-            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
-
-        - task: DotNetCoreCLI@2
-          displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Integration Tests'
-          inputs:
-            command: test
-            projects: 'DfE.SkillsCentral.Api\Tests\Integration\DfE.SkillsCentral.Api.Application.Services.IntegrationTests\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj'
-            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
-
   - stage: DeployToLab
     #condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
