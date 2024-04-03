@@ -12,7 +12,7 @@
 <form method="post" id="skillsCheckingForm" class="form"  action="/skills-health-check/question/answer-checking-question">
 
     <div class="form-group govuk-!-margin-bottom-5">
-        <h3>Mark the box where you think there are mistakes in the record sheet in row @Model.CurrentQuestion.</h3>
+        <h3>Mark the box where you think there are mistakes in the record sheet in row @Model.CurrentRow.</h3>
         <p>You can choose more than one answer.</p>
         <div class="form-group @errorClass">
 
@@ -22,7 +22,7 @@
                     <legend class="govuk-visually-hidden">
                         Mark the box where
                         you think there are mistakes in the record sheet in
-                        row @Model.CurrentQuestion.
+                        row @Model.CurrentRow.
                     </legend> <label class="block-label govuk-label" for="column-a-row-1">
                         <input id="column-a-row-1" name="AnswerSelection" type="checkbox" value="A"> Error
                         in column A

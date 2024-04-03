@@ -260,8 +260,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                             QuestionAnswers = apiResponse,
                             QuestionAnswer = "checking",
                             SubQuestions = 10,
-                            CurrentQuestion =
-                               skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            CurrentQuestion = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            CurrentRow = skillsDocument.GetCheckingRowNumber(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
