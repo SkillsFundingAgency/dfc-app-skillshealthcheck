@@ -5,13 +5,13 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages
 {
     public class FeedbackQuestion
     {
-        public string Question { get; set; }
+        public string? Question { get; set; }
 
         public string DocValueTitle { get; set; }
 
-        public List<FeedbackAnswer> FeedbackAnswers { get; set; }
+        public List<FeedbackAnswer>? FeedbackAnswers { get; set; }
 
-        public string Answer { get; set; }
+        public string? Answer { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the assessment.
