@@ -57,12 +57,18 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     }
                     else
                     {
-                        var answeredQuestionsTotal = dataValue.Value.Split(',').Length;
+                        var answeredQuestions = dataValue.Value.Split(',').ToList();
                         // Safe guard having too many answers supplied
-                        if (answeredQuestionsTotal < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestionsTotal == 1)
+                        if (answeredQuestions.Count < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count == 1)
                         {
                             skillsDocument.DataValueKeys[dataValue.Key] = $"{dataValue.Value},{answers}";
                         }
+                        else if(answeredQuestions.Count < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count <= 0)
+                        {
+                            answeredQuestions[currentAnsweredQuestionNumber-1] = answers;
+                            skillsDocument.DataValueKeys[dataValue.Key] = $"{string.Join(",",answeredQuestions)}";
+                        }
+
                     }
                 }
                 else if (dataValue.Key.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
