@@ -167,10 +167,45 @@ stages:
             publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
 
         - task: DotNetCoreCLI@2
-          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet Unit Tests'
+          displayName: 'DfE.SkillsCentral.Api.Presentatation: dotnet Unit Tests'
           inputs:
             command: test
-            projects: 'DfE.SkillsCentral.Api\Tests\Unit\**\*.csproj'
+            projects: 'DfE.SkillsCentral.Api.Presentation.UnitTests\DfE.SkillsCentral.Api.Presentation.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Application.Services.UnitTests\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Infrastructure: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Infrastructure.UnitTests\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Domain: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentation: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Presentation.IntegrationTests\DfE.SkillsCentral.Api.Presentation.IntegrationTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Application.Services.IntegrationTests\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: PublishPipelineArtifact@1
