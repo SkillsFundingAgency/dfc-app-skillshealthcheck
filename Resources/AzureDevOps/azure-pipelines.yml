@@ -196,35 +196,35 @@ stages:
           displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Unit Tests'
           inputs:
             command: test
-            projects: '\**\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj'
+            projects: '*\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: DotNetCoreCLI@2
           displayName: 'DfE.SkillsCentral.Api.Infrastructure: dotnet Unit Tests'
           inputs:
             command: test
-            projects: '\**\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj'
+            projects: '*\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: DotNetCoreCLI@2
           displayName: 'DfE.SkillsCentral.Api.Domain: dotnet Unit Tests'
           inputs:
             command: test
-            projects: '\**\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
+            projects: '*\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: DotNetCoreCLI@2
           displayName: 'DfE.SkillsCentral.Api.Presentation: dotnet Integration Tests'
           inputs:
             command: test
-            projects: '\**\DfE.SkillsCentral.Api.Presentation.IntegrationTests.csproj'
+            projects: '*\DfE.SkillsCentral.Api.Presentation.IntegrationTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
         - task: DotNetCoreCLI@2
           displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Integration Tests'
           inputs:
             command: test
-            projects: '\**\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj'
+            projects: '*\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
   - stage: DeployToLab
