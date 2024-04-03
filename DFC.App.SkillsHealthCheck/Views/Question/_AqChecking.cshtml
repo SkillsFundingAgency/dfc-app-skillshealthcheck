@@ -24,21 +24,21 @@
                         you think there are mistakes in the record sheet in
                         row @Model.CurrentQuestion.
                     </legend> <label class="block-label govuk-label" for="column-a-row-1">
-                        <input id="column-a-row-1" name="AnswerSelection" type="checkbox" value="A"> Error
+                        <input id="column-a-row-1" name="AnswerSelection" type="checkbox" value="A" @(Model.AnswerSelection.Contains("A") ? "checked" : "")> Error
                         in column A
                     </label> <label class="block-label govuk-label" for="column-b-row-1">
-                        <input id="column-b-row-1" name="AnswerSelection" type="checkbox" value="B"> Error
+                        <input id="column-b-row-1" name="AnswerSelection" type="checkbox" value="B" @(Model.AnswerSelection.Contains("B") ? "checked" : "")> Error
                         in column B
                     </label> <label class="block-label govuk-label" for="column-c-row-1">
-                        <input id="column-c-row-1" name="AnswerSelection" type="checkbox" value="C"> Error
+                        <input id="column-c-row-1" name="AnswerSelection" type="checkbox" value="C" @(Model.AnswerSelection.Contains("C") ? "checked" : "")> Error
                         in column C
                     </label> <label class="block-label govuk-label" for="column-d-row-1">
-                        <input id="column-d-row-1" name="AnswerSelection" type="checkbox" value="D"> Error
+                        <input id="column-d-row-1" name="AnswerSelection" type="checkbox" value="D" @(Model.AnswerSelection.Contains("D") ? "checked" : "")> Error
                         in column D
                     </label>
                     <p class="form-block">or</p><label class="block-label govuk-label" for="column-e-row-1">
                         <input id="column-e-row-1" name="AnswerSelection" type="checkbox"
-                               value="E"> No error
+                               value="E" @(Model.AnswerSelection.Contains("E") ? "checked" : "")> No error
                     </label>
                 </div>
             </fieldset>

@@ -35,6 +35,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                 questionNumber = GetNextQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
             }
 
+            feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber && questionNumber <= assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback;
+
             if (feedbackQuestionNext)
             {
                 return GetAssessmentFeedBackQuestionViewModel(assessmentType, questionNumber, skillsDocument, assessmentQuestionOverview);
@@ -223,7 +225,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 2);
-                    viewModel.QuestionNumber = questionNumber + 1;
+                    viewModel.QuestionNumber = questionNumber;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Ease";
                     return viewModel;
                 }
@@ -240,7 +242,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 3);
-                    viewModel.QuestionNumber = questionNumber + 2;
+                    viewModel.QuestionNumber = questionNumber;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Enjoyment";
                     return viewModel;
                 }
@@ -275,6 +277,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.Verbal:
                         var model = new AssessmentQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             QuestionImages = apiResponse.Question.DataHTML.GetDataImages(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
@@ -291,11 +294,9 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.Personal:
                         var multipleAnswerModel = new MultipleAnswerQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             SubQuestions = apiResponse.Answers.Count,
-                            CurrentQuestion =
-                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
-                                    assessmentQuestionOverview),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             AssessmentType = assessmentType,
                             QuestionNumber = apiResponse.Question.Number,
@@ -305,10 +306,11 @@ namespace DFC.App.SkillsHealthCheck.Services
                         return multipleAnswerModel;
 
                     case AssessmentType.Checking:
+                        var couldParse = int.TryParse(skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber), out var previousAnswer);
                         var tabularViewModel = new TabularAnswerQuestionViewModel
                         {
+                            AnswerSelection = skillsDocument.GetPreviousAnswerSelections(couldParse ? previousAnswer : 0),
                             QuestionAnswers = apiResponse,
-                            QuestionAnswer = "checking",
                             SubQuestions = 10,
                             CurrentQuestion =
                                skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
@@ -324,6 +326,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.SkillAreas:
                         var eliminationModel = new EliminationAnswerQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             AlreadySelected =
                                 skillsDocument.GetAlreadySelectedAnswer(
