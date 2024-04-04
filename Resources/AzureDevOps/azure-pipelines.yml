@@ -183,12 +183,16 @@ stages:
           inputs:
             targetType: 'inline'
             script: 'sqllocaldb start mssqllocaldb'
-            
-        - task: PowerShell@2
-          displayName: 'Info mslocaldb'
+
+        - task: SqlAzureDacpacDeployment@1
+          displayName: 'Deploy DACPAC to SQL LocalDB'
           inputs:
-            targetType: 'inline'
-            script: 'sqllocaldb info'
+            authenticationType: 'Server'
+            serverName: '(localdb)\\MSSQLLocalDB'
+            databaseName: 'SHC'
+            deployType: 'DacpacTask'
+            dacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
+            deployTimeout: '00:10:00'
 
         - task: DotNetCoreCLI@2
           displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
