@@ -205,12 +205,14 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (howLongDocValue.Value != null)
             {
-                if (string.IsNullOrWhiteSpace(howLongDocValue.Value))
+                if (string.IsNullOrWhiteSpace(howLongDocValue.Value) || assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 2 ||
+                    (assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 1 && (assessmentType is AssessmentType.Numerical or AssessmentType.Verbal)))
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 1);
                     viewModel.QuestionNumber = questionNumber;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Timing";
+                    viewModel.QuestionAnswer = howLongDocValue.Value;
                     return viewModel;
                 }
             }
@@ -221,11 +223,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (howEasyDocValue.Value != null)
             {
-                if (string.IsNullOrWhiteSpace(howEasyDocValue.Value))
+                if (string.IsNullOrWhiteSpace(howEasyDocValue.Value) || assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 1)
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 2);
                     viewModel.QuestionNumber = questionNumber;
+                    viewModel.QuestionAnswer = howEasyDocValue.Value;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Ease";
                     return viewModel;
                 }

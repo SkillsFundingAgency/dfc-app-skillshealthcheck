@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Xml;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
@@ -63,7 +64,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                         {
                             skillsDocument.DataValueKeys[dataValue.Key] = $"{dataValue.Value},{answers}";
                         }
-                        else if(answeredQuestions.Count < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count <= 0)
+                        else if(answeredQuestions.Count <= asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count <= 0)
                         {
                             answeredQuestions[currentAnsweredQuestionNumber-1] = answers;
                             skillsDocument.DataValueKeys[dataValue.Key] = $"{string.Join(",",answeredQuestions)}";
@@ -157,50 +158,46 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     else
                     {
                         var answerList = dataValue.Value.Split(',').ToList();
-                        var expectedQnumber = skillsDocument.GetCurrentNumberEliminationQuestions(asessmentType,
-                            questionNumber);
+
+                        var isEven = actualQuestionNumberAnswered % 2 == 0;
+                        var value = isEven ? actualQuestionNumberAnswered - 1 : actualQuestionNumberAnswered;
+                        var index = (value / 2) * 3 + (isEven ? 1 : 0);
+
 
                         var suppliedAnswerCount = answerList.Count(x => !x.Equals("-1"));
                         // Only add to list if are not yet maximum answer list
-                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber && (questionNumber *3) != suppliedAnswerCount)
+                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber)
                         {
-                            string currentAnswersList;
 
-                            var answerIndex = (questionNumber - 1) * 3;
-
-                            var listWithoutCurrentQuestion = new List<string>();
-
-                            int currentIndex = 0;
-                            foreach (var answer in answerList)
+                            if (suppliedAnswerCount > index)
                             {
-                                if (currentIndex == answerIndex)
+                                if (isEven)
                                 {
-                                    break;
+                                    answerList[index] =answers;
+                                    answerList[index +1] = GetMissingValue(new List<string> { answerList[index-1], answerList[index] });
                                 }
-
-                                listWithoutCurrentQuestion.Add(answer);
-                                currentIndex++;
+                                else if (answerList[index] != answers)
+                                {
+                                    answerList[index] = answers;
+                                    answerList[index +1] = "-1";
+                                    answerList[index+2] = "-1";
+                                }
+                                
                             }
-                            var existingAnswers = string.Join(",", listWithoutCurrentQuestion);
 
-                            if (answerList.Count - 1 > answerIndex)
+                            else if (answerList.Count - 1 > index)
                             {
-                                var currentAnswers = answerList.GetRange(answerIndex, 3);
-
-                                currentAnswers[1] = answers;
-                                currentAnswers[2] =
-                                    GetMissingValue(new List<string> { currentAnswers[0], currentAnswers[1] });
-
-                                currentAnswersList = string.Join(",", currentAnswers);
+                                answerList[index] =answers;
+                                answerList[index +1] = GetMissingValue(new List<string> { answerList[index-1], answerList[index] });
                             }
                             else
                             {
-                                currentAnswersList = $"{answers},-1,-1";
+                                answerList.AddRange(new List<string> { answers, "-1", "-1" });
                             }
 
-                            skillsDocument.DataValueKeys[dataValue.Key] = !string.IsNullOrWhiteSpace(existingAnswers)
-                                ? $"{existingAnswers},{currentAnswersList}"
-                                : currentAnswersList;
+                            skillsDocument.DataValueKeys[dataValue.Key] = string.Join(",", answerList);
+
+
                         }
                     }
                 }
@@ -371,8 +368,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                 var answers = a.Split(',').ToList();
                 var lastQuestion = answers.Count / 3;
                 var answerIndex = (lastQuestion - 1) * 3;
-                var currentAnswers = answers.GetRange(answerIndex, 3);
-                return currentAnswers.Exists(x => x.Equals("-1")) ? answerIndex : answerIndex + 1;
+                return answers.Exists(x => x.Equals("-1")) ? answers.IndexOf("-1") : answerIndex + 1;
             }
         }
 
