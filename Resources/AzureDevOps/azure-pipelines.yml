@@ -193,6 +193,7 @@ stages:
             deployType: 'DacpacTask'
             dacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
             deployTimeout: '00:10:00'
+            ipDetectionMethod: 'AutoDetect'
 
         - task: DotNetCoreCLI@2
           displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
