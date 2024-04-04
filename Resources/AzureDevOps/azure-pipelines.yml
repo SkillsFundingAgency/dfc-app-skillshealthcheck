@@ -187,13 +187,12 @@ stages:
         - task: SqlAzureDacpacDeployment@1
           displayName: 'Deploy DACPAC to SQL LocalDB'
           inputs:
-            AuthenticationType: 'Server'
-            ServerName: '(localdb)\MSSQLLocalDB'
-            DatabaseName: 'SHC'
+            AuthenticationType: 'connectionString'
+            ConnectionString: 'Server=(localdb)\\MSSQLLocalDB;Database=SHC;Trusted_Connection=True;TrustServerCertificate=True;'
             deployType: 'DacpacTask'
             DacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
             deployTimeout: '00:10:00'
-            ipDetectionMethod: 'AutoDetect'
+            AdditionalArguments: /p:BlockOnPossibleDataLoss=false
 
         - task: DotNetCoreCLI@2
           displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
