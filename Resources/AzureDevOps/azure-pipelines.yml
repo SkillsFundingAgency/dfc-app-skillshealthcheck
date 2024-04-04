@@ -188,7 +188,7 @@ stages:
           displayName: 'Deploy DACPAC to SQL LocalDB'
           inputs:
             authenticationType: 'Server'
-            serverName: '(localdb)\\MSSQLLocalDB'
+            serverName: '(localdb)\MSSQLLocalDB'
             databaseName: 'SHC'
             deployType: 'DacpacTask'
             dacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
