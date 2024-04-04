@@ -116,11 +116,13 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             switch (assessmentType)
             {
-                case AssessmentType.Abstract:
-                case AssessmentType.Mechanical:
+
                 case AssessmentType.Numerical:
-                case AssessmentType.Spatial:
                 case AssessmentType.Verbal:
+                case AssessmentType.Checking:
+                case AssessmentType.Mechanical:
+                case AssessmentType.Spatial:
+                case AssessmentType.Abstract:
                     viewModel.ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback;
                     break;
 
@@ -128,11 +130,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                 case AssessmentType.Interests:
                 case AssessmentType.Personal:
                     viewModel.ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback;
-                    break;
-
-                case AssessmentType.Checking:
-                    viewModel.ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback;
-                    questionNumber = assessmentQuestionOverview.ActualQuestionsNumber + 1;
                     break;
 
                 case AssessmentType.SkillAreas:
