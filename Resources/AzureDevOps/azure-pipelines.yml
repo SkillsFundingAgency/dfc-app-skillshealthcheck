@@ -187,11 +187,11 @@ stages:
         - task: SqlAzureDacpacDeployment@1
           displayName: 'Deploy DACPAC to SQL LocalDB'
           inputs:
-            authenticationType: 'Server'
-            serverName: '(localdb)\MSSQLLocalDB'
-            databaseName: 'SHC'
+            AuthenticationType: 'Server'
+            ServerName: '(localdb)\MSSQLLocalDB'
+            DatabaseName: 'SHC'
             deployType: 'DacpacTask'
-            dacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
+            DacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
             deployTimeout: '00:10:00'
             ipDetectionMethod: 'AutoDetect'
 
