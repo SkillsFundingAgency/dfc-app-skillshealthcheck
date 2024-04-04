@@ -189,7 +189,6 @@ stages:
           inputs:
             AuthenticationType: 'connectionString'
             ConnectionString: 'Server=(localdb)\\MSSQLLocalDB;Database=SHC;Trusted_Connection=True;TrustServerCertificate=True;'
-            deployType: 'DacpacTask'
             DacpacFile: '$(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.dacpac'
             deployTimeout: '00:10:00'
             AdditionalArguments: /p:BlockOnPossibleDataLoss=false
