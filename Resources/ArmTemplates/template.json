@@ -91,6 +91,9 @@
         "ApiName": {
             "type": "string"
         },
+        "ApiUrl": {
+            "type": "string"
+        },
         "ExceptionCountThreshold": {
             "type": "string"
         },
@@ -397,6 +400,10 @@
                                 "value": "[parameters('SkillsServiceOptionsImageUrl')]"
                             },
                             {
+                                "name": "SkillsCentralSettings__SkillsCentralApiUrl",
+                                "value": "[concat(parameters('ApiUrl'), '/api/')]"
+                            },
+                            {
                                 "name": "Configuration__ApplicationName",
                                 "value": "[parameters('ApplicationName')]"
                             },
@@ -499,6 +506,7 @@
                     "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service.json')]",
                     "contentVersion": "1.0.0.0"
                 },
+
                 "parameters": {
                     "appServiceName": {
                         "value": "[variables('apiAppName')]"
@@ -517,6 +525,15 @@
                     },
                     "clientAffinity": {
                         "value": "[parameters('clientAffinity')]"
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "DefaultConnection",
+                                "connectionString": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]",
+                                "type": "SQLServer"
+                            }
+                        ]
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -611,12 +628,7 @@
                             {
                                 "name": "SessionStateOptions__Ttl",
                                 "value": "[parameters('SessionStateOptionsTtl')]"
-                            },
-                            {
-                                "name": "SqlConnectionString",
-                                "value": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]"
                             }
-
                         ]
                     }
                 }

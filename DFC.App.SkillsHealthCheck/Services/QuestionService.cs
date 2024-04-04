@@ -168,11 +168,13 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             switch (assessmentType)
             {
-                case AssessmentType.Abstract:
-                case AssessmentType.Mechanical:
+
                 case AssessmentType.Numerical:
-                case AssessmentType.Spatial:
                 case AssessmentType.Verbal:
+                case AssessmentType.Checking:
+                case AssessmentType.Mechanical:
+                case AssessmentType.Spatial:
+                case AssessmentType.Abstract:
                     viewModel.ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback;
                     break;
 
@@ -180,11 +182,6 @@ namespace DFC.App.SkillsHealthCheck.Services
                 case AssessmentType.Interests:
                 case AssessmentType.Personal:
                     viewModel.ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback;
-                    break;
-
-                case AssessmentType.Checking:
-                    viewModel.ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback;
-                    questionNumber = assessmentQuestionOverview.ActualQuestionsNumber + 1;
                     break;
 
                 case AssessmentType.SkillAreas:
@@ -315,8 +312,8 @@ namespace DFC.App.SkillsHealthCheck.Services
                             AnswerSelection = skillsDocument.GetPreviousAnswerSelections(couldParse ? previousAnswer : 0),
                             QuestionAnswers = apiResponse,
                             SubQuestions = 10,
-                            CurrentQuestion =
-                               skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            CurrentQuestion = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            CurrentRow = skillsDocument.GetCheckingRowNumber(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             QuestionNumber = apiResponse.Question.Number,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,

@@ -9,10 +9,15 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         public TabularAnswerQuestionViewModel()
         {
             CurrentQuestion = 1;
+            CurrentRow = 1;
         }
+
         public string? QuestionAnswer { get; set; }
 
+
         public int CurrentQuestion { get; set; }
+
+        public int CurrentRow { get; set; }
 
         public int SubQuestions { get; set; }
 
