@@ -113,7 +113,8 @@ else
                 }
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
-            @{ foreach (var posibleResponse in Model.QuestionAnswers.Answers)
+            @{ 
+                foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
                     id = string.Format("radio-{0}", posibleResponse.Value);
 
@@ -121,7 +122,7 @@ else
                         @Html.RadioButtonFor(model => model.QuestionAnswer, posibleResponse.Value, new { id })
                         @if (Model.AssessmentType != AssessmentType.Abstract)
                         {
-                            @posibleResponse.Text}
+                            @posibleResponse.Text?.Replace("&pound;", "£")}
                         @if (!string.IsNullOrEmpty(posibleResponse.ImageURL))
                         {
                             <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{posibleResponse.ImageURL.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />
