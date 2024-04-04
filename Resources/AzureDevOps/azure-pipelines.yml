@@ -178,6 +178,18 @@ stages:
             projects: '$(SolutionBaseName)*UnitTests\$(SolutionBaseName)*UnitTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
+        - task: PowerShell@2
+          displayName: 'Start mslocaldb'
+          inputs:
+            targetType: 'inline'
+            script: 'sqllocaldb start mssqllocaldb'
+            
+        - task: PowerShell@2
+          displayName: 'Info mslocaldb'
+          inputs:
+            targetType: 'inline'
+            script: 'sqllocaldb info'
+
         - task: DotNetCoreCLI@2
           displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
           inputs:
@@ -211,6 +223,20 @@ stages:
           inputs:
             command: test
             projects: 'DfE.SkillsCentral.Api\Tests\Unit\DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentation: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Integration\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests\DfE.SkillsCentral.Api.Presentation.WebApi.IntegrationTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Integration\DfE.SkillsCentral.Api.Application.Services.IntegrationTests\DfE.SkillsCentral.Api.Application.Services.IntegrationTests.csproj'
             arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
   - stage: DeployToLab
