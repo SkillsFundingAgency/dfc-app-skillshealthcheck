@@ -1,94 +1,56 @@
-﻿using System;
-using System.Configuration;
-using System.IO;
-using System.Reflection;
+﻿using System.Text;
 using Aspose.Words;
+using DfE.NCS.Framework.ResourceManager;
 
-namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
+namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters;
+
+public static class DocxConverter
 {
-    public class DocxConverter
+    static DocxConverter()
     {
-        private const string ApsoseLicenseFilePathkey = "AsposeLicenseFilePath";
+        var licenseKey = ResourceManager.GetResource(ResourceEnum.AsposeWordLicense);
+        var license = new License();
+        license.SetLicense(new MemoryStream(Encoding.UTF8.GetBytes(licenseKey)));
+    }
 
-        #region | Public Methods |
-        /// <summary>
-        /// Converts docx document to specified file format
-        /// </summary>
-        /// <param name="docxContent">byte array of docx document content</param>
-        /// <returns>byte array of converted target type document content</returns>
-        public static byte[] ConvertDocx(byte[] docxContent, DocxTargetFormat format)
+    public static byte[] ConvertDocx(byte[] docxContent, DocxTargetFormat format)
+    {
+        var targetFormat = GetTargetFormat(format);
+
+
+        try
         {
-            SaveFormat targetFormat = GetTargetFormat(format);
+            using var docxStream = new MemoryStream();
+            docxStream.Write(docxContent, 0, docxContent.Length);
+            var converter = new Document(docxStream);
+            using var pdfStream = new MemoryStream();
+            converter.Save(pdfStream, targetFormat);
+            var pdfContent = pdfStream.ToArray();
 
-            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string asposeLicKeyFilePath = $"{currentPath}/DocumentsFormatters/Aspose.Words.lic";
-
-            byte[] pdfContent = null;
-            try
-            {
-                using (MemoryStream docxStream = new MemoryStream())
-                {
-                    if (!string.IsNullOrEmpty(asposeLicKeyFilePath))
-                    {
-                        Aspose.Words.License license = new Aspose.Words.License();
-                        license.SetLicense(asposeLicKeyFilePath);
-                    }
-
-                    docxStream.Write(docxContent, 0, (int)docxContent.Length);
-                    Document converter = new Document(docxStream);
-                    using (MemoryStream pdfStream = new MemoryStream())
-                    {
-                        converter.Save(pdfStream, targetFormat);
-                        pdfContent = pdfStream.ToArray();
-                    }
-                }
-
-                return pdfContent;
-            }
-            catch (Exception ex)
-            {
-                //TODO: Handle exception
-                throw new Exception(string.Format("Error while creating pdf report using aspose.words, targetFormat: '{0}', aspose.word.lic.path: '{1}'", targetFormat.ToString(), asposeLicKeyFilePath), ex);
-            }
+            return pdfContent;
         }
-
-        #endregion
-
-        #region | Private Method |
-        /// <summary>
-        /// Maps the target format specified to aspose save format 
-        /// </summary>
-        /// <param name="format"></param>
-        private static SaveFormat GetTargetFormat(DocxTargetFormat format)
+        catch (Exception ex)
         {
-            SaveFormat targetFormat;
-            switch (format)
-            {
-                case DocxTargetFormat.Doc:
-                    targetFormat = SaveFormat.Doc;
-                    break;
-                case DocxTargetFormat.JPEG:
-                    targetFormat = SaveFormat.Jpeg;
-                    break;
-                case DocxTargetFormat.MHTML:
-                    targetFormat = SaveFormat.Mhtml;
-                    break;
-                case DocxTargetFormat.PDF:
-                    targetFormat = SaveFormat.Pdf;
-                    break;
-                case DocxTargetFormat.Text:
-                    targetFormat = SaveFormat.Text;
-                    break;
-                case DocxTargetFormat.TIFF:
-                    targetFormat = SaveFormat.Tiff;
-                    break;
-                default:
-                    throw new NotSupportedException(string.Format("The specified document conversion format {0} is not supported", format.ToString()));
-            }
-
-            return targetFormat;
+            //TODO: Handle exception
+            throw new Exception(
+                $"Error while creating pdf report using aspose.words, targetFormat: '{targetFormat.ToString()}'", ex);
         }
-        #endregion
+    }
+
+    private static SaveFormat GetTargetFormat(DocxTargetFormat format)
+    {
+        var targetFormat = format switch
+        {
+            DocxTargetFormat.Doc => SaveFormat.Doc,
+            DocxTargetFormat.JPEG => SaveFormat.Jpeg,
+            DocxTargetFormat.MHTML => SaveFormat.Mhtml,
+            DocxTargetFormat.PDF => SaveFormat.Pdf,
+            DocxTargetFormat.Text => SaveFormat.Text,
+            DocxTargetFormat.TIFF => SaveFormat.Tiff,
+            _ => throw new NotSupportedException(
+                $"The specified document conversion format {format.ToString()} is not supported")
+        };
+
+        return targetFormat;
     }
 }
-
