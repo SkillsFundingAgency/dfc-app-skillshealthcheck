@@ -53,13 +53,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [HttpGet]
         [Route("skills-health-check/question/document")]
         [Route("skills-health-check/question")]
-        public async Task<IActionResult> Document(string assessmentType)
+        public async Task<IActionResult> Document(string assessmentType, int questionNumber)
         {
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
                 t.Key.Equals(assessmentType, StringComparison.InvariantCultureIgnoreCase)).Value;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.IsNullOrWhiteSpace(title) ? PageTitle : title);
             var breadcrumbViewModel = BuildBreadcrumb();
-            var bodyViewModel = await GetBodyViewModel(assessmentType);
+            var bodyViewModel = await GetBodyViewModel(assessmentType, questionNumber);
 
             return this.NegotiateContentResult(new DocumentViewModel
             {
@@ -104,9 +104,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         [HttpGet]
         [Route("skills-health-check/question/body")]
-        public async Task<IActionResult> Body(string assessmentType)
+        public async Task<IActionResult> Body(string assessmentType, int questionNumber)
         {
-            var viewModel = await GetBodyViewModel(assessmentType);
+            var viewModel = await GetBodyViewModel(assessmentType, questionNumber);
             return this.NegotiateContentResult(viewModel);
         }
 
@@ -117,9 +117,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 _ => Accessibility.Full,
             };
 
-        private async Task<BodyViewModel> GetBodyViewModel(string assessmentType)
+        private async Task<BodyViewModel> GetBodyViewModel(string assessmentType, int questionNumber)
         {
-            var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType);
+            var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType, questionNumber);
             Enum.TryParse(assessmentType, out AssessmentType assessmentTypeEnum);
 
 
@@ -152,7 +152,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return rightBarViewModel;
         }
 
-        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType)
+        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(string assessmentType, int questionNumber)
         {
             var sessionDataModel = await GetSessionDataModel();
             long documentId = sessionDataModel.DocumentId;
@@ -176,12 +176,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             await SetSessionStateAsync(sessionDataModel);
 
-            return await GetAssessmentQuestionViewModel(qnAssessmentType, documentResponse, assessmentQuestionOverview);
+            return await GetAssessmentQuestionViewModel(qnAssessmentType, documentResponse, assessmentQuestionOverview, questionNumber);
         }
 
-        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView)
+        private async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionsOverView, int questionNumber = 0)
         {
-            var answerVm = await questionService.GetAssessmentQuestionViewModel(assessmentType, skillsDocument, assessmentQuestionsOverView);
+            var answerVm = await questionService.GetAssessmentQuestionViewModel(assessmentType, skillsDocument, assessmentQuestionsOverView, questionNumber);
 
             switch (answerVm)
             {
@@ -236,6 +236,8 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 BodyViewModel = bodyViewModel,
             });
         }
+
+     
 
         [HttpPost]
         [Route("skills-health-check/question/answer-question")]
@@ -350,7 +352,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (model.QuestionNumber != model.ActualTotalQuestions)
             {
                 var assessmenttype = model is FeedBackQuestionViewModel ? ((FeedBackQuestionViewModel)model).FeedbackQuestion.AssessmentType : model.AssessmentType;
-                return Redirect($"{QuestionURL}?assessmentType={assessmenttype}");
+                return Redirect($"{QuestionURL}?assessmentType={assessmenttype}&questionNumber={model.QuestionNumber+1}");
             }
 
             return Redirect($"{YourAssessmentsURL}");
