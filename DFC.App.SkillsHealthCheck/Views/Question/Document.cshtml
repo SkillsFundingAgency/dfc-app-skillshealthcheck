@@ -11,19 +11,7 @@
 <partial name="Breadcrumb" model=@Model.BreadcrumbViewModel />
 
 
-<div class="govuk-width-container">
-    <div class="govuk-breadcrumbs">
-        @if (@Model.BodyViewModel.AssessmentQuestionViewModel.QuestionNumber==1)
-        {
-            <a href="/skills-health-check" class="govuk-back-link">Back to start</a>
 
-        }
-        else
-        {
-        <a class="govuk-back-link" href="/skills-health-check/question?assessmentType=@Model.BodyViewModel.AssessmentQuestionViewModel.AssessmentType&questionNumber=@(@Model.BodyViewModel.AssessmentQuestionViewModel.QuestionNumber-1)">Back</a>
-        }
-    </div>
-</div>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
