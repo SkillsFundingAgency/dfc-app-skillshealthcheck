@@ -576,17 +576,16 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         }
 
         public static int GetCheckingRowNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
-            AssessmentType assessmentType)
+            AssessmentType assessmentType, int questionNumber)
         {
-            int currentQuestionNumber = GetCurrentMultipleAnswerQuestionNumber(skillsDocument, assessmentType);
             int currentRowNumber = 1;
 
-            if (currentQuestionNumber > 10) {
-                string numberAsString = currentQuestionNumber.ToString();
+            if (questionNumber > 10) {
+                string numberAsString = questionNumber.ToString();
                 string lastChar = numberAsString.Substring(numberAsString.Length - 1);
                 currentRowNumber = int.Parse(lastChar);
             } else {
-                currentRowNumber = currentQuestionNumber;
+                currentRowNumber = questionNumber;
             }
 
             if (currentRowNumber == 0) { currentRowNumber = 10; }
