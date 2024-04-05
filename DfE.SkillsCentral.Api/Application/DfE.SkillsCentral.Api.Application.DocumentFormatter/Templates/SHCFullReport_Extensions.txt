@@ -1,1 +1,0 @@
-DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters.SkillsReportXsltExtension, DfE.SkillsCentral.Api.Application.Services.DocumentsFormatters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1940b7450b5f855b
