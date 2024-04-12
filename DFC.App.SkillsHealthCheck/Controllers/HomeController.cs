@@ -327,7 +327,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     status = "PUBLISHED";
                 }
 
-                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.ContactusSharedContent, status);
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status);
                 viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
             catch (Exception e)
