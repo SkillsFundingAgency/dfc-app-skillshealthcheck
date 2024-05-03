@@ -14,15 +14,15 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
 {
     public class SkillsHealthCheckServiceTests
     {
-        private IMapper _autoMapper;
-        private ISkillsCentralService _skillsCentralService;
+        private IMapper autoMapper;
+        private ISkillsCentralService skillsCentralService;
         private ISkillsHealthCheckService skillsHealthCheckService;
 
         public SkillsHealthCheckServiceTests()
         {
-            _autoMapper = A.Fake<IMapper>();
-            _skillsCentralService = A.Fake<ISkillsCentralService>();
-            skillsHealthCheckService = new SkillsHealthCheckService(_autoMapper, _skillsCentralService);
+            autoMapper = A.Fake<IMapper>();
+            skillsCentralService = A.Fake<ISkillsCentralService>();
+            skillsHealthCheckService = new SkillsHealthCheckService(autoMapper, skillsCentralService);
         }
 
         [Fact]
@@ -46,9 +46,8 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 Value = Guid.NewGuid().ToString(),
             });
 
-            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.InsertDocument(A<SkillsDocument>.Ignored));
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => skillsCentralService.InsertDocument(A<SkillsDocument>.Ignored));
             aCallToSkillsCentralServiceInsertDocument.Returns(123);
-
 
             // Act
             var response = skillsHealthCheckService.CreateSkillsDocument(createSkillsDocumentRequest);
@@ -79,7 +78,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 Value = Guid.NewGuid().ToString(),
             });
 
-            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.InsertDocument(A<SkillsDocument>.Ignored));
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => skillsCentralService.InsertDocument(A<SkillsDocument>.Ignored));
             aCallToSkillsCentralServiceInsertDocument.Throws(new Exception("Test exception"));
 
             // Act
@@ -101,7 +100,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 AsessmentType = Services.SkillsCentral.Enums.AssessmentType.Abstract,
                 QuestionNumber = 1,
             };
-            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
             aCallToSkillsCentralServiceInsertDocument.Returns(new Question
             {
                 QuestionNumber = 1,
@@ -126,7 +125,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
                 AsessmentType = Services.SkillsCentral.Enums.AssessmentType.Abstract,
                 QuestionNumber = 1,
             };
-            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => _skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
+            var aCallToSkillsCentralServiceInsertDocument = A.CallTo(() => skillsCentralService.GetSkillsHealthCheckQuestions(A<SkillsDocumentService.AssessmentType>.Ignored, A<int>.Ignored, A<SkillsDocumentService.Level>.Ignored, A<SkillsDocumentService.Accessibility>.Ignored));
             aCallToSkillsCentralServiceInsertDocument.Throws(new Exception("Test exception"));
 
             // Act
@@ -141,7 +140,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         public async Task RequestDownloadAsyncSuccess()
         {
             // Arrange
-            var aCallToSkillsCentralServiceFormatDocumentMakeRequestAsync = A.CallTo(() => _skillsCentralService.FormatDocumentMakeRequestAsync(A<long>.Ignored, A<string>.Ignored, A<string>.Ignored));
+            var aCallToSkillsCentralServiceFormatDocumentMakeRequestAsync = A.CallTo(() => skillsCentralService.FormatDocumentMakeRequestAsync(A<long>.Ignored, A<string>.Ignored, A<string>.Ignored));
             aCallToSkillsCentralServiceFormatDocumentMakeRequestAsync.Returns(new FormatDocumentResponse
             {
                 Status = FormatDocumentStatusEnum.Pending,
@@ -175,7 +174,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
         public async Task QueryDownloadStatusAsyncSuccess()
         {
             // Arrange
-            var aCallToSkillsCentralServiceFFormatDocumentPollStatusAsync = A.CallTo(() => _skillsCentralService.FormatDocumentPollStatusAsync(A<long>.Ignored, A<string>.Ignored));
+            var aCallToSkillsCentralServiceFFormatDocumentPollStatusAsync = A.CallTo(() => skillsCentralService.FormatDocumentPollStatusAsync(A<long>.Ignored, A<string>.Ignored));
             aCallToSkillsCentralServiceFFormatDocumentPollStatusAsync.Returns(new FormatDocumentResponse
             {
                 Status = FormatDocumentStatusEnum.Creating,

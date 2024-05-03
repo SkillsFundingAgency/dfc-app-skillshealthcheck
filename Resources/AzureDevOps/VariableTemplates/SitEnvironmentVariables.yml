@@ -57,3 +57,5 @@ variables:
     value: Trace
   - name: SessionStateOptionsTtl
     value: 7200
+  - name: ContentMode
+    value: PUBLISHED

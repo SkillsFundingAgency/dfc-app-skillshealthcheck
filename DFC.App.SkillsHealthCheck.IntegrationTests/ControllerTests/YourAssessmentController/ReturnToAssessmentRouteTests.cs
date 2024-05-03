@@ -6,11 +6,10 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 
 using DFC.App.SkillsHealthCheck.ViewModels;
-
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using FakeItEasy;
-
 using FluentAssertions;
-
+using Moq;
 using Xunit;
 
 using static DFC.App.SkillsHealthCheck.IntegrationTests.Helper;
@@ -76,6 +75,13 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             // Arrange
             var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
             var client = factory.CreateClient();
+            var htmlString = new SharedHtml()
+            {
+                Html = "test"
+            };
+            this.factory.MockSharedContentRedis.Setup(
+                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>(), "PUBLISHED"))
+            .ReturnsAsync(htmlString);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);
@@ -97,6 +103,13 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.YourAssessm
             // Arrange
             var uri = new Uri("skills-health-check/your-assessments/return-to-assessment/body", UriKind.Relative);
             var client = factory.CreateClient();
+            var htmlString = new SharedHtml()
+            {
+                Html = "test"
+            };
+            this.factory.MockSharedContentRedis.Setup(
+                x => x.GetDataAsync<SharedHtml>(It.IsAny<string>(), "PUBLISHED"))
+            .ReturnsAsync(htmlString);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             SetSession(client, factory);

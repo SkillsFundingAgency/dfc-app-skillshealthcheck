@@ -57,3 +57,5 @@ variables:
     value: Warning
   - name: SessionStateOptionsTtl
     value: 7200
+  - name: ContentMode
+    value: PUBLISHED

@@ -15,16 +15,16 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class QuestionService : IQuestionService
     {
-        private ISkillsHealthCheckService _skillsHealthCheckService;
+        private ISkillsHealthCheckService skillsHealthCheckService;
 
         public QuestionService(ISkillsHealthCheckService skillsHealthCheckService)
         {
-            _skillsHealthCheckService = skillsHealthCheckService;
+            this.skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public GetSkillsDocumentResponse GetSkillsDocument(GetSkillsDocumentRequest getSkillsDocumentRequest)
         {
-            return _skillsHealthCheckService.GetSkillsDocument(getSkillsDocumentRequest);
+            return skillsHealthCheckService.GetSkillsDocument(getSkillsDocumentRequest);
         }
 
         public AssessmentQuestionViewModel GetAssessmentQuestionViewModel(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
@@ -109,7 +109,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         {
             var viewModel = new FeedBackQuestionViewModel
             {
-                AssessmentTitle = assessmentQuestionOverview.AssessmentTitle
+                AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
             };
 
             switch (assessmentType)
@@ -179,8 +179,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             var howEnjoyableDocValue =
                 skillsDocument.SkillsDocumentDataValues.FirstOrDefault(
-                    docValue => docValue.Title.Equals($"{assessmentType}.Enjoyment",
-                        StringComparison.OrdinalIgnoreCase));
+                    docValue => docValue.Title.Equals($"{assessmentType}.Enjoyment", StringComparison.OrdinalIgnoreCase));
 
             if (howEnjoyableDocValue != null)
             {
@@ -219,7 +218,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 Level = level,
             };
 
-            var apiResponse = _skillsHealthCheckService.GetAssessmentQuestion(apiRequest);
+            var apiResponse = skillsHealthCheckService.GetAssessmentQuestion(apiRequest);
             if (apiResponse.Success)
             {
                 switch (assessmentType)
@@ -247,8 +246,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             Question = apiResponse.Question,
                             SubQuestions = apiResponse.Question.PossibleResponses.Count,
                             CurrentQuestion =
-                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
-                                    assessmentQuestionOverview),
+                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber, assessmentQuestionOverview),
                             ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = apiResponse.Question.AssessmentTitle,
@@ -262,8 +260,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                             QuestionAnswer = "checking",
                             SubQuestions = 10,
                             CurrentQuestion =
-                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
-                                    assessmentQuestionOverview),
+                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber, assessmentQuestionOverview),
                             ActualTotalQuestions = assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback,
                             QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
                             AssessmentTitle = apiResponse.Question.AssessmentTitle,
@@ -307,16 +304,16 @@ namespace DFC.App.SkillsHealthCheck.Services
         /// <returns></returns>
         private AssessmentQuestionsOverView GetAssessmentQuestionsOverview(Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument activeSkillsDocument)
         {
-            var assessmentQuestionOverview = new AssessmentQuestionsOverView {AssessmentType = assessmentType};
+            var assessmentQuestionOverview = new AssessmentQuestionsOverView { AssessmentType = assessmentType };
             var apiOverviewRequest = new GetAssessmentQuestionRequest
             {
                 QuestionNumber = 1,
                 Accessibility = accessibility,
                 AsessmentType = assessmentType,
-                Level = level
+                Level = level,
             };
 
-            var overViewResponse = _skillsHealthCheckService.GetAssessmentQuestion(apiOverviewRequest);
+            var overViewResponse = skillsHealthCheckService.GetAssessmentQuestion(apiOverviewRequest);
             if (overViewResponse.Success)
             {
                 assessmentQuestionOverview.TotalQuestionsNumber = overViewResponse.Question.TotalQuestionNumber;
@@ -342,7 +339,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
                     {
                         QuestionNumber = overViewResponse.Question.QuestionNumber,
-                        SubQuestions = overViewResponse.Question.PossibleResponses.Count
+                        SubQuestions = overViewResponse.Question.PossibleResponses.Count,
                     });
 
                     actualQuestionsNumber = overViewResponse.Question.PossibleResponses.Count;
@@ -354,16 +351,16 @@ namespace DFC.App.SkillsHealthCheck.Services
                             QuestionNumber = i,
                             Accessibility = accessibility,
                             AsessmentType = assessmentType,
-                            Level = level
+                            Level = level,
                         };
 
-                        overViewResponse = _skillsHealthCheckService.GetAssessmentQuestion(questionOverviewReq);
+                        overViewResponse = skillsHealthCheckService.GetAssessmentQuestion(questionOverviewReq);
                         if (overViewResponse.Success)
                         {
                             assessmentQuestionOverview.QuestionOverViewList.Add(new QuestionOverView
                             {
                                 QuestionNumber = overViewResponse.Question.QuestionNumber,
-                                SubQuestions = overViewResponse.Question.PossibleResponses.Count
+                                SubQuestions = overViewResponse.Question.PossibleResponses.Count,
                             });
 
                             actualQuestionsNumber = actualQuestionsNumber +
@@ -400,8 +397,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (
                 activeSkillsDocument.SkillsDocumentDataValues.Exists(
-                    docTitle => docTitle.Title.Equals($"{assessmentType}.Enjoyment",
-                        StringComparison.OrdinalIgnoreCase)))
+                    docTitle => docTitle.Title.Equals($"{assessmentType}.Enjoyment", StringComparison.OrdinalIgnoreCase)))
             {
                 assessmentQuestionOverview.ActualQuestionsNumberPlusFeedback++;
                 assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback++;
@@ -412,7 +408,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<SaveQuestionAnswerResponse> SubmitAnswer(SessionDataModel sessionDataModel, AssessmentQuestionViewModel model)
         {
-            var getDocumentResponse = _skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
+            var getDocumentResponse = skillsHealthCheckService.GetSkillsDocument(new GetSkillsDocumentRequest
             {
                 DocumentId = sessionDataModel.DocumentId,
             });
@@ -471,7 +467,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 SkillsDocument = getDocumentResponse.SkillsDocument,
             };
 
-            return _skillsHealthCheckService.SaveQuestionAnswer(saveAnswerRequest);
+            return skillsHealthCheckService.SaveQuestionAnswer(saveAnswerRequest);
         }
 
         public AssessmentQuestionsOverView GetAssessmentQuestionsOverview(SessionDataModel sessionDataModel, Level level, Accessibility accessibility, AssessmentType assessmentType, SkillsDocument skillsDocument)
