@@ -17,21 +17,6 @@
     "cosmosDbKey": {
       "value": "cosmosDbKey"
     },
-    "aspSize": {
-      "value": "2"
-    },
-    "aspTier": {
-      "value": "Standard"
-    },
-    "aspInstances": {
-      "value": 2
-    },
-    "clientAffinity": {
-      "value": false
-    },
-    "Environment": {
-      "value": "Environment"
-    },
     "CosmosDbResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
     },

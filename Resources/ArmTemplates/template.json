@@ -8,26 +8,6 @@
     "appSharedStorageAccountName": {
       "type": "string"
     },
-        "aseHostingEnvironmentName": {
-      "type": "string",
-      "defaultValue": ""
-    },
-    "aseResourceGroup": {
-      "type": "string",
-      "defaultValue": ""
-    },
-    "aspInstances": {
-      "type": "int"
-    },
-    "aspSize": {
-      "type": "string"
-    },
-    "aspTier": {
-      "type": "string"
-    },
-    "clientAffinity": {
-      "type": "bool"
-    },
     "CosmosDbResourceGroup": {
       "type": "string"
     },
