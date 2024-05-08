@@ -284,9 +284,10 @@
             "apiVersion": "2017-05-10",
             "name": "[variables('WebAppName')]",
             "type": "Microsoft.Resources/deployments",
-            "dependsOn": [
-                "[variables('webAppInsightsName')]"
-            ],
+          "dependsOn": [
+            "[variables('webAppInsightsName')]",
+            "[variables('appServicePlanName')]"
+          ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
