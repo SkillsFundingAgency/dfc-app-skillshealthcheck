@@ -8,24 +8,6 @@
     "appSharedStorageAccountName": {
       "value": "dfcdevappsharedstr"
     },
-    "aseHostingEnvironmentName": {
-      "value": ""
-    },
-    "aseResourceGroup": {
-      "value": ""
-    },
-    "aspInstances": {
-      "value": 2
-    },
-    "clientAffinity": {
-      "value": false
-    },
-    "aspTier": {
-      "value": "Standard"
-    },
-    "aspSize": {
-      "value": "2"
-    },
     "cosmosDBName": {
       "value": "dfc-dev-app-sharedresources-cdb"
     },
