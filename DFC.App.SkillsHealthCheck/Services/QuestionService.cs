@@ -15,11 +15,11 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class QuestionService : IQuestionService
     {
-        private ISkillsHealthCheckService skillsHealthCheckService;
+        private ISkillsHealthCheckService _skillsHealthCheckService;
 
         public QuestionService(ISkillsHealthCheckService skillsHealthCheckService)
         {
-            this.skillsHealthCheckService = skillsHealthCheckService;
+            this._skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public async Task<DFC.SkillsCentral.Api.Domain.Models.SkillsDocument> GetSkillsDocument(int documentId)

@@ -1,5 +1,4 @@
-﻿using Azure;
-using DFC.App.SkillsHealthCheck.Models;
+﻿using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers;
@@ -17,14 +16,14 @@ namespace DFC.App.SkillsHealthCheck.Services
 {
     public class YourAssessmentsService : IYourAssessmentsService
     {
-        private ISkillsHealthCheckService skillsHealthCheckService;
+        private ISkillsHealthCheckService _skillsHealthCheckService;
 
         public YourAssessmentsService(
             ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService)
         {
             this.questionService = questionService;
-            this.skillsHealthCheckService = skillsHealthCheckService;
+            this._skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public DocumentFormatter GetFormatter(DownloadType downloadType)

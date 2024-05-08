@@ -97,7 +97,6 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.YourAssessmentsCon
                         Description = Assessments.Interests.Description,
                         AssessmentDuration = Assessments.Interests.TimeToComplete,
                         AssessmentType = AssessmentType.Interests,
-                        AssessmentType = AssessmentType.Interests,
                         PersonalAssessment = true,
                     },
                     new AssessmentOverview
