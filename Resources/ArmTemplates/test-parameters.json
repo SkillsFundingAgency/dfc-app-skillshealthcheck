@@ -8,20 +8,11 @@
     "appSharedStorageAccountName": {
       "value": "dfcdevappsharedstr"
     },
-    "cosmosDBName": {
-      "value": "dfc-dev-app-sharedresources-cdb"
+    "aseHostingEnvironmentName": {
+      "value": ""
     },
-    "cosmosDBCollectionName": {
-      "value": "cosmosDBCollectionName"
-    },
-    "cosmosDbKey": {
-      "value": "cosmosDbKey"
-    },
-    "aspSize": {
-      "value": "2"
-    },
-    "aspTier": {
-      "value": "Standard"
+    "aseResourceGroup": {
+      "value": ""
     },
     "aspInstances": {
       "value": 2
@@ -29,11 +20,26 @@
     "clientAffinity": {
       "value": false
     },
-    "Environment": {
-      "value": "Environment"
+    "aspTier": {
+      "value": "Standard"
+    },
+    "aspSize": {
+      "value": "2"
+    },
+    "cosmosDBName": {
+      "value": "dfc-dev-app-sharedresources-cdb"
+    },
+    "cosmosDbKey": {
+      "value": "cosmosDbKey"
     },
     "CosmosDbResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
+    },
+    "environment": {
+      "value": "Environment"
+    },
+    "cosmosDBCollectionName": {
+      "value": "cosmosDBCollectionName"
     },
     "appDatabaseNeedsCreation": {
       "value": true
@@ -125,38 +131,14 @@
     "workspaceResourceGroup": {
       "value": "aResourceGroup"
     },
-    "CmsTokenEndPointUrl": {
-      "value": "http://url"
+    "SqlElasticPoolName": {
+        "value": "an-elastic-pool"
     },
-    "CmsGraphApiUrl": {
-      "value": "http://url"
+    "SqlServerName": {
+        "value": "a-sql-server"
     },
-    "CmsClientId": {
-      "value": "clientid"
-    },
-    "CmsClientSecret": {
-      "value": "clientsecret"
-    },
-    "CmsRedisCacheConnectionString": {
-      "value": "clientsecret"
-    },
-    "WorkerThreads": {
-      "value": "200"
-    },
-    "IocpThreads": {
-        "value": "200"
-    },
-    "ContentMode": {
-      "value": "PUBLISHED"
-        },
-        "SqlElasticPoolName": {
-            "value": "an-elastic-pool"
-        },
-        "SqlServerName": {
-            "value": "a-sql-server"
-        },
-        "SqlResourceGroupName": {
-            "value": "dfc-dev-shared-rg"
+    "SqlResourceGroupName": {
+        "value": "dfc-dev-shared-rg"
     }
   }
 }

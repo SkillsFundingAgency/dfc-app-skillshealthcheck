@@ -35,25 +35,6 @@
     "CosmosDbResourceGroup": {
       "value": "__appSharedResourceGroup__"
     },
-    "CPUPercentageThreshold": {
-      "value": "__CPUPercentageThreshold__"
-    },
-    "CmsTokenEndPointUrl": {
-      "value": "__StaxGraphqlTokenEndPointUrl__"
-    },
-    "CmsGraphApiUrl": {
-      "value": "__StaxGraphqlApiUrl__"
-    },
-    "CmsClientId": {
-      "value": "__StaxGraphqlClientId__"
-    },
-    "CmsClientSecret": {
-      "value": "__StaxGraphqlClientSecret__"
-    },
-    "CmsRedisCacheConnectionString": {
-      "value": "__RedisConnectionString__"
-    },
-
     "environment": {
       "value": "__ReleaseEnvironmentName__",
       "metadata": {
@@ -153,23 +134,14 @@
     "workspaceResourceGroup": {
       "value": "__sharedLogAnalyticsResourceGroup__"
     },
-    "WorkerThreads": {
-      "value": "__WorkerThreads__"
+    "SqlElasticPoolName": {
+        "value": "__elasticPoolName__"
     },
-    "IocpThreads": {
-        "value": "__IocpThreads__"
+    "SqlServerName": {
+        "value": "__sharedSqlServerName__"
     },
-    "ContentMode": {
-      "value": "__ContentMode__"
-        },
-        "SqlElasticPoolName": {
-            "value": "__elasticPoolName__"
-        },
-        "SqlServerName": {
-            "value": "__sharedSqlServerName__"
-        },
-        "SqlResourceGroupName": {
-            "value": "__SharedResourceGroupName__"
+    "SqlResourceGroupName": {
+        "value": "__SharedResourceGroupName__"
     }
   }
 }
