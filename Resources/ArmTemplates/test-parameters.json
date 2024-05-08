@@ -11,17 +11,32 @@
     "cosmosDBName": {
       "value": "dfc-dev-app-sharedresources-cdb"
     },
+    "cosmosDBCollectionName": {
+      "value": "cosmosDBCollectionName"
+    },
     "cosmosDbKey": {
       "value": "cosmosDbKey"
+    },
+    "aspSize": {
+      "value": "2"
+    },
+    "aspTier": {
+      "value": "Standard"
+    },
+    "aspInstances": {
+      "value": 2
+    },
+    "clientAffinity": {
+      "value": false
+    },
+    "Environment": {
+      "value": "Environment"
     },
     "CosmosDbResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
     },
     "environment": {
       "value": "Environment"
-    },
-    "cosmosDBCollectionName": {
-      "value": "cosmosDBCollectionName"
     },
     "appDatabaseNeedsCreation": {
       "value": true
@@ -112,6 +127,30 @@
     },
     "workspaceResourceGroup": {
       "value": "aResourceGroup"
+    },
+    "CmsTokenEndPointUrl": {
+      "value": "http://url"
+    },
+    "CmsGraphApiUrl": {
+      "value": "http://url"
+    },
+    "CmsClientId": {
+      "value": "clientid"
+    },
+    "CmsClientSecret": {
+      "value": "clientsecret"
+    },
+    "CmsRedisCacheConnectionString": {
+      "value": "clientsecret"
+    },
+    "WorkerThreads": {
+      "value": "200"
+    },
+    "IocpThreads": {
+        "value": "200"
+    },
+    "ContentMode": {
+      "value": "PUBLISHED"
     },
     "SqlElasticPoolName": {
         "value": "an-elastic-pool"

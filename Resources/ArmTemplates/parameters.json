@@ -8,6 +8,24 @@
     "appSharedStorageAccountName": {
       "value": "__appSharedStorageAccountName__"
     },
+    "aseHostingEnvironmentName": {
+      "value": "__AseServiceName__"
+    },
+    "aseResourceGroup": {
+      "value": "__aseResourceGroup__"
+    },
+    "aspInstances": {
+      "value": __aspInstances__
+    },
+    "clientAffinity": {
+      "value": __clientAffinity__
+    },
+    "aspTier": {
+      "value": "__aspTier__"
+    },
+    "aspSize": {
+      "value": "__aspSize__"
+    },
     "cosmosDBName": {
       "value": "__appSharedCosmosDBName__"
     },
@@ -17,6 +35,25 @@
     "CosmosDbResourceGroup": {
       "value": "__appSharedResourceGroup__"
     },
+    "CPUPercentageThreshold": {
+      "value": "__CPUPercentageThreshold__"
+    },
+    "CmsTokenEndPointUrl": {
+      "value": "__StaxGraphqlTokenEndPointUrl__"
+    },
+    "CmsGraphApiUrl": {
+      "value": "__StaxGraphqlApiUrl__"
+    },
+    "CmsClientId": {
+      "value": "__StaxGraphqlClientId__"
+    },
+    "CmsClientSecret": {
+      "value": "__StaxGraphqlClientSecret__"
+    },
+    "CmsRedisCacheConnectionString": {
+      "value": "__RedisConnectionString__"
+    },
+
     "environment": {
       "value": "__ReleaseEnvironmentName__",
       "metadata": {
@@ -115,6 +152,15 @@
     },
     "workspaceResourceGroup": {
       "value": "__sharedLogAnalyticsResourceGroup__"
+    },
+    "WorkerThreads": {
+      "value": "__WorkerThreads__"
+    },
+    "IocpThreads": {
+        "value": "__IocpThreads__"
+    },
+    "ContentMode": {
+      "value": "__ContentMode__"
     },
     "SqlElasticPoolName": {
         "value": "__elasticPoolName__"
