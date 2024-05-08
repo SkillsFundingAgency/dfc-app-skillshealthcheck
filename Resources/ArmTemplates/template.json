@@ -37,6 +37,21 @@
     "cosmosDbKey": {
       "type": "securestring"
     },
+    "CmsRedisCacheConnectionString": {
+      "type": "securestring"
+    },
+    "CmsClientSecret": {
+      "type": "string"
+    },
+    "CmsClientId": {
+      "type": "string"
+    },
+    "CmsGraphApiUrl": {
+      "type": "string"
+    },
+    "CmsTokenEndPointUrl": {
+      "type": "string"
+    },
     "environment": {
       "type": "string"
     },
@@ -137,6 +152,15 @@
       "type": "string"
     },
     "workspaceResourceGroup": {
+      "type": "string"
+    },
+    "WorkerThreads": {
+      "type": "string"
+    },
+    "IocpThreads": {
+        "type": "string"
+    },
+    "ContentMode": {
       "type": "string"
     },
     "SqlElasticPoolName": {
@@ -486,7 +510,39 @@
                             {
                                 "name": "SessionStateOptions__Ttl",
                                 "value": "[parameters('SessionStateOptionsTtl')]"
-                            }
+                            },
+                        {
+                          "name": "Cms__TokenEndPointUrl",
+                          "value": "[parameters('CmsTokenEndpointUrl')]"
+                        },
+                        {
+                          "name": "Cms__GraphApiUrl",
+                          "value": "[parameters('CmsGraphApiUrl')]"
+                        },
+                        {
+                          "name": "Cms__ClientId",
+                          "value": "[parameters('CmsClientId')]"
+                        },
+                        {
+                          "name": "Cms__ClientSecret",
+                          "value": "[parameters('CmsClientSecret')]"
+                        },
+                        {
+                          "name": "Cms__RedisCacheConnectionString",
+                          "value": "[parameters('CmsRedisCacheConnectionString')]"
+                        },
+                        {
+                          "name": "ThreadSettings__WorkerThreads",
+                          "value": "[parameters('WorkerThreads')]"
+                        },
+                        {
+                           "name": "ThreadSettings__IocpThreads",
+                           "value": "[parameters('IocpThreads')]"
+                        },
+                        {
+                          "name": "ContentMode__ContentMode",
+                          "value": "[parameters('ContentMode')]"
+                        }
                         ]
                     }
                 }
