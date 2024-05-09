@@ -41,12 +41,13 @@ internal class SkillsDocumentMigrationScript
                 int batchCounter = 0;
                 while (!parser.EndOfData)
                 {
-                    int counter = 0;
                     batchCounter++;
                     using (StreamWriter writer = new StreamWriter($"INSERT_{input}_{batchCounter}.sql"))
                     {
                         for (var index = 0; index < 5; index++)
                         {
+                            int counter = 0;
+
                             writer.WriteLine(scriptStart);
                             while (counter < counterMax && !parser.EndOfData)
                             {
