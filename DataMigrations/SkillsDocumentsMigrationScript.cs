@@ -45,33 +45,30 @@ internal class SkillsDocumentMigrationScript
                     batchCounter++;
                     using (StreamWriter writer = new StreamWriter($"INSERT_{input}_{batchCounter}.sql"))
                     {
-                        writer.WriteLine(scriptStart);
-                        while (counter < counterMax && !parser.EndOfData)
+                        for (var index = 0; index < 5; index++)
                         {
-
-
-                            counter++;
-
-                            string[] fields = parser.ReadFields();
-
-                            string jsonDataValues = ConvertXmlIntoJson(fields[5]);
-
-                            string modifiedJson = RemovedRedundantSections(jsonDataValues);
-
-
-                            var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
-
-                            var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
-                            Console.WriteLine(parser.LineNumber);
-                            string writeString = $"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])})";
-                            if (counter == counterMax || parser.EndOfData)
+                            writer.WriteLine(scriptStart);
+                            while (counter < counterMax && !parser.EndOfData)
                             {
-                                writer.WriteLine(writeString);
-                            }
-                            else { writer.WriteLine(writeString + ","); }
-                        }
+                                counter++;
 
-                        writer.WriteLine(scriptEnd);
+                                string[] fields = parser.ReadFields();
+
+                                string jsonDataValues = ConvertXmlIntoJson(fields[5]);
+
+                                string modifiedJson = RemovedRedundantSections(jsonDataValues);
+
+                                var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
+
+                                var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
+
+                                Console.WriteLine(parser.LineNumber);
+
+                                WriteToFile(parser, counter, writer, fields, result);
+                            }
+                            writer.WriteLine(scriptEnd);
+                            writer.WriteLine();
+                        }
                     }
                 }
 
@@ -81,6 +78,16 @@ internal class SkillsDocumentMigrationScript
         {
             Console.WriteLine(e.Message);
         }
+    }
+
+    private static void WriteToFile(TextFieldParser parser, int counter, StreamWriter writer, string[] fields, string result)
+    {
+        string writeString = $"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])})";
+        if (counter == counterMax || parser.EndOfData)
+        {
+            writer.WriteLine(writeString);
+        }
+        else { writer.WriteLine(writeString + ","); }
     }
 
     public static string RemoveMinusOnes(string input)
