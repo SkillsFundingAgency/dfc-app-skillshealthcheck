@@ -3,8 +3,12 @@ variables:
     value: pp
   - name: AppServiceName
     value: $(WebAppPrefix)-as
+  - name: ApiAppServiceName
+    value: $(ApiAppPrefix)-api-as
   - name: cosmosDBCollectionName
     value: shared-content
+  - name: SqlDatabaseName
+    value: dfc-pp-app-skillscentral-db
   - name: ResourceGroup
     value: $(WebAppPrefix)-rg
   - name: WebAppProjectName
@@ -25,8 +29,12 @@ variables:
     value: composite-ui-skillshealthcheck
   - name: applicationUrl
     value: https://$(AppServiceName).$(appServiceDomain)
+  - name: apiUrl
+    value: https://$(ApiAppServiceName).$(appServiceDomain)
   - name: WebAppPrefix
     value: dfc-pp-app-skillshealthcheck
+  - name: ApiAppPrefix
+    value: dfc-pp-app-skillscentral
   - name: SubscriptionSettingsFilterIncludeEventTypes3
     value:
   - name: SubscriptionSettingsFilterIncludeEventTypes4
@@ -35,14 +43,6 @@ variables:
     value: /content/sharedcontent/
   - name: EnableAzureMonitorAlerting
     value: true
-  - name: aspTier
-    value: Standard
-  - name: aspInstances
-    value: 2
-  - name: aspSize
-    value: 1
-  - name: clientAffinity
-    value: false
   - name: appDatabaseThroughput
     value: 5000
   - name: ExceptionCountThreshold

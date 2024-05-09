@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-
+using DFC.SkillsCentral.Api.Domain.Models;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
@@ -88,56 +88,21 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             logger.LogInformation($"creating new skills document request");
 
-            var apiRequest = new CreateSkillsDocumentRequest
-            {
-                SkillsDocument = new SkillsDocument
+
+               var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
                 {
-                    SkillsDocumentTitle = Constants.SkillsHealthCheck.DefaultDocumentName,
-                    SkillsDocumentType = Constants.SkillsHealthCheck.DocumentType,
                     CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
-                    SkillsDocumentExpiry = SkillsDocumentExpiry.Physical,
-                    ExpiresTimespan = new TimeSpan(0, Constants.SkillsHealthCheck.SkillsDocumentExpiryTime, 0, 0),
-                },
-            };
+                    ReferenceCode = Guid.NewGuid().ToString(),
+               };
 
-            if (!string.IsNullOrWhiteSpace(viewModel?.ListTypeFields))
-            {
-                var fieldList = viewModel.ListTypeFields.Split(',');
-                foreach (var field in fieldList.Where(f => !f.Equals(Constants.SkillsHealthCheck.FieldName, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    var value = string.Empty;
-
-                    if (field.Equals(Constants.SkillsHealthCheck.QualificationProperty, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = "1";
-                    }
-                    else if (field.Equals(Constants.SkillsHealthCheck.CandidateFullNameKeyName, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = apiRequest.SkillsDocument.CreatedBy;
-                    }
-
-                    apiRequest.SkillsDocument.SkillsDocumentDataValues.Add(new SkillsDocumentDataValue
-                    {
-                        Title = field,
-                        Value = value,
-                    });
-                }
-            }
-
-            apiRequest.SkillsDocument.SkillsDocumentIdentifiers.Add(new SkillsDocumentIdentifier
-            {
-                ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
-                Value = Guid.NewGuid().ToString(),
-            });
-
-            var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
-            if (apiResult.Success)
+            var apiResult = await skillsHealthCheckService.CreateSkillsDocument(skillsDocument);
+            if (apiResult != null)
             {
                 logger.LogInformation($" Created new Skills Document, redirecting");
 
                 var sessionStateDataModel = new SessionDataModel
                 {
-                    DocumentId = apiResult.DocumentId,
+                    DocumentId = (long)apiResult.Id,
                     AssessmentQuestionsOverViews = new Dictionary<string, AssessmentQuestionsOverView>(),
                 };
                 await SetSessionStateAsync(sessionStateDataModel);
@@ -194,26 +159,26 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        [HttpGet]
-        [Route("skills-health-check/home/reload")]
-        [Route("skills-health-check/home/reload/body")]
-        public async Task<ActionResult> Reload(string sessionId)
-        {
-            logger.LogInformation($"{nameof(Reload)} has been called");
+        //[HttpGet]
+        //[Route("skills-health-check/home/reload")]
+        //[Route("skills-health-check/home/reload/body")]
+        //public async Task<ActionResult> Reload(string sessionId)
+        //{
+        //    logger.LogInformation($"{nameof(Reload)} has been called");
 
-            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(sessionId);
-            if (response.Success && response.DocumentId > 0)
-            {
-                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                sessionStateModel.DocumentId = response.DocumentId;
-                await SetSessionStateAsync(sessionStateModel);
-                logger.LogInformation($"{nameof(Reload)} was successful");
-                return Redirect(YourAssessmentsURL);
-            }
+        //    var response = skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
+        //    if (response.Success && response.DocumentId > 0)
+        //    {
+        //        var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+        //        sessionStateModel.DocumentId = response.DocumentId;
+        //        await SetSessionStateAsync(sessionStateModel);
+        //        logger.LogInformation($"{nameof(Reload)} was successful");
+        //        return Redirect(YourAssessmentsURL);
+        //    }
 
-            logger.LogError($"{nameof(Reload)} failed with message: {response.ErrorMessage}");
-            return Redirect("/alerts/500?errorcode=saveProgressResponse");
-        }
+        //    logger.LogError($"{nameof(Reload)} failed with message: {response.ErrorMessage}");
+        //    return Redirect("/alerts/500?errorcode=saveProgressResponse");
+        //}
 
         [HttpPost]
         [Route("skills-health-check/return-to-assessment/body")]
@@ -309,16 +274,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
 
-            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
-            var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
-            {
-                DocumentType = Constants.SkillsHealthCheck.DocumentType,
-            });
-
-            if (apiResult.Success)
-            {
-                viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
-            }
+            
 
             try
             {

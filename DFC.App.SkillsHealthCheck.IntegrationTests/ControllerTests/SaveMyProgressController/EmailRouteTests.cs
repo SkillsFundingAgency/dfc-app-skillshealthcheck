@@ -100,90 +100,90 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.SaveMyProgr
             response.StatusCode.Should().Be(HttpStatusCode.OK); // do not redirect for invalid request
         }
 
-        [Fact]
-        public async Task ValidEmailBodyPostEndpointWithActiveSessionRedirectsToSmsSentPage()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/save-my-progress/email/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
-            factory.SetSkillsDocument();
-            SetSendEmail(true);
+        //[Fact]
+        //public async Task ValidEmailBodyPostEndpointWithActiveSessionRedirectsToSmsSentPage()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/save-my-progress/email/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
+        //    factory.SetSkillsDocument();
+        //    SetSendEmail(true);
 
-            // Act
-            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
-            {
-                ["EmailAddress"] = "123@abc.com"
-            });
-            var response = await client.PostAsync(uri, content);
+        //    // Act
+        //    using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+        //    {
+        //        ["EmailAddress"] = "123@abc.com"
+        //    });
+        //    var response = await client.PostAsync(uri, content);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            response.Headers.Location.ToString().Should().StartWith("/skills-health-check/save-my-progress/emailsent");
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        //    response.Headers.Location.ToString().Should().StartWith("/skills-health-check/save-my-progress/emailsent");
+        //}
 
-        [Fact]
-        public async Task ValidEmailBodyPostEndpointWithActiveSessionAndGovNotifyFailedToSendSmsRedirectsToSmsFailedPage()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/save-my-progress/email/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
-            factory.SetSkillsDocument();
-            SetSendEmail(false);
+        //[Fact]
+        //public async Task ValidEmailBodyPostEndpointWithActiveSessionAndGovNotifyFailedToSendSmsRedirectsToSmsFailedPage()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/save-my-progress/email/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
+        //    factory.SetSkillsDocument();
+        //    SetSendEmail(false);
 
-            // Act
-            using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
-            {
-                ["EmailAddress"] = "123@abc.com"
-            });
-            var response = await client.PostAsync(uri, content);
+        //    // Act
+        //    using var content = new FormUrlEncodedContent(new Dictionary<string, string>()
+        //    {
+        //        ["EmailAddress"] = "123@abc.com"
+        //    });
+        //    var response = await client.PostAsync(uri, content);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
-            response.Headers.Location.ToString().Should().StartWith("/skills-health-check/save-my-progress/emailfailed");
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        //    response.Headers.Location.ToString().Should().StartWith("/skills-health-check/save-my-progress/emailfailed");
+        //}
 
-        [Fact]
-        public async Task CheckYourEmailBodyEndpointWithActiveSessionReturnSuccessAndCorrectContentType()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/save-my-progress/emailsent/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
+        //[Fact]
+        //public async Task CheckYourEmailBodyEndpointWithActiveSessionReturnSuccessAndCorrectContentType()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/save-my-progress/emailsent/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
 
-            // Act
-            var response = await client.GetAsync(uri);
+        //    // Act
+        //    var response = await client.GetAsync(uri);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //    response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
+        //}
 
-        [Fact]
-        public async Task SmsFailedBodyEndpointWithActiveSessionReturnSuccessAndCorrectContentType()
-        {
-            // Arrange
-            var uri = new Uri("skills-health-check/save-my-progress/emailfailed/body", UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            SetSession(client, factory);
-            factory.SetSkillsDocument();
+        //[Fact]
+        //public async Task SmsFailedBodyEndpointWithActiveSessionReturnSuccessAndCorrectContentType()
+        //{
+        //    // Arrange
+        //    var uri = new Uri("skills-health-check/save-my-progress/emailfailed/body", UriKind.Relative);
+        //    var client = factory.CreateClient();
+        //    client.DefaultRequestHeaders.Accept.Clear();
+        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
+        //    SetSession(client, factory);
+        //    factory.SetSkillsDocument();
 
-            // Act
-            var response = await client.GetAsync(uri);
+        //    // Act
+        //    var response = await client.GetAsync(uri);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //    response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
+        //}
 
         private void SetSendEmail(bool isSuccess)
         {

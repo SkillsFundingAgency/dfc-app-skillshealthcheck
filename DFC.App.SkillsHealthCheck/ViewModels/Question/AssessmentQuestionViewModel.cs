@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels.Question
@@ -11,28 +12,23 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         [Required(ErrorMessage = "Choose an answer")]
         public string QuestionAnswer { get; set; }
 
-        public Services.SkillsCentral.Models.Question? Question { get; set; }
+        public DFC.SkillsCentral.Api.Domain.Models.QuestionAnswers? QuestionAnswers { get; set; }
 
         public int QuestionNumber { get; set; }
 
         public int ActualTotalQuestions { get; set; }
 
-        public IEnumerable<Image>? QuestionImages { get; set; }
+        public IEnumerable<Image>? QuestionImages { get; set; } = new List<Image>();
 
-        // Used to pass the error messages to the client-side validation script skillsHealthCheck.js
         public SkillsHealthCheckValidationErrors? ValidationErrors { get; set; }
-
-        //Used to store the content from the Sitefinity content block when fetched the title "Speak to an Adviser".
-        //which is passed to the view to render the page . On the right hand side of the page
-        //Speak to an Adviser is displayed.
-
-        /// <summary>
-        /// Gets or sets the assessment title.
-        /// </summary>
-        /// <value>
-        /// The assessment title.
-        /// </value>
         public string? AssessmentTitle { get; set; }
+
+        public string? AssessmentSubtitle { get; set; }
+
+        public string? IntroductionText { get; set; }
+
+
+        public AssessmentType? AssessmentType { get; set; }
 
         public string? ViewName { get; set; }
     }

@@ -11,7 +11,7 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
-
+using DFC.SkillsCentral.Api.Domain.Models;
 using FakeItEasy;
 
 using Microsoft.AspNetCore.Hosting;
@@ -61,7 +61,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                 Title = Constants.SkillsHealthCheck.SkillsAssessmentComplete,
                 Value = bool.FalseString,
             };
-            var skillsDocument = new SkillsDocument
+            var skillsDocument = new Services.SkillsCentral.Models.SkillsDocument
             {
                 DocumentId = 123,
                 SkillsDocumentTitle = "some document",
@@ -70,8 +70,8 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                 SkillsDocumentIdentifiers = new List<SkillsDocumentIdentifier> { skillsDocumentIdentifier },
             };
 
-            A.CallTo(() => FakeSkillsHealthCheckService.GetSkillsDocument(A<GetSkillsDocumentRequest>.Ignored))
-                .Returns(new GetSkillsDocumentResponse { Success = true, SkillsDocument = skillsDocument });
+            A.CallTo(() => FakeSkillsHealthCheckService.GetSkillsDocument(A<int>.Ignored))
+                .Returns(new SkillsCentral.Api.Domain.Models.SkillsDocument { Id = 1});
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
