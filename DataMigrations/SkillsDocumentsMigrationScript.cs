@@ -13,8 +13,8 @@ internal class SkillsDocumentMigrationScript
     public const string SkillsDocuments = "SkillsDocuments";
     public const string CreatedBy = "MigrationTool";
     public const string scriptStart = "SET IDENTITY_INSERT SkillsDocuments ON;\r\n \r\n;WITH SkillsDocumentsCte AS (\r\n\tSELECT * FROM (VALUES";
-    public const string scriptEnd = ") AS SkillsDocumentsTemp(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ))\r\n \r\nMERGE SkillsDocuments AS target\r\nUSING (\r\n\tSELECT *\r\n\tFROM SkillsDocumentsCte\r\n) AS source\r\nON target.Id = source.Id\r\nWHEN MATCHED\r\n\tTHEN UPDATE SET\r\n\t\ttarget.CreatedAt = source.CreatedAt,\r\n\t\ttarget.CreatedBy = source.CreatedBy,\r\n\t\ttarget.UpdatedAt = source.UpdatedAt,\r\n\t\ttarget.UpdatedBy = source.UpdatedBy,\r\n\t\ttarget.DataValueKeys = source.DataValueKeys,\r\n\t\ttarget.ReferenceCode = source.ReferenceCode\r\nWHEN NOT MATCHED\r\n\tTHEN INSERT (Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ) VALUES (\r\n\t\tsource.Id,\r\n\t\tsource.CreatedAt,\r\n\t\tsource.CreatedBy,\r\n\t\tsource.UpdatedAt,\r\n\t\tsource.UpdatedBy,\r\n\t\tsource.DataValueKeys,\r\n\t\tsource.ReferenceCode\r\n\t)\r\nWHEN NOT MATCHED BY SOURCE\r\n\tTHEN DELETE;\r\n \r\nSET IDENTITY_INSERT SkillsDocuments OFF;";
-    public const int counterMax = 50;
+    public const string scriptEnd = ") AS SkillsDocumentsTemp(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ))\r\n \r\nMERGE SkillsDocuments AS target\r\nUSING (\r\n\tSELECT *\r\n\tFROM SkillsDocumentsCte\r\n) AS source\r\nON target.Id = source.Id\r\nWHEN MATCHED\r\n\tTHEN UPDATE SET\r\n\t\ttarget.CreatedAt = source.CreatedAt,\r\n\t\ttarget.CreatedBy = source.CreatedBy,\r\n\t\ttarget.UpdatedAt = source.UpdatedAt,\r\n\t\ttarget.UpdatedBy = source.UpdatedBy,\r\n\t\ttarget.DataValueKeys = source.DataValueKeys,\r\n\t\ttarget.ReferenceCode = source.ReferenceCode\r\nWHEN NOT MATCHED\r\n\tTHEN INSERT (Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ) VALUES (\r\n\t\tsource.Id,\r\n\t\tsource.CreatedAt,\r\n\t\tsource.CreatedBy,\r\n\t\tsource.UpdatedAt,\r\n\t\tsource.UpdatedBy,\r\n\t\tsource.DataValueKeys,\r\n\t\tsource.ReferenceCode\r\n\t);\r\n \r\nSET IDENTITY_INSERT SkillsDocuments OFF;";
+    public const int counterMax = 10000;
 
 
 
@@ -46,28 +46,28 @@ internal class SkillsDocumentMigrationScript
                     using (StreamWriter writer = new StreamWriter($"INSERT_{input}_{batchCounter}.sql"))
                     {
                         writer.WriteLine(scriptStart);
-                        while (counter < counterMax)
-                    {
+                        while (counter < counterMax && !parser.EndOfData)
+                        {
 
-                    
+
                             counter++;
 
-                        string[] fields = parser.ReadFields();
+                            string[] fields = parser.ReadFields();
 
-                        string jsonDataValues = ConvertXmlIntoJson(fields[5]);
+                            string jsonDataValues = ConvertXmlIntoJson(fields[5]);
 
-                        string modifiedJson = RemovedRedundantSections(jsonDataValues);
+                            string modifiedJson = RemovedRedundantSections(jsonDataValues);
 
 
-                        var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
+                            var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
 
-                        var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
-                        Console.WriteLine(parser.LineNumber);
+                            var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
+                            Console.WriteLine(parser.LineNumber);
                             string writeString = $"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])})";
                             if (counter == counterMax || parser.EndOfData)
                             {
                                 writer.WriteLine(writeString);
-                            } 
+                            }
                             else { writer.WriteLine(writeString + ","); }
                         }
 
