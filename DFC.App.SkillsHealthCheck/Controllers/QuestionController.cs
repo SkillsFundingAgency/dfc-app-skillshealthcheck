@@ -267,21 +267,29 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-multiple-question/body")]
         public async Task<IActionResult> AnswerMultipleQuestion([FromForm] MultipleAnswerQuestionViewModel model)
         {
-            var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            try
             {
-                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse != null)
+                var sessionDataModel = await GetSessionDataModel();
+                if (ModelState.IsValid)
                 {
-                    await SetSessionStateAsync(sessionDataModel);
+                    var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
+                    if (saveAnswerResponse != null && saveAnswerResponse.ReferenceCode != "false")
+                    {
+                        await SetSessionStateAsync(sessionDataModel);
 
-                    return RedirectToNextAction(model);
+                        return RedirectToNextAction(model);
+                    }
+
+                    return Redirect($"{QuestionURL}?assessmentType={model.AssessmentType}&saveerror=Could not retrieve skills document");
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.AssessmentType}&saveerror=Could not retrieve skills document");
+                return await ReturnErrorPostback(sessionDataModel, (AssessmentType)model.AssessmentType);
             }
-
-            return await ReturnErrorPostback(sessionDataModel, (AssessmentType)model.AssessmentType);
+            catch (Exception ex)
+            {
+                logger.LogInformation(ex.Message, ex);
+                throw;
+            }
         }
 
         [HttpPost]
@@ -289,20 +297,28 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/body")]
         public async Task<IActionResult> AnswerEliminationQuestion([FromForm] EliminationAnswerQuestionViewModel model)
         {
-            var sessionDataModel = await GetSessionDataModel();
-            if (ModelState.IsValid)
+            try
             {
-                var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
-                if (saveAnswerResponse != null)
+                var sessionDataModel = await GetSessionDataModel();
+                if (ModelState.IsValid)
                 {
-                    await SetSessionStateAsync(sessionDataModel);
-                    return RedirectToNextAction(model);
+                    var saveAnswerResponse = await questionService.SubmitAnswer(sessionDataModel!, model);
+                    if (saveAnswerResponse != null)
+                    {
+                        await SetSessionStateAsync(sessionDataModel);
+                        return RedirectToNextAction(model);
+                    }
+
+                    return Redirect($"{QuestionURL}?assessmentType={model.AssessmentType}&saveerror=Could not retrieve skills document");
                 }
 
-                return Redirect($"{QuestionURL}?assessmentType={model.AssessmentType}&saveerror=Could not retrieve skills document");
+                return await ReturnErrorPostback(sessionDataModel, (AssessmentType)model.AssessmentType);
             }
-
-            return await ReturnErrorPostback(sessionDataModel, (AssessmentType)model.AssessmentType);
+            catch (Exception ex)
+            {
+                logger.LogInformation(ex.Message, ex);
+                throw;
+            }
         }
 
         [HttpPost]

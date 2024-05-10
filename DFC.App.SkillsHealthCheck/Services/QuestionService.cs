@@ -10,16 +10,21 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Models;
 using System.Collections.Generic;
+using DFC.App.SkillsHealthCheck.Controllers;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.App.SkillsHealthCheck.Services
 {
     public class QuestionService : IQuestionService
     {
         private ISkillsHealthCheckService _skillsHealthCheckService;
+        private readonly ILogger<QuestionService> logger;
 
-        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService)
+
+        public QuestionService(ISkillsHealthCheckService skillsHealthCheckService, ILogger<QuestionService> logger)
         {
             this._skillsHealthCheckService = skillsHealthCheckService;
+            this.logger = logger;
         }
 
         public async Task<DFC.SkillsCentral.Api.Domain.Models.SkillsDocument> GetSkillsDocument(int documentId)
@@ -363,46 +368,62 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public async Task<DFC.SkillsCentral.Api.Domain.Models.SkillsDocument> SubmitAnswer(SessionDataModel sessionDataModel, AssessmentQuestionViewModel model)
         {
-            var getDocumentResponse = await _skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId);
-
-            if (getDocumentResponse == null)
+            try
             {
-                return getDocumentResponse;
-            }
+                var getDocumentResponse = await _skillsHealthCheckService.GetSkillsDocument((int)sessionDataModel.DocumentId);
 
-            if (model is FeedBackQuestionViewModel feedBackQuestionViewModel)
-            {
-                getDocumentResponse = getDocumentResponse.UpdateSpecificDataValue(feedBackQuestionViewModel.FeedbackQuestion.DocValueTitle, model.QuestionAnswer);
-                if (model.QuestionNumber == model.ActualTotalQuestions)
+                if (getDocumentResponse == null)
                 {
-                    getDocumentResponse = getDocumentResponse.UpdateSpecificDataValue($"{feedBackQuestionViewModel.FeedbackQuestion.AssessmentType}.Complete", bool.TrueString);
+                    return new DFC.SkillsCentral.Api.Domain.Models.SkillsDocument
+                    {
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = "could not retrieve skills document",
+                        Id = 1,
+                        UpdatedAt = DateTime.Now,
+                        ReferenceCode = "false",
+                        UpdatedBy = "false",
+                    };
                 }
+
+                if (model is FeedBackQuestionViewModel feedBackQuestionViewModel)
+                {
+                    getDocumentResponse = getDocumentResponse.UpdateSpecificDataValue(feedBackQuestionViewModel.FeedbackQuestion.DocValueTitle, model.QuestionAnswer);
+                    if (model.QuestionNumber == model.ActualTotalQuestions)
+                    {
+                        getDocumentResponse = getDocumentResponse.UpdateSpecificDataValue($"{feedBackQuestionViewModel.FeedbackQuestion.AssessmentType}.Complete", bool.TrueString);
+                    }
+                }
+                else if (model is TabularAnswerQuestionViewModel tabularAnswerQuestionViewModel)
+                {
+                    var subQuestionAnswer = SkillsHealthChecksHelper.GetAnswerTotal(tabularAnswerQuestionViewModel.AnswerSelection);
+                    var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
+                    model.QuestionAnswer = subQuestionAnswer;
+                    getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
+
+                    //getDocumentResponse = getDocumentResponse.UpdateMultipleAnswerDataValues(
+                    //    subQuestionAnswer,
+                    //    tabularAnswerQuestionViewModel.QuestionNumber == tabularAnswerQuestionViewModel.ActualTotalQuestions,
+                    //    (AssessmentType)model.AssessmentType,
+                    //    tabularAnswerQuestionViewModel.QuestionAnswers.Question.Number,
+                    //    tabularAnswerQuestionViewModel.CurrentQuestion - 1,
+                    //    tabularAnswerQuestionViewModel.SubQuestions,
+                    //    assessmentQuestionOverview,
+                    //    tabularAnswerQuestionViewModel.QuestionNumber);
+                }
+                else
+                {
+                    var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
+
+                    getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
+                }
+
+                return await _skillsHealthCheckService.SaveSkillsDocument(getDocumentResponse);
             }
-            else if (model is TabularAnswerQuestionViewModel tabularAnswerQuestionViewModel)
+            catch (Exception ex)
             {
-                var subQuestionAnswer = SkillsHealthChecksHelper.GetAnswerTotal(tabularAnswerQuestionViewModel.AnswerSelection);
-                var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
-                model.QuestionAnswer = subQuestionAnswer;
-                getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
-
-                //getDocumentResponse = getDocumentResponse.UpdateMultipleAnswerDataValues(
-                //    subQuestionAnswer,
-                //    tabularAnswerQuestionViewModel.QuestionNumber == tabularAnswerQuestionViewModel.ActualTotalQuestions,
-                //    (AssessmentType)model.AssessmentType,
-                //    tabularAnswerQuestionViewModel.QuestionAnswers.Question.Number,
-                //    tabularAnswerQuestionViewModel.CurrentQuestion - 1,
-                //    tabularAnswerQuestionViewModel.SubQuestions,
-                //    assessmentQuestionOverview,
-                //    tabularAnswerQuestionViewModel.QuestionNumber);
+                logger.LogInformation(ex.Message, ex);
+                throw;
             }
-            else
-            {
-                var assessmentQuestionOverview = await GetAssessmentQuestionsOverview(sessionDataModel, (AssessmentType)model.AssessmentType, getDocumentResponse);
-
-                getDocumentResponse = UpdateSkillsDocument(getDocumentResponse, model, assessmentQuestionOverview);
-            }
-
-            return await _skillsHealthCheckService.SaveSkillsDocument(getDocumentResponse);
         }
 
         public async Task<AssessmentQuestionsOverView> GetAssessmentQuestionsOverview(SessionDataModel sessionDataModel, AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument)
