@@ -211,20 +211,35 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private async Task<IActionResult> ReturnErrorPostback(SessionDataModel sessionDataModel, AssessmentType assessmentType)
         {
             ViewData["QuestionAnswerError"] = true;
+            BodyViewModel bodyViewModel = new BodyViewModel();
 
-            var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews[string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType)];
-            var documentResponse = await questionService.GetSkillsDocument((int)sessionDataModel.DocumentId);
-            var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType, documentResponse, assessmentQuestionOverview);
-
-            var bodyViewModel = new BodyViewModel
+            if (sessionDataModel.AssessmentQuestionsOverViews != null)
             {
-                AssessmentQuestionViewModel = assessmentQuestionViewModel,
-                RightBarViewModel = await GetRightBarViewModel(assessmentType),
-            };
+                var assessmentQuestionOverview = sessionDataModel.AssessmentQuestionsOverViews[string.Format(Constants.SkillsHealthCheck.AssessmentQuestionOverviewId, assessmentType)];
+                var documentResponse = await questionService.GetSkillsDocument((int)sessionDataModel.DocumentId);
+                var assessmentQuestionViewModel = await GetAssessmentQuestionViewModel(assessmentType, documentResponse, assessmentQuestionOverview);
 
-            if (Request.Path.Value.Contains("body"))
+                bodyViewModel = new BodyViewModel
+                {
+                    AssessmentQuestionViewModel = assessmentQuestionViewModel,
+                    RightBarViewModel = await GetRightBarViewModel(assessmentType),
+                };
+
+                if (Request.Path.Value.Contains("body"))
+                {
+                    return this.NegotiateContentResult(bodyViewModel);
+                }
+            }
+            else
             {
-                return this.NegotiateContentResult(bodyViewModel);
+                bodyViewModel = new BodyViewModel
+                {
+                    AssessmentQuestionViewModel = new AssessmentQuestionViewModel()
+                    {
+                        ViewName = "error",
+                    },
+                    RightBarViewModel = await GetRightBarViewModel(assessmentType),
+                };
             }
 
             var title = Constants.SkillsHealthCheckQuestion.AssessmentTypeTitle.FirstOrDefault(t =>
@@ -297,6 +312,13 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/question/answer-elimination-question/body")]
         public async Task<IActionResult> AnswerEliminationQuestion([FromForm] EliminationAnswerQuestionViewModel model)
         {
+
+            if (model.AssessmentType == null)
+            {
+                model.AssessmentType = AssessmentType.Verbal;
+                return await ReturnErrorPostback(new SessionDataModel(), (AssessmentType)model.AssessmentType);
+            }
+
             try
             {
                 var sessionDataModel = await GetSessionDataModel();
