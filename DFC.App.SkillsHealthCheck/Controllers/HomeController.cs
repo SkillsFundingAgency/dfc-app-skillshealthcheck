@@ -159,26 +159,26 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             return this.NegotiateContentResult(viewModel);
         }
 
-        //[HttpGet]
-        //[Route("skills-health-check/home/reload")]
-        //[Route("skills-health-check/home/reload/body")]
-        //public async Task<ActionResult> Reload(string sessionId)
-        //{
-        //    logger.LogInformation($"{nameof(Reload)} has been called");
+        [HttpGet]
+        [Route("skills-health-check/home/reload")]
+        [Route("skills-health-check/home/reload/body")]
+        public async Task<ActionResult> Reload(string sessionId)
+        {
+            logger.LogInformation($"{nameof(Reload)} has been called");
 
-        //    var response = skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
-        //    if (response.Success && response.DocumentId > 0)
-        //    {
-        //        var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-        //        sessionStateModel.DocumentId = response.DocumentId;
-        //        await SetSessionStateAsync(sessionStateModel);
-        //        logger.LogInformation($"{nameof(Reload)} was successful");
-        //        return Redirect(YourAssessmentsURL);
-        //    }
+            var response = await skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
+            if (response.Id > 0)
+            {
+                var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
+                sessionStateModel.DocumentId = (long)response.Id;
+                await SetSessionStateAsync(sessionStateModel);
+                logger.LogInformation($"{nameof(Reload)} was successful");
+                return Redirect(YourAssessmentsURL);
+            }
 
-        //    logger.LogError($"{nameof(Reload)} failed with message: {response.ErrorMessage}");
-        //    return Redirect("/alerts/500?errorcode=saveProgressResponse");
-        //}
+            logger.LogError($"{nameof(Reload)} failed for session id: {response.ReferenceCode}");
+            return Redirect("/alerts/500?errorcode=saveProgressResponse");
+        }
 
         [HttpPost]
         [Route("skills-health-check/return-to-assessment/body")]
