@@ -166,17 +166,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             logger.LogInformation($"{nameof(Reload)} has been called");
 
-            var response = skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
-            if (response.IsCompletedSuccessfully && response.Id > 0)
+            var response = await skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
+            if (response.Id > 0)
             {
                 var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                sessionStateModel.DocumentId = response.Id;
+                sessionStateModel.DocumentId = (long)response.Id;
                 await SetSessionStateAsync(sessionStateModel);
                 logger.LogInformation($"{nameof(Reload)} was successful");
                 return Redirect(YourAssessmentsURL);
             }
 
-            logger.LogError($"{nameof(Reload)} failed with message: {response.Exception}");
+            logger.LogError($"{nameof(Reload)} failed for session id: {response.ReferenceCode}");
             return Redirect("/alerts/500?errorcode=saveProgressResponse");
         }
 
