@@ -69,6 +69,10 @@ internal class SkillsDocumentMigrationScript
                             }
                             writer.WriteLine(scriptEnd);
                             writer.WriteLine();
+                            if (parser.EndOfData)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
