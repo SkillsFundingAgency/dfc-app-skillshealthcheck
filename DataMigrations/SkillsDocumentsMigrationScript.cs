@@ -34,9 +34,7 @@ internal class SkillsDocumentMigrationScript
             {
                 parser.SetDelimiters(new string[] { "," });
 
-                //skips first row/line of column names
-                parser.ReadLine();
-
+                
 
                 int batchCounter = 0;
                 while (!parser.EndOfData)
