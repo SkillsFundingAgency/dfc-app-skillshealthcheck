@@ -17,23 +17,11 @@
     "cosmosDbKey": {
       "value": "cosmosDbKey"
     },
-    "aspSize": {
-      "value": "2"
-    },
-    "aspTier": {
-      "value": "Standard"
-    },
-    "aspInstances": {
-      "value": 2
-    },
-    "clientAffinity": {
-      "value": false
-    },
-    "Environment": {
-      "value": "Environment"
-    },
     "CosmosDbResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
+    },
+    "environment": {
+      "value": "Environment"
     },
     "appDatabaseNeedsCreation": {
       "value": true
@@ -83,6 +71,9 @@
     "ApiName": {
       "value": "skillshealthcheck"
     },
+        "ApiUrl": {
+            "value": "https://localhost"
+        },
     "ExceptionCountThreshold": {
       "value": "0"
     },
@@ -145,6 +136,15 @@
     },
     "ContentMode": {
       "value": "PUBLISHED"
+    },
+    "SqlElasticPoolName": {
+        "value": "an-elastic-pool"
+    },
+    "SqlServerName": {
+        "value": "a-sql-server"
+    },
+    "SqlResourceGroupName": {
+        "value": "dfc-dev-shared-rg"
     }
   }
 }

@@ -1,6 +1,8 @@
 variables:
   ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates'
   SolutionBaseName: "DFC.App.SkillsHealthCheck"
+  SolutionBaseNameApi: "DfE.SkillsCentral.Api.Presentation.WebApi"
+  SolutionBaseNameDatabase: "DfE.SkillsCentral.Api.Infrastructure.Database"
   BuildPlatform: "any cpu"
   BuildConfiguration: "release"
 
@@ -10,7 +12,7 @@ resources:
     - repository: dfc-devops
       type: github
       name: SkillsFundingAgency/dfc-devops
-      ref: refs/tags/v1.15.0
+      ref: refs/tags/v1.16.0
       endpoint: "GitHub (ESFA)"
 
 pool:
@@ -56,7 +58,7 @@ stages:
               artifactName: ${{ variables.SolutionBaseName }}.OpenAPIDocs
 
           - task: PublishPipelineArtifact@1
-            displayName: Publish API import script to Pipeline Artifact
+            displayName: Publish Powershell scripts to Pipeline Artifact
             inputs:
               targetPath: "$(System.DefaultWorkingDirectory)/Resources/Scripts"
               artifactName: ${{ variables.SolutionBaseName }}.Scripts
@@ -69,15 +71,147 @@ stages:
 
       - job: BuildDotNetCore
         displayName: Build-DotNetCore
-        steps:
-          - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-unit-integration-sonar.yml@dfc-devops
-            parameters:
-              SolutionBaseName: $(SolutionBaseName)
-              BuildPlatform: $(BuildPlatform)
-              BuildConfiguration: $(BuildConfiguration)
-              PublishWebApp: true
-              TestSuffix: UnitTests
-              IntegrationTestSuffix: IntegrationTests
+        steps:          
+        - task: PowerShell@2
+          name: DownloadTestBranchFeaturesScript
+          displayName: 'Download Test-BranchFeatures script'
+          inputs:
+            targetType: 'inline'
+            script: Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Test-BranchFeatures.ps1' -OutFile '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
+
+        - task: PowerShell@2
+          name: ExecuteTestBranchFeaturesScript
+          displayName: Test-BranchFeatures
+          inputs:
+            targetType: 'filePath'
+            filePath: '$(System.DefaultWorkingDirectory)\Test-BranchFeatures.ps1'
+
+        - task: UseDotNet@2
+          displayName: 'Use .NET Core sdk 6.x'
+          inputs:
+            version: 6.x
+            IncludePreviewVersions: false
+            installationPath: $(Agent.ToolsDirectory)/dotnet
+
+        - task: NuGetToolInstaller@1
+          displayName: 'Install NuGet'
+          inputs:
+            versionSpec: 6.x
+
+        - task: gitversion/setup@0
+          displayName: Install GitVersion
+          inputs:
+            versionSpec:  5.11.x
+
+        - task: gitversion/execute@0
+          displayName: Run GitVersion
+          inputs:
+            useConfigFile: true
+            configFilePath: Resources/AzureDevops/GitVersion.yml
+
+        - task: SonarCloudPrepare@1
+          displayName: 'Prepare analysis on SonarCloud'
+          condition: and(succeeded(), variables['ShouldRunSonarCloud'], 'True')
+          inputs:
+            SonarCloud: 'DFC-SonarCloud'
+            organization: educationandskillsfundingagency
+            projectKey: 'SonarCloud.SkillsFundingAgency.$(Build.DefinitionName)'
+            projectName: $(Build.DefinitionName)
+
+        - task: DotNetCoreCLI@2
+          displayName: 'restore nuget packages'
+          inputs:
+            command: 'restore'
+            projects: '**\*.csproj'
+            feedsToUse: 'select'
+            vstsFeed: 'NationalCareersService'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet publish'
+          inputs:
+            command: 'publish'
+            projects: '$(SolutionBaseName)\$(SolutionBaseName).csproj'
+            arguments: '-o $(build.artifactstagingdirectory)\Artifact\$(SolutionBaseName)\DeploymentPackages\  -c $(BuildConfiguration)'
+            publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
+
+        - task: SonarCloudAnalyze@1
+          displayName: 'Run Code Analysis'
+          condition: and(succeeded(), variables['ShouldRunSonarCloud'], 'True')
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: $(SolutionBaseName)'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\Artifact\$(SolutionBaseName)\DeploymentPackages
+            artifactName: $(SolutionBaseName).DeploymentPackages
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentatation.WebApi: dotnet publish'
+          inputs:
+            command: 'publish'
+            projects: 'DfE.SkillsCentral.Api\Presentation\DfE.SkillsCentral.Api.Presentation.WebApi\DfE.SkillsCentral.Api.Presentation.WebApi.csproj'
+            arguments: '-o $(build.artifactstagingdirectory)\Artifact\DfE.SkillsCentral.Api.Presentation.WebApi\DeploymentPackages\  -c $(BuildConfiguration)'
+            publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Presentation.WebApi'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\Artifact\DfE.SkillsCentral.Api.Presentation.WebApi\DeploymentPackages
+            artifactName: $(SolutionBaseNameApi).DeploymentPackages
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Infrastructure.Database: dotnet build'
+          inputs:
+            command: 'build'
+            projects: 'DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.sqlproj'
+            arguments: '-o $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database  -c $(BuildConfiguration)'
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: DfE.SkillsCentral.Api.Infrastructure.Database'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database
+            artifactName: $(SolutionBaseNameDatabase).DeploymentPackages
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: '$(SolutionBaseName)*UnitTests\$(SolutionBaseName)*UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.App.SkillsCentral: dotnet Integration Tests'
+          inputs:
+            command: test
+            projects: '$(SolutionBaseName)*IntegrationTests\$(SolutionBaseName)*IntegrationTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Presentatation: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api.Presentation.UnitTests\DfE.SkillsCentral.Api.Presentation.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Application.Services: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Unit\DfE.SkillsCentral.Api.Application.Services.UnitTests\DfE.SkillsCentral.Api.Application.Services.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Infrastructure: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Unit\DfE.SkillsCentral.Api.Infrastructure.UnitTests\DfE.SkillsCentral.Api.Infrastructure.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+        - task: DotNetCoreCLI@2
+          displayName: 'DfE.SkillsCentral.Api.Domain: dotnet Unit Tests'
+          inputs:
+            command: test
+            projects: 'DfE.SkillsCentral.Api\Tests\Unit\DfE.SkillsCentral.Api.Domain.UnitTests\DfE.SkillsCentral.Api.Domain.UnitTests.csproj'
+            arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
   - stage: DeployToLab
     #condition: and(eq(dependencies.Build.result,'Succeeded'), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))) #standard condition
@@ -105,11 +239,14 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: LAB_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -119,6 +256,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -152,11 +290,14 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: DEV_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -166,6 +307,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -198,11 +340,14 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: SIT_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -212,6 +357,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -245,11 +391,14 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PP_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -259,6 +408,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"
@@ -291,11 +441,14 @@ stages:
           ResourceGroup: $(ResourceGroup)
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+          ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PRD_AppSkillsHealthCheck
           AppSharedResourceGroup: $(AppSharedResourceGroup)
           appSharedCosmosDBName: $(appSharedCosmosDBName)
           AppServiceName: "$(AppServiceName)"
+          ApiAppServiceName: "$(ApiAppServiceName)"
           SharedResourceGroupName: $(SharedResourceGroupName)
           ApimServiceName: $(ApimServiceName)
           ApimProductInstanceName: $(ApimProductInstanceName)
@@ -305,6 +458,7 @@ stages:
           ApiDefinitionPath: $(ApiDefinitionPath)
           APIMPolicyPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.ApimPolicies/"
           ApimImportScript: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts/Import-ApimOpenApiDefinitionFromFile.ps1"
+          PSScriptPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Scripts"
           SpecificationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.OpenApiDocs"
           PageRegistrationPath: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.PageRegistrations/"
           PageRegistrationFile: "$(PageRegistrationFile)"

@@ -263,3 +263,19 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/DFC.App.SkillsHealthCheck.Data/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Data.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.IntegrationTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.CacheContentService/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.CacheContentService.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.GovNotify/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.GovNotify.UnitTests/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.Services.SkillsCentral/Properties/launchSettings.json
+/DFC.App.SkillsHealthCheck.UnitTests/Properties/launchSettings.json
+/DfE.SkillsCentral.Api/Tests/Integration/DfE.SkillsCentral.Api.Application.Services.IntegrationTests/appsettings.json
+/DfE.SkillsCentral.Api/Application/DfE.SkillsCentral.Api.Application.DocumentFormatter/DocumentsFormatters/Aspose.Words.lic
+/DfE.SkillsCentral.Api/Application/DfE.SkillsCentral.Api.Application.DocumentFormatter/DocumentsFormatters/Aspose.Words.lic
+/DfE.SkillsCentral.Api/Presentation/DfE.SkillsCentral.Api.Presentation.WebApi/Properties/PublishProfiles/dfc-dev-app-skillscentral-api-as - Zip Deploy.pubxml
+/DfE.SkillsCentral.Api/Presentation/DfE.SkillsCentral.Api.Presentation.WebApi/Properties/PublishProfiles/dfc-sit-app-skillscentral-api-as - Zip Deploy.pubxml
+/DfE.SkillsCentral.Api/Presentation/DfE.SkillsCentral.Api.Presentation.WebApi/Properties/ServiceDependencies/dfc-sit-app-skillscentral-api-as - Zip Deploy/profile.arm.json
+/DfE.SkillsCentral.Api/Presentation/DfE.SkillsCentral.Api.Presentation.WebApi/Properties/ServiceDependencies/dfc-dev-app-skillscentral-api-as - Zip Deploy/profile.arm.json

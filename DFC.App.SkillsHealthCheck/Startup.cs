@@ -5,7 +5,8 @@ using DFC.App.SkillsHealthCheck.Services;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
-using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Services;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI;
+using DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.Services;
 using DFC.Common.SharedContent.Pkg.Netcore;
 using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure;
 using DFC.Common.SharedContent.Pkg.Netcore.Infrastructure.Strategy;
@@ -26,7 +27,8 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SkillsDocumentService;
+using RestSharp;
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
@@ -104,9 +106,13 @@ namespace DFC.App.SkillsHealthCheck
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
+            services.Configure<SkillsCentralSettings>(configuration.GetSection(nameof(SkillsCentralSettings)));
+
             var cosmosRetryOptions = new RetryOptions { MaxRetryAttemptsOnThrottledRequests = 20, MaxRetryWaitTimeInSeconds = 60 };
             var cosmosDbConnectionSessionState = configuration.GetSection(CosmosDbSessionStateConfigAppSettings).Get<CosmosDbConnection>();
             services.AddSessionStateServices<SessionDataModel>(cosmosDbConnectionSessionState, env.IsDevelopment());
+            services.AddSingleton<RestClient>(new RestClient(new RestClientOptions()));
+
             services.AddApplicationInsightsTelemetry();
             services.AddHttpContextAccessor();
             services.AddAutoMapper(typeof(Startup).Assembly);
@@ -126,12 +132,6 @@ namespace DFC.App.SkillsHealthCheck
 
         private void RegisterSkillsHealthCheckServices(IServiceCollection services)
         {
-            services.AddTransient<ISkillsCentralService>(sp =>
-            {
-                var svc = new SkillsCentralServiceClient();
-                svc.ChannelFactory.Endpoint.Address = new EndpointAddress(configuration.GetValue<string>("SkillsCentralServiceEndpoint"));
-                return svc;
-            });
             services.AddTransient<ISkillsHealthCheckService, SkillsHealthCheckService>();
             services.AddTransient<IYourAssessmentsService, YourAssessmentsService>();
             services.AddTransient<IQuestionService, QuestionService>();
