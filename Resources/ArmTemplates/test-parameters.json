@@ -145,6 +145,12 @@
     },
     "SqlResourceGroupName": {
         "value": "dfc-dev-shared-rg"
+    },
+    "SqlDatabaseTier": {
+      "value": "Standard"
+    },
+    "SqlDatabaseSize": {
+      "value": "1"
     }
   }
 }
