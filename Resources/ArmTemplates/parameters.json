@@ -152,6 +152,12 @@
     },
     "SqlResourceGroupName": {
         "value": "__SharedResourceGroupName__"
+    },
+    "SqlDatabaseTier": {
+      "value": "__SqlDatabaseTier__"
+    },
+    "SqlDatabaseSize": {
+      "value": "__SqlDatabaseSize__"
     }
   }
 }

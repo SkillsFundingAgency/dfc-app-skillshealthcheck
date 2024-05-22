@@ -151,6 +151,16 @@
     },
     "SqlResourceGroupName": {
       "type": "string"
+    },
+    "SqlDatabaseTier": {
+        "type": "string",
+        "allowedValues": [
+            "Standard",
+            "Premium"
+        ]
+    },
+    "SqlDatabaseSize": {
+        "type": "string"
     }
   },
     "variables": {
@@ -170,7 +180,7 @@
         "cosmosDBSessionStateCollectionName": "session-state",
         "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]",
         "DatabaseName": "[concat(variables('apiResourcePrefix'), '-db')]",
-        "DatabaseTier": "[if(equals(parameters('SqlElasticPoolName'), ''), 'Standard', 'ElasticPool')]"
+        "DatabaseTier": "[if(equals(parameters('SqlElasticPoolName'), ''), parameters('SqlDatabaseTier'), 'ElasticPool')]"
     },
     "resources": [
         {
@@ -758,6 +768,9 @@
                     },
                     "databaseTier": {
                         "value": "[variables('DatabaseTier')]"
+                    },
+                    "databaseSize": {
+                        "value": "[parameters('SqlDatabaseSize')]"
                     }
                 }
             }

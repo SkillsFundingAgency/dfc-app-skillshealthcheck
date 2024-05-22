@@ -59,3 +59,7 @@ variables:
     value: 7200
   - name: ContentMode
     value: PUBLISHED
+  - name: SqlDatabaseTier
+    value: Standard
+  - name: SqlDatabaseSize
+    value: 1
