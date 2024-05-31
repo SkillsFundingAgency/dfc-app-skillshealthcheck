@@ -8,6 +8,16 @@
     "appSharedStorageAccountName": {
       "type": "string"
     },
+    "appServiceName": {
+        "type": "string"
+    },
+    "apiAppServiceName": {
+        "type": "string"
+    },
+    "appServicePlanSuffix": {
+        "type": "string",
+        "defaultValue": ""
+    },
     "CosmosDbResourceGroup": {
       "type": "string"
     },
@@ -165,7 +175,7 @@
   },
     "variables": {
         "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
-        "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
+        "appServicePlanName": "[concat(variables('resourcePrefix'), parameters('appServicePlanSuffix'), '-asp')]",
         "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
         "cosmosDbDatabaseName": "dfc-app-skillshealthcheck",
@@ -173,8 +183,6 @@
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillshealthcheck'))]",
         "apiresourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillscentral'))]",
-        "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
-        "apiAppName": "[concat(variables('apiResourcePrefix'), '-api-as')]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
         "apiAppInsightsName": "[concat(variables('apiresourcePrefix'), '-api-ai')]",
         "cosmosDBSessionStateCollectionName": "session-state",
@@ -264,7 +272,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "[variables('WebAppName')]",
+            "name": "[parameters('appServiceName')]",
             "type": "Microsoft.Resources/deployments",
           "dependsOn": [
             "[variables('webAppInsightsName')]"
@@ -277,7 +285,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('webAppName')]"
+                        "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[variables('appServicePlanName')]"
@@ -507,7 +515,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "[variables('apiAppName')]",
+            "name": "[parameters('apiAppServiceName')]",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
                 "[variables('apiAppInsightsName')]"
@@ -521,7 +529,7 @@
 
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('apiAppName')]"
+                        "value": "[parameters('apiAppServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[variables('appServicePlanName')]"
