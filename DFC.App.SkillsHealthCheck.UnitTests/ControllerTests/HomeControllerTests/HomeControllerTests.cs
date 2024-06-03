@@ -19,7 +19,6 @@ using Xunit;
 
 namespace DFC.App.SkillsHealthCheck.UnitTests.ControllerTests.HomeControllerTests
 {
-
     [Trait("Category", "Home Controller Unit Tests")]
     public class HomeControllerTests : BaseHomeControllerTests
     {

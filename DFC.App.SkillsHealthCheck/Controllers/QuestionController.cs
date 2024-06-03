@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
@@ -14,13 +13,16 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Question;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AppConstants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
+
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
@@ -29,25 +31,26 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class QuestionController : BaseController<QuestionController>
     {
         public const string PageTitle = "Question";
-
+        private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<QuestionController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IQuestionService questionService;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
+        private string status;
 
         public QuestionController(
             ILogger<QuestionController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions,
-            IQuestionService questionService)
+            ISharedContentRedisInterface sharedContentRedis,
+            IQuestionService questionService,
+            IConfiguration configuration)
             : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this.cmsApiClientOptions = cmsApiClientOptions;
+            this.sharedContentRedis = sharedContentRedis;
             this.questionService = questionService;
+            status = configuration.GetSection("contentMode:contentMode").Get<string>();
         }
 
         [HttpGet]
@@ -132,12 +135,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<RightBarViewModel> GetRightBarViewModel(AssessmentType assessmentType)
         {
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            if (string.IsNullOrEmpty(status))
             {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                    .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+                status = "PUBLISHED";
             }
+
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status);
 
             var rightBarViewModel = new RightBarViewModel
             {
@@ -146,7 +149,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             if (speakToAnAdviser != null)
             {
-                rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+                rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
 
             return rightBarViewModel;

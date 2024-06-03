@@ -23,7 +23,7 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                 DocumentId = 1,
                 AssessmentQuestionsOverViews = new Dictionary<string, AssessmentQuestionsOverView>()
                 {
-                    {"AssessmentQuestionOverviewId_SkillAreas", new AssessmentQuestionsOverView() }
+                    { "AssessmentQuestionOverviewId_SkillAreas", new AssessmentQuestionsOverView() }
                 }
             };
 

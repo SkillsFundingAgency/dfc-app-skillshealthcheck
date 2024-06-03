@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using Moq;
 
 using DFC.App.SkillsHealthCheck.ViewModels;
-
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using FakeItEasy;
-
 using FluentAssertions;
-
+using Moq;
 using Xunit;
 
 using static DFC.App.SkillsHealthCheck.IntegrationTests.Helper;

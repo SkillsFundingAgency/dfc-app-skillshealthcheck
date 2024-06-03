@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using DFC.App.SkillsHealthCheck.Data.Contracts;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.GovNotify;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Interfaces;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
 using DFC.Compui.Cosmos.Contracts;
 using DFC.Compui.Sessionstate;
 using DFC.SkillsCentral.Api.Domain.Models;
@@ -21,6 +20,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Moq;
 
 namespace DFC.App.SkillsHealthCheck.IntegrationTests
 {
@@ -29,22 +29,19 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
     {
         public CustomWebApplicationFactory()
         {
-            this.MockCosmosRepo = A.Fake<ICosmosRepository<SharedContentItemModel>>();
-            FakeWebhookService = A.Fake<IWebhooksService>();
+            this.MockSharedContentRedis = new Mock<ISharedContentRedisInterface>();
             FakeSessionStateService = A.Fake<ISessionStateService<SessionDataModel>>();
             FakeGovNotifyService = A.Fake<IGovNotifyService>();
             FakeSkillsHealthCheckService = A.Fake<ISkillsHealthCheckService>();
         }
 
-        internal ICosmosRepository<SharedContentItemModel> MockCosmosRepo { get; }
+        public Mock<ISharedContentRedisInterface> MockSharedContentRedis { get; set; }
 
         internal ISessionStateService<SessionDataModel> FakeSessionStateService { get; }
 
         internal IGovNotifyService FakeGovNotifyService { get; }
 
         internal ISkillsHealthCheckService FakeSkillsHealthCheckService { get; }
-
-        internal IWebhooksService FakeWebhookService { get; }
 
         internal new HttpClient CreateClient()
         {
@@ -94,10 +91,8 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                 var hostedServices = services.Where(descriptor =>
                     descriptor.ServiceType == typeof(IHostedService) ||
                     descriptor.ServiceType == typeof(ICosmosRepository<>) ||
-                    descriptor.ServiceType == typeof(IWebhooksService) ||
                     descriptor.ServiceType == typeof(ISessionStateService<>) ||
                     descriptor.ServiceType == typeof(IGovNotifyService) ||
-                    descriptor.ServiceType == typeof(IWebhooksService) ||
                     descriptor.ServiceType == typeof(ISkillsHealthCheckService))
 
                 .ToList();
@@ -106,11 +101,10 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests
                     services.Remove(service);
                 }
 
-                services.AddTransient(sp => MockCosmosRepo);
-                services.AddTransient(sp => FakeWebhookService);
                 services.AddTransient(sp => FakeSessionStateService);
                 services.AddTransient(sp => FakeGovNotifyService);
                 services.AddTransient(sp => FakeSkillsHealthCheckService);
+                services.AddScoped<ISharedContentRedisInterface>(_ => MockSharedContentRedis.Object);
             });
         }
     }

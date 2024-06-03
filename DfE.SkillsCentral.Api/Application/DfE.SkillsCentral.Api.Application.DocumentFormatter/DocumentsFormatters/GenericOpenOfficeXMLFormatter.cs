@@ -1,5 +1,7 @@
 ﻿
 
+using DfE.SkillsCentral.Api.Application.DocumentFormatter.Resources;
+
 namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 {
     using System;
@@ -34,50 +36,31 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
         private static byte[] GetWordDocumentTemplate(string templateName)
         {
-            byte[] result;
-            if (Directory.Exists("Templates"))
-            {
-                string filePath = Path.Combine("Templates", templateName);
-                if (File.Exists(filePath))
-                {
-                    result = File.ReadAllBytes(filePath);
-                }
-                else
-                {
-                    throw new Exception(string.Format("Unable to find the word template. Path {0}", filePath));
-                }
-            }
-            else
-            {
-                throw new Exception(string.Format("Unable to find the word document configuration directory. Path {0}", "Templates"));
-            }
+            var bytes = ResourceHelper.GetResource(templateName);
 
-            return result;
+            return bytes.Length == 0
+                ? throw new Exception($"Unable to load {templateName} from local resources")
+                : bytes;
         }
 
         private static XslTransformation GetXslTransformationObjects(string xsltTemplateName, IJobFamiliesRepository jobFamiliesRepository)
         {
-            XslTransformation result = new XslTransformation();
-            if (Directory.Exists("Templates"))
-            {
-                string filePath = Path.Combine("Templates", xsltTemplateName + ".xsl");
-                string extensionObjectConfigurationFilePath = Path.Combine("Templates", xsltTemplateName + "_Extensions.txt");
+            var result = new XslTransformation();
+            var bytes = ResourceHelper.GetResource("SHCFullReport.xsl");
 
-                if (File.Exists(filePath) && File.Exists(extensionObjectConfigurationFilePath))
-                {
-                    result.TransformationFile = GetTransformationFileObjectFromByteArr(File.ReadAllBytes(filePath));
-                    var xsltArgs = new XsltArgumentList();
-                    xsltArgs.AddExtensionObject("urn:https://nationalcareers.service.gov.uk", new SkillsReportXsltExtension(jobFamiliesRepository));
-                    result.TransformationArgumentList = xsltArgs;
-                }
-                else
-                {
-                    throw new Exception(string.Format("Unable to find the XSLT file. Path {0} Path2: {1}", filePath, extensionObjectConfigurationFilePath));
-                }
+            if (bytes.Length > 0)
+            {
+                var xsltTemplate = Encoding.UTF8.GetString(bytes);
+                result.TransformationFile =
+                    GetTransformationFileObjectFromByteArr(Encoding.UTF8.GetBytes(xsltTemplate));
+                var xsltArgs = new XsltArgumentList();
+                xsltArgs.AddExtensionObject("urn:https://nationalcareers.service.gov.uk",
+                    new SkillsReportXsltExtension(jobFamiliesRepository));
+                result.TransformationArgumentList = xsltArgs;
             }
             else
             {
-                throw new Exception(string.Format("Unable to find the XSLT configuration directory. Path {0}", "Templates"));
+                throw new Exception("Unable to load XSLT Template from resources");
             }
 
             return result;
@@ -94,11 +77,10 @@ namespace DfE.SkillsCentral.Api.Application.DocumentsFormatters
 
                 mem.Seek(0, SeekOrigin.Begin);
                 XmlReader r = XmlReader.Create(mem);
-#if DEBUG
-                transformationFile = new XslCompiledTransform(true);
-#else
-                        transformationFile = new XslCompiledTransform(false);
-#endif
+
+
+                transformationFile = new XslCompiledTransform(false);
+
                 transformationFile.Load(r);
             }
 

@@ -12,6 +12,9 @@ internal class SkillsDocumentMigrationScript
     //input filename(s) must match the strings below
     public const string SkillsDocuments = "SkillsDocuments";
     public const string CreatedBy = "MigrationTool";
+    public const string scriptStart = "SET IDENTITY_INSERT SkillsDocuments ON;\r\n \r\n;WITH SkillsDocumentsCte AS (\r\n\tSELECT * FROM (VALUES";
+    public const string scriptEnd = ") AS SkillsDocumentsTemp(Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ))\r\n \r\nMERGE SkillsDocuments AS target\r\nUSING (\r\n\tSELECT *\r\n\tFROM SkillsDocumentsCte\r\n) AS source\r\nON target.Id = source.Id\r\nWHEN MATCHED\r\n\tTHEN UPDATE SET\r\n\t\ttarget.CreatedAt = source.CreatedAt,\r\n\t\ttarget.CreatedBy = source.CreatedBy,\r\n\t\ttarget.UpdatedAt = source.UpdatedAt,\r\n\t\ttarget.UpdatedBy = source.UpdatedBy,\r\n\t\ttarget.DataValueKeys = source.DataValueKeys,\r\n\t\ttarget.ReferenceCode = source.ReferenceCode\r\nWHEN NOT MATCHED\r\n\tTHEN INSERT (Id, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy, DataValueKeys, ReferenceCode ) VALUES (\r\n\t\tsource.Id,\r\n\t\tsource.CreatedAt,\r\n\t\tsource.CreatedBy,\r\n\t\tsource.UpdatedAt,\r\n\t\tsource.UpdatedBy,\r\n\t\tsource.DataValueKeys,\r\n\t\tsource.ReferenceCode\r\n\t);\r\n \r\nSET IDENTITY_INSERT SkillsDocuments OFF;";
+    public const int counterMax = 10000;
 
 
 
@@ -31,27 +34,46 @@ internal class SkillsDocumentMigrationScript
             {
                 parser.SetDelimiters(new string[] { "," });
 
-                //skips first row/line of column names
-                parser.ReadLine();
+                
 
-
-                using (StreamWriter writer = new StreamWriter($"INSERT_{input}.sql"))
-                    while (!parser.EndOfData)
+                int batchCounter = 0;
+                while (!parser.EndOfData)
+                {
+                    batchCounter++;
+                    using (StreamWriter writer = new StreamWriter($"INSERT_{input}_{batchCounter}.sql"))
                     {
-                        string[] fields = parser.ReadFields();
+                        for (var index = 0; index < 5; index++)
+                        {
+                            int counter = 0;
 
-                        string jsonDataValues = ConvertXmlIntoJson(fields[5]);
+                            writer.WriteLine(scriptStart);
+                            while (counter < counterMax && !parser.EndOfData)
+                            {
+                                counter++;
 
-                        string modifiedJson = RemovedRedundantSections(jsonDataValues);
+                                string[] fields = parser.ReadFields();
 
+                                string jsonDataValues = ConvertXmlIntoJson(fields[5]);
 
-                        var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
+                                string modifiedJson = RemovedRedundantSections(jsonDataValues);
 
-                        var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
-                        Console.WriteLine(parser.LineNumber);
-                        writer.WriteLine($"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])}),");
+                                var jsonWithoutTopLevelDataValues = RemoveTopLevelDataValues(modifiedJson);
 
+                                var result = RemoveMinusOnes(jsonWithoutTopLevelDataValues);
+
+                                Console.WriteLine(parser.LineNumber);
+
+                                WriteToFile(parser, counter, writer, fields, result);
+                            }
+                            writer.WriteLine(scriptEnd);
+                            writer.WriteLine();
+                            if (parser.EndOfData)
+                            {
+                                break;
+                            }
+                        }
                     }
+                }
 
             }
         }
@@ -59,6 +81,16 @@ internal class SkillsDocumentMigrationScript
         {
             Console.WriteLine(e.Message);
         }
+    }
+
+    private static void WriteToFile(TextFieldParser parser, int counter, StreamWriter writer, string[] fields, string result)
+    {
+        string writeString = $"({(fields[0])}, {SurroundWithCastAsDatetime(fields[1])}, {N(CreatedBy)}, {SurroundWithCastAsDatetime(fields[3])}, {N(fields[4])}, {N(result)}, {N(fields[6])})";
+        if (counter == counterMax || parser.EndOfData)
+        {
+            writer.WriteLine(writeString);
+        }
+        else { writer.WriteLine(writeString + ","); }
     }
 
     public static string RemoveMinusOnes(string input)
@@ -152,16 +184,16 @@ internal class SkillsDocumentMigrationScript
     public static string SurroundWithCastAsDatetime(string input)
     {
         if (string.IsNullOrEmpty(input) || input == "NULL")
-         return "NULL"; 
+            return "NULL";
         else
-         return $"CAST(N'{input}' AS DateTime)";
+            return $"CAST(N'{input}' AS DateTime)";
     }
 
-    
+
 
     public static string N(string input)
     {
-        if (string.IsNullOrEmpty(input)|| input == "NULL") 
+        if (string.IsNullOrEmpty(input)|| input == "NULL")
         { return "NULL"; }
         else
         { return $"'{input}'"; }
@@ -188,7 +220,7 @@ internal class SkillsDocumentMigrationScript
 
     }
 
-   
+
 
     public static string ConvertXmlIntoJson(string input)
     {

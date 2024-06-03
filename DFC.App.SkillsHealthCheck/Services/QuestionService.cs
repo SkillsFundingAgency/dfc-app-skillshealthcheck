@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Models;
 using System.Collections.Generic;
+using DFC.SkillsCentral.Api.Domain.Models;
 
 namespace DFC.App.SkillsHealthCheck.Services
 {
@@ -19,7 +20,7 @@ namespace DFC.App.SkillsHealthCheck.Services
 
         public QuestionService(ISkillsHealthCheckService skillsHealthCheckService)
         {
-            _skillsHealthCheckService = skillsHealthCheckService;
+            this._skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public async Task<DFC.SkillsCentral.Api.Domain.Models.SkillsDocument> GetSkillsDocument(int documentId)
@@ -354,14 +355,6 @@ namespace DFC.App.SkillsHealthCheck.Services
             return viewModel;
         }
 
-        /// <summary>
-        /// Gets the assessment questions overview.
-        /// </summary>
-        /// <param name="level">The level.</param>
-        /// <param name="accessibility">The accessibility.</param>
-        /// <param name="assessmentType">Type of the assessment.</param>
-        /// <param name="activeSkillsDocument">The active skills document.</param>
-        /// <returns></returns>
         private async Task<AssessmentQuestionsOverView> GetAssessmentQuestionsOverview(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument activeSkillsDocument)
         {
             var assessmentQuestionOverview = new AssessmentQuestionsOverView {AssessmentType = assessmentType};

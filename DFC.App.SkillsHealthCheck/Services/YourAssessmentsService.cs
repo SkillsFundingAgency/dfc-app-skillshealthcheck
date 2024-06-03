@@ -23,8 +23,8 @@ namespace DFC.App.SkillsHealthCheck.Services
             ISkillsHealthCheckService skillsHealthCheckService,
             IQuestionService questionService)
         {
-            _questionService = questionService;
-            _skillsHealthCheckService = skillsHealthCheckService;
+            this.questionService = questionService;
+            this._skillsHealthCheckService = skillsHealthCheckService;
         }
 
         public DocumentFormatter GetFormatter(DownloadType downloadType)
@@ -139,7 +139,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         };
 
         // TODO: can we avoid having this service here?
-        private IQuestionService _questionService;
+        private IQuestionService questionService;
 
         //private async Task CheckAssessmentTypeDataValueAndCorrect(SessionDataModel sessionDataModel, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType assessmentType, string assessmentCompleteTitle)
         //{

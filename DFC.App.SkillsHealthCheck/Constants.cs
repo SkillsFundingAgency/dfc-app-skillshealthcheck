@@ -272,12 +272,12 @@ namespace DFC.App.SkillsHealthCheck
         }
 
         /// <summary>
-        /// Skills health check question
+        /// Skills health check question.
         /// </summary>
         public static class SkillsHealthCheckQuestion
         {
             /// <summary>
-            /// The assessment type title
+            /// The assessment type title.
             /// </summary>
             public static Dictionary<string, string> AssessmentTypeTitle = new Dictionary<string, string>()
             {
