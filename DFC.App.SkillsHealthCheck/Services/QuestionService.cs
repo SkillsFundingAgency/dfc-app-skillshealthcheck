@@ -28,11 +28,15 @@ namespace DFC.App.SkillsHealthCheck.Services
             return await _skillsHealthCheckService.GetSkillsDocument(documentId);
         }
 
-        public async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
+        public async Task<AssessmentQuestionViewModel> GetAssessmentQuestionViewModel(AssessmentType assessmentType, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview, int questionNumber)
         {
             var feedbackQuestionNext = false;
+            if (questionNumber == 0)
+            {
+                questionNumber = GetNextQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
+            }
 
-            var questionNumber = GetQuestionNumber(assessmentType, assessmentQuestionOverview, skillsDocument, ref feedbackQuestionNext);
+            feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber && questionNumber <= assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback;
 
             if (feedbackQuestionNext)
             {
@@ -42,8 +46,15 @@ namespace DFC.App.SkillsHealthCheck.Services
             return await GetDetailedAssessmentQuestionViewModel(assessmentType, questionNumber, skillsDocument, assessmentQuestionOverview);
         }
 
-        
-        private static int GetQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
+        /// <summary>
+        /// Gets the question number.
+        /// </summary>
+        /// <param name="assessmentType">Type of the assessment.</param>
+        /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
+        /// <param name="currentSkillsDocument">The current skills document.</param>
+        /// <param name="feedbackQuestionNext">if set to <c>true</c> [feedback question next].</param>
+        /// <returns></returns>
+        private static int GetNextQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
         {
             int questionNumber = 1;
             switch (assessmentType)
@@ -90,7 +101,63 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             return questionNumber;
         }
-   
+
+        private static int GetPreviousQuestionNumber(AssessmentType assessmentType, AssessmentQuestionsOverView assessmentQuestionOverview, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument currentSkillsDocument, ref bool feedbackQuestionNext)
+        {
+            int questionNumber = 1;
+            switch (assessmentType)
+            {
+                case AssessmentType.Abstract:
+                case AssessmentType.Mechanical:
+                case AssessmentType.Numerical:
+                case AssessmentType.Spatial:
+                case AssessmentType.Verbal:
+                    questionNumber =
+                        currentSkillsDocument.GetAssessmentPreviousQuestionNumber(assessmentType);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                case AssessmentType.Motivation:
+                case AssessmentType.Interests:
+                case AssessmentType.Personal:
+
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousMultipleQuestionNumber(
+                            assessmentType, assessmentQuestionOverview);
+                    break;
+
+                case AssessmentType.Checking:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousMultipleQuestionNumber(
+                            assessmentType, assessmentQuestionOverview);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                case AssessmentType.SkillAreas:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousEliminationQuestionNumber(
+                            assessmentType);
+                    feedbackQuestionNext = questionNumber > assessmentQuestionOverview.TotalQuestionsNumber;
+                    break;
+
+                default:
+                    questionNumber = currentSkillsDocument
+                        .GetAssessmentPreviousEliminationQuestionNumber(
+                            assessmentType);
+                    break;
+            }
+
+            return questionNumber;
+        }
+
+        /// <summary>
+        /// Gets the assessment feed back question view model.
+        /// </summary>
+        /// <param name="assessmentType">Type of the assessment.</param>
+        /// <param name="questionNumber">The question number.</param>
+        /// <param name="skillsDocument">The skills document.</param>
+        /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
+        /// <returns></returns>
         private AssessmentQuestionViewModel GetAssessmentFeedBackQuestionViewModel(AssessmentType assessmentType, int questionNumber, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var viewModel = new FeedBackQuestionViewModel
@@ -136,12 +203,14 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (howLongDocValue.Value != null)
             {
-                if (string.IsNullOrWhiteSpace(howLongDocValue.Value))
+                if (string.IsNullOrWhiteSpace(howLongDocValue.Value) || assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 2 ||
+                    (assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 1 && (assessmentType is AssessmentType.Numerical or AssessmentType.Verbal)))
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 1);
                     viewModel.QuestionNumber = questionNumber;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Timing";
+                    viewModel.QuestionAnswer = howLongDocValue.Value;
                     return viewModel;
                 }
             }
@@ -152,11 +221,12 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             if (howEasyDocValue.Value != null)
             {
-                if (string.IsNullOrWhiteSpace(howEasyDocValue.Value))
+                if (string.IsNullOrWhiteSpace(howEasyDocValue.Value) || assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback - questionNumber == 1)
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 2);
-                    viewModel.QuestionNumber = questionNumber + 1;
+                    viewModel.QuestionNumber = questionNumber;
+                    viewModel.QuestionAnswer = howEasyDocValue.Value;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Ease";
                     return viewModel;
                 }
@@ -173,7 +243,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                 {
                     viewModel.FeedbackQuestion =
                         SkillsHealthChecksHelper.GetFeedbackQuestionByAssessmentType(assessmentType, 3);
-                    viewModel.QuestionNumber = questionNumber + 2;
+                    viewModel.QuestionNumber = questionNumber;
                     viewModel.FeedbackQuestion.DocValueTitle = $"{assessmentType}.Enjoyment";
                     return viewModel;
                 }
@@ -181,12 +251,22 @@ namespace DFC.App.SkillsHealthCheck.Services
 
             return viewModel;
         }
- 
+
+        /// <summary>
+        /// Gets the detailed assessment question view model.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="accessibility">The accessibility.</param>
+        /// <param name="assessmentType">Type of the assessment.</param>
+        /// <param name="questionNumber">The question number.</param>
+        /// <param name="skillsDocument">The skills document.</param>
+        /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
+        /// <returns></returns>
         private async Task<AssessmentQuestionViewModel> GetDetailedAssessmentQuestionViewModel(AssessmentType assessmentType, int questionNumber, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
             var viewModel = new AssessmentQuestionViewModel();
-
-            var apiResponse = await _skillsHealthCheckService.GetSingleQuestion(questionNumber, assessmentType.ToString());
+            var currentQuestion = assessmentType == AssessmentType.SkillAreas ? questionNumber % 2 == 0 ? questionNumber / 2 : (questionNumber / 2) + 1 : questionNumber;
+            var apiResponse = await _skillsHealthCheckService.GetSingleQuestion(currentQuestion, assessmentType.ToString());
             if (apiResponse != null)
             {
                 switch (assessmentType)
@@ -198,6 +278,7 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.Verbal:
                         var model = new AssessmentQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             QuestionImages = apiResponse.Question.DataHTML.GetDataImages(assessmentType),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
@@ -214,29 +295,28 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.Personal:
                         var multipleAnswerModel = new MultipleAnswerQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             SubQuestions = apiResponse.Answers.Count,
-                            CurrentQuestion =
-                                skillsDocument.GetCurrentSubQuestionAnswer(assessmentType, questionNumber,
-                                    assessmentQuestionOverview),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
                             AssessmentType = assessmentType,
-                            QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            QuestionNumber = apiResponse.Question.Number,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
                         };
                         return multipleAnswerModel;
 
                     case AssessmentType.Checking:
+                        var couldParse = int.TryParse(skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber), out var previousAnswer);
                         var tabularViewModel = new TabularAnswerQuestionViewModel
                         {
+                            AnswerSelection = skillsDocument.GetPreviousAnswerSelections(couldParse ? previousAnswer : 0),
                             QuestionAnswers = apiResponse,
-                            QuestionAnswer = "checking",
                             SubQuestions = 10,
                             CurrentQuestion = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
-                            CurrentRow = skillsDocument.GetCheckingRowNumber(assessmentType),
+                            CurrentRow = skillsDocument.GetCheckingRowNumber(assessmentType, questionNumber),
                             ActualTotalQuestions = assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback,
-                            QuestionNumber = skillsDocument.GetCurrentMultipleAnswerQuestionNumber(assessmentType),
+                            QuestionNumber = questionNumber,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             AssessmentType = assessmentType,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
@@ -247,15 +327,16 @@ namespace DFC.App.SkillsHealthCheck.Services
                     case AssessmentType.SkillAreas:
                         var eliminationModel = new EliminationAnswerQuestionViewModel
                         {
+                            QuestionAnswer = skillsDocument.GetCurrentQuestionAnswer(assessmentType, currentQuestion, questionNumber),
                             QuestionAnswers = apiResponse,
                             AlreadySelected =
                                 skillsDocument.GetAlreadySelectedAnswer(
-                                    assessmentType, apiResponse.Question.Number),
+                                    assessmentType, currentQuestion, questionNumber),
                             ActualTotalQuestions =
                                 (assessmentQuestionOverview.TotalQuestionsNumber * 2) +
                                 (assessmentQuestionOverview.TotalQuestionsNumberPlusFeedback -
                                  assessmentQuestionOverview.TotalQuestionsNumber),
-                            QuestionNumber = skillsDocument.GetCurrentNumberEliminationQuestions(assessmentType, apiResponse.Question.Number),
+                            QuestionNumber = questionNumber,
                             AssessmentTitle = assessmentQuestionOverview.AssessmentTitle,
                             AssessmentType = assessmentType,
                             IntroductionText = assessmentQuestionOverview.IntroductionText,
@@ -394,7 +475,7 @@ namespace DFC.App.SkillsHealthCheck.Services
             {
                 EliminationAnswerQuestionViewModel viewModel => getDocumentResponse.UpdateEliminationDataValues(
                         viewModel.QuestionAnswer,
-                        viewModel.QuestionAnswers?.Question.Number == assessmentQuestionOverview.TotalQuestionsNumber && viewModel.QuestionNumber == model.ActualTotalQuestions,
+                        viewModel.QuestionAnswers?.Question.Number == assessmentQuestionOverview.TotalQuestionsNumber && viewModel.AlreadySelected != -1,
                         assessmentQuestionOverview.AssessmentType,
                         viewModel.QuestionAnswers.Question.Number,
                         assessmentQuestionOverview.TotalQuestionsNumber,

@@ -14,8 +14,13 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
 
         public DFC.SkillsCentral.Api.Domain.Models.QuestionAnswers? QuestionAnswers { get; set; }
 
+        public bool LoadPreviousQuestion {  get; set; } = false;
+
         public int QuestionNumber { get; set; }
 
+        public int QuestionIndex { get; set; }
+
+        public int CurrentQuestion { get; set; }
         public int ActualTotalQuestions { get; set; }
 
         public IEnumerable<Image>? QuestionImages { get; set; } = new List<Image>();

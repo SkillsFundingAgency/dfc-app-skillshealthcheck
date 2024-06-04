@@ -86,7 +86,7 @@ namespace DFC.App.SkillsHealthCheck.UnitTests.ServiceTests
             };
 
             // Act
-            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.AssessmentType.Personal, skillsDocument, assessmentQuestionOverview);
+            var viewModel = questionService.GetAssessmentQuestionViewModel(Services.SkillsCentral.Enums.AssessmentType.Personal, skillsDocument, assessmentQuestionOverview, 0);
 
             // Assert
             Assert.Equal(1, viewModel.Id);
