@@ -113,7 +113,8 @@ else
                 }
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
-            @{ foreach (var posibleResponse in Model.QuestionAnswers.Answers)
+            @{ 
+                foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
                     id = string.Format("radio-{0}", posibleResponse.Value);
 

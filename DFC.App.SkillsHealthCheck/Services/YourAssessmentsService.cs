@@ -100,28 +100,7 @@ namespace DFC.App.SkillsHealthCheck.Services
             return null;
         }
 
-        //private SaveQuestionAnswerResponse UpdateShcAssessmentStatusIfFoundErrorsInAssesmentDocument(SessionDataModel sessionDataModel, SaveQuestionAnswerResponse saveQuestionAnswerResponse, SkillsDocument skillsDocument)
-        //{
-        //    var diagnosticReportDataValues = skillsDocument.SkillsDocumentDataValues.Where(dv =>
-        //        validDataValues.Any(vdv =>
-        //            dv.Title.Contains(vdv.Key, StringComparison.InvariantCultureIgnoreCase)));
-
-        //    // correct data issue
-        //    foreach (var dataValue in diagnosticReportDataValues.Where(dv => dv.Value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase)))
-        //    {
-        //        var validDataValue = validDataValues.First(vdv => vdv.Key.Equals(dataValue.Title, StringComparison.InvariantCultureIgnoreCase));
-        //        CheckAssessmentTypeDataValueAndCorrect(sessionDataModel, skillsDocument, validDataValue.Value, validDataValue.Key);
-        //    }
-
-        //    saveQuestionAnswerResponse =
-        //        _skillsHealthCheckService.SaveQuestionAnswer(new SaveQuestionAnswerRequest
-        //        {
-        //            DocumentId = skillsDocument.DocumentId,
-        //            SkillsDocument = skillsDocument,
-        //        });
-
-        //    return saveQuestionAnswerResponse;
-        //}
+       
 
         private readonly Dictionary<string, AssessmentType> validDataValues = new Dictionary<string, AssessmentType>
         {
@@ -140,111 +119,7 @@ namespace DFC.App.SkillsHealthCheck.Services
         // TODO: can we avoid having this service here?
         private IQuestionService questionService;
 
-        //private async Task CheckAssessmentTypeDataValueAndCorrect(SessionDataModel sessionDataModel, DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType assessmentType, string assessmentCompleteTitle)
-        //{
-        //    var answersDataValue = skillsDocument.DataValueKeys.FirstOrDefault(docValue => docValue.Key.Equals(assessmentCompleteTitle.Replace("Complete", "Answers")));
-        //    if (answersDataValue.Value != null)
-        //    {
-        //        var completedAnswers = answersDataValue.Value.Split(',').ToList();
-        //        var assessmentOverview = await _questionService.GetAssessmentQuestionsOverview(sessionDataModel, assessmentType, skillsDocument);
-        //        int expectedAnswerCount;
-        //        switch (assessmentType)
-        //        {
-        //            case AssessmentType.Abstract:
-        //            case AssessmentType.Spatial:
-        //            case AssessmentType.Verbal:
-        //            case AssessmentType.Mechanical:
-        //            case AssessmentType.Numerical:
-        //                expectedAnswerCount = assessmentOverview.TotalQuestionsNumber;
-        //                break;
-
-        //            case AssessmentType.Personal:
-        //            case AssessmentType.SkillAreas:
-        //            case AssessmentType.Checking:
-        //            case AssessmentType.Interests:
-        //            case AssessmentType.Motivation:
-        //                expectedAnswerCount = assessmentOverview.ActualQuestionsNumber;
-        //                break;
-
-        //            default:
-        //                throw new ArgumentOutOfRangeException(assessmentType.ToString(), assessmentType, null);
-        //        }
-
-        //        if (expectedAnswerCount < completedAnswers.Count)
-        //        {
-        //            //Log.Writer.Write(
-        //            //  $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-        //            //  new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-        //            //  1, TraceEventType.Error);
-
-        //            var updatedList = completedAnswers.Take(expectedAnswerCount);
-
-        //            skillsDocument.DataValueKeys[answersDataValue.Key] = string.Join(",", updatedList);
-
-        //            //Log.Writer.Write(
-        //            //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-        //            //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-        //            //    1, TraceEventType.Error);
-        //        }
-        //        else if (expectedAnswerCount > completedAnswers.Count)
-        //        {
-        //            //Log.Writer.Write(
-        //            //    $"Correcting document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment. Although marked as completed, Supplied {completedAnswers.Count} answers whilst expecting {expectedAnswerCount}",
-        //            //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-        //            //    1, TraceEventType.Error);
-
-        //            var titleDataValue =
-        //                skillsDocument.DataValueKeys.FirstOrDefault(
-        //                    docValue =>
-        //                        docValue.Key.Equals(
-        //                            assessmentCompleteTitle, StringComparison.InvariantCultureIgnoreCase));
-
-        //            if (titleDataValue.Value != null &&
-        //                titleDataValue.Value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
-        //            {
-        //                // Start - Reset Survey Questions
-        //                var howLongDocValue =
-        //                    skillsDocument.DataValueKeys.FirstOrDefault(
-        //                        docValue =>
-        //                            docValue.Key.Equals($"{assessmentType}.Timing", StringComparison.OrdinalIgnoreCase));
-
-        //                if (howLongDocValue.Value != null)
-        //                {
-        //                    skillsDocument.DataValueKeys[howLongDocValue.Key] = string.Empty;
-        //                }
-
-        //                var howEasyDocValue =
-        //                    skillsDocument.DataValueKeys.FirstOrDefault(
-        //                        docValue =>
-        //                            docValue.Key.Equals($"{assessmentType}.Ease", StringComparison.OrdinalIgnoreCase));
-
-        //                if (howEasyDocValue.Value != null)
-        //                {
-        //                    skillsDocument.DataValueKeys[howEasyDocValue.Key] = string.Empty;
-        //                }
-
-        //                var howEnjoyableDocValue =
-        //                    skillsDocument.DataValueKeys.FirstOrDefault(
-        //                        docValue =>
-        //                            docValue.Key.Equals($"{assessmentType}.Enjoyment",
-        //                                StringComparison.OrdinalIgnoreCase));
-
-        //                if (howEnjoyableDocValue.Value != null)
-        //                {
-        //                    skillsDocument.DataValueKeys[howEnjoyableDocValue.Key] = string.Empty;
-        //                }
-
-        //                // Done - Reset Survey Questions
-
-        //                skillsDocument.DataValueKeys[titleDataValue.Key] = bool.FalseString;
-        //                //Log.Writer.Write(
-        //                //    $"Completed correction of document id {skillsDocument.DocumentId} . Correcting {assessmentType} assesment from 'Complete = True' to 'Complete = {titleDataValue.Value}', reset additional surver questions",
-        //                //    new List<string> { nameof(ConfigurationPolicy.ErrorLog) }, -1,
-        //                //    1, TraceEventType.Error);
-        //            }
-        //        }
-        //    }
-        //}
+        
 
         private string GetAssessmentOverviewAction(Dictionary<string, string> diagnosticReportDataValues, string key)
         {

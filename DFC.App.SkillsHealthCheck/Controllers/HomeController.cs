@@ -98,7 +98,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             var apiResult = await skillsHealthCheckService.CreateSkillsDocument(skillsDocument);
             if (apiResult != null)
             {
-                logger.LogInformation($" Created new Skills Document, redirecting");
+                logger.LogInformation($" Created new Skills Document, redirectng");
 
                 var sessionStateDataModel = new SessionDataModel
                 {

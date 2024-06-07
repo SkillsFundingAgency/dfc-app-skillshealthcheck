@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Xml;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
@@ -57,12 +58,18 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     }
                     else
                     {
-                        var answeredQuestionsTotal = dataValue.Value.Split(',').Length;
+                        var answeredQuestions = dataValue.Value.Split(',').ToList();
                         // Safe guard having too many answers supplied
-                        if (answeredQuestionsTotal < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestionsTotal == 1)
+                        if (answeredQuestions.Count < asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count == 1)
                         {
                             skillsDocument.DataValueKeys[dataValue.Key] = $"{dataValue.Value},{answers}";
                         }
+                        else if(answeredQuestions.Count <= asessmentTypeTotalNumberLessFeedback && currentAnsweredQuestionNumber - answeredQuestions.Count <= 0)
+                        {
+                            answeredQuestions[currentAnsweredQuestionNumber-1] = answers;
+                            skillsDocument.DataValueKeys[dataValue.Key] = $"{string.Join(",",answeredQuestions)}";
+                        }
+
                     }
                 }
                 else if (dataValue.Key.Equals($"{asessmentType}.Complete", StringComparison.OrdinalIgnoreCase))
@@ -141,10 +148,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             //make generic
             foreach (var dataValue in skillsDocument.DataValueKeys)
             {
-                //if (dataValue.Title.Equals($"{asessmentType}.Type", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    dataValue.Value = GetDataValueByAssessmentType(asessmentType);
-                //}
+                
                 if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(dataValue.Value))
@@ -154,50 +158,46 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     else
                     {
                         var answerList = dataValue.Value.Split(',').ToList();
-                        var expectedQnumber = skillsDocument.GetCurrentNumberEliminationQuestions(asessmentType,
-                            questionNumber);
+
+                        var isEven = actualQuestionNumberAnswered % 2 == 0;
+                        var value = isEven ? actualQuestionNumberAnswered - 1 : actualQuestionNumberAnswered;
+                        var index = (value / 2) * 3 + (isEven ? 1 : 0);
+
 
                         var suppliedAnswerCount = answerList.Count(x => !x.Equals("-1"));
                         // Only add to list if are not yet maximum answer list
-                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber && actualQuestionNumberAnswered == expectedQnumber)
+                        if (suppliedAnswerCount < actualAssessmentMaxQuestionsNumber)
                         {
-                            string currentAnswersList;
 
-                            var answerIndex = (questionNumber - 1) * 3;
-
-                            var listWithoutCurrentQuestion = new List<string>();
-
-                            int currentIndex = 0;
-                            foreach (var answer in answerList)
+                            if (suppliedAnswerCount > index)
                             {
-                                if (currentIndex == answerIndex)
+                                if (isEven)
                                 {
-                                    break;
+                                    answerList[index] =answers;
+                                    answerList[index +1] = GetMissingValue(new List<string> { answerList[index-1], answerList[index] });
                                 }
-
-                                listWithoutCurrentQuestion.Add(answer);
-                                currentIndex++;
+                                else if (answerList[index] != answers)
+                                {
+                                    answerList[index] = answers;
+                                    answerList[index +1] = "-1";
+                                    answerList[index+2] = "-1";
+                                }
+                                
                             }
-                            var existingAnswers = string.Join(",", listWithoutCurrentQuestion);
 
-                            if (answerList.Count - 1 > answerIndex)
+                            else if (answerList.Count - 1 > index)
                             {
-                                var currentAnswers = answerList.GetRange(answerIndex, 3);
-
-                                currentAnswers[1] = answers;
-                                currentAnswers[2] =
-                                    GetMissingValue(new List<string> { currentAnswers[0], currentAnswers[1] });
-
-                                currentAnswersList = string.Join(",", currentAnswers);
+                                answerList[index] =answers;
+                                answerList[index +1] = GetMissingValue(new List<string> { answerList[index-1], answerList[index] });
                             }
                             else
                             {
-                                currentAnswersList = $"{answers},-1,-1";
+                                answerList.AddRange(new List<string> { answers, "-1", "-1" });
                             }
 
-                            skillsDocument.DataValueKeys[dataValue.Key] = !string.IsNullOrWhiteSpace(existingAnswers)
-                                ? $"{existingAnswers},{currentAnswersList}"
-                                : currentAnswersList;
+                            skillsDocument.DataValueKeys[dataValue.Key] = string.Join(",", answerList);
+
+
                         }
                     }
                 }
@@ -356,28 +356,46 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         public static int GetAssessmentNextEliminationQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
-            int nextQuestion = 0;
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
 
-            foreach (var dataValue in skillsDocument.DataValueKeys)
+            if (string.IsNullOrEmpty(a))
             {
-                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (string.IsNullOrEmpty(dataValue.Value))
-                    {
-                        nextQuestion = 1;
-                    }
-                    else
-                    {
-                        var answers = dataValue.Value.Split(',').ToList();
-                        var lastQuestion = answers.Count / 3;
-                        var answerIndex = (lastQuestion - 1) * 3;
-                        var currentAnswers = answers.GetRange(answerIndex, 3);
-                        return currentAnswers.Exists(x => x.Equals("-1")) ? lastQuestion : lastQuestion + 1;
-                    }
-                    break;
-                }
+                return 1;
             }
-            return nextQuestion;
+            else
+            {
+                var answers = a.Split(',').ToList();
+                var lastQuestion = answers.Count / 3;
+                var answerIndex = (lastQuestion - 1) * 3;
+                return answers.Exists(x => x.Equals("-1")) ? answers.IndexOf("-1") : answerIndex + 1;
+            }
+        }
+
+        /// <summary>
+        /// Gets the assessment next elimination question number.
+        /// </summary>
+        /// <param name="skillsDocument">The SKLLLS document.</param>
+        /// <param name="asessmentType">Type of the asessment.</param>
+        /// <returns></returns>
+        public static int GetAssessmentPreviousEliminationQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
+            AssessmentType asessmentType)
+        {
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
+
+            if (string.IsNullOrEmpty(a))
+            {
+                return 1;
+            }
+            else
+            {
+                var answers = a.Split(',').ToList();
+                var lastQuestion = answers.Count / 3;
+                var answerIndex = (lastQuestion - 1) * 3;
+                var currentAnswers = answers.GetRange(answerIndex, 3);
+                return currentAnswers.Exists(x => x.Equals("-1")) ? lastQuestion - 1 : lastQuestion;
+            }
         }
 
         /// <summary>
@@ -390,40 +408,24 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         public static int GetAssessmentNextMultipleQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType, AssessmentQuestionsOverView assessmentQuestionOverview)
         {
-            int nextQuestion = 0;
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
+            return string.IsNullOrEmpty(a) ? 1 : a.Split(',').TakeWhile(x => !x.Equals("-1")).Count() + 1;
+        }
 
-            foreach (var dataValue in skillsDocument.DataValueKeys)
-            {
-                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (string.IsNullOrEmpty(dataValue.Value))
-                    {
-                        nextQuestion = 1;
-                        break;
-                    }
-                    var answers = dataValue.Value.Split(',').ToList().Where(x=>!x.Equals("-1"));
-
-                    //var questionTally = 0;
-                    //var currentQuestion = 0;
-                    //var answerIndex = 0;
-                    //var rangeFromIndex = 0;
-                    //foreach (var questionOverview in assessmentQuestionOverview.QuestionOverViewList)
-                    //{
-                    //    currentQuestion = questionOverview.QuestionNumber;
-                    //    questionTally = questionTally + questionOverview.SubQuestions;
-                    //    rangeFromIndex = questionOverview.SubQuestions;
-                    //    if (questionTally == answers.Count)
-                    //    {
-                    //        break;
-                    //    }
-                    //    answerIndex = questionTally;
-                    //}
-
-                    //var currentAnswers = answers.GetRange(answerIndex, rangeFromIndex);
-                    return answers.Count() +1; /*currentAnswers.Exists(x => x.Equals("-1")) ? currentQuestion : currentQuestion + 1;*/
-                }
-            }
-            return nextQuestion;
+        /// <summary>
+        /// Gets the assessment next multiple question number.
+        /// </summary>
+        /// <param name="skillsDocument">The SKLLLS document.</param>
+        /// <param name="asessmentType">Type of the asessment.</param>
+        /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
+        /// <returns></returns>
+        public static int GetAssessmentPreviousMultipleQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
+            AssessmentType asessmentType, AssessmentQuestionsOverView assessmentQuestionOverview)
+        {
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
+            return string.IsNullOrEmpty(a) ? 1 : a.Split(',').TakeWhile(x => !x.Equals("-1")).Count();
         }
 
         /// <summary>
@@ -434,7 +436,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="currentQuestion">The current question.</param>
         /// <returns></returns>
         public static int GetAlreadySelectedAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
-            int currentQuestion)
+            int currentQuestion, int questionNumber)
         {
             var selectedAnswer = -1;
 
@@ -446,7 +448,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     {
                         var answers = dataValue.Value.Split(',').ToList();
                         var answerIndex = (currentQuestion - 1) * 3;
-                        if (answers.Count - 1 > answerIndex)
+                        if (answers.Count > answerIndex && (questionNumber / 2) == currentQuestion)
                         {
                             var currentAnswers = answers.GetRange(answerIndex, 3);
 
@@ -482,7 +484,8 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     if (!string.IsNullOrEmpty(dataValue.Value))
                     {
                         var answers = dataValue.Value.Split(',').ToList();
-                        var answerIndex = (currentQuestion - 1) * 3;
+                        
+                        var answerIndex = currentQuestion%2==0 ?(currentQuestion - 2) * 3 : (currentQuestion - 1) * 3;
                         if (answers.Count - 1 > answerIndex)
                         {
                             var currentAnswers = answers.GetRange(answerIndex, 3);
@@ -497,7 +500,7 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
                     break;
                 }
             }
-            return selectedAnswer == -1 ? currentQuestion * 2 - 1 : currentQuestion * 2;
+            return selectedAnswer == -1 ? (currentQuestion) * 2 - 1 : currentQuestion;
         }
 
         /// <summary>
@@ -508,56 +511,47 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         /// <param name="currentQuestion">The current question.</param>
         /// <param name="assessmentQuestionOverview">The assessment question overview.</param>
         /// <returns></returns>
-        public static int GetCurrentSubQuestionAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
-            int currentQuestion, AssessmentQuestionsOverView assessmentQuestionOverview)
+        public static string GetCurrentQuestionAnswer(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, AssessmentType asessmentType,
+            int currentQuestion, int questionNumber)
         {
-            var subQuestion = 1;
 
-            foreach (var dataValue in skillsDocument.DataValueKeys)
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return string.Empty;
+
+            var answers = a.Split(',').ToList();
+
+            if (asessmentType != AssessmentType.SkillAreas)
             {
-                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
+                if (answers.Count >= (currentQuestion))
                 {
-                    if (!string.IsNullOrEmpty(dataValue.Value))
-                    {
-                        var answers = dataValue.Value.Split(',').ToList();
-                        var questionTally = 0;
-
-                        var answerIndex = 0;
-                        var rangeFromIndex = 0;
-                        foreach (var questionOverview in assessmentQuestionOverview.QuestionOverViewList)
-                        {
-                            questionTally = questionTally + questionOverview.SubQuestions;
-                            rangeFromIndex = questionOverview.SubQuestions;
-                            if (currentQuestion == questionOverview.QuestionNumber)
-                            {
-                                break;
-                            }
-                            answerIndex = questionTally;
-                        }
-                        if (answers.Count - 1 > answerIndex)
-                        {
-                            var currentAnswers = answers.GetRange(answerIndex, rangeFromIndex);
-
-                            subQuestion = currentAnswers.IndexOf("-1") + 1;
-                        }
-                        else
-                        {
-                            subQuestion = 1;
-                        }
-                    }
+                    return answers[currentQuestion-1];
                 }
+
+                return string.Empty;
             }
-            return subQuestion;
+            else
+            {
+                var isEven = questionNumber % 2 == 0;
+                var value = isEven ? questionNumber - 1 : questionNumber;
+                var index = (value / 2) * 3 + (isEven ? 1 : 0);
+
+                if (answers.Count > (index))
+                {
+                    return answers[index];
+                }
+
+                return string.Empty;
+            }
         }
 
 
-        /// <summary>
-        /// Gets the current multiple answer question number.
-        /// </summary>
-        /// <param name="skillsDocument">The SKLLLS document.</param>
-        /// <param name="asessmentType">Type of the asessment.</param>
-        /// <returns></returns>
-        public static int GetCurrentMultipleAnswerQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
+            /// <summary>
+            /// Gets the current multiple answer question number.
+            /// </summary>
+            /// <param name="skillsDocument">The SKLLLS document.</param>
+            /// <param name="asessmentType">Type of the asessment.</param>
+            /// <returns></returns>
+            public static int GetCurrentMultipleAnswerQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
             var currentQuestionNumber = 1;
@@ -582,17 +576,16 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         }
 
         public static int GetCheckingRowNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
-            AssessmentType assessmentType)
+            AssessmentType assessmentType, int questionNumber)
         {
-            int currentQuestionNumber = GetCurrentMultipleAnswerQuestionNumber(skillsDocument, assessmentType);
             int currentRowNumber = 1;
 
-            if (currentQuestionNumber > 10) {
-                string numberAsString = currentQuestionNumber.ToString();
+            if (questionNumber > 10) {
+                string numberAsString = questionNumber.ToString();
                 string lastChar = numberAsString.Substring(numberAsString.Length - 1);
                 currentRowNumber = int.Parse(lastChar);
             } else {
-                currentRowNumber = currentQuestionNumber;
+                currentRowNumber = questionNumber;
             }
 
             if (currentRowNumber == 0) { currentRowNumber = 10; }
@@ -609,60 +602,26 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
         public static int GetAssessmentNextQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
             AssessmentType asessmentType)
         {
-            int nextQuestion = 0;
-
-            foreach (var dataValue in skillsDocument.DataValueKeys)
-            {
-                if (dataValue.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (string.IsNullOrEmpty(dataValue.Value))
-                    {
-                        nextQuestion = 1;
-                    }
-                    else
-                    {
-                        var answers = dataValue.Value.Split(',');
-                        return answers.Length + 1;
-                    }
-                    break;
-                }
-            }
-            return nextQuestion;
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
+            return string.IsNullOrEmpty(a) ? 1 : a.Split(',').Length + 1;
         }
 
         /// <summary>
-        /// Gets the type of the daat value by assessment.
+        /// Gets the assessment next question number.
         /// </summary>
-        /// <param name="assessmentType">Type of the assessment.</param>
+        /// <param name="skillsDocument">The SKLLLS document.</param>
+        /// <param name="asessmentType">Type of the asessment.</param>
         /// <returns></returns>
-        //public static string GetDataValueByAssessmentType(AssessmentType assessmentType)
-        //{
-        //    switch (assessmentType)
-        //    {
-        //        case AssessmentType.Abstract:
-        //            return Constants.SkillsHealthCheck.AbstractAssessmentDataValue;
-        //        case AssessmentType.Checking:
-        //            return Constants.SkillsHealthCheck.CheckingAssessmentDataValue;
-        //        case AssessmentType.Interests:
-        //            return Constants.SkillsHealthCheck.InterestsAssessmentDataValue;
-        //        case AssessmentType.Mechanical:
-        //            return Constants.SkillsHealthCheck.MechanicalAssessmentDataValue;
-        //        case AssessmentType.Motivation:
-        //            return Constants.SkillsHealthCheck.MotivationAssessmentDataValue;
-        //        case AssessmentType.Numerical:
-        //            return Constants.SkillsHealthCheck.NumericAssessmentDataValue;
-        //        case AssessmentType.Personal:
-        //            return Constants.SkillsHealthCheck.PersonalAssessmentDataValue;
-        //        case AssessmentType.SkillAreas:
-        //            return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
-        //        case AssessmentType.Spatial:
-        //            return Constants.SkillsHealthCheck.SpatialAssessmentDataValue;
-        //        case AssessmentType.Verbal:
-        //            return Constants.SkillsHealthCheck.VerbalAssessmentDataValue;
-        //        default:
-        //            return Constants.SkillsHealthCheck.SkillsAssessmentDataValue;
-        //    }
-        //}
+        public static int GetAssessmentPreviousQuestionNumber(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument,
+            AssessmentType asessmentType)
+        {
+            var a = skillsDocument.DataValueKeys?.SingleOrDefault(x => x.Key.Equals($"{asessmentType}.Answers", StringComparison.OrdinalIgnoreCase)).Value;
+            if (a == null) return 0;
+            return string.IsNullOrEmpty(a) ? 1 : a.Split(',').Length;
+        }
+
+       
 
         public static string GetAnswerTotal(IEnumerable<string> modelAnswerSelection)
         {
@@ -695,7 +654,24 @@ namespace DFC.App.SkillsHealthCheck.Services.SkillsCentral.Helpers
             }
         }
 
-        public static IEnumerable<Image> GetDataImages(this string dataText, AssessmentType assessmentType)
+      
+        public static List<string> GetPreviousAnswerSelections(this DFC.SkillsCentral.Api.Domain.Models.SkillsDocument skillsDocument, int value)
+        {
+            var values = new List<string> { "E", "D", "C", "B", "A" };
+            var result = new List<string>();
+            for (int i = 16, j = 0; i > 0; i /= 2, j++)
+            {
+                if (value >= i)
+                {
+                    result.Add(values[j]);
+                    value -= i;
+                }
+            }
+
+            return result;
+        }
+
+            public static IEnumerable<Image> GetDataImages(this string dataText, AssessmentType assessmentType)
         {
             var images = new List<Image>();
 
