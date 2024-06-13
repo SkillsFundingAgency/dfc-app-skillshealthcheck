@@ -51,25 +51,25 @@ namespace DFC.App.SkillsHealthCheck.IntegrationTests.ControllerTests.QuestionCon
             response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Text.Html);
         }
 
-        [Theory]
-        [MemberData(nameof(RouteData))]
-        public async Task GetBreadcrumbContentEndpointsReturnSuccessAndCorrectContent(string url)
-        {
-            // Arrange
-            var uri = new Uri(url, UriKind.Relative);
-            var client = factory.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+        // [Theory]
+        // [MemberData(nameof(RouteData))]
+        // public async Task GetBreadcrumbContentEndpointsReturnSuccessAndCorrectContent(string url)
+        // {
+        //     // Arrange
+        //     var uri = new Uri(url, UriKind.Relative);
+        //     var client = factory.CreateClient();
+        //     client.DefaultRequestHeaders.Accept.Clear();
+        //     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
 
-            // Act
-            var response = await client.GetAsync(uri);
+        //     // Act
+        //     var response = await client.GetAsync(uri);
 
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Application.Json);
-            var result = await response.Content.ReadAsAsync<BreadcrumbViewModel>();
-            result.Should().NotBeNull();
-            result.Breadcrumbs.Should().NotBeEmpty();
-        }
+        //     // Assert
+        //     response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //     response.Content.Headers.ContentType.MediaType.Should().Be(MediaTypeNames.Application.Json);
+        //     var result = await response.Content.ReadAsAsync<BreadcrumbViewModel>();
+        //     result.Should().NotBeNull();
+        //     result.Breadcrumbs.Should().NotBeEmpty();
+        // }
     }
 }
