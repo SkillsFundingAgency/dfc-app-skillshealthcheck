@@ -8,6 +8,15 @@
     "appSharedStorageAccountName": {
       "value": "__appSharedStorageAccountName__"
     },
+    "appServiceName": {
+      "value": "__AppServiceName__"
+    },
+    "appServicePlanSuffix": {
+      "value": "__AppServicePlanSuffix__"
+    },
+    "apiAppServiceName": {
+      "value": "__ApiAppServiceName__"
+    },
     "cosmosDBName": {
       "value": "__appSharedCosmosDBName__"
     },

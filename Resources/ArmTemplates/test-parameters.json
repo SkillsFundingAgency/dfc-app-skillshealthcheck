@@ -8,6 +8,15 @@
     "appSharedStorageAccountName": {
       "value": "dfcdevappsharedstr"
     },
+    "appServiceName": {
+      "value": "dfc-foo-app-skillshealthcheck-as-ver2"
+    },
+    "apiAppServiceName": {
+      "value": "dfc-foo-app-skillscentral-as-ver2"
+    },
+    "appServicePlanSuffix": {
+      "value": "-migrated"
+    },
     "cosmosDBName": {
       "value": "dfc-dev-app-sharedresources-cdb"
     },
