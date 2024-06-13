@@ -30,6 +30,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ServiceFilter(typeof(SessionStateFilter))]
     public class QuestionController : BaseController<QuestionController>
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         public const string PageTitle = "Question";
         private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<QuestionController> logger;
@@ -37,6 +38,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IConfiguration configuration;
         private string status;
+        private double expiry = 4;
 
         public QuestionController(
             ILogger<QuestionController> logger,
@@ -51,6 +53,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.sharedContentRedis = sharedContentRedis;
             this.questionService = questionService;
             status = configuration.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+            }
         }
 
         [HttpGet]
@@ -140,7 +147,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 status = "PUBLISHED";
             }
 
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status);
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiry);
 
             var rightBarViewModel = new RightBarViewModel
             {

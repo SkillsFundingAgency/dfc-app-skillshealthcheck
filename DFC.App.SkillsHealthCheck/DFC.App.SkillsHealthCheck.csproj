@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.62" />
+    <PackageReference Include="DFC.Common.SharedContent.Pkg.Netcore" Version="0.1.110" />
     <PackageReference Include="DFC.Compui.Sessionstate" Version="1.0.15" />
     <PackageReference Include="DFC.Compui.Subscriptions" Version="1.0.96" />
     <PackageReference Include="DFC.Compui.Telemetry" Version="1.0.31" />
