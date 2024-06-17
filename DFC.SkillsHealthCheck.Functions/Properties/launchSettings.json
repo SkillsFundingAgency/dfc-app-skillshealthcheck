@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DFC.SkillsHealthCheck.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7020",
+      "launchBrowser": false
+    }
+  }
+}
