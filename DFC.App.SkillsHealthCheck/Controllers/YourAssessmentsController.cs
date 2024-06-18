@@ -34,7 +34,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IConfiguration configuration;
         private string status;
-        private double expiry = 4;
+        private double expiryInHours = 4;
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
@@ -53,7 +53,10 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             if (this.configuration != null)
             {
                 string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
-                this.expiry = double.Parse(string.IsNullOrEmpty(expiryAppString) ? "4" : expiryAppString);
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
             }
         }
 
@@ -124,7 +127,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 status = "PUBLISHED";
             }
 
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiry);
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
             var rightBarViewModel = new RightBarViewModel
             {
