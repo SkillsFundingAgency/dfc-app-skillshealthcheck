@@ -11,6 +11,9 @@
     "appServiceName": {
       "value": "dfc-foo-app-skillshealthcheck-as-ver2"
     },
+    "functionAppName": {
+      "value": "dfc-foo-app-skillshealthcheck-fa"
+    },
     "apiAppServiceName": {
       "value": "dfc-foo-app-skillscentral-as-ver2"
     },

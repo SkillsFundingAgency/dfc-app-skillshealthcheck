@@ -134,6 +134,15 @@ stages:
             arguments: '-o $(build.artifactstagingdirectory)\Artifact\$(SolutionBaseName)\DeploymentPackages\  -c $(BuildConfiguration)'
             publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
 
+        - task: DotNetCoreCLI@2
+          displayName: 'DFC.SkillsHealthCheck.Functions: dotnet publish'
+          inputs:
+            command: 'publish'
+            projects: 'DFC.SkillsHealthCheck.Functions\DFC.SkillsHealthCheck.Functions.csproj'
+            arguments: '-o $(build.artifactstagingdirectory)\Artifact\DFC.SkillsHealthCheck.Functions\DeploymentPackages\  -c $(BuildConfiguration)'
+            publishWebProjects: false
+            zipAfterPublish: true        
+
         - task: SonarCloudAnalyze@1
           displayName: 'Run Code Analysis'
           condition: and(succeeded(), variables['ShouldRunSonarCloud'], 'True')
@@ -170,6 +179,12 @@ stages:
           inputs:
             targetPath: $(build.artifactstagingdirectory)\DfE.SkillsCentral.Api.Infrastructure.Database
             artifactName: $(SolutionBaseNameDatabase).DeploymentPackages
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish Artifact: DFC.SkillsHealthCheck.Functions'
+          inputs:
+            targetPath: $(build.artifactstagingdirectory)\DFC.SkillsHealthCheck.Functions
+            artifactName: DFC.SkillsHealthCheck.Functions.DeploymentPackages
 
         - task: DotNetCoreCLI@2
           displayName: 'DFC.App.SkillsCentral: dotnet Unit Tests'
@@ -442,6 +457,7 @@ stages:
           DfCDevopsPath: "$(Agent.BuildDirectory)/s/dfc-devops"
           PackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
           ApiPackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameApi }}.DeploymentPackages/${{ variables.SolutionBaseNameApi }}.zip"
+          FunctionPackageFile: "$(Pipeline.Workspace)/DFC.SkillsHealthCheck.Functions.DeploymentPackages/DFC.SkillsHealthCheck.Functions.zip"
           DatabasePackageFile: "$(Pipeline.Workspace)/${{ variables.SolutionBaseNameDatabase }}.DeploymentPackages/DfE.SkillsCentral.Api.Infrastructure.Database.dacpac"
           ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
           EnvironmentName: PRD_AppSkillsHealthCheck

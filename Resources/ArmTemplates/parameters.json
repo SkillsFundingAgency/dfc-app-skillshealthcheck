@@ -11,6 +11,9 @@
     "appServiceName": {
       "value": "__AppServiceName__"
     },
+    "functionAppName": {
+      "value": "__FuntionAppName__"
+    },
     "appServicePlanSuffix": {
       "value": "__AppServicePlanSuffix__"
     },

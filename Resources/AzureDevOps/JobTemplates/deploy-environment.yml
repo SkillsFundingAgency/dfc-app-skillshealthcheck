@@ -4,6 +4,7 @@ parameters:
   PackageFile: ""
   ApiPackageFile: ""
   DatabasePackageFile: ""
+  FunctionPackageFile: ""
   ArmTemplateFolder: ""
   Location: "West Europe"
   ArmOutputVariableName: "ARMOutputs"
@@ -17,6 +18,7 @@ parameters:
   appSharedCosmosDBName: ""
   AppServiceName: ""
   ApiAppServiceName: ""
+  FunctionAppName: ""
   SharedResourceGroupName: ""
   ApimServiceName: ""
   ApimProductInstanceName: ""
@@ -108,4 +110,3 @@ jobs:
                 PackageFile: "${{ parameters.ApiPackageFile }}"
                 ResourceGroup: "${{ parameters.ResourceGroup }}"
                 SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
-
