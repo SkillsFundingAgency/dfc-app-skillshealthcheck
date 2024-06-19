@@ -110,3 +110,10 @@ jobs:
                 PackageFile: "${{ parameters.ApiPackageFile }}"
                 ResourceGroup: "${{ parameters.ResourceGroup }}"
                 SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
+
+            - template: ../StepTemplates/deploy-azure-function-app.yml
+              parameters:
+                FunctionAppName: "${{ parameters.FunctionAppName }}"
+                AzureSubscription: "${{ parameters.AzureSubscription }}"
+                PackageFile: "${{ parameters.FunctionPackageFile }}"
+                ResourceGroup: "${{ parameters.ResourceGroup }}"
