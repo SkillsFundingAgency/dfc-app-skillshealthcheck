@@ -183,7 +183,7 @@ stages:
         - task: PublishPipelineArtifact@1
           displayName: 'Publish Artifact: DFC.SkillsHealthCheck.Functions'
           inputs:
-            targetPath: $(build.artifactstagingdirectory)\DFC.SkillsHealthCheck.Functions
+            targetPath: $(build.artifactstagingdirectory)\Artifact\DFC.SkillsHealthCheck.Functions\DeploymentPackages\
             artifactName: DFC.SkillsHealthCheck.Functions.DeploymentPackages
 
         - task: DotNetCoreCLI@2
