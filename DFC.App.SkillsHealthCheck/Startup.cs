@@ -33,6 +33,7 @@ using System.Net.Http;
 using System.ServiceModel;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using StackExchange.Redis;
 
 namespace DFC.App.SkillsHealthCheck
 {
@@ -86,7 +87,20 @@ namespace DFC.App.SkillsHealthCheck
             services.Configure<SkillsServiceOptions>(configuration.GetSection(nameof(SkillsServiceOptions)));
             services.Configure<GovNotifyOptions>(configuration.GetSection(nameof(GovNotifyOptions)));
             services.Configure<SessionStateOptions>(configuration.GetSection(nameof(SessionStateOptions)));
+
+            var redisCacheConnectionString = ConfigurationOptions.Parse(configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>() ??
+                throw new ArgumentNullException($"{nameof(RedisCacheConnectionStringAppSettings)} is missing or has an invalid value."));
+
             services.AddStackExchangeRedisCache(options => { options.Configuration = configuration.GetSection(RedisCacheConnectionStringAppSettings).Get<string>(); });
+            services.AddSingleton<IConnectionMultiplexer>(option =>
+            ConnectionMultiplexer.Connect(new ConfigurationOptions
+            {
+                EndPoints = { redisCacheConnectionString.EndPoints[0] },
+                AbortOnConnectFail = false,
+                Ssl = true,
+                Password = redisCacheConnectionString.Password,
+            }));
+            services.AddHealthChecks().AddCheck<HealthCheck>("GraphQlRedisConnectionCheck");
 
             services.AddHttpClient();
             var graphQLConnection = configuration["Cms:GraphApiUrl"];
