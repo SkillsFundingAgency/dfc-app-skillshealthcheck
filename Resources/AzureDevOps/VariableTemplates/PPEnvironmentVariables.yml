@@ -5,6 +5,8 @@ variables:
     value: $(WebAppPrefix)-as-ver2
   - name: ApiAppServiceName
     value: $(ApiAppPrefix)-api-as-ver2
+  - name: FunctionAppName
+    value: $(ApiAppPrefix)-fa
   - name: AppServicePlanSuffix
     value: -migrated
   - name: cosmosDBCollectionName

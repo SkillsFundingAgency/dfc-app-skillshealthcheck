@@ -1,0 +1,46 @@
+parameters:
+  AzureSubscription: ''
+  FunctionAppName: ''
+  ResourceGroup: ''
+  PackageFile: ''
+
+steps:
+- task: AzureAppServiceManage@0
+  displayName: 'Start App Service: ${{ parameters.FunctionAppName }}'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    Action: 'Start Azure App Service'
+    WebAppName: '${{ parameters.FunctionAppName }}'
+    SpecifySlotOrASE: true
+    ResourceGroupName: '${{ parameters.ResourceGroup }}'
+    Slot: staging
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Azure App Service Deploy: ${{ parameters.FunctionAppName }}'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    WebAppName: '${{ parameters.FunctionAppName }}'
+    PackageForLinux: "${{ parameters.PackageFile }}"
+    deployToSlotOrASE: true
+    ResourceGroupName: '${{ parameters.ResourceGroup }}'
+    SlotName: staging
+
+
+
+- task: AzureAppServiceManage@0
+  displayName: 'Swap Slots: ${{ parameters.FunctionAppName }}'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    WebAppName: '${{ parameters.FunctionAppName }}'
+    ResourceGroupName: '${{ parameters.ResourceGroup }}'
+    SourceSlot: staging
+
+- task: AzureAppServiceManage@0
+  displayName: 'Stop Azure App Service Slots: ${{ parameters.FunctionAppName }}'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    Action: 'Stop Azure App Service'
+    WebAppName: '${{ parameters.FunctionAppName }}'
+    SpecifySlotOrASE: true
+    ResourceGroupName: '${{ parameters.ResourceGroup }}'
+    Slot: staging

@@ -4,6 +4,7 @@ parameters:
   PackageFile: ""
   ApiPackageFile: ""
   DatabasePackageFile: ""
+  FunctionPackageFile: ""
   ArmTemplateFolder: ""
   Location: "West Europe"
   ArmOutputVariableName: "ARMOutputs"
@@ -17,6 +18,7 @@ parameters:
   appSharedCosmosDBName: ""
   AppServiceName: ""
   ApiAppServiceName: ""
+  FunctionAppName: ""
   SharedResourceGroupName: ""
   ApimServiceName: ""
   ApimProductInstanceName: ""
@@ -109,3 +111,9 @@ jobs:
                 ResourceGroup: "${{ parameters.ResourceGroup }}"
                 SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
 
+            - template: ../StepTemplates/deploy-azure-function-app.yml
+              parameters:
+                FunctionAppName: "${{ parameters.FunctionAppName }}"
+                AzureSubscription: "${{ parameters.AzureSubscription }}"
+                PackageFile: "${{ parameters.FunctionPackageFile }}"
+                ResourceGroup: "${{ parameters.ResourceGroup }}"
