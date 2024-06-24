@@ -1,9 +1,10 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Dapper;
+using DFC.SkillsCentral.Sql;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -20,9 +21,10 @@ namespace DFC.SkillsHealthCheck.Functions
         }
 
         [FunctionName("DataCleanup")]
-        public async Task Run([TimerTrigger("0 00 13 * * *")]TimerInfo timer, ILogger log)
+        public async Task Run([TimerTrigger("00 00 17 * * *")] TimerInfo timer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed daily at 13:00 localtime (for testing) i.e. at: {DateTime.UtcNow} UTC");
+            log.LogInformation($"C# Timer trigger function executed daily at 18:00 local-time (for testing purposes) i.e. at: {DateTime.UtcNow} UTC");
+            //note: when running this locally on machine this uses local time; on azure this uses UTC.
 
             if (timer.IsPastDue)
             {
@@ -33,7 +35,7 @@ namespace DFC.SkillsHealthCheck.Functions
             var timeToLive = DateTime.UtcNow.AddMonths(-12);
 
             log.LogInformation($"Running the daily stored procedure to delete SkillsDocuments records not updated in the last 12 months i.e. since: {timeToLive.ToShortDateString()}");
-            
+
             using (var connection = _dbContext.CreateConnection())
             {
                 connection.Open();
