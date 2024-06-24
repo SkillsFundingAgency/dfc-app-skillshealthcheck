@@ -1,8 +1,10 @@
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using Dapper;
-using DFC.SkillsCentral.Api.Infrastructure;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace DFC.SkillsHealthCheck.Functions
@@ -18,18 +20,19 @@ namespace DFC.SkillsHealthCheck.Functions
         }
 
         [FunctionName("DataCleanup")]
-        public async Task Run([TimerTrigger("0 0 4 * * *")]TimerInfo timer, ILogger log)
+        public async Task Run([TimerTrigger("0 00 11 * * *")]TimerInfo timer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed daily at 04:00 AM UTC i.e. at: {DateTime.UtcNow}");
+            log.LogInformation($"C# Timer trigger function executed daily at 11:00 AM localtime (for testing) i.e. at: {DateTime.UtcNow} UTC");
 
             if (timer.IsPastDue)
             {
+                log.LogInformation($"Timer is past due. Exiting function.");
                 return;
             }
 
             var timeToLive = DateTime.UtcNow.AddMonths(-12);
 
-            log.LogInformation($"Calling the daily stored procedure to delete SkillsDocuments records not updated in the last 12 months as of {timeToLive.ToShortDateString()}");
+            log.LogInformation($"Running the daily stored procedure to delete SkillsDocuments records not updated in the last 12 months i.e. since: {timeToLive.ToShortDateString()}");
             
             using (var connection = _dbContext.CreateConnection())
             {
@@ -37,5 +40,17 @@ namespace DFC.SkillsHealthCheck.Functions
                 await connection.QueryAsync(sqlTransaction);
             }
         }
+    }
+
+    public class DatabaseContext
+    {
+        private readonly IConfiguration _configuration;
+
+        public DatabaseContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
     }
 }
