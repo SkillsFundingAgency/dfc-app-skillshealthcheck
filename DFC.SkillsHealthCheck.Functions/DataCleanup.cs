@@ -20,9 +20,9 @@ namespace DFC.SkillsHealthCheck.Functions
         }
 
         [FunctionName("DataCleanup")]
-        public async Task Run([TimerTrigger("0 00 11 * * *")]TimerInfo timer, ILogger log)
+        public async Task Run([TimerTrigger("0 00 13 * * *")]TimerInfo timer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed daily at 11:00 AM localtime (for testing) i.e. at: {DateTime.UtcNow} UTC");
+            log.LogInformation($"C# Timer trigger function executed daily at 13:00 localtime (for testing) i.e. at: {DateTime.UtcNow} UTC");
 
             if (timer.IsPastDue)
             {
