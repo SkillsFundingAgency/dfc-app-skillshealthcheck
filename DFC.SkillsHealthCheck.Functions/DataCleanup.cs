@@ -12,7 +12,7 @@ namespace DFC.SkillsHealthCheck.Functions
     public class DataCleanup
     {
         private readonly DatabaseContext _dbContext;
-        private readonly string sqlTransaction = "BEGIN TRANSACTION [DeleteOldSkillsDocuments]\r\n  BEGIN TRY\r\n\tDELETE \r\n\tFROM [dbo].[SkillsDocuments]\r\n\tWHERE UpdatedAt <DATEADD(MONTH, -12, GETUTCDATE())\r\n\tCOMMIT TRANSACTION [DeleteOldSkillsDocuments]\r\n  END TRY\r\n  BEGIN CATCH\r\n        ROLLBACK TRANSACTION [DeleteOldSkillsDocuments];\r\n        THROW\r\n  END CATCH  ";
+        private readonly string sqlTransaction = "BEGIN TRANSACTION [DeleteOldSkillsDocuments]\r\n  BEGIN TRY\r\n\tDELETE \r\n\tFROM [dbo].[SkillsDocuments]\r\n\tWHERE UpdatedAt <DATEADD(MONTH, -1, GETUTCDATE())\r\n\tCOMMIT TRANSACTION [DeleteOldSkillsDocuments]\r\n  END TRY\r\n  BEGIN CATCH\r\n        ROLLBACK TRANSACTION [DeleteOldSkillsDocuments];\r\n        THROW\r\n  END CATCH  ";
 
         public DataCleanup(DatabaseContext dbContext)
         {
@@ -20,9 +20,9 @@ namespace DFC.SkillsHealthCheck.Functions
         }
 
         [FunctionName("DataCleanup")]
-        public async Task Run([TimerTrigger("00 00 03 * * *")] TimerInfo timer, ILogger log)
+        public async Task Run([TimerTrigger("00 00 8 * * *")] TimerInfo timer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed daily at 04:00 local-time (for testing purposes) i.e. at: {DateTime.UtcNow} UTC");
+            log.LogInformation($"C# Timer trigger function executed daily at 03:00 UTC i.e. at: {DateTime.Now} server-time.");
             //note: when running this locally on machine this uses local time; on azure this uses UTC.
 
             if (timer.IsPastDue)
