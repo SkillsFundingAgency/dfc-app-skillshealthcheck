@@ -65,3 +65,5 @@ variables:
     value: Standard
   - name: SqlDatabaseSize
     value: 1
+  - name: DefaultConnection
+    value: todo-add-keyvault-value

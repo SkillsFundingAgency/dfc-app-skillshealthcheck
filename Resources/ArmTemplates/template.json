@@ -1,181 +1,184 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "appSharedResourceGroup": {
-            "type": "string"
-        },
-        "appSharedStorageAccountName": {
-            "type": "string"
-        },
-        "appServiceName": {
-            "type": "string"
-        },
-        "functionAppName": {
-            "type": "string"
-        },
-        "apiAppServiceName": {
-            "type": "string"
-        },
-        "appServicePlanSuffix": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "CosmosDbResourceGroup": {
-            "type": "string"
-        },
-        "cosmosDbName": {
-            "type": "string"
-        },
-        "cosmosDbKey": {
-            "type": "securestring"
-        },
-        "CmsRedisCacheConnectionString": {
-            "type": "securestring"
-        },
-        "CmsClientSecret": {
-            "type": "string"
-        },
-        "CmsClientId": {
-            "type": "string"
-        },
-        "CmsGraphApiUrl": {
-            "type": "string"
-        },
-        "CmsTokenEndPointUrl": {
-            "type": "string"
-        },
-        "environment": {
-            "type": "string"
-        },
-        "cosmosDBCollectionName": {
-            "type": "string"
-        },
-        "appDatabaseNeedsCreation": {
-            "type": "bool"
-        },
-        "appDatabaseThroughput": {
-            "type": "int"
-        },
-        "enableAlerts": {
-            "type": "bool"
-        },
-        "SubscriptionSettingsEndpoint": {
-            "type": "string"
-        },
-        "apimCompositeApiKey": {
-            "type": "securestring"
-        },
-        "SubscriptionSettingsFilterIncludeEventTypes3": {
-            "type": "string"
-        },
-        "SubscriptionSettingsFilterIncludeEventTypes4": {
-            "type": "string"
-        },
-        "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
-            "type": "string"
-        },
-        "ApplicationName": {
-            "type": "string"
-        },
-        "contentUrl": {
-            "type": "string"
-        },
-        "subscriptionUrl": {
-            "type": "string"
-        },
-        "ApimResourceGroup": {
-            "type": "string"
-        },
-        "ApimLoggerName": {
-            "type": "string"
-        },
-        "ApimProductInstanceName": {
-            "type": "string"
-        },
-        "ApimServiceName": {
-            "type": "string"
-        },
-        "ApiName": {
-            "type": "string"
-        },
-        "ApiUrl": {
-            "type": "string"
-        },
-        "ExceptionCountThreshold": {
-            "type": "string"
-        },
-        "CPUPercentageThreshold": {
-            "type": "string"
-        },
-        "MemoryPercentageThreshold": {
-            "type": "string"
-        },
-        "LoggingLogLevelDefault": {
-            "type": "string",
-            "metadata": {
-                "description": "Logging__LogLevel__Default"
-            }
-        },
-        "SkillsServiceOptionsImageUrl": {
-            "type": "string"
-        },
-        "GovNotifyOptionsAPIKey": {
-            "type": "string"
-        },
-        "GovNotifyOptionsEmailTemplateId": {
-            "type": "string"
-        },
-        "GovNotifyOptionsSmsTemplateId": {
-            "type": "string"
-        },
-        "SkillsCentralServiceEndpoint": {
-            "type": "string"
-        },
-        "CompositeBaseUrl": {
-            "type": "string"
-        },
-        "SessionStateOptionsTtl": {
-            "type": "string",
-            "metadata": {
-                "description": "session state options ttl"
-            }
-        },
-        "workspaceName": {
-            "type": "string"
-        },
-        "workspaceResourceGroup": {
-            "type": "string"
-        },
-        "WorkerThreads": {
-            "type": "string"
-        },
-        "IocpThreads": {
-            "type": "string"
-        },
-        "ContentMode": {
-            "type": "string"
-        },
-        "SqlElasticPoolName": {
-            "type": "string"
-        },
-        "SqlServerName": {
-            "type": "string"
-        },
-        "SqlResourceGroupName": {
-            "type": "string"
-        },
-        "SqlDatabaseTier": {
-            "type": "string",
-            "allowedValues": [
-                "Standard",
-                "Premium"
-            ]
-        },
-        "SqlDatabaseSize": {
-            "type": "string"
-        }
+  "parameters": {
+    "appSharedResourceGroup": {
+      "type": "string"
     },
+    "appSharedStorageAccountName": {
+      "type": "string"
+    },
+    "appServiceName": {
+      "type": "string"
+    },
+    "functionAppName": {
+      "type": "string"
+    },
+    "apiAppServiceName": {
+      "type": "string"
+    },
+    "appServicePlanSuffix": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "CosmosDbResourceGroup": {
+      "type": "string"
+    },
+    "cosmosDbName": {
+      "type": "string"
+    },
+    "cosmosDbKey": {
+      "type": "securestring"
+    },
+    "CmsRedisCacheConnectionString": {
+      "type": "securestring"
+    },
+    "CmsClientSecret": {
+      "type": "string"
+    },
+    "CmsClientId": {
+      "type": "string"
+    },
+    "CmsGraphApiUrl": {
+      "type": "string"
+    },
+    "CmsTokenEndPointUrl": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "cosmosDBCollectionName": {
+      "type": "string"
+    },
+    "appDatabaseNeedsCreation": {
+      "type": "bool"
+    },
+    "appDatabaseThroughput": {
+      "type": "int"
+    },
+    "enableAlerts": {
+      "type": "bool"
+    },
+    "SubscriptionSettingsEndpoint": {
+      "type": "string"
+    },
+    "apimCompositeApiKey": {
+      "type": "securestring"
+    },
+    "SubscriptionSettingsFilterIncludeEventTypes3": {
+      "type": "string"
+    },
+    "SubscriptionSettingsFilterIncludeEventTypes4": {
+      "type": "string"
+    },
+    "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
+      "type": "string"
+    },
+    "ApplicationName": {
+      "type": "string"
+    },
+    "contentUrl": {
+      "type": "string"
+    },
+    "subscriptionUrl": {
+      "type": "string"
+    },
+    "ApimResourceGroup": {
+      "type": "string"
+    },
+    "ApimLoggerName": {
+      "type": "string"
+    },
+    "ApimProductInstanceName": {
+      "type": "string"
+    },
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "ApiName": {
+      "type": "string"
+    },
+    "ApiUrl": {
+      "type": "string"
+    },
+    "ExceptionCountThreshold": {
+      "type": "string"
+    },
+    "CPUPercentageThreshold": {
+      "type": "string"
+    },
+    "MemoryPercentageThreshold": {
+      "type": "string"
+    },
+    "LoggingLogLevelDefault": {
+      "type": "string",
+      "metadata": {
+        "description": "Logging__LogLevel__Default"
+      }
+    },
+    "SkillsServiceOptionsImageUrl": {
+      "type": "string"
+    },
+    "GovNotifyOptionsAPIKey": {
+      "type": "string"
+    },
+    "GovNotifyOptionsEmailTemplateId": {
+      "type": "string"
+    },
+    "GovNotifyOptionsSmsTemplateId": {
+      "type": "string"
+    },
+    "SkillsCentralServiceEndpoint": {
+      "type": "string"
+    },
+    "CompositeBaseUrl": {
+      "type": "string"
+    },
+    "SessionStateOptionsTtl": {
+      "type": "string",
+      "metadata": {
+        "description": "session state options ttl"
+      }
+    },
+    "workspaceName": {
+      "type": "string"
+    },
+    "workspaceResourceGroup": {
+      "type": "string"
+    },
+    "WorkerThreads": {
+      "type": "string"
+    },
+    "IocpThreads": {
+      "type": "string"
+    },
+    "ContentMode": {
+      "type": "string"
+    },
+    "SqlElasticPoolName": {
+      "type": "string"
+    },
+    "SqlServerName": {
+      "type": "string"
+    },
+    "SqlResourceGroupName": {
+      "type": "string"
+    },
+    "SqlDatabaseTier": {
+      "type": "string",
+      "allowedValues": [
+        "Standard",
+        "Premium"
+      ]
+    },
+    "SqlDatabaseSize": {
+      "type": "string"
+    },
+    "DefaultConnection": {
+      "type": "string"
+    }
+  },
     "variables": {
         "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
         "appServicePlanName": "[concat(variables('resourcePrefix'), parameters('appServicePlanSuffix'), '-asp')]",
@@ -508,8 +511,12 @@
                                 "value": "[parameters('IocpThreads')]"
                             },
                             {
-                                "name": "ContentMode__ContentMode",
-                                "value": "[parameters('ContentMode')]"
+                              "name": "ContentMode__ContentMode",
+                              "value": "[parameters('ContentMode')]"
+                            },
+                            {
+                              "name": "ConnectionStrings__DefaultConnection",
+                              "value": "[parameters('DefaultConnection')]"
                             }
                         ]
                     }

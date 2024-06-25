@@ -58,13 +58,13 @@
       "value": "__cosmosDBCollectionName__"
     },
     "appDatabaseNeedsCreation": {
-      "value": __CosmosDbDatabaseDoesntExist__
+      "value": "__CosmosDbDatabaseDoesntExist__"
     },
     "appDatabaseThroughput": {
-      "value": __appDatabaseThroughput__
+      "value": "__appDatabaseThroughput__"
     },
     "enableAlerts": {
-      "value": __EnableAzureMonitorAlerting__
+      "value": "__EnableAzureMonitorAlerting__"
     },
     "SubscriptionSettingsEndpoint": {
       "value": "__SubscriptionSettingsEndpoint__"
@@ -105,9 +105,9 @@
     "ApiName": {
       "value": "__ApiName__"
     },
-        "ApiUrl": {
-            "value": "__apiUrl__"
-        },
+    "ApiUrl": {
+      "value": "__apiUrl__"
+    },
     "ExceptionCountThreshold": {
       "value": "__ExceptionCountThreshold__"
     },
@@ -151,25 +151,28 @@
       "value": "__WorkerThreads__"
     },
     "IocpThreads": {
-        "value": "__IocpThreads__"
+      "value": "__IocpThreads__"
     },
     "ContentMode": {
       "value": "__ContentMode__"
     },
     "SqlElasticPoolName": {
-        "value": "__elasticPoolName__"
+      "value": "__elasticPoolName__"
     },
     "SqlServerName": {
-        "value": "__sharedSqlServerName__"
+      "value": "__sharedSqlServerName__"
     },
     "SqlResourceGroupName": {
-        "value": "__SharedResourceGroupName__"
+      "value": "__SharedResourceGroupName__"
     },
     "SqlDatabaseTier": {
       "value": "__SqlDatabaseTier__"
     },
     "SqlDatabaseSize": {
       "value": "__SqlDatabaseSize__"
+    },
+    "DefaultConnection": {
+      "value": "__DefaultConnection__"
     }
   }
 }
