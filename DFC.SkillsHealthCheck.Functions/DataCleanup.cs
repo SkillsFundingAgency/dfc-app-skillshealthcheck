@@ -20,7 +20,7 @@ namespace DFC.SkillsHealthCheck.Functions
         }
 
         [FunctionName("DataCleanup")]
-        public async Task Run([TimerTrigger("00 30 10 * * *")] TimerInfo timer, ILogger log)
+        public async Task Run([TimerTrigger("00 45 10 * * *")] TimerInfo timer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed daily at 03:00 UTC i.e. at: {DateTime.Now} server-time.");
             //note: when running this locally on machine this uses local time; on azure this uses UTC.
