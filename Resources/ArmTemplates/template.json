@@ -1119,16 +1119,16 @@
                                 "name": "AzureWebJobsStorage",
                                 "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
                             }
-                        ],
-                        "appServiceConnectionStrings": {
-                            "value": [
-                                {
-                                    "name": "DefaultConnection",
-                                    "connectionString": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]",
-                                    "type": "SQLServer"
-                                }
-                            ]
-                        }
+                        ]
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "DefaultConnection",
+                                "connectionString": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]",
+                                "type": "SQLServer"
+                            }
+                        ]
                     }
                 }
             }
