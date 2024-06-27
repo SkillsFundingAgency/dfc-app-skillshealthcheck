@@ -26,7 +26,9 @@ namespace DFC.SkillsHealthCheck.Functions
                BEGIN TRY
                  DELETE FROM [dbo].[SkillsDocuments]
                  WHERE UpdatedAt <DATEADD(MONTH, -{monthsToKeep}, GETUTCDATE())
-                 or CreatedAt <DATEADD(MONTH, -{monthsToKeep}, GETUTCDATE())
+                 or
+                 (UpdatedAt IS NULL and
+                 CreatedAt <DATEADD(MONTH, -{monthsToKeep}, GETUTCDATE()))
                  COMMIT TRANSACTION [DeleteOldSkillsDocuments]
                END TRY
                BEGIN CATCH
