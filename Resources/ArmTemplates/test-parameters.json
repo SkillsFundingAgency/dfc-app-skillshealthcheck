@@ -1,6 +1,6 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "appSharedResourceGroup": {
       "value": "dfc-dev-app-sharedresources-rg"
@@ -10,6 +10,9 @@
     },
     "appServiceName": {
       "value": "dfc-foo-app-skillshealthcheck-as-ver2"
+    },
+    "functionAppName": {
+      "value": "dfc-foo-app-skillshealthcheck-fa"
     },
     "apiAppServiceName": {
       "value": "dfc-foo-app-skillscentral-as-ver2"
@@ -80,9 +83,9 @@
     "ApiName": {
       "value": "skillshealthcheck"
     },
-        "ApiUrl": {
-            "value": "https://localhost"
-        },
+    "ApiUrl": {
+      "value": "https://localhost"
+    },
     "ExceptionCountThreshold": {
       "value": "0"
     },
@@ -141,25 +144,28 @@
       "value": "200"
     },
     "IocpThreads": {
-        "value": "200"
+      "value": "200"
     },
     "ContentMode": {
       "value": "PUBLISHED"
     },
     "SqlElasticPoolName": {
-        "value": "an-elastic-pool"
+      "value": "an-elastic-pool"
     },
     "SqlServerName": {
-        "value": "a-sql-server"
+      "value": "a-sql-server"
     },
     "SqlResourceGroupName": {
-        "value": "dfc-dev-shared-rg"
+      "value": "dfc-dev-shared-rg"
     },
     "SqlDatabaseTier": {
       "value": "Standard"
     },
     "SqlDatabaseSize": {
       "value": "1"
+    },
+    "DefaultConnection": {
+      "value": "test-string"
     }
   }
 }

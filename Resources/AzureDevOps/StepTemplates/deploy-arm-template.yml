@@ -65,11 +65,21 @@ steps:
     condition: always()
 
   - task: AzurePowerShell@5
-    displayName: 'Create System Assigned Identity SQL user'
+    displayName: 'Create System Assigned Identity SQL user for API'
     inputs:
       azureSubscription: '${{ parameters.AzureSubscription }}'
       ScriptType: FilePath
       ScriptPath: '${{ parameters.PSScriptPath }}/Set-SqlSmis.ps1'
       ScriptArguments: "-SqlServerName $(sharedSqlServerName) -SqlDatabaseName $(SqlDatabaseName) -ApiSMI $(ApiAppServiceName) -ApiSMIStaging '$(ApiAppServiceName)/slots/staging' -Verbose"
+      pwsh: true
+      azurePowerShellVersion: LatestVersion
+
+  - task: AzurePowerShell@5
+    displayName: 'Create System Assigned Identity SQL user for function app'
+    inputs:
+      azureSubscription: '${{ parameters.AzureSubscription }}'
+      ScriptType: FilePath
+      ScriptPath: '${{ parameters.PSScriptPath }}/Set-SqlSmis.ps1'
+      ScriptArguments: "-SqlServerName $(sharedSqlServerName) -SqlDatabaseName $(SqlDatabaseName) -ApiSMI $(FunctionAppName) -ApiSMIStaging '$(FunctionAppName)/slots/staging' -Verbose"
       pwsh: true
       azurePowerShellVersion: LatestVersion

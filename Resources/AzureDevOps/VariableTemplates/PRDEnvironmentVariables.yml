@@ -5,6 +5,8 @@ variables:
     value: $(WebAppPrefix)-as
   - name: ApiAppServiceName
     value: $(ApiAppPrefix)-api-as
+  - name: FunctionAppName
+    value: $(ApiAppPrefix)-fa
   - name: cosmosDBCollectionName
     value: shared-content
   - name: SqlDatabaseName
@@ -63,3 +65,5 @@ variables:
     value: Premium
   - name: SqlDatabaseSize
     value: 1
+  - name: DefaultConnection
+    value: todo-add-keyvault-value

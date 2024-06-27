@@ -91,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfE.SkillsCentral.Api.Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI", "DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj", "{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFC.SkillsHealthCheck.Functions", "DFC.SkillsHealthCheck.Functions\DFC.SkillsHealthCheck.Functions.csproj", "{4C616665-7944-4E58-9462-B71033F4D02F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +189,10 @@ Global
 		{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52A1CF8E-BAC5-41B2-9ACA-8CE011F28974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C616665-7944-4E58-9462-B71033F4D02F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C616665-7944-4E58-9462-B71033F4D02F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C616665-7944-4E58-9462-B71033F4D02F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C616665-7944-4E58-9462-B71033F4D02F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

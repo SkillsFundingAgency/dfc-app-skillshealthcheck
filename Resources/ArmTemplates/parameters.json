@@ -11,6 +11,9 @@
     "appServiceName": {
       "value": "__AppServiceName__"
     },
+    "functionAppName": {
+      "value": "__FunctionAppName__"
+    },
     "appServicePlanSuffix": {
       "value": "__AppServicePlanSuffix__"
     },
@@ -102,9 +105,9 @@
     "ApiName": {
       "value": "__ApiName__"
     },
-        "ApiUrl": {
-            "value": "__apiUrl__"
-        },
+    "ApiUrl": {
+      "value": "__apiUrl__"
+    },
     "ExceptionCountThreshold": {
       "value": "__ExceptionCountThreshold__"
     },
@@ -148,25 +151,28 @@
       "value": "__WorkerThreads__"
     },
     "IocpThreads": {
-        "value": "__IocpThreads__"
+      "value": "__IocpThreads__"
     },
     "ContentMode": {
       "value": "__ContentMode__"
     },
     "SqlElasticPoolName": {
-        "value": "__elasticPoolName__"
+      "value": "__elasticPoolName__"
     },
     "SqlServerName": {
-        "value": "__sharedSqlServerName__"
+      "value": "__sharedSqlServerName__"
     },
     "SqlResourceGroupName": {
-        "value": "__SharedResourceGroupName__"
+      "value": "__SharedResourceGroupName__"
     },
     "SqlDatabaseTier": {
       "value": "__SqlDatabaseTier__"
     },
     "SqlDatabaseSize": {
       "value": "__SqlDatabaseSize__"
+    },
+    "DefaultConnection": {
+      "value": "__DefaultConnection__"
     }
   }
 }

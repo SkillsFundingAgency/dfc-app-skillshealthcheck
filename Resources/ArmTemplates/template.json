@@ -9,14 +9,17 @@
       "type": "string"
     },
     "appServiceName": {
-        "type": "string"
+      "type": "string"
+    },
+    "functionAppName": {
+      "type": "string"
     },
     "apiAppServiceName": {
-        "type": "string"
+      "type": "string"
     },
     "appServicePlanSuffix": {
-        "type": "string",
-        "defaultValue": ""
+      "type": "string",
+      "defaultValue": ""
     },
     "CosmosDbResourceGroup": {
       "type": "string"
@@ -148,7 +151,7 @@
       "type": "string"
     },
     "IocpThreads": {
-        "type": "string"
+      "type": "string"
     },
     "ContentMode": {
       "type": "string"
@@ -163,14 +166,17 @@
       "type": "string"
     },
     "SqlDatabaseTier": {
-        "type": "string",
-        "allowedValues": [
-            "Standard",
-            "Premium"
-        ]
+      "type": "string",
+      "allowedValues": [
+        "Standard",
+        "Premium"
+      ]
     },
     "SqlDatabaseSize": {
-        "type": "string"
+      "type": "string"
+    },
+    "DefaultConnection": {
+      "type": "string"
     }
   },
     "variables": {
@@ -274,9 +280,9 @@
             "apiVersion": "2017-05-10",
             "name": "[parameters('appServiceName')]",
             "type": "Microsoft.Resources/deployments",
-          "dependsOn": [
-            "[variables('webAppInsightsName')]"
-          ],
+            "dependsOn": [
+                "[variables('webAppInsightsName')]"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -476,38 +482,42 @@
                                 "name": "SessionStateOptions__Ttl",
                                 "value": "[parameters('SessionStateOptionsTtl')]"
                             },
-                        {
-                          "name": "Cms__TokenEndPointUrl",
-                          "value": "[parameters('CmsTokenEndpointUrl')]"
-                        },
-                        {
-                          "name": "Cms__GraphApiUrl",
-                          "value": "[parameters('CmsGraphApiUrl')]"
-                        },
-                        {
-                          "name": "Cms__ClientId",
-                          "value": "[parameters('CmsClientId')]"
-                        },
-                        {
-                          "name": "Cms__ClientSecret",
-                          "value": "[parameters('CmsClientSecret')]"
-                        },
-                        {
-                          "name": "Cms__RedisCacheConnectionString",
-                          "value": "[parameters('CmsRedisCacheConnectionString')]"
-                        },
-                        {
-                          "name": "ThreadSettings__WorkerThreads",
-                          "value": "[parameters('WorkerThreads')]"
-                        },
-                        {
-                           "name": "ThreadSettings__IocpThreads",
-                           "value": "[parameters('IocpThreads')]"
-                        },
-                        {
-                          "name": "ContentMode__ContentMode",
-                          "value": "[parameters('ContentMode')]"
-                        }
+                            {
+                                "name": "Cms__TokenEndPointUrl",
+                                "value": "[parameters('CmsTokenEndpointUrl')]"
+                            },
+                            {
+                                "name": "Cms__GraphApiUrl",
+                                "value": "[parameters('CmsGraphApiUrl')]"
+                            },
+                            {
+                                "name": "Cms__ClientId",
+                                "value": "[parameters('CmsClientId')]"
+                            },
+                            {
+                                "name": "Cms__ClientSecret",
+                                "value": "[parameters('CmsClientSecret')]"
+                            },
+                            {
+                                "name": "Cms__RedisCacheConnectionString",
+                                "value": "[parameters('CmsRedisCacheConnectionString')]"
+                            },
+                            {
+                                "name": "ThreadSettings__WorkerThreads",
+                                "value": "[parameters('WorkerThreads')]"
+                            },
+                            {
+                                "name": "ThreadSettings__IocpThreads",
+                                "value": "[parameters('IocpThreads')]"
+                            },
+                            {
+                              "name": "ContentMode__ContentMode",
+                              "value": "[parameters('ContentMode')]"
+                            },
+                            {
+                              "name": "ConnectionStrings__DefaultConnection",
+                              "value": "[parameters('DefaultConnection')]"
+                            }
                         ]
                     }
                 }
@@ -1049,6 +1059,72 @@
                     },
                     "resourceId": {
                         "value": "[resourceId('Microsoft.Web/serverFarms', variables('AppServicePlanName'))]"
+                    }
+                }
+            }
+        },
+        //
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[parameters('FunctionAppName')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'app-service.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[parameters('FunctionAppName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[variables('AppServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[variables('AppServicePlanResourceGroup')]"
+                    },
+                    "appServiceType": {
+                        "value": "functionapp"
+                    },
+                    "deployStagingSlot": {
+                        "value": true
+                    },
+                    "clientAffinity": {
+                        "value": true
+                    },
+                    "appServiceAppSettings": {
+                        "value": [
+                            {
+                                "name": "FUNCTIONS_EXTENSION_VERSION",
+                                "value": "~4"
+                            },
+                            {
+                                "name": "FUNCTIONS_WORKER_RUNTIME",
+                                "value": "dotnet"
+                            },
+                            {
+                                "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                                "value": "1"
+                            },
+                            {
+                                "name": "WEBSITE_RUN_FROM_PACKAGE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "AzureWebJobsStorage",
+                                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
+                            },
+                            {
+                                "name": "ConnectionStrings__DefaultConnection",
+                                "value": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]"
+
+                            }
+                        ]
                     }
                 }
             }
