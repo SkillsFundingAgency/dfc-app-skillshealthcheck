@@ -27,12 +27,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<YourAssessmentsController> logger;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IConfiguration configuration;
         private string status;
+        private double expiryInHours = 4;
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
@@ -46,7 +48,16 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.logger = logger;
             this.sharedContentRedis = sharedContentRedis;
             this.yourAssessmentsService = yourAssessmentsService;
+            this.configuration = configuration;
             status = configuration.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
+            }
         }
 
         [HttpGet]
@@ -116,7 +127,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 status = "PUBLISHED";
             }
 
-            var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status);
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
             var rightBarViewModel = new RightBarViewModel
             {

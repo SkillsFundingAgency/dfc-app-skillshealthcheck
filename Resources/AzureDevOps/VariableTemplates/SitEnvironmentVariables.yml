@@ -63,3 +63,5 @@ variables:
     value: Standard
   - name: SqlDatabaseSize
     value: 1
+  - name: Expiry
+    value: 4
