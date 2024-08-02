@@ -2,9 +2,11 @@ variables:
   - name: ReleaseEnvironmentName
     value: prd
   - name: AppServiceName
-    value: $(WebAppPrefix)-as
+    value: $(WebAppPrefix)-as-ver2
+  - name: AppServicePlanSuffix
+    value: -migrated
   - name: ApiAppServiceName
-    value: $(ApiAppPrefix)-api-as
+    value: $(ApiAppPrefix)-api-as-ver2
   - name: cosmosDBCollectionName
     value: shared-content
   - name: SqlDatabaseName
@@ -20,7 +22,7 @@ variables:
   - name: contentUrl
     value: $(ContentApiAddress)/api/execute
   - name: subscriptionUrl
-    value: https://dfc-prd-api-eventgridsubscriptions-fa.$(appServiceDomain)
+    value: https://dfc-prd-api-eventgridsubscriptions-fa-ver2.$(appServiceDomain)
   - name: SubscriptionSettingsEndpoint
     value: $(ApimProxyAddress)/composite-ui/skillshealthcheck
   - name: apiName
