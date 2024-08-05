@@ -167,6 +167,9 @@
     },
     "SqlDatabaseSize": {
       "value": "__SqlDatabaseSize__"
+    },
+    "Expiry": {
+        "value": "__Expiry__"
     }
   }
 }

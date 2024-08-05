@@ -29,12 +29,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private readonly ILogger<HomeController> logger;
         private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
         private readonly IConfiguration configuration;
         private string status;
+        private double expiryInHours = 4;
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -52,6 +54,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             this.yourAssessmentsService = yourAssessmentsService;
             this.configuration = configuration;
             status = configuration.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
+            }
         }
 
         [HttpGet]
@@ -88,12 +98,11 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             logger.LogInformation($"creating new skills document request");
 
-
-               var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
-                {
-                    CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
-                    ReferenceCode = Guid.NewGuid().ToString(),
-               };
+            var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
+            {
+                CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
+                ReferenceCode = Guid.NewGuid().ToString(),
+            };
 
             var apiResult = await skillsHealthCheckService.CreateSkillsDocument(skillsDocument);
             if (apiResult != null)
@@ -274,8 +283,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
 
-            
-
             try
             {
                 if (string.IsNullOrEmpty(status))
@@ -283,7 +290,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                     status = "PUBLISHED";
                 }
 
-                var speakToAnAdviser = await sharedContentRedis.GetDataAsync<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status);
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiryInHours);
                 viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
             catch (Exception e)
