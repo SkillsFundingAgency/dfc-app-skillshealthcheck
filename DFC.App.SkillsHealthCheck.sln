@@ -58,6 +58,9 @@ EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DfE.SkillsCentral.Api.Infrastructure.Database", "DfE.SkillsCentral.Api\Infrastructure\DfE.SkillsCentral.Api.Infrastructure.Database\DfE.SkillsCentral.Api.Infrastructure.Database.sqlproj", "{34419DF5-6A8E-4A1C-9625-CEEA80FD81BC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{1BAEF60D-AAC6-4211-8F94-CD3BC1AACAAD}"
+	ProjectSection(SolutionItems) = preProject
+		sql-data-analysis-script.py = sql-data-analysis-script.py
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsDataMigrations", "DataMigrations\DocumentsDataMigrations.csproj", "{9EF08E5F-DBFD-4FBE-8D41-870FFA86BD0F}"
 EndProject
