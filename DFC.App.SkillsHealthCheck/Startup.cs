@@ -35,6 +35,7 @@ using System.Net.Http;
 using System.ServiceModel;
 using Microsoft.Extensions.Logging;
 using System.Threading;
+using DFC.Common.SharedContent.Pkg.Netcore.Constant;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace DFC.App.SkillsHealthCheck
@@ -97,7 +98,8 @@ namespace DFC.App.SkillsHealthCheck
             {
                 var option = new GraphQLHttpClientOptions()
                 {
-                    EndPoint = new Uri(graphQLConnection ?? throw new ArgumentNullException()),
+                    EndPoint = new Uri(configuration[ConfigKeys.GraphApiUrl] ??
+                throw new ArgumentNullException($"{nameof(ConfigKeys.GraphApiUrl)} is missing or has an invalid value.")),
                     HttpMessageHandler = new CmsRequestHandler(
                         s.GetService<IHttpClientFactory>(),
                         s.GetService<IConfiguration>(),
@@ -107,7 +109,7 @@ namespace DFC.App.SkillsHealthCheck
                 var client = new GraphQLHttpClient(option, new NewtonsoftJsonSerializer());
                 return client;
             });
-            services.AddSingleton<ISharedContentRedisInterfaceStrategy<SharedHtml>, SharedHtmlQueryStrategy>();
+            services.AddSingleton<ISharedContentRedisInterfaceStrategyWithRedisExpiry<SharedHtml>, SharedHtmlQueryStrategy>();
 
             services.AddSingleton<ISharedContentRedisInterfaceStrategyFactory, SharedContentRedisStrategyFactory>();
             services.AddScoped<ISharedContentRedisInterface, SharedContentRedis>();
