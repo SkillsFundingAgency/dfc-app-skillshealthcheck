@@ -1,9 +1,25 @@
 ﻿@using DFC.App.SkillsHealthCheck.ViewModels.Question
+@using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Enums
+
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.BodyViewModel
 
 @{
     var assessmentQuestionViewModel = Model.AssessmentQuestionViewModel;
 }
+<div class="govuk-width-container">
+    <div class="govuk-breadcrumbs">
+        @if (@Model.AssessmentQuestionViewModel.QuestionNumber==1)
+        {
+            <a href="/skills-health-check" class="govuk-back-link">Back to start</a>
+
+        }
+        else
+        {
+            <a class="govuk-back-link" href="/skills-health-check/question?assessmentType=@Model.AssessmentQuestionViewModel.AssessmentType&questionNumber=@(@Model.AssessmentQuestionViewModel.QuestionNumber-1)">Back to previous question</a>
+        }
+    </div>
+</div>
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl">
@@ -12,10 +28,10 @@
         @if (!(assessmentQuestionViewModel is FeedBackQuestionViewModel) && assessmentQuestionViewModel.QuestionNumber == 1)
         {
             <h2 class="heading-large">
-                @assessmentQuestionViewModel.Question.SubTitle
+                @assessmentQuestionViewModel.AssessmentSubtitle
             </h2>
             <p>
-                @Html.Raw(assessmentQuestionViewModel.Question.IntroductionText)
+                @Html.Raw(assessmentQuestionViewModel.IntroductionText)
             </p>
         }
         <partial name="@assessmentQuestionViewModel.ViewName" model="assessmentQuestionViewModel" />

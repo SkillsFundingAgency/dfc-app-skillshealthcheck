@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
+using DFC.SkillsCentral.Api.Domain.Models;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
@@ -15,40 +14,54 @@ using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Messages;
 using DFC.App.SkillsHealthCheck.Services.SkillsCentral.Models;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.Home;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using AppConstants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
     public class HomeController : BaseController<HomeController>
     {
+        private const string ExpiryAppSettings = "Cms:Expiry";
         private readonly ILogger<HomeController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
+        private readonly ISharedContentRedisInterface sharedContentRedis;
         private readonly IYourAssessmentsService yourAssessmentsService;
         private readonly ISkillsHealthCheckService skillsHealthCheckService;
+        private readonly IConfiguration configuration;
+        private string status;
+        private double expiryInHours = 4;
 
         public HomeController(
             ILogger<HomeController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions,
+            ISharedContentRedisInterface sharedContentRedis,
             ISkillsHealthCheckService skillsHealthCheckService,
-            IYourAssessmentsService yourAssesmentsService)
+            IYourAssessmentsService yourAssessmentsService,
+            IConfiguration configuration)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this.cmsApiClientOptions = cmsApiClientOptions;
+            this.sharedContentRedis = sharedContentRedis;
             this.skillsHealthCheckService = skillsHealthCheckService;
-            this.yourAssessmentsService = yourAssesmentsService;
+            this.yourAssessmentsService = yourAssessmentsService;
+            this.configuration = configuration;
+            status = configuration.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
+            }
         }
 
         [HttpGet]
@@ -75,7 +88,6 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         [Route("skills-health-check/start-skills-health-check/body")]
         public async Task<IActionResult> StartSkillsHealthCheck(BodyViewModel viewModel)
         {
-
             logger.LogInformation($"{nameof(StartSkillsHealthCheck)} has been called");
 
             if (await CheckValidSession())
@@ -86,56 +98,20 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             logger.LogInformation($"creating new skills document request");
 
-            var apiRequest = new CreateSkillsDocumentRequest
+            var skillsDocument = new SkillsCentral.Api.Domain.Models.SkillsDocument
             {
-                SkillsDocument = new SkillsDocument
-                {
-                    SkillsDocumentTitle = Constants.SkillsHealthCheck.DefaultDocumentName,
-                    SkillsDocumentType = Constants.SkillsHealthCheck.DocumentType,
-                    CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
-                    SkillsDocumentExpiry = SkillsDocumentExpiry.Physical,
-                    ExpiresTimespan = new TimeSpan(0, Constants.SkillsHealthCheck.SkillsDocumentExpiryTime, 0, 0),
-                },
+                CreatedBy = Constants.SkillsHealthCheck.AnonymousUser,
+                ReferenceCode = Guid.NewGuid().ToString(),
             };
 
-            if (!string.IsNullOrWhiteSpace(viewModel?.ListTypeFields))
-            {
-                var fieldList = viewModel.ListTypeFields.Split(',');
-                foreach (var field in fieldList.Where(f => !f.Equals(Constants.SkillsHealthCheck.FieldName, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    var value = string.Empty;
-
-                    if (field.Equals(Constants.SkillsHealthCheck.QualificationProperty, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = "1";
-                    }
-                    else if (field.Equals(Constants.SkillsHealthCheck.CandidateFullNameKeyName, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = apiRequest.SkillsDocument.CreatedBy;
-                    }
-
-                    apiRequest.SkillsDocument.SkillsDocumentDataValues.Add(new SkillsDocumentDataValue
-                    {
-                        Title = field,
-                        Value = value,
-                    });
-                }
-            }
-
-            apiRequest.SkillsDocument.SkillsDocumentIdentifiers.Add(new SkillsDocumentIdentifier
-            {
-                ServiceName = Constants.SkillsHealthCheck.DocumentSystemIdentifierName,
-                Value = Guid.NewGuid().ToString(),
-            });
-
-            var apiResult = skillsHealthCheckService.CreateSkillsDocument(apiRequest);
-            if (apiResult.Success)
+            var apiResult = await skillsHealthCheckService.CreateSkillsDocument(skillsDocument);
+            if (apiResult != null)
             {
                 logger.LogInformation($" Created new Skills Document, redirectng");
 
                 var sessionStateDataModel = new SessionDataModel
                 {
-                    DocumentId = apiResult.DocumentId,
+                    DocumentId = (long)apiResult.Id,
                     AssessmentQuestionsOverViews = new Dictionary<string, AssessmentQuestionsOverView>(),
                 };
                 await SetSessionStateAsync(sessionStateDataModel);
@@ -144,7 +120,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
 
-            logger.LogWarning($" Creating new Skills Document wasnt successful");
+            logger.LogWarning($" Creating new Skills Document was not successful");
 
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -199,17 +175,17 @@ namespace DFC.App.SkillsHealthCheck.Controllers
         {
             logger.LogInformation($"{nameof(Reload)} has been called");
 
-            var response = skillsHealthCheckService.GetSkillsDocumentByIdentifier(sessionId);
-            if (response.Success && response.DocumentId > 0)
+            var response = await skillsHealthCheckService.GetSkillsDocumentByReferenceCode(sessionId);
+            if (response.Id > 0)
             {
                 var sessionStateModel = await GetSessionDataModel() ?? new SessionDataModel();
-                sessionStateModel.DocumentId = response.DocumentId;
+                sessionStateModel.DocumentId = (long)response.Id;
                 await SetSessionStateAsync(sessionStateModel);
                 logger.LogInformation($"{nameof(Reload)} was successful");
                 return Redirect(YourAssessmentsURL);
             }
 
-            logger.LogError($"{nameof(Reload)} failed with message: {response.ErrorMessage}");
+            logger.LogError($"{nameof(Reload)} failed for session id: {response.ReferenceCode}");
             return Redirect("/alerts/500?errorcode=saveProgressResponse");
         }
 
@@ -239,7 +215,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             return this.NegotiateContentResult(bodyViewModel);
         }
@@ -269,7 +245,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
             var bodyViewModel = await GetHomeBodyViewModel();
             viewModel.HasError = true;
-            logger.LogWarning($"Couldn't return to the assesment for viewModel: {viewModel}");
+            logger.LogWarning($"Couldn't return to the assessment for viewModel: {viewModel}");
             bodyViewModel.RightBarViewModel.ReturnToAssessmentViewModel = viewModel;
             var htmlHeadViewModel = GetHtmlHeadViewModel(string.Empty);
             var breadcrumbViewModel = BuildBreadcrumb();
@@ -307,27 +283,19 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 },
             };
 
-            // TODO: do we really need to call and store this here, we can just get these on the your assessments page
-            var apiResult = skillsHealthCheckService.GetListTypeFields(new GetListTypeFieldsRequest
+            try
             {
-                DocumentType = Constants.SkillsHealthCheck.DocumentType,
-            });
+                if (string.IsNullOrEmpty(status))
+                {
+                    status = "PUBLISHED";
+                }
 
-            if (apiResult.Success)
-            {
-                viewModel.ListTypeFields = string.Join(",", apiResult.TypeFields);
+                var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiryInHours);
+                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
-
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            catch (Exception e)
             {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                      .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
-            }
-
-            if (speakToAnAdviser != null)
-            {
-                viewModel.RightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+                viewModel.RightBarViewModel.SpeakToAnAdviser = "<h1> Error Retrieving Data from Redis<h1><p>" + e.ToString() + "</p>";
             }
 
             return viewModel;

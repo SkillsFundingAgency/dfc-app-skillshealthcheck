@@ -11,6 +11,8 @@ parameters:
   ArmOutputVariableName: "ARMOutputs"
   AppSharedResourceGroup: ""
   appSharedCosmosDBName: ""
+  ApiAppServiceName: ""
+  PSScriptPath: ""
 
 steps:
   - checkout: dfc-devops
@@ -24,8 +26,10 @@ steps:
     displayName: "Create resource groups with tags"
     inputs:
       azureSubscription: "${{ parameters.AzureSubscription }}"
+      ScriptType: FilePath
       ScriptPath: "${{ variables['System.DefaultWorkingDirectory'] }}/Set-EsfaResourceGroupTags.ps1"
       ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
+      pwsh: true
       azurePowerShellVersion: LatestVersion
 
   - task: AzurePowerShell@5
@@ -59,3 +63,13 @@ steps:
       SourceFolder: "${{ parameters.ArmTemplateFolder }}"
       Contents: parameters.json
     condition: always()
+
+  - task: AzurePowerShell@5
+    displayName: 'Create System Assigned Identity SQL user'
+    inputs:
+      azureSubscription: '${{ parameters.AzureSubscription }}'
+      ScriptType: FilePath
+      ScriptPath: '${{ parameters.PSScriptPath }}/Set-SqlSmis.ps1'
+      ScriptArguments: "-SqlServerName $(sharedSqlServerName) -SqlDatabaseName $(SqlDatabaseName) -ApiSMI $(ApiAppServiceName) -ApiSMIStaging '$(ApiAppServiceName)/slots/staging' -Verbose"
+      pwsh: true
+      azurePowerShellVersion: LatestVersion

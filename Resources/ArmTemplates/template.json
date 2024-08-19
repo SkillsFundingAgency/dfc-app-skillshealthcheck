@@ -1,155 +1,197 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "appSharedResourceGroup": {
-            "type": "string"
-        },
-        "appSharedStorageAccountName": {
-            "type": "string"
-        },
-        "aseHostingEnvironmentName": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "aseResourceGroup": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "aspInstances": {
-            "type": "int"
-        },
-        "aspSize": {
-            "type": "string"
-        },
-        "aspTier": {
-            "type": "string"
-        },
-        "clientAffinity": {
-            "type": "bool"
-        },
-        "CosmosDbResourceGroup": {
-            "type": "string"
-        },
-        "cosmosDbName": {
-            "type": "string"
-        },
-        "cosmosDbKey": {
-            "type": "securestring"
-        },
-        "environment": {
-            "type": "string"
-        },
-        "cosmosDBCollectionName": {
-            "type": "string"
-        },
-        "appDatabaseNeedsCreation": {
-            "type": "bool"
-        },
-        "appDatabaseThroughput": {
-            "type": "int"
-        },
-        "enableAlerts": {
-            "type": "bool"
-        },
-        "SubscriptionSettingsEndpoint": {
-            "type": "string"
-        },
-        "apimCompositeApiKey": {
-            "type": "securestring"
-        },
-        "SubscriptionSettingsFilterIncludeEventTypes3": {
-            "type": "string"
-        },
-        "SubscriptionSettingsFilterIncludeEventTypes4": {
-            "type": "string"
-        },
-        "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
-            "type": "string"
-        },
-        "ApplicationName": {
-            "type": "string"
-        },
-        "contentUrl": {
-            "type": "string"
-        },
-        "subscriptionUrl": {
-            "type": "string"
-        },
-        "ApimResourceGroup": {
-            "type": "string"
-        },
-        "ApimLoggerName": {
-            "type": "string"
-        },
-        "ApimProductInstanceName": {
-            "type": "string"
-        },
-        "ApimServiceName": {
-            "type": "string"
-        },
-        "ApiName": {
-            "type": "string"
-        },
-        "ExceptionCountThreshold": {
-            "type": "string"
-        },
-        "CPUPercentageThreshold": {
-            "type": "string"
-        },
-        "MemoryPercentageThreshold": {
-            "type": "string"
-        },
-        "LoggingLogLevelDefault": {
-            "type": "string",
-            "metadata": {
-                "description": "Logging__LogLevel__Default"
-            }
-        },
-        "SkillsServiceOptionsImageUrl": {
-            "type": "string"
-        },
-        "GovNotifyOptionsAPIKey": {
-            "type": "string"
-        },
-        "GovNotifyOptionsEmailTemplateId": {
-            "type": "string"
-        },
-        "GovNotifyOptionsSmsTemplateId": {
-            "type": "string"
-        },
-        "SkillsCentralServiceEndpoint": {
-            "type": "string"
-        },
-        "CompositeBaseUrl": {
-            "type": "string"
-        },
-        "SessionStateOptionsTtl": {
-            "type": "string",
-            "metadata": {
-                "description": "session state options ttl"
-            }
-        },
-        "workspaceName": {
-            "type": "string"
-        },
-        "workspaceResourceGroup": {
-            "type": "string"
-        }
+  "parameters": {
+    "appSharedResourceGroup": {
+      "type": "string"
     },
+    "appSharedStorageAccountName": {
+      "type": "string"
+    },
+    "appServiceName": {
+        "type": "string"
+    },
+    "apiAppServiceName": {
+        "type": "string"
+    },
+    "appServicePlanSuffix": {
+        "type": "string",
+        "defaultValue": ""
+    },
+    "CosmosDbResourceGroup": {
+      "type": "string"
+    },
+    "cosmosDbName": {
+      "type": "string"
+    },
+    "cosmosDbKey": {
+      "type": "securestring"
+    },
+    "CmsRedisCacheConnectionString": {
+      "type": "securestring"
+    },
+    "CmsClientSecret": {
+      "type": "string"
+    },
+    "CmsClientId": {
+      "type": "string"
+    },
+    "CmsGraphApiUrl": {
+      "type": "string"
+    },
+    "CmsTokenEndPointUrl": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "cosmosDBCollectionName": {
+      "type": "string"
+    },
+    "appDatabaseNeedsCreation": {
+      "type": "bool"
+    },
+    "appDatabaseThroughput": {
+      "type": "int"
+    },
+    "enableAlerts": {
+      "type": "bool"
+    },
+    "SubscriptionSettingsEndpoint": {
+      "type": "string"
+    },
+    "apimCompositeApiKey": {
+      "type": "securestring"
+    },
+    "SubscriptionSettingsFilterIncludeEventTypes3": {
+      "type": "string"
+    },
+    "SubscriptionSettingsFilterIncludeEventTypes4": {
+      "type": "string"
+    },
+    "SubscriptionSettingsFilterPropertyContainsFilters0Values0": {
+      "type": "string"
+    },
+    "ApplicationName": {
+      "type": "string"
+    },
+    "contentUrl": {
+      "type": "string"
+    },
+    "subscriptionUrl": {
+      "type": "string"
+    },
+    "ApimResourceGroup": {
+      "type": "string"
+    },
+    "ApimLoggerName": {
+      "type": "string"
+    },
+    "ApimProductInstanceName": {
+      "type": "string"
+    },
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "ApiName": {
+      "type": "string"
+    },
+    "ApiUrl": {
+      "type": "string"
+    },
+    "ExceptionCountThreshold": {
+      "type": "string"
+    },
+    "CPUPercentageThreshold": {
+      "type": "string"
+    },
+    "MemoryPercentageThreshold": {
+      "type": "string"
+    },
+    "LoggingLogLevelDefault": {
+      "type": "string",
+      "metadata": {
+        "description": "Logging__LogLevel__Default"
+      }
+    },
+    "SkillsServiceOptionsImageUrl": {
+      "type": "string"
+    },
+    "GovNotifyOptionsAPIKey": {
+      "type": "string"
+    },
+    "GovNotifyOptionsEmailTemplateId": {
+      "type": "string"
+    },
+    "GovNotifyOptionsSmsTemplateId": {
+      "type": "string"
+    },
+    "SkillsCentralServiceEndpoint": {
+      "type": "string"
+    },
+    "CompositeBaseUrl": {
+      "type": "string"
+    },
+    "SessionStateOptionsTtl": {
+      "type": "string",
+      "metadata": {
+        "description": "session state options ttl"
+      }
+    },
+    "workspaceName": {
+      "type": "string"
+    },
+    "workspaceResourceGroup": {
+      "type": "string"
+    },
+    "WorkerThreads": {
+      "type": "string"
+    },
+    "IocpThreads": {
+        "type": "string"
+    },
+    "ContentMode": {
+      "type": "string"
+    },
+    "SqlElasticPoolName": {
+      "type": "string"
+    },
+    "SqlServerName": {
+      "type": "string"
+    },
+    "SqlResourceGroupName": {
+      "type": "string"
+    },
+    "SqlDatabaseTier": {
+        "type": "string",
+        "allowedValues": [
+            "Standard",
+            "Premium"
+        ]
+    },
+    "SqlDatabaseSize": {
+        "type": "string"
+    },
+    "Expiry": {
+      "type": "string"
+    }
+  },
     "variables": {
         "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
-        "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
+        "appServicePlanName": "[concat(variables('resourcePrefix'), parameters('appServicePlanSuffix'), '-asp')]",
         "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
         "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/ArmTemplates/",
         "cosmosDbDatabaseName": "dfc-app-skillshealthcheck",
         "cosmosDbCollectionPartitionKey": "/PartitionKey",
         "cosmosDbEndpoint": "[concat('https://', parameters('cosmosDbName'), '.documents.azure.com:443/')]",
         "resourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillshealthcheck'))]",
-        "webAppName": "[concat(variables('ResourcePrefix'), '-as')]",
+        "apiresourcePrefix": "[tolower(concat('dfc-', parameters('Environment'), '-app-skillscentral'))]",
         "webAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
+        "apiAppInsightsName": "[concat(variables('apiresourcePrefix'), '-api-ai')]",
         "cosmosDBSessionStateCollectionName": "session-state",
-        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]"
+        "ActionGroupName": "[concat('dfc-', replace(tolower(parameters('Environment')), '-draft', ''), '-app-sharedresources-actgrp')]",
+        "DatabaseName": "[concat(variables('apiResourcePrefix'), '-db')]",
+        "DatabaseTier": "[if(equals(parameters('SqlElasticPoolName'), ''), parameters('SqlDatabaseTier'), 'ElasticPool')]"
     },
     "resources": [
         {
@@ -207,11 +249,37 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "[variables('WebAppName')]",
+            "name": "[variables('apiAppInsightsName')]",
             "type": "Microsoft.Resources/deployments",
-            "dependsOn": [
-                "[variables('webAppInsightsName')]"
-            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('apiAppInsightsName')]"
+                    },
+                    "attachedService": {
+                        "value": ""
+                    },
+                    "workspaceName": {
+                        "value": "[parameters('workspaceName')]"
+                    },
+                    "workspaceResourceGroup": {
+                        "value": "[parameters('workspaceResourceGroup')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[parameters('appServiceName')]",
+            "type": "Microsoft.Resources/deployments",
+          "dependsOn": [
+            "[variables('webAppInsightsName')]"
+          ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -220,7 +288,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('webAppName')]"
+                        "value": "[parameters('appServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[variables('appServicePlanName')]"
@@ -235,7 +303,264 @@
                         "value": true
                     },
                     "clientAffinity": {
-                        "value": "[parameters('clientAffinity')]"
+                        "value": false
+                    },
+                    "appServiceAppSettings": {
+                      "value": [
+                        {
+                          "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+                          "value": "1"
+                        },
+                        {
+                          "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                          "value": "[reference(variables('webAppInsightsName')).outputs.InstrumentationKey.value]"
+                        },
+                        {
+                          "name": "AzureWebJobsStorage",
+                          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
+                        },
+                        {
+                          "name": "WEBSITE_RUN_FROM_PACKAGE",
+                          "value": "1"
+                        },
+                        {
+                          "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
+                          "value": "1"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SharedContent__AccessKey",
+                          "value": "[parameters('cosmosDbKey')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SharedContent__EndpointUrl",
+                          "value": "[variables('cosmosDbEndpoint')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SharedContent__DatabaseId",
+                          "value": "[variables('cosmosDbDatabaseName')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
+                          "value": "[parameters('cosmosDbCollectionName')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
+                          "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SessionState__AccessKey",
+                          "value": "[parameters('cosmosDbKey')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SessionState__EndpointUrl",
+                          "value": "[variables('cosmosDbEndpoint')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SessionState__DatabaseId",
+                          "value": "[variables('cosmosDbDatabaseName')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SessionState__CollectionId",
+                          "value": "[variables('cosmosDBSessionStateCollectionName')]"
+                        },
+                        {
+                          "name": "Configuration__CosmosDbConnections__SessionState__PartitionKey",
+                          "value": "[variables('cosmosDbCollectionPartitionKey')]"
+                        },
+                        {
+                          "name": "CmsApiClientOptions__BaseAddress",
+                          "value": "[parameters('contentUrl')]"
+                        },
+                        {
+                          "name": "CmsApiClientOptions__SummaryEndpoint",
+                          "value": "/pagebanner"
+                        },
+                        {
+                          "name": "CmsApiClientOptions__Timeout",
+                          "value": "00:00:30"
+                        },
+                        {
+                          "name": "CmsApiClientOptions__StaticContentEndpoint",
+                          "value": "/sharedcontent/"
+                        },
+                        {
+                          "name": "CmsApiClientOptions__ContentIds",
+                          "value": "2c9da1b3-3529-4834-afc9-9cd741e59788"
+                        },
+                        {
+                          "name": "SkillsServiceOptions__ImageUrl",
+                          "value": "[parameters('SkillsServiceOptionsImageUrl')]"
+                        },
+                        {
+                          "name": "SkillsCentralSettings__SkillsCentralApiUrl",
+                          "value": "[concat(parameters('ApiUrl'), '/api/')]"
+                        },
+                        {
+                          "name": "Configuration__ApplicationName",
+                          "value": "[parameters('ApplicationName')]"
+                        },
+                        {
+                          "name": "Policies__HttpCircuitBreaker__DurationOfBreak",
+                          "value": "00:01:00"
+                        },
+                        {
+                          "name": "Policies__HttpCircuitBreaker__ExceptionsAllowedBeforeBreaking",
+                          "value": 3
+                        },
+                        {
+                          "name": "Policies__HttpRetry__BackoffPower",
+                          "value": 2
+                        },
+                        {
+                          "name": "Policies__HttpRetry__Count",
+                          "value": 3
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
+                          "value": "published"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__IncludeEventTypes__1",
+                          "value": "unpublished"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
+                          "value": "deleted"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__IncludeEventTypes__3",
+                          "value": "[parameters('SubscriptionSettingsFilterIncludeEventTypes3')]"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__IncludeEventTypes__4",
+                          "value": "[parameters('SubscriptionSettingsFilterIncludeEventTypes4')]"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Endpoint",
+                          "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/webhook/ReceiveEvents?subscription-key=',parameters('apimCompositeApiKey'))]"
+                        },
+                        {
+                          "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
+                          "value": "[concat(parameters('subscriptionUrl'),'/api/Execute')]"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Key",
+                          "value": "subject"
+                        },
+                        {
+                          "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__0",
+                          "value": "[parameters('SubscriptionSettingsFilterPropertyContainsFilters0Values0')]"
+                        },
+                        {
+                          "name": "Logging__LogLevel__Default",
+                          "value": "[parameters('LoggingLogLevelDefault')]"
+                        },
+                        {
+                          "name": "GovNotifyOptions__APIKey",
+                          "value": "[parameters('GovNotifyOptionsAPIKey')]"
+                        },
+                        {
+                          "name": "GovNotifyOptions__EmailTemplateId",
+                          "value": "[parameters('GovNotifyOptionsEmailTemplateId')]"
+                        },
+                        {
+                          "name": "GovNotifyOptions__SmsTemplateId",
+                          "value": "[parameters('GovNotifyOptionsSmsTemplateId')]"
+                        },
+                        {
+                          "name": "SkillsCentralServiceEndpoint",
+                          "value": "[parameters('SkillsCentralServiceEndpoint')]"
+                        },
+                        {
+                          "name": "CompositeBaseUrl",
+                          "value": "[parameters('CompositeBaseUrl')]"
+                        },
+                        {
+                          "name": "SessionStateOptions__Ttl",
+                          "value": "[parameters('SessionStateOptionsTtl')]"
+                        },
+                        {
+                          "name": "Cms__TokenEndPointUrl",
+                          "value": "[parameters('CmsTokenEndpointUrl')]"
+                        },
+                        {
+                          "name": "Cms__GraphApiUrl",
+                          "value": "[parameters('CmsGraphApiUrl')]"
+                        },
+                        {
+                          "name": "Cms__ClientId",
+                          "value": "[parameters('CmsClientId')]"
+                        },
+                        {
+                          "name": "Cms__ClientSecret",
+                          "value": "[parameters('CmsClientSecret')]"
+                        },
+                        {
+                          "name": "Cms__RedisCacheConnectionString",
+                          "value": "[parameters('CmsRedisCacheConnectionString')]"
+                        },
+                        {
+                          "name": "ThreadSettings__WorkerThreads",
+                          "value": "[parameters('WorkerThreads')]"
+                        },
+                        {
+                          "name": "ThreadSettings__IocpThreads",
+                          "value": "[parameters('IocpThreads')]"
+                        },
+                        {
+                          "name": "ContentMode__ContentMode",
+                          "value": "[parameters('ContentMode')]"
+                        },
+                        {
+                          "name": "Cms__Expiry",
+                          "value": "[parameters('Expiry')]"
+                        }
+                      ]
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "[parameters('apiAppServiceName')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('apiAppInsightsName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[parameters('apiAppServiceName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[variables('appServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[variables('appServicePlanResourceGroup')]"
+                    },
+                    "appServiceType": {
+                        "value": "app"
+                    },
+                    "deployStagingSlot": {
+                        "value": true
+                    },
+                    "clientAffinity": {
+                        "value": false
+                    },
+                    "appServiceConnectionStrings": {
+                        "value": [
+                            {
+                                "name": "DefaultConnection",
+                                "connectionString": "[concat('Server=tcp:',parameters('SqlServerName'),'.database.windows.net,1433;Initial Catalog=',variables('DatabaseName'),';Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";')]",
+                                "type": "SQLServer"
+                            }
+                        ]
                     },
                     "appServiceAppSettings": {
                         "value": [
@@ -258,46 +583,6 @@
                             {
                                 "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
                                 "value": "1"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SharedContent__AccessKey",
-                                "value": "[parameters('cosmosDbKey')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SharedContent__EndpointUrl",
-                                "value": "[variables('cosmosDbEndpoint')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SharedContent__DatabaseId",
-                                "value": "[variables('cosmosDbDatabaseName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SharedContent__CollectionId",
-                                "value": "[parameters('cosmosDbCollectionName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SharedContent__PartitionKey",
-                                "value": "[variables('cosmosDbCollectionPartitionKey')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__AccessKey",
-                                "value": "[parameters('cosmosDbKey')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__EndpointUrl",
-                                "value": "[variables('cosmosDbEndpoint')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__DatabaseId",
-                                "value": "[variables('cosmosDbDatabaseName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__CollectionId",
-                                "value": "[variables('cosmosDBSessionStateCollectionName')]"
-                            },
-                            {
-                                "name": "Configuration__CosmosDbConnections__SessionState__PartitionKey",
-                                "value": "[variables('cosmosDbCollectionPartitionKey')]"
                             },
                             {
                                 "name": "CmsApiClientOptions__BaseAddress",
@@ -342,42 +627,6 @@
                             {
                                 "name": "Policies__HttpRetry__Count",
                                 "value": 3
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__0",
-                                "value": "published"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__1",
-                                "value": "unpublished"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__2",
-                                "value": "deleted"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__3",
-                                "value": "[parameters('SubscriptionSettingsFilterIncludeEventTypes3')]"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__IncludeEventTypes__4",
-                                "value": "[parameters('SubscriptionSettingsFilterIncludeEventTypes4')]"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Endpoint",
-                                "value": "[concat(parameters('SubscriptionSettingsEndpoint'),'/api/webhook/ReceiveEvents?subscription-key=',parameters('apimCompositeApiKey'))]"
-                            },
-                            {
-                                "name": "SubscriptionSettings__SubscriptionServiceEndpoint",
-                                "value": "[concat(parameters('subscriptionUrl'),'/api/Execute')]"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Key",
-                                "value": "subject"
-                            },
-                            {
-                                "name": "SubscriptionSettings__Filter__PropertyContainsFilters__0__Values__0",
-                                "value": "[parameters('SubscriptionSettingsFilterPropertyContainsFilters0Values0')]"
                             },
                             {
                                 "name": "Logging__LogLevel__Default",
@@ -512,6 +761,36 @@
             }
         },
         {
+            "apiVersion": "2017-05-10",
+            "name": "[variables('DatabaseName')]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('SqlResourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'SqlServer/sql-database.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "databaseName": {
+                        "value": "[variables('DatabaseName')]"
+                    },
+                    "sqlServerName": {
+                        "value": "[parameters('SqlServerName')]"
+                    },
+                    "elasticPoolName": {
+                        "value": "[parameters('SqlElasticPoolName')]"
+                    },
+                    "databaseTier": {
+                        "value": "[variables('DatabaseTier')]"
+                    },
+                    "databaseSize": {
+                        "value": "[parameters('SqlDatabaseSize')]"
+                    }
+                }
+            }
+        },
+        {
             "apiVersion": "2019-05-01",
             "name": "[concat(variables('webAppInsightsName'), '-metric-exceptions')]",
             "type": "Microsoft.Resources/deployments",
@@ -589,6 +868,194 @@
                     },
                     "actionGroupId": {
                         "value": "[resourceId(parameters('appSharedResourceGroup'), 'microsoft.insights/actionGroups', variables('ActionGroupName'))]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2019-05-01",
+            "name": "[concat(variables('apiAppInsightsName'), '-metric-exceptions')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('apiAppInsightsName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'Application-Insights/metric-alerts.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "enabled": {
+                        "value": "[parameters('enableAlerts')]"
+                    },
+                    "alertName": {
+                        "value": "[concat(variables('apiAppInsightsName'), '-metric-exceptions')]"
+                    },
+                    "alertSeverity": {
+                        "value": 3
+                    },
+                    "metricName": {
+                        "value": "exceptions/count"
+                    },
+                    "operator": {
+                        "value": "GreaterThan"
+                    },
+                    "threshold": {
+                        "value": "[parameters('ExceptionCountThreshold')]"
+                    },
+                    "aggregation": {
+                        "value": "Count"
+                    },
+                    "windowSize": {
+                        "value": "PT5M"
+                    },
+                    "evaluationFrequency": {
+                        "value": "PT1M"
+                    },
+                    "actionGroupName": {
+                        "value": "[variables('ActionGroupName')]"
+                    },
+                    "actionGroupResourceGroup": {
+                        "value": "[parameters('appSharedResourceGroup')]"
+                    },
+                    "resourceId": {
+                        "value": "[resourceId('Microsoft.Insights/Components', variables('apiAppInsightsName'))]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2019-05-01",
+            "name": "[concat(variables('apiAppInsightsName'), '-failure-anomaly-v2')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('apiAppInsightsName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'Application-Insights/failure-anomaly-rule.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "alertName": {
+                        "value": "[concat(variables('apiAppInsightsName'), '-failure-anomaly-v2')]"
+                    },
+                    "enabled": {
+                        "value": "[parameters('enableAlerts')]"
+                    },
+                    "resourceId": {
+                        "value": "[resourceId('Microsoft.Insights/Components', variables('apiAppInsightsName'))]"
+                    },
+                    "actionGroupId": {
+                        "value": "[resourceId(parameters('appSharedResourceGroup'), 'microsoft.insights/actionGroups', variables('ActionGroupName'))]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2019-05-01",
+            "name": "[concat(variables('AppServicePlanName'), '-CPUPercentage')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('webAppInsightsName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'Application-Insights/metric-alerts.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "enabled": {
+                        "value": "[parameters('enableAlerts')]"
+                    },
+                    "alertName": {
+                        "value": "[concat(variables('AppServicePlanName'), '-metric-CPUPercentage')]"
+                    },
+                    "alertSeverity": {
+                        "value": 3
+                    },
+                    "metricName": {
+                        "value": "CpuPercentage"
+                    },
+                    "operator": {
+                        "value": "GreaterThanOrEqual"
+                    },
+                    "threshold": {
+                        "value": "[parameters('CPUPercentageThreshold')]"
+                    },
+                    "aggregation": {
+                        "value": "Average"
+                    },
+                    "windowSize": {
+                        "value": "PT5M"
+                    },
+                    "evaluationFrequency": {
+                        "value": "PT1M"
+                    },
+                    "actionGroupName": {
+                        "value": "[variables('ActionGroupName')]"
+                    },
+                    "actionGroupResourceGroup": {
+                        "value": "[parameters('appSharedResourceGroup')]"
+                    },
+                    "resourceId": {
+                        "value": "[resourceId('Microsoft.Web/serverFarms', variables('AppServicePlanName'))]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2019-05-01",
+            "name": "[concat(variables('AppServicePlanName'), '-MemoryPercentage')]",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[variables('webAppInsightsName')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'Application-Insights/metric-alerts.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "enabled": {
+                        "value": "[parameters('enableAlerts')]"
+                    },
+                    "alertName": {
+                        "value": "[concat(variables('AppServicePlanName'), '-metric-MemoryPercentage')]"
+                    },
+                    "alertSeverity": {
+                        "value": 3
+                    },
+                    "metricName": {
+                        "value": "MemoryPercentage"
+                    },
+                    "operator": {
+                        "value": "GreaterThanOrEqual"
+                    },
+                    "threshold": {
+                        "value": "[parameters('MemoryPercentageThreshold')]"
+                    },
+                    "aggregation": {
+                        "value": "Average"
+                    },
+                    "windowSize": {
+                        "value": "PT5M"
+                    },
+                    "evaluationFrequency": {
+                        "value": "PT1M"
+                    },
+                    "actionGroupName": {
+                        "value": "[variables('ActionGroupName')]"
+                    },
+                    "actionGroupResourceGroup": {
+                        "value": "[parameters('appSharedResourceGroup')]"
+                    },
+                    "resourceId": {
+                        "value": "[resourceId('Microsoft.Web/serverFarms', variables('AppServicePlanName'))]"
                     }
                 }
             }
