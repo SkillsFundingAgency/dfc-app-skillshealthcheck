@@ -5,37 +5,29 @@
 @inject IOptions<SkillsServiceOptions> _skillServiceOptions;
 @model DFC.App.SkillsHealthCheck.ViewModels.Question.MultipleAnswerQuestionViewModel
 @{
-    var assessmentType = Model.Question.AssessmentType == AssessmentType.Numeric ? "Numerical" : Model.Question.AssessmentType.ToString();
+    var assessmentType = Model.AssessmentType == AssessmentType.Numerical ? "Numerical" : Model.AssessmentType.ToString();
     var id = string.Empty;
     var errorClass = Convert.ToBoolean(ViewData["QuestionAnswerError"]) ? "error" : string.Empty;
 }
 
-@if (Model.Question.AssessmentType != AssessmentType.Motivation)
+@if (Model.AssessmentType != AssessmentType.Motivation)
 {
-    if (Model.Question.AssessmentType != AssessmentType.Interest)
+    if (Model.AssessmentType != AssessmentType.Interests)
     {
         <h3 class="heading-medium">
-            @(new HtmlString(Model.Question.QuestionText))
+            @(new HtmlString(Model.QuestionAnswers.Question.Text))
         </h3>
     }
     else
     {
-        <p>@(new HtmlString(Model.Question.QuestionText))</p>
+        <p>@(new HtmlString(Model.QuestionAnswers.Question.Text))</p>
 
     }
 }
 
 <h3 class="heading-medium">
     @{
-        var index = 1;
-        foreach (var posibleResponse in Model.Question.PossibleResponses)
-        {
-            if (index == Model.CurrentQuestion)
-            {
-                @posibleResponse.Text
-            }
-            index++;
-        }
+        @Model.QuestionAnswers.Question.DataHTML
     }
 </h3>
 
@@ -43,17 +35,17 @@
     <div class="form-group govuk-!-margin-bottom-5 @errorClass">
         <fieldset class="govuk-fieldset">
             <legend class="govuk-visually-hidden">
-                @(new HtmlString(Model.Question.QuestionData.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
+                @(new HtmlString(Model.QuestionAnswers.Question.DataHTML.Replace("src=\"", string.Format("src=\"{0}/", $"{_skillServiceOptions.Value.ImageUrl}/{assessmentType}"))))
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
             @{ var i = 1;
-                foreach (var posibleResponse in Model.Question.AnswerHeadings)
+                foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
 
-                    id = string.Format("radio-{0}", posibleResponse);
+                    id = string.Format("radio-{0}", posibleResponse.Text);
 
                     <label class="block-label govuk-label" for="@id">
-                        @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse
+                        @Html.RadioButtonFor(model => model.QuestionAnswer, i, new { id }) @posibleResponse.Text
                     </label> i++;
 
                 } }
@@ -74,14 +66,11 @@
 
     </div>
 
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.QuestionNumber)
-    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
-    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.QuestionAnswers.Question.Number)
     @Html.HiddenFor(model => model.SubQuestions)
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.Level)
-    @Html.HiddenFor(model => model.Question.Accessibility)
+    @Html.HiddenFor(model => model.AssessmentType)
+    @Html.HiddenFor(model => model.QuestionAnswers)
+
     @Html.HiddenFor(model => model.CurrentQuestion)
     @Html.HiddenFor(model => model.QuestionNumber)
     @Html.HiddenFor(model => model.ActualTotalQuestions)

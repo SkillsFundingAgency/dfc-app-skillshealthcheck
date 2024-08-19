@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 
 namespace DFC.App.SkillsHealthCheck.ViewModels
 {
@@ -8,7 +7,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels
     {
         public string AssessmentType { get; set; }
 
-        public SharedContentItemModel SpeakToAnAdviser { get; set; }
+        public string SpeakToAnAdviser { get; set; }
 
         public ReturnToAssessmentViewModel ReturnToAssessmentViewModel { get; set; }
     }

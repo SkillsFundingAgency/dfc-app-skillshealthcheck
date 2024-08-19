@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DFC.App.SkillsHealthCheck.Data.Models.ContentModels;
 using DFC.App.SkillsHealthCheck.Extensions;
 using DFC.App.SkillsHealthCheck.Filters;
 using DFC.App.SkillsHealthCheck.Models;
 using DFC.App.SkillsHealthCheck.Services.Interfaces;
 using DFC.App.SkillsHealthCheck.ViewModels;
 using DFC.App.SkillsHealthCheck.ViewModels.YourAssessments;
-using DFC.Compui.Cosmos.Contracts;
+using DFC.Common.SharedContent.Pkg.Netcore.Interfaces;
+using DFC.Common.SharedContent.Pkg.Netcore.Model.ContentItems.SharedHtml;
 using DFC.Compui.Sessionstate;
-using DFC.Content.Pkg.Netcore.Data.Models.ClientOptions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using AppConstants = DFC.Common.SharedContent.Pkg.Netcore.Constant.ApplicationKeys;
 namespace DFC.App.SkillsHealthCheck.Controllers
 {
     [ExcludeFromCodeCoverage]
@@ -26,25 +27,37 @@ namespace DFC.App.SkillsHealthCheck.Controllers
     public class YourAssessmentsController : BaseController<YourAssessmentsController>
     {
         public const string PageTitle = "Your assessments";
+        private const string ExpiryAppSettings = "Cms:Expiry";
+        private const string SharedContentStaxId = "2c9da1b3-3529-4834-afc9-9cd741e59788";
         private readonly ILogger<YourAssessmentsController> logger;
-        private readonly IDocumentService<SharedContentItemModel> sharedContentItemDocumentService;
-        private readonly CmsApiClientOptions cmsApiClientOptions;
         private readonly IYourAssessmentsService yourAssessmentsService;
-
+        private readonly ISharedContentRedisInterface sharedContentRedis;
+        private readonly IConfiguration configuration;
+        private string status;
+        private double expiryInHours = 4;
 
         public YourAssessmentsController(
             ILogger<YourAssessmentsController> logger,
             ISessionStateService<SessionDataModel> sessionStateService,
             IOptions<SessionStateOptions> sessionStateOptions,
-            IDocumentService<SharedContentItemModel> sharedContentItemDocumentService,
-            CmsApiClientOptions cmsApiClientOptions,
-            IYourAssessmentsService yourAssessmentsService)
+            ISharedContentRedisInterface sharedContentRedis,
+            IYourAssessmentsService yourAssessmentsService,
+            IConfiguration configuration)
         : base(logger, sessionStateService, sessionStateOptions)
         {
             this.logger = logger;
-            this.sharedContentItemDocumentService = sharedContentItemDocumentService;
-            this.cmsApiClientOptions = cmsApiClientOptions;
+            this.sharedContentRedis = sharedContentRedis;
             this.yourAssessmentsService = yourAssessmentsService;
+            this.configuration = configuration;
+            status = configuration.GetSection("contentMode:contentMode").Get<string>();
+            if (this.configuration != null)
+            {
+                string expiryAppString = this.configuration.GetSection(ExpiryAppSettings).Get<string>();
+                if (double.TryParse(expiryAppString, out var expiryAppStringParseResult))
+                {
+                    expiryInHours = expiryAppStringParseResult;
+                }
+            }
         }
 
         [HttpGet]
@@ -101,7 +114,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<BodyViewModel> GetBodyViewModel(long documentId, IEnumerable<string> selectedJobs = null)
         {
-            var bodyViewModel = yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
+            var bodyViewModel = await yourAssessmentsService.GetAssessmentListViewModel(documentId, selectedJobs);
             bodyViewModel.RightBarViewModel = await GetRightBarViewModel();
 
             return bodyViewModel;
@@ -109,12 +122,12 @@ namespace DFC.App.SkillsHealthCheck.Controllers
 
         private async Task<RightBarViewModel> GetRightBarViewModel()
         {
-            SharedContentItemModel? speakToAnAdviser = null;
-            if (!string.IsNullOrWhiteSpace(cmsApiClientOptions.ContentIds))
+            if (string.IsNullOrEmpty(status))
             {
-                speakToAnAdviser = await sharedContentItemDocumentService
-                    .GetByIdAsync(new Guid(cmsApiClientOptions.ContentIds));
+                status = "PUBLISHED";
             }
+
+            var speakToAnAdviser = await sharedContentRedis.GetDataAsyncWithExpiry<SharedHtml>(AppConstants.SpeakToAnAdviserSharedContent, status, expiryInHours);
 
             var rightBarViewModel = new RightBarViewModel
             {
@@ -125,7 +138,7 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             };
             if (speakToAnAdviser != null)
             {
-                rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser;
+                rightBarViewModel.SpeakToAnAdviser = speakToAnAdviser.Html;
             }
 
             return rightBarViewModel;
@@ -142,14 +155,14 @@ namespace DFC.App.SkillsHealthCheck.Controllers
                 var selectedJobs = model.SkillsAssessmentComplete.HasValue && model.SkillsAssessmentComplete.Value
                     ? model.JobFamilyList?.SelectedJobs.ToList() ?? new List<string>() : new List<string>();
                 var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
-                if (downloadDocumentResponse.Success)
+                if (downloadDocumentResponse != null)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse, formatter.ContentType, $"Skills Health Check{formatter.FileExtension}");
                 }
             }
 
             ViewData["selectionListError"] = ModelState.Where(val => val.Value.Errors.Count > 0).Any(md => md.Key.Contains("selectedjobs", StringComparison.InvariantCultureIgnoreCase));
-            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList.SelectedJobs);
+            var bodyViewModel = await GetBodyViewModel(sessionDataModel.DocumentId, model.JobFamilyList?.SelectedJobs);
             return this.NegotiateContentResult(new DocumentViewModel
             {
                 HtmlHeadViewModel = GetHtmlHeadViewModel(PageTitle),
@@ -180,9 +193,9 @@ namespace DFC.App.SkillsHealthCheck.Controllers
             {
                 var formatter = yourAssessmentsService.GetFormatter(model.DownloadType);
                 var downloadDocumentResponse = await yourAssessmentsService.GetDownloadDocumentAsync(sessionDataModel, formatter, selectedJobs);
-                if (downloadDocumentResponse.Success)
+                if (downloadDocumentResponse != null)
                 {
-                    return File(downloadDocumentResponse.DocumentBytes, formatter.ContentType, $"{downloadDocumentResponse.DocumentName}{formatter.FileExtension}");
+                    return File(downloadDocumentResponse, formatter.ContentType, $"Skills Health Check{formatter.FileExtension}");
                 }
             }
 

@@ -8,19 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ControllerTests\PagesControllerTests\BasePagesControllerTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyFooterTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBodyTopTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerBreadcrumbTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerDocumentTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHeroBannerTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerHtmlHeadTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerIndexTests.cs" />
-    <Compile Remove="ControllerTests\PagesControllerTests\PagesControllerRouteTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
@@ -32,7 +19,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -46,11 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI\DFC.App.SkillsHealthCheck.Services.SkillsCentralAPI.csproj" />
     <ProjectReference Include="..\DFC.App.SkillsHealthCheck\DFC.App.SkillsHealthCheck.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\PagesControllerTests\" />
   </ItemGroup>
 
 </Project>

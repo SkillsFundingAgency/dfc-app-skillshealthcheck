@@ -9,7 +9,7 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         {
             CurrentQuestion = 1;
         }
-        public int CurrentQuestion { get; set; }
+        
 
         public int SubQuestions { get; set; }
     }

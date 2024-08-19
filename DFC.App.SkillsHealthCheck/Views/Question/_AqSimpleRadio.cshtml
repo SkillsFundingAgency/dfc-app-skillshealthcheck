@@ -13,17 +13,17 @@
 }
 
 
-@if (Model.Question.AssessmentType == AssessmentType.Spatial)
+@if (Model.AssessmentType == AssessmentType.Spatial)
 {
     <h3 class="heading-medium">
-        @(new HtmlString(Model.Question.QuestionText))
+        @(new HtmlString(Model.QuestionAnswers.Question.Text))
     </h3> 
     
-    if (!string.IsNullOrEmpty(Model.Question.ImageUrl))
+    if (!string.IsNullOrEmpty(Model.QuestionAnswers.Question.ImageURL))
     {
         <br />
         <div class="mechanical-images">
-            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.Question.ImageUrl}")" title="@Model.Question.ImageTitle" alt="@Model.Question.ImageCaption" />
+            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{Model.QuestionAnswers.Question.ImageURL}")" title="@Model.QuestionAnswers.Question.ImageTitle" alt="@Model.QuestionAnswers.Question.ImageCaption" />
         </div>
     }
 
@@ -34,7 +34,7 @@
         {
             imageNumber++;
             <div class="image_numbers">
-                <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
+                    <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{image.Src}")" alt="@image.Alttext" title="@image.Title" />
                 @if (imageNumber != Model.QuestionImages.Count())
                 {
                     <span>@imageNumber</span>
@@ -46,16 +46,21 @@
     }
     else
     {
-        @(new HtmlString(Model.Question.QuestionData))
+        @(new HtmlString(Model.QuestionAnswers.Question.DataHTML))
     }
 }
 else
 {
-    if (!string.IsNullOrEmpty(Model.Question.ImageUrl))
+    if (!string.IsNullOrEmpty(Model.QuestionAnswers?.Question.ImageURL))
     {
         <br />
         <div class="mechanical-images">
-            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.Question.ImageUrl}")" @{if (!string.IsNullOrEmpty(Model.Question.ImageTitle)) { <text> title="@Model.Question.ImageTitle" </text> }} alt="@Model.Question.ImageCaption" />
+            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{Model.QuestionAnswers.Question.ImageURL}")" @{
+                if (!string.IsNullOrEmpty(Model.QuestionAnswers.Question.ImageTitle))
+                {
+                    <text> title="@Model.QuestionAnswers.Question.ImageTitle" </text>
+                }
+            } alt="@Model.QuestionAnswers.Question.ImageCaption" />
         </div>
     }
     if (Model.QuestionImages.Any())
@@ -76,11 +81,11 @@ else
     }
     else
     {
-        @(new HtmlString(Model.Question.QuestionData))
+        @(new HtmlString(Model.QuestionAnswers.Question.DataHTML))
     }
 
     <h2 class="govuk-heading-m">
-    @(new HtmlString(Model.Question.QuestionText))
+        @(new HtmlString(Model.QuestionAnswers.Question.Text))
     </h2>
 }
 
@@ -103,27 +108,31 @@ else
                             </div>}
                     </div> }
                 else
-                { @(new HtmlString(Model.Question.QuestionData))}
+                {
+                    @(new HtmlString(Model.QuestionAnswers.Question.DataHTML))
+                }
             </legend>
             <span class="govuk-error-message">@Html.ValidationMessageFor(model => model.QuestionAnswer)</span>
-            @{ foreach (var posibleResponse in Model.Question.PossibleResponses)
+            @{ 
+                foreach (var posibleResponse in Model.QuestionAnswers.Answers)
                 {
                     id = string.Format("radio-{0}", posibleResponse.Value);
 
                     <label class="block-label govuk-label" for="@id">
                         @Html.RadioButtonFor(model => model.QuestionAnswer, posibleResponse.Value, new { id })
-                        @if (Model.Question.AssessmentType != AssessmentType.Abstract)
+                        @if (Model.AssessmentType != AssessmentType.Abstract)
                         {
-                            @posibleResponse.Text}
-                        @if (!string.IsNullOrEmpty(posibleResponse.ImageSource))
+                            @posibleResponse.Text?.Replace("&pound;", "£")}
+                        @if (!string.IsNullOrEmpty(posibleResponse.ImageURL))
                         {
-                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{posibleResponse.ImageSource.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />}
+                            <img src="@($"{_skillServiceOptions.Value.ImageUrl}/{Model.AssessmentType}/{posibleResponse.ImageURL.Trim()}")" alt="Image for @posibleResponse.Text.Trim()" />
+                        }
                     </label> } }
         </fieldset>
     </div>
     <p>You must select an answer to continue.</p>
     <div class="form-group">
-        @if (Model.Question.QuestionNumber != Model.ActualTotalQuestions)
+        @if (Model.QuestionAnswers.Question.Number != Model.ActualTotalQuestions)
         {
             <input class="govuk-button ncs-button__primary" type="submit" name="answerAction" value="Continue" />
         }
@@ -136,9 +145,9 @@ else
 
     </div>
 
-    @Html.HiddenFor(model => model.Question.AssessmentType)
-    @Html.HiddenFor(model => model.Question.QuestionNumber)
-    @Html.HiddenFor(model => model.Question.TotalQuestionNumber)
-    @Html.HiddenFor(model => model.Question.NextQuestionNumber)
+    @Html.HiddenFor(model => model.AssessmentType)
+    @Html.HiddenFor(model => model.QuestionAnswers.Question.Number)
     @Html.HiddenFor(model => model.QuestionNumber)
+    @Html.HiddenFor(model => model.QuestionAnswers)
+
 </form>

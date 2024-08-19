@@ -8,6 +8,5 @@ namespace DFC.App.SkillsHealthCheck.ViewModels.Question
         public AssessmentQuestionViewModel AssessmentQuestionViewModel { get; set; }
 
         public RightBarViewModel RightBarViewModel { get; set; }
-
     }
 }
