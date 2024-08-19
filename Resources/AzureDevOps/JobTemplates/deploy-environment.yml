@@ -2,6 +2,8 @@ parameters:
   AzureSubscription: ""
   SetEsfaResourceGroupTagsScript: "https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1"
   PackageFile: ""
+  ApiPackageFile: ""
+  DatabasePackageFile: ""
   ArmTemplateFolder: ""
   Location: "West Europe"
   ArmOutputVariableName: "ARMOutputs"
@@ -14,6 +16,7 @@ parameters:
   AppSharedResourceGroup: ""
   appSharedCosmosDBName: ""
   AppServiceName: ""
+  ApiAppServiceName: ""
   SharedResourceGroupName: ""
   ApimServiceName: ""
   ApimProductInstanceName: ""
@@ -21,6 +24,7 @@ parameters:
   ApiId: ""
   APIMPolicyPath: ""
   ApimImportScript: ""
+  PSScriptPath: ""
   SpecificationPath: ""
   PageRegistrationPath: ""
   PageRegistrationFile: ""
@@ -49,6 +53,7 @@ jobs:
                 ArmTemplateFolder: "${{ parameters.ArmTemplateFolder }}"
                 AppSharedResourceGroup: "${{ parameters.AppSharedResourceGroup }}"
                 appSharedCosmosDBName: "${{ parameters.appSharedCosmosDBName }}"
+                PSScriptPath: "${{ parameters.PSScriptPath }}"
 
   - deployment: DeployApplication
     displayName: "Deploy Application"
@@ -59,6 +64,18 @@ jobs:
       runOnce:
         deploy:
           steps:
+            - task: SqlAzureDacpacDeployment@1
+              displayName: "Deploy database"
+              inputs:
+                azureSubscription: '${{ parameters.AzureSubscription }}'
+                ServerName: '$(sharedSqlServerFqdn)'
+                DatabaseName: 'dfc-$(AzureEnvironmentName)-app-skillscentral-db'
+                SqlUsername: '$(sharedSqlServerUsername)'
+                SqlPassword: '$(sharedSqlServerPassword)'
+                DacpacFile: ${{ parameters.DatabasePackageFile }}
+                # This option needs to be uncommented when dropping tables/columns containing data:
+                # AdditionalArguments: /p:BlockOnPossibleDataLoss=false
+
             - template: ../StepTemplates/deploy-azure-app-service-with-apim.yml
               parameters:
                 WebAppName: "${{ parameters.AppServiceName }}"
@@ -75,14 +92,6 @@ jobs:
                 ApimImportScript: "${{ parameters.ApimImportScript }}"
                 SpecificationPath: "${{ parameters.SpecificationPath }}"
 
-  - deployment: DeployRegistration
-    displayName: "Deploy page registration"
-    environment: ${{ parameters.EnvironmentName }}
-    dependsOn: DeployApplication
-    strategy:
-      runOnce:
-        deploy:
-          steps:
             - template: ../StepTemplates/deploy-page-registration.yml
               parameters:
                 AzureSubscription: "${{ parameters.AzureSubscription }}"
@@ -90,3 +99,13 @@ jobs:
                 PageRegistrationFile: "${{ parameters.PageRegistrationFile }}"
                 AppRegistryApiUrl: "${{ parameters.AppRegistryApiUrl }}"
                 ApimCompositeKey: "${{ parameters.ApimCompositeKey }}"
+
+            - template: ../StepTemplates/deploy-azure-api-app-service.yml
+              parameters:
+                WebAppName: "${{ parameters.ApiAppServiceName }}"
+                AzureSubscription: "${{ parameters.AzureSubscription }}"
+                DfCDevopsPath: "${{ parameters.DfCDevopsPath }}"
+                PackageFile: "${{ parameters.ApiPackageFile }}"
+                ResourceGroup: "${{ parameters.ResourceGroup }}"
+                SharedResourceGroupName: "${{ parameters.SharedResourceGroupName }}"
+

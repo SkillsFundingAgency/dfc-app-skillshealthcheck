@@ -7,7 +7,7 @@
 }
 
 <h3 class="heading-medium">
-    @Model.FeedbackQuestion.Question
+    @Model.FeedbackQuestion?.Question
 
 </h3>
 
@@ -49,4 +49,6 @@
     @Html.HiddenFor(model => model.QuestionNumber)
     @Html.HiddenFor(model => model.ActualTotalQuestions)
     @Html.HiddenFor(model => model.FeedbackQuestion.DocValueTitle)
+    @Html.HiddenFor(model => model.QuestionAnswers)
+
 </form>

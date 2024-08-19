@@ -1,0 +1,816 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<JobFamilyDetails>
+  <JobFamily>
+    <JobFamilyDetailId>F10001</JobFamilyDetailId>
+    <JobFamilyId>3</JobFamilyId>
+    <JobFamilyTitle>Administrative and Clerical</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>taking responsibility and leading others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.64150943396226</TakingResponsibility>
+    <WorkingWithOthers>4.49056603773585</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.22641509433962</PersuadingAndSpeaking>
+    <ThinkingCritically>5.26415094339623</ThinkingCritically>
+    <CreationAndInnovation>7.64150943396226</CreationAndInnovation>
+    <PlanningAndOrganising>5.09433962264151</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.52830188679245</HandlingChangeAndPressure>
+    <AchievingResults>4.56603773584906</AchievingResults>
+    <LearningAndTechnology>4.54716981132075</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>True</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Organising</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10002</JobFamilyDetailId>
+    <JobFamilyId>25</JobFamilyId>
+    <JobFamilyTitle>Alternative Therapies</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>gathering information and spotting problems</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>showing energy and drive</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>planning tasks effectively</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.35714285714286</TakingResponsibility>
+    <WorkingWithOthers>1</WorkingWithOthers>
+    <PersuadingAndSpeaking>3</PersuadingAndSpeaking>
+    <ThinkingCritically>5.92857142857143</ThinkingCritically>
+    <CreationAndInnovation>3</CreationAndInnovation>
+    <PlanningAndOrganising>4.71428571428571</PlanningAndOrganising>
+    <HandlingChangeAndPressure>2.92857142857143</HandlingChangeAndPressure>
+    <AchievingResults>5.14285714285714</AchievingResults>
+    <LearningAndTechnology>4.64285714285714</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical />
+    <RelevantTasksCompletedText />
+    <RelevantTasksNotCompletedText />   
+    <InterestAreas>
+      <Value>Caring</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10003</JobFamilyDetailId>
+    <JobFamilyId>10</JobFamilyId>
+    <JobFamilyTitle>Animals, Plants and Land</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>showing energy and drive</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>being clear in communication and convincing others</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>3.72</TakingResponsibility>
+    <WorkingWithOthers>6.8</WorkingWithOthers>
+    <PersuadingAndSpeaking>5.68</PersuadingAndSpeaking>
+    <ThinkingCritically>4.16</ThinkingCritically>
+    <CreationAndInnovation>3.24</CreationAndInnovation>
+    <PlanningAndOrganising>4.58</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.7</HandlingChangeAndPressure>
+    <AchievingResults>6.3</AchievingResults>
+    <LearningAndTechnology>5.1</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>True</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical />    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is making judgements about space. Refer to the working with shapes activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is making judgements about space. You may be interested in trying the working with shapes activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Scientific</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10004</JobFamilyDetailId>
+    <JobFamilyId>23</JobFamilyId>
+    <JobFamilyTitle>Arts, Crafts and Design</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>being clear in communication and convincing others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>learning new information and using technology</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.22058823529412</TakingResponsibility>
+    <WorkingWithOthers>6.26470588235294</WorkingWithOthers>
+    <PersuadingAndSpeaking>6.17647058823529</PersuadingAndSpeaking>
+    <ThinkingCritically>5.41176470588235</ThinkingCritically>
+    <CreationAndInnovation>1.89705882352941</CreationAndInnovation>
+    <PlanningAndOrganising>4.86764705882353</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.07352941176471</HandlingChangeAndPressure>
+    <AchievingResults>3.83823529411765</AchievingResults>
+    <LearningAndTechnology>5.66176470588235</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>True</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical />
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is making judgements about space. Refer to the working with shapes activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is making judgements about space. You may be interested in trying the working with shapes activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Creative</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10005</JobFamilyDetailId>
+    <JobFamilyId>14</JobFamilyId>
+    <JobFamilyTitle>Catering Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>showing energy and drive</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>learning new information and using technology</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>3.35294117647059</TakingResponsibility>
+    <WorkingWithOthers>3.70588235294118</WorkingWithOthers>
+    <PersuadingAndSpeaking>5.05882352941176</PersuadingAndSpeaking>
+    <ThinkingCritically>5.35294117647059</ThinkingCritically>
+    <CreationAndInnovation>4.82352941176471</CreationAndInnovation>
+    <PlanningAndOrganising>5.05882352941176</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5</HandlingChangeAndPressure>
+    <AchievingResults>6.52941176470588</AchievingResults>
+    <LearningAndTechnology>6.11764705882353</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>True</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Leisure</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10006</JobFamilyDetailId>
+    <JobFamilyId>11</JobFamilyId>
+    <JobFamilyTitle>Construction</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>being clear in communication and convincing others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>3.94871794871795</TakingResponsibility>
+    <WorkingWithOthers>6.30769230769231</WorkingWithOthers>
+    <PersuadingAndSpeaking>6.14102564102564</PersuadingAndSpeaking>
+    <ThinkingCritically>5.33333333333333</ThinkingCritically>
+    <CreationAndInnovation>4.87179487179487</CreationAndInnovation>
+    <PlanningAndOrganising>3.20512820512821</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.6025641025641</HandlingChangeAndPressure>
+    <AchievingResults>4.30769230769231</AchievingResults>
+    <LearningAndTechnology>5.33333333333333</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>True</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>True</Mechanical>   
+    <RelevantTasksCompletedText><![CDATA[Activities often seen in this job include working with mechanical problems and making judgements about space. Refer to the solving mechanical problems and working with shapes activity skills areas of this report to remind yourself how you found these.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[Activities often seen in this job include working with mechanical problems and making judgements about space. You may be interested in trying the solving mechanical problems and working with shapes activities which are available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Engineering</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10007</JobFamilyDetailId>
+    <JobFamilyId>27</JobFamilyId>
+    <JobFamilyTitle>Education and Training</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>planning tasks effectively</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>gathering information and spotting problems</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>showing energy and drive</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.10416666666667</TakingResponsibility>
+    <WorkingWithOthers>1.95833333333333</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.02083333333333</PersuadingAndSpeaking>
+    <ThinkingCritically>6.35416666666667</ThinkingCritically>
+    <CreationAndInnovation>4.375</CreationAndInnovation>
+    <PlanningAndOrganising>7.85416666666667</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.625</HandlingChangeAndPressure>
+    <AchievingResults>5.8125</AchievingResults>
+    <LearningAndTechnology>4.89583333333333</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Caring</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10008</JobFamilyDetailId>
+    <JobFamilyId>18</JobFamilyId>
+    <JobFamilyTitle>Environmental Sciences</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>adapting to change and challenges</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>being clear in communication and convincing others</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.27272727272727</TakingResponsibility>
+    <WorkingWithOthers>7.06060606060606</WorkingWithOthers>
+    <PersuadingAndSpeaking>5.54545454545455</PersuadingAndSpeaking>
+    <ThinkingCritically>3.21212121212121</ThinkingCritically>
+    <CreationAndInnovation>4.45454545454545</CreationAndInnovation>
+    <PlanningAndOrganising>4.33333333333333</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.66666666666667</HandlingChangeAndPressure>
+    <AchievingResults>4.93939393939394</AchievingResults>
+    <LearningAndTechnology>4.42424242424242</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>True</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Scientific</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10009</JobFamilyDetailId>
+    <JobFamilyId>1</JobFamilyId>
+    <JobFamilyTitle>Financial Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>taking responsibility and leading others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>planning tasks effectively</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.97297297297297</TakingResponsibility>
+    <WorkingWithOthers>5.54054054054054</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.43243243243243</PersuadingAndSpeaking>
+    <ThinkingCritically>2.43243243243243</ThinkingCritically>
+    <CreationAndInnovation>7.86486486486487</CreationAndInnovation>
+    <PlanningAndOrganising>5.83783783783784</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.7027027027027</HandlingChangeAndPressure>
+    <AchievingResults>3.05405405405405</AchievingResults>
+    <LearningAndTechnology>4.16216216216216</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>True</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Data</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10010</JobFamilyDetailId>
+    <JobFamilyId>8</JobFamilyId>
+    <JobFamilyTitle>General and Personal Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>showing energy and drive</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>learning new information and using technology</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.94594594594595</TakingResponsibility>
+    <WorkingWithOthers>3.10810810810811</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.02702702702703</PersuadingAndSpeaking>
+    <ThinkingCritically>5.78378378378378</ThinkingCritically>
+    <CreationAndInnovation>5.54054054054054</CreationAndInnovation>
+    <PlanningAndOrganising>4.27027027027027</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.24324324324324</HandlingChangeAndPressure>
+    <AchievingResults>7.13513513513514</AchievingResults>
+    <LearningAndTechnology>5.94594594594595</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText />
+    <RelevantTasksNotCompletedText />
+    <InterestAreas />
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10011</JobFamilyDetailId>
+    <JobFamilyId>4</JobFamilyId>
+    <JobFamilyTitle>Information Technology and Information Management</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>adapting to change and challenges</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>working well with others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>being clear in communication and convincing others</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.1</TakingResponsibility>
+    <WorkingWithOthers>6.2</WorkingWithOthers>
+    <PersuadingAndSpeaking>6</PersuadingAndSpeaking>
+    <ThinkingCritically>4.1</ThinkingCritically>
+    <CreationAndInnovation>4.4</CreationAndInnovation>
+    <PlanningAndOrganising>5.16666666666667</PlanningAndOrganising>
+    <HandlingChangeAndPressure>7.06666666666667</HandlingChangeAndPressure>
+    <AchievingResults>3.46666666666667</AchievingResults>
+    <LearningAndTechnology>3.5</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>True</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is using fairly abstract information. Refer to the solving abstract problems activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is using fairly abstract information. You may be interested in trying the solving abstract problems activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Data</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10012</JobFamilyDetailId>
+    <JobFamilyId>21</JobFamilyId>
+    <JobFamilyTitle>Legal Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>taking responsibility and leading others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>working well with others</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>6.66666666666667</TakingResponsibility>
+    <WorkingWithOthers>5.81481481481481</WorkingWithOthers>
+    <PersuadingAndSpeaking>3</PersuadingAndSpeaking>
+    <ThinkingCritically>4.74074074074074</ThinkingCritically>
+    <CreationAndInnovation>7.74074074074074</CreationAndInnovation>
+    <PlanningAndOrganising>5.48148148148148</PlanningAndOrganising>
+    <HandlingChangeAndPressure>3.14814814814815</HandlingChangeAndPressure>
+    <AchievingResults>4.92592592592593</AchievingResults>
+    <LearningAndTechnology>3.48148148148148</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Organising</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10013</JobFamilyDetailId>
+    <JobFamilyId>9</JobFamilyId>
+    <JobFamilyTitle>Maintenance, Service and Repair</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>being clear in communication and convincing others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>adapting to change and challenges</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.22058823529412</TakingResponsibility>
+    <WorkingWithOthers>6.54411764705882</WorkingWithOthers>
+    <PersuadingAndSpeaking>6.54411764705882</PersuadingAndSpeaking>
+    <ThinkingCritically>4.54411764705882</ThinkingCritically>
+    <CreationAndInnovation>4.60294117647059</CreationAndInnovation>
+    <PlanningAndOrganising>2.94117647058824</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.30882352941176</HandlingChangeAndPressure>
+    <AchievingResults>4.55882352941176</AchievingResults>
+    <LearningAndTechnology>4.72058823529412</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>True</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Engineering</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10014</JobFamilyDetailId>
+    <JobFamilyId>15</JobFamilyId>
+    <JobFamilyTitle>Management and Planning</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>planning tasks effectively</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>coming up with new ideas</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>3.74683544303797</TakingResponsibility>
+    <WorkingWithOthers>6.20253164556962</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.40506329113924</PersuadingAndSpeaking>
+    <ThinkingCritically>4.81012658227848</ThinkingCritically>
+    <CreationAndInnovation>5.29113924050633</CreationAndInnovation>
+    <PlanningAndOrganising>5.51898734177215</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.48101265822785</HandlingChangeAndPressure>
+    <AchievingResults>4.46835443037975</AchievingResults>
+    <LearningAndTechnology>5.15189873417722</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>True</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Organising</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10015</JobFamilyDetailId>
+    <JobFamilyId>13</JobFamilyId>
+    <JobFamilyTitle>Manufacturing and Engineering</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>being clear in communication and convincing others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>adapting to change and challenges</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.76086956521739</TakingResponsibility>
+    <WorkingWithOthers>6.84782608695652</WorkingWithOthers>
+    <PersuadingAndSpeaking>6.61594202898551</PersuadingAndSpeaking>
+    <ThinkingCritically>4.45652173913043</ThinkingCritically>
+    <CreationAndInnovation>4.18115942028986</CreationAndInnovation>
+    <PlanningAndOrganising>3.47826086956522</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.47826086956522</HandlingChangeAndPressure>
+    <AchievingResults>3.34057971014493</AchievingResults>
+    <LearningAndTechnology>5.31884057971014</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>True</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Engineering</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10016</JobFamilyDetailId>
+    <JobFamilyId>16</JobFamilyId>
+    <JobFamilyTitle>Marketing, Selling and Advertising</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>planning tasks effectively</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>working well with others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.15789473684211</TakingResponsibility>
+    <WorkingWithOthers>6.28947368421053</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.39473684210526</PersuadingAndSpeaking>
+    <ThinkingCritically>5.42105263157895</ThinkingCritically>
+    <CreationAndInnovation>4.5</CreationAndInnovation>
+    <PlanningAndOrganising>6.68421052631579</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.21052631578947</HandlingChangeAndPressure>
+    <AchievingResults>4.23684210526316</AchievingResults>
+    <LearningAndTechnology>5.10526315789474</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Influencing</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10017</JobFamilyDetailId>
+    <JobFamilyId>17</JobFamilyId>
+    <JobFamilyTitle>Medical Technology</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>adapting to change and challenges</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>taking responsibility and leading others</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.47619047619048</TakingResponsibility>
+    <WorkingWithOthers>3.80952380952381</WorkingWithOthers>
+    <PersuadingAndSpeaking>5.23809523809524</PersuadingAndSpeaking>
+    <ThinkingCritically>4.61904761904762</ThinkingCritically>
+    <CreationAndInnovation>6.47619047619048</CreationAndInnovation>
+    <PlanningAndOrganising>3.23809523809524</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.90476190476191</HandlingChangeAndPressure>
+    <AchievingResults>5.28571428571429</AchievingResults>
+    <LearningAndTechnology>3.23809523809524</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>True</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using numerical information. Refer to the working with numbers activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using numerical information. You may be interested in trying the working with numbers activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Scientific</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel>
+      <Value>Level 1</Value>
+    </ExcludeQualificationLevel>
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10018</JobFamilyDetailId>
+    <JobFamilyId>28</JobFamilyId>
+    <JobFamilyTitle>Medicine and Nursing</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>taking responsibility and leading others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>6.47887323943662</TakingResponsibility>
+    <WorkingWithOthers>1.85915492957746</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.85915492957747</PersuadingAndSpeaking>
+    <ThinkingCritically>5.59154929577465</ThinkingCritically>
+    <CreationAndInnovation>6.61971830985916</CreationAndInnovation>
+    <PlanningAndOrganising>4.64788732394366</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.22535211267606</HandlingChangeAndPressure>
+    <AchievingResults>5.47887323943662</AchievingResults>
+    <LearningAndTechnology>4.23943661971831</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>True</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is using fairly abstract information. Refer to the solving abstract problems activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is using fairly abstract information. You may be interested in trying the solving abstract problems activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Caring</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10019</JobFamilyDetailId>
+    <JobFamilyId>22</JobFamilyId>
+    <JobFamilyTitle>Performing Arts, Broadcast and Media</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>planning tasks effectively</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>working well with others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>learning new information and using technology</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.17307692307692</TakingResponsibility>
+    <WorkingWithOthers>6.03846153846154</WorkingWithOthers>
+    <PersuadingAndSpeaking>5.65384615384615</PersuadingAndSpeaking>
+    <ThinkingCritically>5.69230769230769</ThinkingCritically>
+    <CreationAndInnovation>2.13461538461538</CreationAndInnovation>
+    <PlanningAndOrganising>6.21153846153846</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.92307692307692</HandlingChangeAndPressure>
+    <AchievingResults>4.26923076923077</AchievingResults>
+    <LearningAndTechnology>5.90384615384615</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Creative</Value>
+      <Value>Verbal</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10020</JobFamilyDetailId>
+    <JobFamilyId>24</JobFamilyId>
+    <JobFamilyTitle>Publishing and Journalism</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>planning tasks effectively</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>adapting to change and challenges</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.73913043478261</TakingResponsibility>
+    <WorkingWithOthers>6.56521739130435</WorkingWithOthers>
+    <PersuadingAndSpeaking>4</PersuadingAndSpeaking>
+    <ThinkingCritically>4.95652173913043</ThinkingCritically>
+    <CreationAndInnovation>3.47826086956522</CreationAndInnovation>
+    <PlanningAndOrganising>5.56521739130435</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.17391304347826</HandlingChangeAndPressure>
+    <AchievingResults>3.8695652173913</AchievingResults>
+    <LearningAndTechnology>5.08695652173913</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Verbal</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10021</JobFamilyDetailId>
+    <JobFamilyId>31</JobFamilyId>
+    <JobFamilyTitle>Retail Sales and Customer Service</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>showing energy and drive</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>coming up with new ideas</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.22448979591837</TakingResponsibility>
+    <WorkingWithOthers>3.28571428571429</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.59183673469388</PersuadingAndSpeaking>
+    <ThinkingCritically>5.77551020408163</ThinkingCritically>
+    <CreationAndInnovation>6.02040816326531</CreationAndInnovation>
+    <PlanningAndOrganising>5.44897959183673</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.26530612244898</HandlingChangeAndPressure>
+    <AchievingResults>6.18367346938776</AchievingResults>
+    <LearningAndTechnology>5.20408163265306</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>True</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Influencing</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10022</JobFamilyDetailId>
+    <JobFamilyId>19</JobFamilyId>
+    <JobFamilyTitle>Science and Research</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>working well with others</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>being clear in communication and convincing others</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>adapting to change and challenges</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.40425531914894</TakingResponsibility>
+    <WorkingWithOthers>7.57446808510638</WorkingWithOthers>
+    <PersuadingAndSpeaking>6.02127659574468</PersuadingAndSpeaking>
+    <ThinkingCritically>2.40425531914894</ThinkingCritically>
+    <CreationAndInnovation>3.36170212765957</CreationAndInnovation>
+    <PlanningAndOrganising>5.34042553191489</PlanningAndOrganising>
+    <HandlingChangeAndPressure>5.8936170212766</HandlingChangeAndPressure>
+    <AchievingResults>4.48936170212766</AchievingResults>
+    <LearningAndTechnology>3.74468085106383</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>True</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[Activities often seen in this job include using numerical information and thinking about abstract issues. Refer to the working with numbers and solving abstract problems activity skills areas of this report to remind yourself how you found these.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[Activities often seen in this job include using numerical information and thinking about abstract issues. You may be interested in trying the working with numbers and solving abstract problems tasks which are available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Scientific</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel>
+      <Value>Level 1</Value>
+    </ExcludeQualificationLevel>
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10023</JobFamilyDetailId>
+    <JobFamilyId>30</JobFamilyId>
+    <JobFamilyTitle>Security and Uniformed Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>coming up with new ideas</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>showing energy and drive</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.46428571428571</TakingResponsibility>
+    <WorkingWithOthers>4.32142857142857</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.64285714285714</PersuadingAndSpeaking>
+    <ThinkingCritically>5.35714285714286</ThinkingCritically>
+    <CreationAndInnovation>6.10714285714286</CreationAndInnovation>
+    <PlanningAndOrganising>4.75</PlanningAndOrganising>
+    <HandlingChangeAndPressure>3.60714285714286</HandlingChangeAndPressure>
+    <AchievingResults>5.46428571428571</AchievingResults>
+    <LearningAndTechnology>4.71428571428571</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical />
+    <RelevantTasksCompletedText />
+    <RelevantTasksNotCompletedText />    
+    <InterestAreas>
+      <Value>Command and Control</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10024</JobFamilyDetailId>
+    <JobFamilyId>34</JobFamilyId>
+    <JobFamilyTitle>Social Services</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>gathering information and spotting problems</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>planning tasks effectively</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>coming up with new ideas</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.27450980392157</TakingResponsibility>
+    <WorkingWithOthers>1.98039215686275</WorkingWithOthers>
+    <PersuadingAndSpeaking>3.19607843137255</PersuadingAndSpeaking>
+    <ThinkingCritically>6.80392156862745</ThinkingCritically>
+    <CreationAndInnovation>5.82352941176471</CreationAndInnovation>
+    <PlanningAndOrganising>6.15686274509804</PlanningAndOrganising>
+    <HandlingChangeAndPressure>3.74509803921569</HandlingChangeAndPressure>
+    <AchievingResults>5.6078431372549</AchievingResults>
+    <LearningAndTechnology>5.70588235294118</LearningAndTechnology>
+    <Verbal>True</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. Refer to the working with written information activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is reasoning and using verbal information. You may be interested in trying the working with written information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Caring</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10025</JobFamilyDetailId>
+    <JobFamilyId>29</JobFamilyId>
+    <JobFamilyTitle>Sport, Leisure and Tourism</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>showing energy and drive</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>gathering information and spotting problems</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>planning tasks effectively</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.7</TakingResponsibility>
+    <WorkingWithOthers>2.66</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.26</PersuadingAndSpeaking>
+    <ThinkingCritically>6.3</ThinkingCritically>
+    <CreationAndInnovation>4.82</CreationAndInnovation>
+    <PlanningAndOrganising>5.98</PlanningAndOrganising>
+    <HandlingChangeAndPressure>3.78</HandlingChangeAndPressure>
+    <AchievingResults>6.7</AchievingResults>
+    <LearningAndTechnology>5.08</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>True</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is sometimes part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is sometimes part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Leisure</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10026</JobFamilyDetailId>
+    <JobFamilyId>6</JobFamilyId>
+    <JobFamilyTitle>Storage, Dispatching and Delivery</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>learning new information and using technology</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>showing energy and drive</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>gathering information and spotting problems</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>4.85714285714286</TakingResponsibility>
+    <WorkingWithOthers>5</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.52380952380952</PersuadingAndSpeaking>
+    <ThinkingCritically>5.42857142857143</ThinkingCritically>
+    <CreationAndInnovation>5.19047619047619</CreationAndInnovation>
+    <PlanningAndOrganising>3.66666666666667</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.42857142857143</HandlingChangeAndPressure>
+    <AchievingResults>5.71428571428571</AchievingResults>
+    <LearningAndTechnology>6.19047619047619</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>True</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>False</Mechanical>    
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. Refer to the activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is checking information. You may be interested in trying the checking information activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Storage</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+  <JobFamily>
+    <JobFamilyDetailId>F10027</JobFamilyDetailId>
+    <JobFamilyId>12</JobFamilyId>
+    <JobFamilyTitle>Transport</JobFamilyTitle>
+    <JobFamilyKeySkillsStatement1>learning new information and using technology</JobFamilyKeySkillsStatement1>
+    <JobFamilyKeySkillsStatement2>showing energy and drive</JobFamilyKeySkillsStatement2>
+    <JobFamilyKeySkillsStatement3>coming up with new ideas</JobFamilyKeySkillsStatement3>
+    <TakingResponsibility>5.0625</TakingResponsibility>
+    <WorkingWithOthers>4.28125</WorkingWithOthers>
+    <PersuadingAndSpeaking>4.40625</PersuadingAndSpeaking>
+    <ThinkingCritically>4.4375</ThinkingCritically>
+    <CreationAndInnovation>5.875</CreationAndInnovation>
+    <PlanningAndOrganising>3.53125</PlanningAndOrganising>
+    <HandlingChangeAndPressure>4.9375</HandlingChangeAndPressure>
+    <AchievingResults>5.96875</AchievingResults>
+    <LearningAndTechnology>6.5</LearningAndTechnology>
+    <Verbal>False</Verbal>
+    <Numerical>False</Numerical>
+    <Checking>False</Checking>
+    <Spatial>False</Spatial>
+    <Abstract>False</Abstract>
+    <Mechanical>True</Mechanical>
+    <RelevantTasksCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. Refer to the solving mechanical problems activity skills area of this report to remind yourself how you found this.]]></RelevantTasksCompletedText>
+    <RelevantTasksNotCompletedText><![CDATA[One activity that is often part of this kind of job is working with mechanical problems. You may be interested in trying the solving mechanical problems activity which is available in the tasks area.]]></RelevantTasksNotCompletedText>
+    <InterestAreas>
+      <Value>Storage</Value>
+    </InterestAreas>
+    <ExcludeQualificationLevel />
+    <JobFamilyURL />
+  </JobFamily>
+</JobFamilyDetails>

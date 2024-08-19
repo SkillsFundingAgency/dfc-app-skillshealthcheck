@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DocumentsFormatters\appsettings-template.json" />
+    <None Remove="DocumentsFormatters\appsettings.json" />
+    <None Remove="Resources\SHCFullReport.docx" />
+    <None Remove="Resources\SHCFullReport.xsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SHCFullReport.docx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SHCFullReport.xsl">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Aspose.Words" Version="24.3.0" />
+    <PackageReference Include="DfE.NCS.Framework.ResourceManager" Version="1.0.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageReference Include="System.IO.Packaging" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\DfE.SkillsCentral.Api.Domain\DfE.SkillsCentral.Api.Domain.csproj" />
+    <ProjectReference Include="..\DfE.SkillsCentral.Api.Application.Interfaces\DfE.SkillsCentral.Api.Application.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DocumentsFormatters\Aspose.Words.lic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
